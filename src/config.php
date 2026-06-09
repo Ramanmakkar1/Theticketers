@@ -1,0 +1,40 @@
+<?php
+declare(strict_types=1);
+
+return [
+    'site_name' => getenv('SITE_NAME') ?: 'TicketSouq',
+    'site_tagline' => 'Dubai events, attractions and experiences',
+    'site_url' => rtrim(getenv('SITE_URL') ?: 'http://localhost:8000', '/'),
+    'api_base_url' => rtrim(getenv('HELLOTICKETS_API_URL') ?: 'https://api-live.hellotickets.com', '/'),
+    'api_key' => getenv('HELLOTICKETS_PUBLIC_KEY') ?: 'pub-bcaaca28-c7df-4fc1-9274-61a0f1439d13',
+    'impact_url' => getenv('IMPACT_BASE_URL') ?: 'https://hellotickets.sjv.io/MKNd7K',
+    'currency' => getenv('HELLOTICKETS_CURRENCY') ?: 'AED',
+    'locale' => getenv('HELLOTICKETS_LOCALE') ?: 'en-GB',
+    'default_city_id' => 132,
+    'default_city_name' => 'Dubai',
+    'cache_dir' => __DIR__ . '/../storage/cache',
+    'cache_ttl' => 3600,
+    'market_cities' => [
+        ['id' => 132, 'name' => 'Dubai', 'state' => 'Dubai', 'country' => 'United Arab Emirates', 'country_code' => 'ARE'],
+        ['id' => 256, 'name' => 'Abu Dhabi', 'state' => 'Abu Dhabi', 'country' => 'United Arab Emirates', 'country_code' => 'ARE'],
+        ['id' => 6, 'name' => 'Las Vegas', 'state' => 'NV', 'country' => 'United States', 'country_code' => 'USA'],
+        ['id' => 1, 'name' => 'New York', 'state' => 'NY', 'country' => 'United States', 'country_code' => 'USA'],
+        ['id' => 2, 'name' => 'London', 'state' => 'London', 'country' => 'United Kingdom', 'country_code' => 'GBR'],
+        ['id' => 4, 'name' => 'Los Angeles', 'state' => 'CA', 'country' => 'United States', 'country_code' => 'USA'],
+        ['id' => 5, 'name' => 'Orlando', 'state' => 'FL', 'country' => 'United States', 'country_code' => 'USA'],
+        ['id' => 7, 'name' => 'San Francisco', 'state' => 'CA', 'country' => 'United States', 'country_code' => 'USA'],
+    ],
+    'fallback_images' => [
+        'hero' => 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1800&q=80',
+        'activity' => 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1000&q=80',
+        'event' => 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1000&q=80',
+        'Concerts' => 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=1000&q=80',
+        'Theatre' => 'https://images.unsplash.com/photo-1503095396549-807759245b35?auto=format&fit=crop&w=1000&q=80',
+        'Sports' => 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1000&q=80',
+        'burj' => 'https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1000&q=80',
+        'waterpark' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80',
+        'desert' => 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1000&q=80',
+        'aquarium' => 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1000&q=80',
+        'cruise' => 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1000&q=80',
+    ],
+];

@@ -1,0 +1,7 @@
+/storage/cache/*
+!/storage/cache/.gitkeep
+/storage/cache-preview/
+/storage/*.png
+/storage/clicks.log
+.claude/settings.local.json
+.DS_Store
