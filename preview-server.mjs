@@ -11,7 +11,7 @@ const API_BASE = process.env.HELLOTICKETS_API_URL || 'https://api-live.hellotick
 const API_KEY = process.env.HELLOTICKETS_PUBLIC_KEY || 'pub-bcaaca28-c7df-4fc1-9274-61a0f1439d13';
 const IMPACT_URL = process.env.IMPACT_BASE_URL || 'https://hellotickets.sjv.io/MKNd7K';
 const CURRENCY = process.env.HELLOTICKETS_CURRENCY || 'AED';
-const SITE_NAME = process.env.SITE_NAME || 'TicketSouq';
+const SITE_NAME = process.env.SITE_NAME || 'TickedBus';
 const DEFAULT_CITY_ID = 132;
 const cacheDir = path.join(__dirname, 'storage', 'cache-preview');
 
@@ -168,7 +168,7 @@ function layout(title, description, body) {
   <header class="site-header">
     <a class="brand" href="/">
       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="display: block; width: 28px; height: 28px;"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></path><line x1="9" y1="9" x2="9" y2="15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></line><line x1="15" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></line></svg>
-      <span>Ticket<em>Souq</em></span>
+      <span>Ticked<em>Bus</em></span>
     </a>
     <div class="header-search">
       <form action="/search" method="get">
@@ -189,7 +189,7 @@ function layout(title, description, body) {
     </div>
   </div>
   <main>${body}</main>
-  <footer class="site-footer"><div><strong><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="width: 22px; height: 22px;"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg>Ticket<em style="font-style: normal; color: var(--red);">Souq</em></strong><p>Your guide to Dubai events, attractions and experiences. Prices and availability are live from our ticket partner, and checkout is completed securely on their site. We may earn a commission on bookings at no extra cost to you. &copy; ${new Date().getFullYear()} ${esc(SITE_NAME)}. All events, images and trademarks belong to their respective owners.</p></div><div class="footer-links"><a href="/events">Events</a><a href="/attractions">Attractions</a><a href="/city/dubai-132">Dubai</a><a href="/search">Search</a><a href="/sitemap.xml">Sitemap</a></div></footer>
+  <footer class="site-footer"><div><strong><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="width: 22px; height: 22px;"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg>Ticked<em style="font-style: normal; color: var(--red);">Bus</em></strong><p>Your guide to Dubai events, attractions and experiences. Prices and availability are live from our ticket partner, and checkout is completed securely on their site. We may earn a commission on bookings at no extra cost to you. &copy; ${new Date().getFullYear()} ${esc(SITE_NAME)}. All events, images and trademarks belong to their respective owners.</p></div><div class="footer-links"><a href="/events">Events</a><a href="/attractions">Attractions</a><a href="/city/dubai-132">Dubai</a><a href="/search">Search</a><a href="/sitemap.xml">Sitemap</a></div></footer>
   <script src="/assets/app.js" defer></script>
 </body>
 </html>`;

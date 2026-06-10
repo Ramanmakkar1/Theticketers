@@ -102,7 +102,7 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
     <header class="site-header">
         <a class="brand" href="/" aria-label="<?= e($config['site_name']) ?> home">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="display: block; width: 28px; height: 28px;"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></path><line x1="9" y1="9" x2="9" y2="15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></line><line x1="15" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></line></svg>
-            <span>Ticket<em>Souq</em></span>
+            <span>Ticked<em>Bus</em></span>
         </a>
         <div class="header-search">
             <form action="/search" method="get">
@@ -141,7 +141,7 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
         <div>
             <strong>
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="width: 22px; height: 22px;"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg>
-                Ticket<em style="font-style: normal; color: var(--red);">Souq</em>
+                Ticked<em style="font-style: normal; color: var(--red);">Bus</em>
             </strong>
             <p>Your guide to Dubai events, attractions and experiences. Prices and availability are live from our ticket partner, and checkout is completed securely on their site. We may earn a commission on bookings at no extra cost to you. &copy; <?= e(date('Y')) ?> <?= e($config['site_name']) ?>. All events, images and trademarks belong to their respective owners.</p>
         </div>

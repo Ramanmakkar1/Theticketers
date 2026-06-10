@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 return [
-    'site_name' => getenv('SITE_NAME') ?: 'TicketSouq',
+    'site_name' => getenv('SITE_NAME') ?: 'TickedBus',
     'site_tagline' => 'Dubai events, attractions and experiences',
     'site_url' => rtrim(getenv('SITE_URL') ?: 'http://localhost:8000', '/'),
     'api_base_url' => rtrim(getenv('HELLOTICKETS_API_URL') ?: 'https://api-live.hellotickets.com', '/'),
