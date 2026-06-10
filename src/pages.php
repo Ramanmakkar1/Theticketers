@@ -92,7 +92,7 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
     <meta property="og:image" content="<?= e($config['fallback_images']['hero']) ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/styles.css">
     <?php if ($schema !== null): ?>
     <script type="application/ld+json"><?= json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?></script>
@@ -102,37 +102,55 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
     <header class="site-header">
         <a class="brand" href="/" aria-label="<?= e($config['site_name']) ?> home">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="display: block; width: 28px; height: 28px;"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></path><line x1="9" y1="9" x2="9" y2="15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></line><line x1="15" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></line></svg>
-            <span><?= e($config['site_name']) ?></span>
+            <span>Ticket<em>Souq</em></span>
         </a>
         <div class="header-search">
             <form action="/search" method="get">
-                <input type="search" name="q" value="<?= e($q) ?>" placeholder="Search tickets">
+                <input type="search" name="q" value="<?= e($q) ?>" placeholder="Search for Events, Attractions, Concerts, Theatre and Tours">
                 <button type="submit" aria-label="Search">Search</button>
             </form>
         </div>
-        <button class="nav-toggle" type="button" data-nav-toggle aria-label="Open menu">
-            <span></span><span></span><span></span>
-        </button>
-        <nav class="site-nav" data-nav>
-            <a href="/events">Events</a>
-            <a href="/attractions">Attractions</a>
-            <a href="<?= e(city_path($config['market_cities'][0])) ?>">Dubai</a>
-            <a href="/sitemap.xml">Sitemap</a>
-        </nav>
+        <div class="header-actions">
+            <a class="header-city" href="<?= e(city_path($config['market_cities'][0])) ?>"><?= e($config['default_city_name']) ?></a>
+            <a class="header-cta" href="/attractions">Get Tickets</a>
+            <button class="nav-toggle" type="button" data-nav-toggle aria-label="Open menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
     </header>
+    <div class="site-subnav">
+        <div class="container">
+            <nav class="site-nav" data-nav>
+                <a href="/events">Events</a>
+                <a href="/attractions">Attractions</a>
+                <a href="<?= e(category_path(['id' => 2, 'name' => 'Concerts'])) ?>">Concerts</a>
+                <a href="<?= e(category_path(['id' => 3, 'name' => 'Theatre'])) ?>">Theatre</a>
+                <a href="<?= e(category_path(['id' => 1, 'name' => 'Sports'])) ?>">Sports</a>
+            </nav>
+            <div class="subnav-side">
+                <?php foreach (array_slice($config['market_cities'], 0, 3) as $navCity): ?>
+                    <a href="<?= e(city_path($navCity)) ?>"><?= e($navCity['name']) ?></a>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
     <main>
         <?php $content(); ?>
     </main>
     <footer class="site-footer">
         <div>
-            <strong><?= e($config['site_name']) ?></strong>
-            <p>Your curated guide to Dubai events, attractions and experiences. Prices and availability are live from our ticket partner, and checkout is completed securely on their site. We may earn a commission on bookings at no extra cost to you.</p>
+            <strong>
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="width: 22px; height: 22px;"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg>
+                Ticket<em style="font-style: normal; color: var(--red);">Souq</em>
+            </strong>
+            <p>Your guide to Dubai events, attractions and experiences. Prices and availability are live from our ticket partner, and checkout is completed securely on their site. We may earn a commission on bookings at no extra cost to you. &copy; <?= e(date('Y')) ?> <?= e($config['site_name']) ?>. All events, images and trademarks belong to their respective owners.</p>
         </div>
         <div class="footer-links">
             <a href="/events">Events</a>
             <a href="/attractions">Attractions</a>
             <a href="<?= e(city_path($config['market_cities'][0])) ?>">Dubai</a>
             <a href="/search">Search</a>
+            <a href="/sitemap.xml">Sitemap</a>
         </div>
     </footer>
     <script src="/assets/app.js" defer></script>
@@ -179,41 +197,41 @@ function render_home_page(HelloTicketsClient $client, array $config): void
         'body_class' => 'home-page',
     ], function () use ($config, $activities, $events, $globalEvents, $categoriesData): void {
         ?>
-        <section class="hero" style="--hero-image: url('<?= e($config['fallback_images']['hero']) ?>')">
-            <div class="container hero-inner">
-                <p class="eyebrow">Dubai · Abu Dhabi · Worldwide</p>
-                <h1>Unforgettable experiences, <em>one ticket away</em></h1>
-                <p class="hero-sub">Live prices and availability for Dubai's best attractions, concerts, shows and tours — with secure checkout through our official ticket partner.</p>
-                <form class="hero-search" action="/search" method="get">
-                    <input type="search" name="q" placeholder="Try Burj Khalifa, desert safari, concerts…" aria-label="Search tickets">
-                    <select name="type" aria-label="Search type">
-                        <option value="all">All tickets</option>
-                        <option value="events">Events</option>
-                        <option value="attractions">Attractions</option>
-                    </select>
-                    <button type="submit">Search</button>
-                </form>
-                <div class="quick-links" aria-label="Popular ticket searches">
-                    <span class="quick-label">Trending:</span>
-                    <a href="/attractions?q=Burj%20Khalifa">Burj Khalifa</a>
-                    <a href="/attractions?q=Desert%20Safari">Desert Safari</a>
-                    <a href="/attractions?q=Aquaventure">Aquaventure</a>
-                    <a href="/events?date=weekend">This weekend</a>
+        <?php
+        $slides = [
+            ['image' => $config['fallback_images']['hero'], 'tag' => 'Featured', 'title' => 'Dubai events, attractions and experiences', 'text' => 'Live prices and availability, with secure partner checkout.', 'href' => '/attractions', 'cta' => 'Book Now'],
+            ['image' => $config['fallback_images']['burj'], 'tag' => 'Top Attraction', 'title' => 'Burj Khalifa: At the Top', 'text' => 'Skip the queue with instant e-tickets to the world\'s tallest tower.', 'href' => '/attractions?q=Burj%20Khalifa', 'cta' => 'Get Tickets'],
+            ['image' => $config['fallback_images']['desert'], 'tag' => 'Experiences', 'title' => 'Desert safaris and dune adventures', 'text' => 'Sunset drives, camel rides and Bedouin dinners under the stars.', 'href' => '/attractions?q=Desert%20Safari', 'cta' => 'Explore'],
+            ['image' => $config['fallback_images']['Concerts'], 'tag' => 'Live Events', 'title' => 'Concerts, theatre and sport in Dubai', 'text' => 'See what\'s playing this week across the city\'s biggest venues.', 'href' => '/events', 'cta' => 'See Events'],
+        ];
+        ?>
+        <section class="hero">
+            <div class="container">
+                <div class="carousel" data-carousel>
+                    <div class="carousel-track" data-carousel-track>
+                        <?php foreach ($slides as $index => $slide): ?>
+                            <div class="carousel-slide" style="background-image: url('<?= e($slide['image']) ?>')">
+                                <div class="carousel-caption">
+                                    <span class="slide-tag"><?= e($slide['tag']) ?></span>
+                                    <?php if ($index === 0): ?>
+                                        <h1><?= e($slide['title']) ?></h1>
+                                    <?php else: ?>
+                                        <h2><?= e($slide['title']) ?></h2>
+                                    <?php endif; ?>
+                                    <p><?= e($slide['text']) ?></p>
+                                    <a class="slide-btn" href="<?= e($slide['href']) ?>"><?= e($slide['cta']) ?></a>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <button class="carousel-btn prev" type="button" data-carousel-prev aria-label="Previous banner">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    </button>
+                    <button class="carousel-btn next" type="button" data-carousel-next aria-label="Next banner">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
+                    <div class="carousel-dots" data-carousel-dots></div>
                 </div>
-            </div>
-            <div class="container hero-trust">
-                <span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                    Live availability &amp; real prices
-                </span>
-                <span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                    Secure partner checkout
-                </span>
-                <span>
-                    <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 1.42l3.61 7.32 8.07 1.17-5.84 5.7 1.38 8.04L12 19.85l-7.22 3.8 1.38-8.04-5.84-5.7 8.07-1.17z"></path></svg>
-                    Top-rated tours &amp; attractions
-                </span>
             </div>
         </section>
 
@@ -231,15 +249,15 @@ function render_home_page(HelloTicketsClient $client, array $config): void
         </section>
 
         <?php if ($activities !== []): ?>
-            <?php render_card_section('Most popular attractions', '/attractions', $activities, 'activity', $config); ?>
+            <?php render_card_section('Recommended Attractions', '/attractions', $activities, 'activity', $config); ?>
         <?php endif; ?>
 
         <?php if ($events !== []): ?>
-            <?php render_card_section('Upcoming events in Dubai', '/events', $events, 'event', $config); ?>
+            <?php render_card_section('Live Events in Dubai', '/events', $events, 'event', $config); ?>
         <?php endif; ?>
 
         <?php if ($globalEvents !== []): ?>
-            <?php render_card_section('Popular events worldwide', '/events', $globalEvents, 'event', $config); ?>
+            <?php render_card_section('Popular Events Worldwide', '/events', $globalEvents, 'event', $config, 'dark'); ?>
         <?php endif; ?>
 
         <section class="section-band">
@@ -681,13 +699,13 @@ function render_activity_detail_page(HelloTicketsClient $client, array $config, 
     }, activity_schema($config, $activity));
 }
 
-function render_card_section(string $heading, string $href, array $items, string $type, array $config): void
+function render_card_section(string $heading, string $href, array $items, string $type, array $config, string $variant = ''): void
 {
     if ($items === []) {
         return;
     }
     ?>
-    <section class="section-band">
+    <section class="section-band<?= $variant !== '' ? ' ' . e($variant) : '' ?>">
         <div class="container">
             <div class="section-heading">
                 <h2><?= e($heading) ?></h2>
@@ -737,26 +755,17 @@ function event_card(array $performance, array $config): string
                 <span class="month"><?= e($monthAbbr) ?></span>
                 <span class="day"><?= e($dayNum) ?></span>
             </div>
-            <span class="category"><?= e($performance['category']['name'] ?? 'Event') ?></span>
+            <div class="card-rating-strip">
+                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M16 1.895l4.814 9.755 10.764 1.564-7.79 7.593 1.838 10.72L16 26.467l-9.626 5.06 1.838-10.72-7.79-7.593 10.764-1.564z"></path></svg>
+                4.9/5
+                <span class="votes"><?= e($performance['category']['name'] ?? 'Event') ?></span>
+            </div>
         </a>
         <div class="card-body">
-            <div class="card-meta">
-                <span><?= e($performance['venue']['city'] ?? 'Dubai') ?></span>
-                <span class="card-rating">
-                    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="width: 12px; height: 12px; fill: var(--amber);"><path d="M16 1.895l4.814 9.755 10.764 1.564-7.79 7.593 1.838 10.72L16 26.467l-9.626 5.06 1.838-10.72-7.79-7.593 10.764-1.564z"></path></svg>
-                    <span>4.9</span>
-                </span>
-            </div>
             <a class="card-title" href="<?= e(event_path($performance)) ?>"><?= e($performance['name'] ?? 'Event') ?></a>
             <p><?= e(format_date_time($performance['start_date'] ?? [])) ?></p>
-            <p><?= e($performance['venue']['name'] ?? '') ?></p>
-            <div class="card-bottom">
-                <div class="price">
-                    <span>From</span>
-                    <strong><?= e(money($price, $currency)) ?></strong>
-                </div>
-                <a href="<?= e(go_url($performance, 'event')) ?>" rel="sponsored nofollow">Find Tickets</a>
-            </div>
+            <p><?= e(trim(($performance['venue']['name'] ?? '') . ', ' . ($performance['venue']['city'] ?? 'Dubai'), ', ')) ?></p>
+            <p class="card-onwards"><?= e(money($price, $currency)) ?><?= ((float) $price) > 0 ? ' onwards' : '' ?></p>
         </div>
     </article>
     <?php
@@ -775,36 +784,19 @@ function activity_card(array $activity, array $config): string
     <article class="ticket-card">
         <a class="card-image" href="<?= e(activity_path($activity)) ?>">
             <img src="<?= e($image) ?>" alt="<?= e($activity['title'] ?? 'Experience') ?>" loading="lazy">
-            <div class="card-date-badge">
-                <span class="month" style="color: var(--teal);">Entry</span>
-                <span class="day">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width: 16px; height: 16px; display: block; margin: 3px auto 2px;"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/></svg>
-                </span>
-            </div>
             <span class="category"><?= e($activity['city']['name'] ?? 'Attraction') ?></span>
+            <div class="card-rating-strip">
+                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M16 1.895l4.814 9.755 10.764 1.564-7.79 7.593 1.838 10.72L16 26.467l-9.626 5.06 1.838-10.72-7.79-7.593 10.764-1.564z"></path></svg>
+                <?= e($rating) ?>/5
+                <?php if ($reviewsCount !== null): ?>
+                    <span class="votes"><?= e(number_format($reviewsCount)) ?> votes</span>
+                <?php endif; ?>
+            </div>
         </a>
         <div class="card-body">
-            <div class="card-meta">
-                <span><?= e($activity['country'] ?? 'United Arab Emirates') ?></span>
-                <span class="card-rating">
-                    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="width: 12px; height: 12px; fill: var(--amber);"><path d="M16 1.895l4.814 9.755 10.764 1.564-7.79 7.593 1.838 10.72L16 26.467l-9.626 5.06 1.838-10.72-7.79-7.593 10.764-1.564z"></path></svg>
-                    <span><?= e($rating) ?></span>
-                </span>
-            </div>
             <a class="card-title" href="<?= e(activity_path($activity)) ?>"><?= e($activity['title'] ?? 'Experience') ?></a>
             <p><?= e($activity['supplier_name'] ?? 'Ticket partner') ?></p>
-            <?php if ($reviewsCount !== null): ?>
-                <p><?= e(number_format($reviewsCount)) ?> reviews</p>
-            <?php else: ?>
-                <p>Top Experience</p>
-            <?php endif; ?>
-            <div class="card-bottom">
-                <div class="price">
-                    <span>From</span>
-                    <strong><?= e(money($price, $currency)) ?></strong>
-                </div>
-                <a href="<?= e(go_url($activity, 'activity')) ?>" rel="sponsored nofollow">Find Tickets</a>
-            </div>
+            <p class="card-onwards"><?= e(money($price, $currency)) ?><?= ((float) $price) > 0 ? ' onwards' : '' ?></p>
         </div>
     </article>
     <?php

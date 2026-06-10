@@ -161,26 +161,35 @@ function layout(title, description, body) {
   <meta name="description" content="${esc(description)}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/styles.css">
 </head>
 <body>
   <header class="site-header">
     <a class="brand" href="/">
       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="display: block; width: 28px; height: 28px;"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></path><line x1="9" y1="9" x2="9" y2="15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></line><line x1="15" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></line></svg>
-      <span>${esc(SITE_NAME)}</span>
+      <span>Ticket<em>Souq</em></span>
     </a>
     <div class="header-search">
       <form action="/search" method="get">
-        <input type="search" name="q" placeholder="Search tickets">
+        <input type="search" name="q" placeholder="Search for Events, Attractions, Concerts, Theatre and Tours">
         <button type="submit">Search</button>
       </form>
     </div>
-    <button class="nav-toggle" type="button" data-nav-toggle aria-label="Open menu"><span></span><span></span><span></span></button>
-    <nav class="site-nav" data-nav><a href="/events">Events</a><a href="/attractions">Attractions</a><a href="/city/dubai-132">Dubai</a><a href="/sitemap.xml">Sitemap</a></nav>
+    <div class="header-actions">
+      <a class="header-city" href="/city/dubai-132">Dubai</a>
+      <a class="header-cta" href="/attractions">Get Tickets</a>
+      <button class="nav-toggle" type="button" data-nav-toggle aria-label="Open menu"><span></span><span></span><span></span></button>
+    </div>
   </header>
+  <div class="site-subnav">
+    <div class="container">
+      <nav class="site-nav" data-nav><a href="/events">Events</a><a href="/attractions">Attractions</a><a href="/category/concerts-2">Concerts</a><a href="/category/theatre-3">Theatre</a><a href="/category/sports-1">Sports</a></nav>
+      <div class="subnav-side"><a href="/city/dubai-132">Dubai</a><a href="/city/abu-dhabi-256">Abu Dhabi</a><a href="/city/las-vegas-6">Las Vegas</a></div>
+    </div>
+  </div>
   <main>${body}</main>
-  <footer class="site-footer"><div><strong>${esc(SITE_NAME)}</strong><p>Your curated guide to Dubai events, attractions and experiences. Prices and availability are live from our ticket partner, and checkout is completed securely on their site. We may earn a commission on bookings at no extra cost to you.</p></div><div class="footer-links"><a href="/events">Events</a><a href="/attractions">Attractions</a><a href="/city/dubai-132">Dubai</a><a href="/search">Search</a></div></footer>
+  <footer class="site-footer"><div><strong><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="width: 22px; height: 22px;"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg>Ticket<em style="font-style: normal; color: var(--red);">Souq</em></strong><p>Your guide to Dubai events, attractions and experiences. Prices and availability are live from our ticket partner, and checkout is completed securely on their site. We may earn a commission on bookings at no extra cost to you. &copy; ${new Date().getFullYear()} ${esc(SITE_NAME)}. All events, images and trademarks belong to their respective owners.</p></div><div class="footer-links"><a href="/events">Events</a><a href="/attractions">Attractions</a><a href="/city/dubai-132">Dubai</a><a href="/search">Search</a><a href="/sitemap.xml">Sitemap</a></div></footer>
   <script src="/assets/app.js" defer></script>
 </body>
 </html>`;
@@ -217,26 +226,17 @@ function eventCard(item) {
         <span class="month">${esc(monthAbbr)}</span>
         <span class="day">${esc(dayNum)}</span>
       </div>
-      <span class="category">${esc(item.category?.name || 'Event')}</span>
+      <div class="card-rating-strip">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M16 1.895l4.814 9.755 10.764 1.564-7.79 7.593 1.838 10.72L16 26.467l-9.626 5.06 1.838-10.72-7.79-7.593 10.764-1.564z"></path></svg>
+        4.9/5
+        <span class="votes">${esc(item.category?.name || 'Event')}</span>
+      </div>
     </a>
     <div class="card-body">
-      <div class="card-meta">
-        <span>${esc(item.venue?.city || 'Dubai')}</span>
-        <span class="card-rating">
-          <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="width: 12px; height: 12px; fill: var(--amber);"><path d="M16 1.895l4.814 9.755 10.764 1.564-7.79 7.593 1.838 10.72L16 26.467l-9.626 5.06 1.838-10.72-7.79-7.593 10.764-1.564z"></path></svg>
-          <span>4.9</span>
-        </span>
-      </div>
       <a class="card-title" href="${eventPath(item)}">${esc(item.name || 'Event')}</a>
       <p>${esc(formatDate(item.start_date))}</p>
-      <p>${esc(item.venue?.name || '')}</p>
-      <div class="card-bottom">
-        <div class="price">
-          <span>From</span>
-          <strong>${esc(money(item.price_range?.min_price, item.price_range?.currency))}</strong>
-        </div>
-        <a href="${goUrl(item, 'event')}" rel="sponsored nofollow">Find Tickets</a>
-      </div>
+      <p>${esc([item.venue?.name, item.venue?.city || 'Dubai'].filter(Boolean).join(', '))}</p>
+      <p class="card-onwards">${esc(money(item.price_range?.min_price, item.price_range?.currency))}${Number(item.price_range?.min_price || 0) > 0 ? ' onwards' : ''}</p>
     </div>
   </article>`;
 }
@@ -247,40 +247,25 @@ function activityCard(item) {
   return `<article class="ticket-card">
     <a class="card-image" href="${activityPath(item)}">
       <img src="${esc(image(item, 'activity'))}" alt="${esc(item.title || 'Experience')}" loading="lazy">
-      <div class="card-date-badge">
-        <span class="month" style="color: var(--teal);">Entry</span>
-        <span class="day">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width: 16px; height: 16px; display: block; margin: 3px auto 2px;"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/></svg>
-        </span>
-      </div>
       <span class="category">${esc(item.city?.name || 'Attraction')}</span>
+      <div class="card-rating-strip">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M16 1.895l4.814 9.755 10.764 1.564-7.79 7.593 1.838 10.72L16 26.467l-9.626 5.06 1.838-10.72-7.79-7.593 10.764-1.564z"></path></svg>
+        ${rating}/5
+        ${reviewsCount !== null ? `<span class="votes">${new Intl.NumberFormat('en-US').format(reviewsCount)} votes</span>` : ''}
+      </div>
     </a>
     <div class="card-body">
-      <div class="card-meta">
-        <span>${esc(item.country || 'United Arab Emirates')}</span>
-        <span class="card-rating">
-          <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="width: 12px; height: 12px; fill: var(--amber);"><path d="M16 1.895l4.814 9.755 10.764 1.564-7.79 7.593 1.838 10.72L16 26.467l-9.626 5.06 1.838-10.72-7.79-7.593 10.764-1.564z"></path></svg>
-          <span>${rating}</span>
-        </span>
-      </div>
       <a class="card-title" href="${activityPath(item)}">${esc(item.title || 'Experience')}</a>
       <p>${esc(item.supplier_name || 'Ticket partner')}</p>
-      ${reviewsCount !== null ? `<p>${new Intl.NumberFormat('en-US').format(reviewsCount)} reviews</p>` : `<p>Top Experience</p>`}
-      <div class="card-bottom">
-        <div class="price">
-          <span>From</span>
-          <strong>${esc(money(item.from_price, item.currency))}</strong>
-        </div>
-        <a href="${goUrl(item, 'activity')}" rel="sponsored nofollow">Find Tickets</a>
-      </div>
+      <p class="card-onwards">${esc(money(item.from_price, item.currency))}${Number(item.from_price || 0) > 0 ? ' onwards' : ''}</p>
     </div>
   </article>`;
 }
 
-function cardSection(heading, href, items, type) {
+function cardSection(heading, href, items, type, variant = '') {
   if (!items?.length) return '';
   const cards = items.map(type === 'event' ? eventCard : activityCard).join('');
-  return `<section class="section-band"><div class="container"><div class="section-heading"><h2>${esc(heading)}</h2><a href="${href}">Show all</a></div><div class="rail-wrapper"><button class="rail-btn prev" aria-label="Scroll left" data-scroll-dir="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button><div class="rail">${cards}</div><button class="rail-btn next" aria-label="Scroll right" data-scroll-dir="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button></div></div></section>`;
+  return `<section class="section-band${variant ? ` ${variant}` : ''}"><div class="container"><div class="section-heading"><h2>${esc(heading)}</h2><a href="${href}">Show all</a></div><div class="rail-wrapper"><button class="rail-btn prev" aria-label="Scroll left" data-scroll-dir="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button><div class="rail">${cards}</div><button class="rail-btn next" aria-label="Scroll right" data-scroll-dir="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button></div></div></section>`;
 }
 
 function grid(items, type) {
@@ -297,38 +282,34 @@ async function home() {
   ]);
   const categories = (categoriesData.categories || []).slice(0, 18).map(cat => `<a href="/category/${idSlug(cat.name, cat.id)}">${esc(cat.name)}</a>`).join('');
   return layout(`Dubai Events, Attractions & Tickets | ${SITE_NAME}`, 'Find Dubai attraction tickets, concerts, theatre, sports and experiences.', `
-    <section class="hero" style="--hero-image:url('${fallbackImages.hero}')">
-      <div class="container hero-inner">
-        <p class="eyebrow">Dubai · Abu Dhabi · Worldwide</p>
-        <h1>Unforgettable experiences, <em>one ticket away</em></h1>
-        <p class="hero-sub">Live prices and availability for Dubai's best attractions, concerts, shows and tours — with secure checkout through our official ticket partner.</p>
-        <form class="hero-search" action="/search" method="get">
-          <input type="search" name="q" placeholder="Try Burj Khalifa, desert safari, concerts…">
-          <select name="type">
-            <option value="all">All tickets</option>
-            <option value="events">Events</option>
-            <option value="attractions">Attractions</option>
-          </select>
-          <button type="submit">Search</button>
-        </form>
-        <div class="quick-links">
-          <span class="quick-label">Trending:</span>
-          <a href="/attractions?q=Burj%20Khalifa">Burj Khalifa</a>
-          <a href="/attractions?q=Desert%20Safari">Desert Safari</a>
-          <a href="/attractions?q=Aquaventure">Aquaventure</a>
-          <a href="/events?date=weekend">This weekend</a>
+    <section class="hero">
+      <div class="container">
+        <div class="carousel" data-carousel>
+          <div class="carousel-track" data-carousel-track>
+            ${[
+              { image: fallbackImages.hero, tag: 'Featured', title: 'Dubai events, attractions and experiences', text: 'Live prices and availability, with secure partner checkout.', href: '/attractions', cta: 'Book Now', h: 'h1' },
+              { image: fallbackImages.burj, tag: 'Top Attraction', title: 'Burj Khalifa: At the Top', text: "Skip the queue with instant e-tickets to the world's tallest tower.", href: '/attractions?q=Burj%20Khalifa', cta: 'Get Tickets', h: 'h2' },
+              { image: fallbackImages.desert, tag: 'Experiences', title: 'Desert safaris and dune adventures', text: 'Sunset drives, camel rides and Bedouin dinners under the stars.', href: '/attractions?q=Desert%20Safari', cta: 'Explore', h: 'h2' },
+              { image: fallbackImages.Concerts, tag: 'Live Events', title: 'Concerts, theatre and sport in Dubai', text: "See what's playing this week across the city's biggest venues.", href: '/events', cta: 'See Events', h: 'h2' },
+            ].map(slide => `<div class="carousel-slide" style="background-image: url('${slide.image}')">
+              <div class="carousel-caption">
+                <span class="slide-tag">${esc(slide.tag)}</span>
+                <${slide.h}>${esc(slide.title)}</${slide.h}>
+                <p>${esc(slide.text)}</p>
+                <a class="slide-btn" href="${slide.href}">${esc(slide.cta)}</a>
+              </div>
+            </div>`).join('')}
+          </div>
+          <button class="carousel-btn prev" type="button" data-carousel-prev aria-label="Previous banner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+          <button class="carousel-btn next" type="button" data-carousel-next aria-label="Next banner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+          <div class="carousel-dots" data-carousel-dots></div>
         </div>
-      </div>
-      <div class="container hero-trust">
-        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>Live availability &amp; real prices</span>
-        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>Secure partner checkout</span>
-        <span><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 1.42l3.61 7.32 8.07 1.17-5.84 5.7 1.38 8.04L12 19.85l-7.22 3.8 1.38-8.04-5.84-5.7 8.07-1.17z"></path></svg>Top-rated tours &amp; attractions</span>
       </div>
     </section>
     <section class="section-band compact"><div class="container"><div class="filter-row"><a href="/events?date=today">Today</a><a href="/events?date=tomorrow">Tomorrow</a><a href="/events?date=weekend">This weekend</a><a href="/events?date=month">This month</a><a href="/category/concerts-2">Concerts</a><a href="/category/theatre-3">Theatre</a></div></div></section>
-    ${cardSection('Dubai live events', '/events', eventsData.performances || [], 'event')}
-    ${cardSection('Top Dubai attractions', '/attractions', activitiesData.activities || [], 'activity')}
-    ${cardSection('Popular events worldwide', '/events', globalEventsData.performances || [], 'event')}
+    ${cardSection('Recommended Attractions', '/attractions', activitiesData.activities || [], 'activity')}
+    ${cardSection('Live Events in Dubai', '/events', eventsData.performances || [], 'event')}
+    ${cardSection('Popular Events Worldwide', '/events', globalEventsData.performances || [], 'event', 'dark')}
     <section class="section-band muted"><div class="container split-section"><div><p class="eyebrow">Browse by category</p><h2>Concerts, theatre, sports and experiences</h2></div><div class="tag-grid">${categories}</div></div></section>`);
 }
 
