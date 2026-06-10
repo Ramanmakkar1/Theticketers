@@ -1042,10 +1042,15 @@ function artist_card(array $performer): string
     $name = (string) ($performer['name'] ?? 'Artist');
     $category = (string) ($performer['category']['name'] ?? '');
     $total = (int) ($performer['total_performances'] ?? 0);
+    $img = mapped_image('performer', (int) ($performer['id'] ?? 0));
     ob_start();
     ?>
     <a class="artist-card" href="<?= e(artist_path($performer)) ?>">
-        <span class="artist-avatar" aria-hidden="true"><?= e(artist_initials($name)) ?></span>
+        <?php if ($img !== null): ?>
+            <span class="artist-avatar artist-avatar--img"><img src="<?= e($img) ?>" alt="<?= e($name) ?>" loading="lazy"></span>
+        <?php else: ?>
+            <span class="artist-avatar" aria-hidden="true"><?= e(artist_initials($name)) ?></span>
+        <?php endif; ?>
         <strong><?= e($name) ?></strong>
         <span><?= e($category !== '' ? $category : 'Live') ?><?= $total > 0 ? ' · ' . e((string) $total) . ' shows' : '' ?></span>
     </a>
@@ -1157,8 +1162,13 @@ function render_artist_detail_page(HelloTicketsClient $client, array $config, in
         ?>
         <section class="listing-hero artist-hero">
             <div class="container">
+                <?php $heroImg = mapped_image('performer', (int) ($performer['id'] ?? 0)); ?>
                 <div class="artist-hero__row">
-                    <span class="artist-avatar artist-avatar--lg" aria-hidden="true"><?= e(artist_initials($name)) ?></span>
+                    <?php if ($heroImg !== null): ?>
+                        <span class="artist-avatar artist-avatar--lg artist-avatar--img"><img src="<?= e($heroImg) ?>" alt="<?= e($name) ?>" loading="lazy"></span>
+                    <?php else: ?>
+                        <span class="artist-avatar artist-avatar--lg" aria-hidden="true"><?= e(artist_initials($name)) ?></span>
+                    <?php endif; ?>
                     <div>
                         <p class="eyebrow"><?= e($performer['category']['name'] ?? 'On Tour') ?></p>
                         <h1><?= e($name) ?></h1>

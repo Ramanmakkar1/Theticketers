@@ -50,11 +50,15 @@ function say(bool $quiet, string $line): void
     }
 }
 
-/** Fetch a HelloTickets page and pull the first real Tiqets imgix photo. */
+/** Fetch a HelloTickets page and pull its real per-item hero photo. */
 function harvest_image(string $pageUrl): ?string
 {
+    static $cache = [];
     if ($pageUrl === '') {
         return null;
+    }
+    if (array_key_exists($pageUrl, $cache)) {
+        return $cache[$pageUrl]; // many performances share one event page
     }
     $ch = curl_init($pageUrl);
     curl_setopt_array($ch, [
@@ -66,12 +70,14 @@ function harvest_image(string $pageUrl): ?string
     ]);
     $html = curl_exec($ch);
     curl_close($ch);
-    if (!is_string($html) || $html === '') {
-        return null;
-    }
+    $cache[$pageUrl] = (is_string($html) && $html !== '') ? extract_hero($html) : null;
+    return $cache[$pageUrl];
+}
 
-    // 1) Authoritative per-item hero from the page's JSON-LD structured data.
-    //    (The "first imgix image on the page" can be a cross-sell thumbnail.)
+/** Pull the best per-item hero from page HTML (activity Tiqets + event Cloudinary). */
+function extract_hero(string $html): ?string
+{
+    // 1) JSON-LD structured-data image (authoritative on Tiqets activity pages).
     if (preg_match_all('#<script[^>]*application/ld\+json[^>]*>(.*?)</script>#is', $html, $blocks)) {
         foreach ($blocks[1] as $block) {
             if (preg_match('#"image"\s*:\s*"([^"]+)"#', $block, $m)
@@ -81,7 +87,21 @@ function harvest_image(string $pageUrl): ?string
         }
     }
 
-    // 2) Fallback: first Tiqets imgix content image on the page.
+    // 2) og:image — the event page's real Cloudinary cover lives here.
+    if (preg_match('#<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']#i', $html, $m)
+        || preg_match('#<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']#i', $html, $m)) {
+        $url = html_entity_decode($m[1], ENT_QUOTES | ENT_HTML5);
+        if (stripos($url, 'static.hellotickets.com') === false) { // skip the site logo
+            return normalize_hero($url);
+        }
+    }
+
+    // 3) Cloudinary hello-tickets content image.
+    if (preg_match('#https://res\.cloudinary\.com/hello-tickets/image/upload/[^"\s>\\\\]+#i', $html, $m)) {
+        return normalize_hero($m[0]);
+    }
+
+    // 4) Tiqets imgix content image.
     if (preg_match('#https://aws-tiqets-cdn\.imgix\.net/images/content/[a-f0-9]+\.(?:jpe?g|png|webp)#i', $html, $m)) {
         return normalize_hero($m[0]);
     }
@@ -89,12 +109,16 @@ function harvest_image(string $pageUrl): ?string
     return null;
 }
 
-/** Consistent ~2:3 poster URL: imgix images get crop params; others pass through. */
+/** Consistent hero URL: imgix gets a poster crop; Cloudinary forced to full size. */
 function normalize_hero(string $url): string
 {
     if (stripos($url, 'imgix.net') !== false) {
         $base = explode('?', $url, 2)[0];
         return $base . '?w=600&h=900&fit=crop&crop=edges&auto=format,compress';
+    }
+    if (stripos($url, 'res.cloudinary.com') !== false) {
+        // Force a large render of the same asset (avoid the page's h_140 thumbnail).
+        return preg_replace('#/image/upload/[a-z][^/]*,[^/]+/#', '/image/upload/c_limit,f_auto,q_auto,w_1300/', $url) ?? $url;
     }
     return $url;
 }
@@ -124,13 +148,25 @@ foreach ($cityIds as $cid) {
 }
 
 if ($withEvents) {
-    $eventQueries = [[], ['city_id' => (int) $config['default_city_id']]];
+    // Events are harvested for every market city (+ a global pass) so concerts in
+    // Toronto/NYC/etc. get real covers, not just Dubai.
+    $eventQueries = [[]];
+    foreach ($config['market_cities'] as $mc) {
+        $eventQueries[] = ['city_id' => (int) $mc['id']];
+    }
     foreach ($eventQueries as $extra) {
         try {
             $params = array_merge(['limit' => 50, 'page' => 1, 'is_sellable' => 'true'], date_params(null), $extra);
             $data = $client->performances($params);
             foreach ($data['performances'] ?? [] as $p) {
-                $items[] = ['type' => 'event', 'id' => (int) ($p['id'] ?? 0), 'url' => (string) ($p['url'] ?? '')];
+                // The API performance url is an imageless JS date-page; the EVENT page
+                // (…/{slug}-tickets/{event_id}) carries the real og:image cover.
+                $perfUrl = (string) ($p['url'] ?? '');
+                $eventId = (int) ($p['event_id'] ?? 0);
+                $eventPageUrl = ($eventId > 0 && str_contains($perfUrl, '-tickets/'))
+                    ? preg_replace('#(-tickets)/.*$#', '$1/' . $eventId, $perfUrl)
+                    : $perfUrl;
+                $items[] = ['type' => 'event', 'id' => (int) ($p['id'] ?? 0), 'url' => (string) $eventPageUrl];
             }
         } catch (Throwable $e) {
             say($quiet, '!! performances: ' . $e->getMessage());

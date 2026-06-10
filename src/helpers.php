@@ -149,17 +149,37 @@ function date_params(?string $dateKey): array
 }
 
 /**
- * Real-image map harvested from HelloTickets pages by bin/enrich-images.php.
- * Loaded once per request and keyed by "type-id" (e.g. "activity-2459").
+ * Real per-item image map, keyed "type-id" (e.g. "activity-2459", "performer-129").
+ * Merges two sources, loaded once per request:
+ *   - storage/images.json     : HelloTickets activity/event covers (URLs), committed.
+ *   - storage/tm-images.json  : Ticketmaster artist/event images downloaded to
+ *                               assets/media by bin/fetch-tm-images.php (server-local).
+ * HelloTickets covers win over Ticketmaster on the same key (a real event poster
+ * beats generic artist art); Ticketmaster fills artists and uncovered events.
  */
 function image_map(): array
 {
     static $map = null;
     if ($map === null) {
-        $file = __DIR__ . '/../storage/images.json';
-        $map = is_file($file) ? (json_decode((string) file_get_contents($file), true) ?: []) : [];
+        $load = static function (string $file): array {
+            return is_file($file) ? (json_decode((string) file_get_contents($file), true) ?: []) : [];
+        };
+        $ht = $load(__DIR__ . '/../storage/images.json');
+        $tm = $load(__DIR__ . '/../storage/tm-images.json');
+        $map = array_merge($tm, $ht); // $ht overwrites $tm on conflict
     }
     return $map;
+}
+
+/** Real mapped image for an item, or null when we have none (no generic fallback). */
+function mapped_image(string $type, int $id): ?string
+{
+    if ($id <= 0) {
+        return null;
+    }
+    $map = image_map();
+    $key = $type . '-' . $id;
+    return (!empty($map[$key]) && is_string($map[$key])) ? $map[$key] : null;
 }
 
 function image_from_item(array $item, string $type, array $config): string
@@ -185,6 +205,26 @@ function image_from_item(array $item, string $type, array $config): string
         $key = $type . '-' . $id;
         if (!empty($map[$key]) && is_string($map[$key])) {
             return $map[$key];
+        }
+    }
+
+    // An event with no cover of its own reuses its headline performer's photo
+    // (Ticketmaster artist image) — content-matched and works in ANY city.
+    if ($type === 'event' && !empty($item['performers']) && is_array($item['performers'])) {
+        $performerIds = [];
+        foreach ($item['performers'] as $performer) {
+            $pid = (int) ($performer['id'] ?? 0);
+            if (!empty($performer['is_main'])) {
+                array_unshift($performerIds, $pid);
+            } else {
+                $performerIds[] = $pid;
+            }
+        }
+        foreach ($performerIds as $pid) {
+            $performerImage = mapped_image('performer', $pid);
+            if ($performerImage !== null) {
+                return $performerImage;
+            }
         }
     }
 
