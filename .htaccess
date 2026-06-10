@@ -1,5 +1,12 @@
 Options -Indexes
 RewriteEngine On
+
+# Block direct web access to source, data, tooling and docs.
+# (Public assets are served from /assets/; everything else routes through index.php.)
+RewriteRule ^(src|storage|bin|seo)(/|$) - [F,L]
+RewriteRule (^|/)\.(?!well-known) - [F,L]
+
+# Front controller: route all non-file, non-directory requests to index.php.
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [L]

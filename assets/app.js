@@ -1,12 +1,13 @@
-// Mobile navigation toggle
+// Mobile header toggle: the hamburger reveals the search bar
+// (the navy subnav strip already handles navigation on mobile)
 const toggle = document.querySelector('[data-nav-toggle]');
-const nav = document.querySelector('[data-nav]');
 const headerSearch = document.querySelector('.header-search');
 
-if (toggle && nav) {
+if (toggle && headerSearch) {
+    toggle.setAttribute('aria-expanded', 'false');
     toggle.addEventListener('click', () => {
-        nav.classList.toggle('is-open');
-        if (headerSearch) headerSearch.classList.toggle('is-open');
+        const isOpen = headerSearch.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', String(isOpen));
     });
 }
 
@@ -34,6 +35,169 @@ document.querySelectorAll('.rail-btn').forEach(btn => {
         }
     });
 });
+
+// ===== City selection (cookie + dropdown + first-visit modal + geo detect) =====
+const CITY_COOKIE = 'tb_city';
+
+function setCityCookie(id) {
+    document.cookie = CITY_COOKIE + '=' + id + ';path=/;max-age=31536000;samesite=lax';
+}
+
+function getCityCookie() {
+    const match = document.cookie.match(/(?:^|;\s*)tb_city=(\d+)/);
+    return match ? match[1] : null;
+}
+
+// Any link carrying data-city-id stores the choice before navigating
+document.querySelectorAll('[data-city-id]').forEach(el => {
+    el.addEventListener('click', () => setCityCookie(el.getAttribute('data-city-id')));
+});
+
+// Header dropdown
+const cityPicker = document.querySelector('[data-city-picker]');
+if (cityPicker) {
+    cityPicker.querySelector('[data-city-toggle]')?.addEventListener('click', () => {
+        cityPicker.classList.toggle('open');
+    });
+    document.addEventListener('click', e => {
+        if (!cityPicker.contains(e.target)) cityPicker.classList.remove('open');
+    });
+}
+
+// Market cities the geo lookup can resolve to
+const MARKET_CITIES = [
+    { id: 132, slug: '/city/dubai-132', names: ['dubai', 'sharjah', 'ajman'], country: 'AE' },
+    { id: 256, slug: '/city/abu-dhabi-256', names: ['abu dhabi'], country: 'AE' },
+    { id: 6, slug: '/city/las-vegas-6', names: ['las vegas', 'paradise', 'henderson'], country: 'US' },
+    { id: 1, slug: '/city/new-york-1', names: ['new york', 'brooklyn', 'queens', 'newark', 'jersey city'], country: 'US' },
+    { id: 2, slug: '/city/london-2', names: ['london'], country: 'GB' },
+    { id: 4, slug: '/city/los-angeles-4', names: ['los angeles', 'santa monica', 'long beach', 'anaheim'], country: 'US' },
+    { id: 5, slug: '/city/orlando-5', names: ['orlando', 'kissimmee'], country: 'US' },
+    { id: 7, slug: '/city/san-francisco-7', names: ['san francisco', 'oakland', 'san jose'], country: 'US' },
+    { id: 3, slug: '/city/miami-3', names: ['miami', 'fort lauderdale', 'hialeah'], country: 'US' },
+    { id: 28, slug: '/city/toronto-28', names: ['toronto', 'mississauga', 'brampton'], country: 'CA' },
+    { id: 100, slug: '/city/vancouver-100', names: ['vancouver', 'burnaby', 'surrey'], country: 'CA' },
+    { id: 99, slug: '/city/montreal-99', names: ['montreal', 'laval', 'longueuil'], country: 'CA' },
+    { id: 205, slug: '/city/edinburgh-205', names: ['edinburgh'], country: 'GB' },
+    { id: 124, slug: '/city/rome-124', names: ['rome', 'roma'], country: 'IT' },
+    { id: 126, slug: '/city/venice-126', names: ['venice', 'venezia', 'mestre'], country: 'IT' },
+    { id: 123, slug: '/city/florence-123', names: ['florence', 'firenze'], country: 'IT' },
+    { id: 135, slug: '/city/milan-135', names: ['milan', 'milano'], country: 'IT' },
+    { id: 122, slug: '/city/barcelona-122', names: ['barcelona', 'badalona', "l'hospitalet"], country: 'ES' },
+    { id: 121, slug: '/city/madrid-121', names: ['madrid', 'getafe', 'alcala de henares'], country: 'ES' },
+    { id: 144, slug: '/city/seville-144', names: ['seville', 'sevilla'], country: 'ES' },
+    { id: 125, slug: '/city/paris-125', names: ['paris', 'boulogne-billancourt', 'saint-denis'], country: 'FR' },
+    { id: 174, slug: '/city/nice-174', names: ['nice', 'antibes'], country: 'FR' },
+    { id: 22, slug: '/city/chicago-22', names: ['chicago', 'evanston', 'naperville'], country: 'US' },
+    { id: 30, slug: '/city/boston-30', names: ['boston', 'cambridge ma', 'somerville'], country: 'US' },
+    { id: 31, slug: '/city/seattle-31', names: ['seattle', 'bellevue', 'tacoma'], country: 'US' },
+    { id: 9, slug: '/city/houston-9', names: ['houston', 'sugar land'], country: 'US' },
+    { id: 16, slug: '/city/dallas-16', names: ['dallas', 'arlington', 'plano', 'irving'], country: 'US' },
+    { id: 24, slug: '/city/atlanta-24', names: ['atlanta', 'marietta'], country: 'US' },
+    { id: 29, slug: '/city/philadelphia-29', names: ['philadelphia', 'camden'], country: 'US' },
+    { id: 14, slug: '/city/denver-14', names: ['denver', 'aurora', 'boulder'], country: 'US' },
+    { id: 12, slug: '/city/phoenix-12', names: ['phoenix', 'scottsdale', 'mesa', 'tempe'], country: 'US' },
+    { id: 168, slug: '/city/san-diego-168', names: ['san diego', 'chula vista'], country: 'US' },
+    { id: 19, slug: '/city/new-orleans-19', names: ['new orleans', 'metairie'], country: 'US' },
+    { id: 49, slug: '/city/nashville-49', names: ['nashville', 'franklin'], country: 'US' },
+    { id: 58, slug: '/city/austin-58', names: ['austin', 'round rock'], country: 'US' },
+    { id: 265, slug: '/city/tampa-265', names: ['tampa', 'st. petersburg', 'clearwater'], country: 'US' },
+    { id: 10, slug: '/city/portland-10', names: ['portland', 'beaverton'], country: 'US' },
+    { id: 18, slug: '/city/minneapolis-18', names: ['minneapolis', 'st. paul', 'saint paul'], country: 'US' },
+    { id: 25, slug: '/city/detroit-25', names: ['detroit', 'dearborn'], country: 'US' },
+    { id: 17, slug: '/city/san-antonio-17', names: ['san antonio'], country: 'US' },
+    { id: 27, slug: '/city/charlotte-27', names: ['charlotte'], country: 'US' },
+    { id: 103, slug: '/city/calgary-103', names: ['calgary', 'airdrie'], country: 'CA' },
+    { id: 102, slug: '/city/ottawa-102', names: ['ottawa', 'gatineau'], country: 'CA' },
+    { id: 101, slug: '/city/edmonton-101', names: ['edmonton'], country: 'CA' },
+    { id: 285, slug: '/city/quebec-city-285', names: ['quebec', 'québec'], country: 'CA' },
+    { id: 105, slug: '/city/winnipeg-105', names: ['winnipeg'], country: 'CA' },
+    { id: 556, slug: '/city/manchester-556', names: ['manchester', 'salford', 'stockport'], country: 'GB' },
+    { id: 740, slug: '/city/birmingham-740', names: ['birmingham', 'solihull', 'wolverhampton'], country: 'GB' },
+    { id: 422, slug: '/city/glasgow-422', names: ['glasgow', 'paisley'], country: 'GB' },
+    { id: 498, slug: '/city/liverpool-498', names: ['liverpool', 'birkenhead'], country: 'GB' },
+    { id: 745, slug: '/city/leeds-745', names: ['leeds', 'bradford', 'wakefield'], country: 'GB' },
+    { id: 434, slug: '/city/bristol-434', names: ['bristol'], country: 'GB' },
+    { id: 814, slug: '/city/cardiff-814', names: ['cardiff', 'newport'], country: 'GB' },
+    { id: 321, slug: '/city/belfast-321', names: ['belfast'], country: 'GB' },
+    { id: 160, slug: '/city/naples-160', names: ['naples', 'napoli'], country: 'IT' },
+    { id: 271, slug: '/city/turin-271', names: ['turin', 'torino'], country: 'IT' },
+    { id: 302, slug: '/city/bologna-302', names: ['bologna'], country: 'IT' },
+    { id: 303, slug: '/city/verona-303', names: ['verona'], country: 'IT' },
+    { id: 411, slug: '/city/genoa-411', names: ['genoa', 'genova'], country: 'IT' },
+    { id: 306, slug: '/city/palermo-306', names: ['palermo'], country: 'IT' },
+    { id: 314, slug: '/city/valencia-314', names: ['valencia'], country: 'ES' },
+    { id: 214, slug: '/city/malaga-214', names: ['malaga', 'málaga', 'torremolinos'], country: 'ES' },
+    { id: 212, slug: '/city/granada-212', names: ['granada'], country: 'ES' },
+    { id: 315, slug: '/city/bilbao-315', names: ['bilbao'], country: 'ES' },
+    { id: 555, slug: '/city/alicante-555', names: ['alicante', 'benidorm'], country: 'ES' },
+    { id: 401, slug: '/city/zaragoza-401', names: ['zaragoza'], country: 'ES' },
+    { id: 293, slug: '/city/lyon-293', names: ['lyon', 'villeurbanne'], country: 'FR' },
+    { id: 217, slug: '/city/marseille-217', names: ['marseille'], country: 'FR' },
+    { id: 288, slug: '/city/bordeaux-288', names: ['bordeaux'], country: 'FR' },
+    { id: 601, slug: '/city/toulouse-601', names: ['toulouse'], country: 'FR' },
+    { id: 512, slug: '/city/lille-512', names: ['lille', 'roubaix'], country: 'FR' },
+    { id: 513, slug: '/city/montpellier-513', names: ['montpellier'], country: 'FR' },
+    { id: 290, slug: '/city/strasbourg-290', names: ['strasbourg'], country: 'FR' },
+    { id: 583, slug: '/city/nantes-583', names: ['nantes'], country: 'FR' },
+    { id: 291, slug: '/city/cannes-291', names: ['cannes'], country: 'FR' },
+];
+const COUNTRY_FALLBACK = { AE: 132, GB: 2, US: 1, CA: 28, IT: 124, ES: 122, FR: 125 };
+
+async function detectCity() {
+    const response = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(4500) });
+    const geo = await response.json();
+    const cityName = String(geo.city || '').toLowerCase();
+    let match = MARKET_CITIES.find(c => c.names.some(n => cityName.includes(n)));
+    if (!match && COUNTRY_FALLBACK[geo.country_code]) {
+        match = MARKET_CITIES.find(c => c.id === COUNTRY_FALLBACK[geo.country_code]);
+    }
+    return match || null;
+}
+
+document.querySelectorAll('[data-city-detect]').forEach(btn => {
+    const originalText = btn.textContent;
+    btn.addEventListener('click', async () => {
+        btn.disabled = true;
+        btn.textContent = 'Detecting…';
+        try {
+            const match = await detectCity();
+            if (match) {
+                setCityCookie(match.id);
+                window.location.href = match.slug;
+                return;
+            }
+            btn.textContent = 'Not found — pick a city';
+        } catch {
+            btn.textContent = 'Not found — pick a city';
+        }
+        setTimeout(() => { btn.textContent = originalText; btn.disabled = false; }, 2500);
+    });
+});
+
+// First visit: show the city modal until a choice is made
+const cityModal = document.querySelector('[data-city-modal]');
+if (cityModal) {
+    const dismiss = () => {
+        if (!getCityCookie()) setCityCookie(cityModal.getAttribute('data-default-city') || '132');
+        cityModal.hidden = true;
+        document.body.classList.remove('modal-open');
+    };
+    if (!getCityCookie()) {
+        cityModal.hidden = false;
+        document.body.classList.add('modal-open');
+    }
+    cityModal.querySelector('[data-city-close]')?.addEventListener('click', dismiss);
+    cityModal.addEventListener('click', e => {
+        if (e.target === cityModal) dismiss();
+    });
+    cityModal.querySelectorAll('[data-city-id]').forEach(el => {
+        el.addEventListener('click', () => {
+            cityModal.hidden = true;
+            document.body.classList.remove('modal-open');
+        });
+    });
+}
 
 // Hero banner carousel (auto-rotating)
 document.querySelectorAll('[data-carousel]').forEach(carousel => {

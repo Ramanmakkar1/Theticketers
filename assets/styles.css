@@ -1,41 +1,62 @@
 /* ============================================================
-   TicketSouq — BookMyShow-inspired design system
-   White canvas · dark navy chrome · #f84464 red accent
-   Portrait poster cards with rating strips · banner carousel
+   TickedBus — premium editorial design system
+   Warm-white canvas · indigo accent · Fraunces display + Inter
+   Image-forward cards · generous whitespace · soft shadows
    ============================================================ */
 
 :root {
     /* Color */
-    --ink: #333333;
-    --ink-strong: #1f2533;
-    --muted: #999999;
-    --muted-dark: #666666;
-    --line: #e8e8e8;
+    --ink: #17171f;
+    --ink-strong: #0c0c14;
+    --ink-soft: #41414c;
+    --muted: #76767f;          /* AA-safe muted text */
+    --muted-dark: #56565f;
+    --line: #ececed;
+    --line-soft: #f3f3f4;
     --paper: #ffffff;
-    --bg: #ffffff;
-    --bg-gray: #f5f5f5;
-    --navy: #222539;
-    --navy-soft: #2b3148;
-    --footer-gray: #333338;
-    --red: #f84464;
-    --red-dark: #d63a56;
-    --red-grad: linear-gradient(94deg, #ff6a8a 0%, #f84464 50%, #e8405e 100%);
-    --amber: #ffb43a;
+    --bg: #faf9f7;             /* warm off-white canvas */
+    --bg-gray: #f4f3f0;
+    --bg-tint: #eef0fe;        /* soft indigo wash */
+
+    --accent: #4f46e5;         /* indigo */
+    --accent-dark: #4338ca;
+    --accent-soft: #eef0ff;
+    --accent-ink: #312e81;
+    --gold: #e0a112;           /* rating stars */
+
+    --ink-deep: #14141c;       /* footer / deep sections */
+    --ink-deep-soft: #20202c;
+
+    /* Legacy aliases — keep old rules working, recolored to the new palette */
+    --navy: var(--ink-deep);
+    --navy-soft: var(--ink-deep-soft);
+    --footer-gray: var(--ink-deep);
+    --red: var(--accent);
+    --red-dark: var(--accent-dark);
+    --red-grad: linear-gradient(94deg, #6366f1 0%, #4f46e5 100%);
+    --amber: var(--gold);
     --teal: #0e8b8b;
+    --green: #15803d;
 
-    /* Elevation */
-    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.06);
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 8px 22px rgba(0, 0, 0, 0.16);
-    --shadow-lg: 0 18px 44px rgba(0, 0, 0, 0.24);
+    /* Elevation — soft & diffuse */
+    --shadow-xs: 0 1px 2px rgba(20, 20, 45, 0.05);
+    --shadow-sm: 0 6px 20px rgba(20, 20, 45, 0.07);
+    --shadow-md: 0 14px 38px rgba(20, 20, 45, 0.11);
+    --shadow-lg: 0 28px 64px rgba(20, 20, 45, 0.17);
 
-    /* Shape */
-    --r-sm: 6px;
-    --r-md: 10px;
-    --r-lg: 14px;
+    /* Shape — softer, more generous */
+    --r-sm: 8px;
+    --r-md: 14px;
+    --r-lg: 20px;
+    --r-xl: 28px;
     --r-full: 9999px;
 
-    --font-body: 'Roboto', 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    /* Rhythm */
+    --section-pad: 40px;
+    --sticky-offset: 96px;
+
+    --font-body: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
 }
 
 * { box-sizing: border-box; }
@@ -47,10 +68,18 @@ body {
     background: var(--bg);
     color: var(--ink);
     font-family: var(--font-body);
-    font-size: 15px;
-    line-height: 1.5;
+    font-size: 15.5px;
+    line-height: 1.6;
+    letter-spacing: -0.003em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+/* Editorial display serif for page & section headings (card titles stay sans). */
+h1, h2 {
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
+    font-optical-sizing: auto;
 }
 
 a {
@@ -77,6 +106,30 @@ button { font-family: var(--font-body); }
     text-transform: uppercase;
     color: var(--red);
 }
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.prose {
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+.city-guide-link { margin: 14px 0 0; font-size: 0.88rem; }
+
+.city-guide-link a { color: var(--red); font-weight: 600; }
+
+.city-guide-link a:hover { color: var(--red-dark); }
 
 /* ============ Top header (white tier) ============ */
 
@@ -110,10 +163,10 @@ button { font-family: var(--font-body); }
 }
 
 .brand svg {
-    width: 32px !important;
-    height: 32px !important;
+    width: 32px;
+    height: 32px;
     padding: 6px;
-    border-radius: 8px;
+    border-radius: var(--r-sm);
     background: var(--red-grad);
     color: #ffffff;
 }
@@ -204,6 +257,183 @@ button { font-family: var(--font-body); }
     transform: rotate(45deg) translateY(-2px);
 }
 
+/* City picker dropdown */
+.city-picker { position: relative; }
+
+.city-picker .header-city {
+    background: transparent;
+    border: none;
+    font-family: inherit;
+    padding: 0;
+}
+
+.city-menu {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    width: 232px;
+    padding: 8px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    box-shadow: var(--shadow-lg);
+    display: none;
+    z-index: 200;
+}
+
+.city-picker.open .city-menu { display: block; }
+
+.city-menu a,
+.city-menu .city-detect {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 9px 10px;
+    border: none;
+    border-radius: var(--r-sm);
+    background: transparent;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--ink);
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.12s ease;
+}
+
+.city-menu a:hover { background: #fff0f3; color: var(--red); }
+
+.city-menu a span {
+    color: var(--muted);
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+.city-menu .city-detect {
+    color: var(--red);
+    font-weight: 600;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+    margin-bottom: 6px;
+    padding-bottom: 12px;
+}
+
+.city-menu .city-detect:hover { background: #fff0f3; }
+
+/* First-visit city modal */
+body.modal-open { overflow: hidden; }
+
+.city-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(15, 18, 32, 0.62);
+    backdrop-filter: blur(3px);
+}
+
+.city-modal[hidden] { display: none; }
+
+.city-modal-box {
+    width: min(560px, 100%);
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    padding: clamp(22px, 4vw, 32px);
+    background: var(--paper);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+}
+
+.city-modal-box h3 {
+    margin: 0 0 6px;
+    font-size: 1.3rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--ink-strong);
+}
+
+.city-modal-box > p {
+    margin: 0 0 18px;
+    color: var(--muted-dark);
+    font-size: 0.88rem;
+}
+
+.city-detect-big {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    height: 44px;
+    margin-bottom: 16px;
+    border: 1.5px solid var(--red);
+    border-radius: var(--r-md);
+    background: transparent;
+    color: var(--red);
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.city-detect-big:hover { background: var(--red); color: #ffffff; }
+
+.city-detect-big svg { width: 17px; height: 17px; flex: none; }
+
+.city-modal-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.city-modal-grid a {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: 12px 8px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    transition: all 0.15s ease;
+}
+
+.city-modal-grid a:hover { border-color: var(--red); box-shadow: var(--shadow-sm); }
+
+.city-modal-grid strong {
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: var(--ink-strong);
+}
+
+.city-modal-grid a:hover strong { color: var(--red); }
+
+.city-modal-grid span {
+    font-size: 0.66rem;
+    color: var(--muted);
+}
+
+.city-modal-close {
+    margin-top: 16px;
+    min-height: 44px;
+    padding: 10px 18px;
+    display: inline-flex;
+    align-items: center;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 0.84rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.city-modal-close:hover { color: var(--ink); }
+
 .header-cta {
     display: inline-flex;
     align-items: center;
@@ -211,7 +441,7 @@ button { font-family: var(--font-body); }
     height: 32px;
     padding: 0 16px;
     background: var(--red);
-    color: #fff !important;
+    color: #fff;
     border-radius: var(--r-sm);
     font-size: 0.82rem;
     font-weight: 500;
@@ -244,7 +474,10 @@ button { font-family: var(--font-body); }
     position: sticky;
     top: 64px;
     z-index: 99;
-    background: var(--navy);
+    background: rgba(255, 255, 255, 0.85);
+    -webkit-backdrop-filter: saturate(1.4) blur(10px);
+    backdrop-filter: saturate(1.4) blur(10px);
+    border-bottom: 1px solid var(--line);
 }
 
 .site-subnav .container {
@@ -252,13 +485,13 @@ button { font-family: var(--font-body); }
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    min-height: 38px;
+    min-height: 46px;
 }
 
 .site-nav {
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: 4px;
     overflow-x: auto;
     scrollbar-width: none;
 }
@@ -266,16 +499,28 @@ button { font-family: var(--font-body); }
 .site-nav::-webkit-scrollbar { display: none; }
 
 .site-nav a {
-    padding: 9px 11px;
-    color: #ffffff;
-    font-weight: 400;
-    font-size: 0.86rem;
+    position: relative;
+    padding: 12px 12px;
+    color: var(--ink-soft);
+    font-weight: 500;
+    font-size: 0.88rem;
     white-space: nowrap;
 }
 
-.site-nav a:hover { color: #d2d4dd; }
+.site-nav a:hover { color: var(--accent); }
 
-.site-nav a.active { color: var(--red); font-weight: 500; }
+.site-nav a.active { color: var(--accent); }
+
+.site-nav a.active::after {
+    content: "";
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 6px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--accent);
+}
 
 .subnav-side {
     display: flex;
@@ -285,12 +530,13 @@ button { font-family: var(--font-body); }
 
 .subnav-side a {
     padding: 9px 10px;
-    color: #d2d4dd;
-    font-size: 0.78rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 500;
     white-space: nowrap;
 }
 
-.subnav-side a:hover { color: #ffffff; }
+.subnav-side a:hover { color: var(--ink); }
 
 /* ============ Banner carousel hero ============ */
 
@@ -314,8 +560,8 @@ button { font-family: var(--font-body); }
 .carousel-slide {
     position: relative;
     flex: 0 0 100%;
-    aspect-ratio: 1226 / 300;
-    min-height: 220px;
+    aspect-ratio: 21 / 8;
+    min-height: 280px;
     background-size: cover;
     background-position: center;
     display: flex;
@@ -417,7 +663,9 @@ button { font-family: var(--font-body); }
 .carousel-dots button {
     width: 8px;
     height: 8px;
-    padding: 0;
+    box-sizing: content-box;
+    padding: 8px;
+    background-clip: content-box;
     border: none;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.45);
@@ -433,13 +681,12 @@ button { font-family: var(--font-body); }
 
 /* ============ Quick filter chips ============ */
 
-.section-band { padding: 26px 0; background: var(--bg); }
+.section-band { padding: var(--section-pad) 0; background: var(--bg); }
 
 .section-band.muted { background: var(--bg-gray); }
 
 .section-band.compact {
     padding: 12px 0;
-    border-bottom: 1px solid var(--line);
 }
 
 .filter-row {
@@ -487,16 +734,16 @@ button { font-family: var(--font-body); }
 
 .section-heading {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
     gap: 16px;
-    margin-bottom: 14px;
+    margin-bottom: 20px;
 }
 
 .section-heading h2 {
-    font-size: clamp(1.25rem, 2.2vw, 1.5rem);
-    font-weight: 700;
-    letter-spacing: -0.01em;
+    font-size: clamp(1.45rem, 2.6vw, 1.95rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
     color: var(--ink-strong);
     margin: 0;
 }
@@ -534,7 +781,7 @@ button { font-family: var(--font-body); }
 
 .section-band.dark .card-body p { color: #a2a7b8; }
 
-.section-band.dark .card-onwards { color: #c5c9d6 !important; }
+.section-band.dark .card-onwards { color: #c5c9d6; }
 
 /* ============ Rails & grids ============ */
 
@@ -591,7 +838,7 @@ button { font-family: var(--font-body); }
 .rail-btn svg { width: 15px; height: 15px; }
 
 @media (max-width: 980px) {
-    .rail-btn { display: none !important; }
+    .rail-btn { display: none; }
 }
 
 /* ============ Poster cards (BMS style) ============ */
@@ -610,10 +857,10 @@ button { font-family: var(--font-body); }
 
 .card-image {
     position: relative;
-    aspect-ratio: 2 / 3;
+    aspect-ratio: 4 / 5;
     overflow: hidden;
-    border-radius: var(--r-md);
-    background-color: #e5e5e5;
+    border-radius: var(--r-lg);
+    background-color: var(--bg-gray);
     box-shadow: var(--shadow-sm);
 }
 
@@ -621,60 +868,66 @@ button { font-family: var(--font-body); }
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s ease;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.ticket-card:hover .card-image img { transform: scale(1.04); }
+.ticket-card:hover .card-image img { transform: scale(1.05); }
 
-/* Black rating strip pinned to poster bottom (BMS signature) */
+/* Frosted rating pill — bottom-left of the image */
 .card-rating-strip {
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    left: 10px;
+    bottom: 10px;
     z-index: 10;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 7px 10px;
-    background: rgba(10, 11, 17, 0.92);
-    color: #ffffff;
-    font-size: 0.8rem;
-    font-weight: 500;
-    border-radius: 0 0 var(--r-md) var(--r-md);
+    gap: 5px;
+    padding: 5px 10px;
+    background: rgba(255, 255, 255, 0.92);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    color: var(--ink-strong);
+    font-size: 0.78rem;
+    font-weight: 600;
+    border-radius: var(--r-full);
+    box-shadow: var(--shadow-xs);
 }
 
 .card-rating-strip svg {
-    width: 13px;
-    height: 13px;
-    fill: var(--red);
+    width: 12px;
+    height: 12px;
+    fill: var(--gold);
     flex: none;
 }
 
 .card-rating-strip .votes {
-    color: #b9bdc9;
-    font-size: 0.74rem;
-    margin-left: auto;
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 500;
+    margin-left: 3px;
 }
 
-/* Date badge — top-left chip on poster */
+/* Date badge — top-left frosted chip */
 .card-date-badge {
     position: absolute;
     top: 10px;
     left: 10px;
     z-index: 10;
-    min-width: 42px;
-    padding: 5px 8px;
-    background: rgba(10, 11, 17, 0.8);
+    min-width: 44px;
+    padding: 6px 8px;
+    background: rgba(255, 255, 255, 0.95);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
     border-radius: var(--r-sm);
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    box-shadow: var(--shadow-xs);
 }
 
 .card-date-badge .month {
-    color: var(--red);
+    color: var(--accent);
     font-size: 0.6rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -683,9 +936,9 @@ button { font-family: var(--font-body); }
 }
 
 .card-date-badge .day {
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--ink-strong);
     line-height: 1.15;
 }
 
@@ -694,51 +947,59 @@ button { font-family: var(--font-body); }
     top: 10px;
     right: 10px;
     z-index: 10;
-    padding: 4px 9px;
-    border-radius: var(--r-sm);
-    background: rgba(10, 11, 17, 0.8);
-    color: #fff;
-    font-size: 0.66rem;
+    padding: 5px 10px;
+    border-radius: var(--r-full);
+    background: rgba(255, 255, 255, 0.92);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    color: var(--ink-soft);
+    font-size: 0.68rem;
     font-weight: 600;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.01em;
+    box-shadow: var(--shadow-xs);
 }
 
 .card-body {
-    padding: 10px 2px 2px;
+    padding: 13px 2px 2px;
     display: flex;
     flex-direction: column;
     flex: 1;
 }
 
 .card-title {
-    font-size: 0.98rem;
+    font-size: 1rem;
     font-weight: 600;
-    line-height: 1.3;
+    line-height: 1.32;
+    letter-spacing: -0.01em;
     color: var(--ink-strong);
-    margin-bottom: 3px;
+    margin-bottom: 4px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    transition: color 0.15s ease;
 }
 
-.ticket-card:hover .card-title { color: var(--red); }
+.ticket-card:hover .card-title { color: var(--accent); }
 
 .card-body p {
     margin: 0 0 2px;
-    color: var(--muted-dark);
-    font-size: 0.8rem;
-    line-height: 1.4;
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.45;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.card-onwards {
-    margin-top: 4px !important;
-    color: var(--ink) !important;
-    font-weight: 500;
+/* .card-body p (0,1,1) would beat a lone class, so scope under .card-body. */
+.card-body .card-onwards {
+    margin-top: 6px;
+    color: var(--ink-strong);
+    font-weight: 600;
 }
+
+.card-body .card-onwards::first-line { color: var(--ink-strong); }
 
 /* ============ City & category grids ============ */
 
@@ -892,40 +1153,26 @@ button { font-family: var(--font-body); }
 
 .detail-hero {
     position: relative;
-    padding: clamp(28px, 4vw, 48px) 0;
-    background: var(--navy);
-    color: #fff;
+    padding: clamp(26px, 4vw, 40px) 0 0;
+    background: var(--paper);
+    color: var(--ink);
     overflow: hidden;
 }
 
-.detail-hero::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: var(--detail-image);
-    background-size: cover;
-    background-position: center;
-    filter: blur(34px) brightness(0.3) saturate(1.1);
-    transform: scale(1.2);
-}
-
-.detail-hero::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, rgba(26, 29, 41, 0.95) 0%, rgba(26, 29, 41, 0.65) 55%, rgba(26, 29, 41, 0.35) 100%);
-}
+.detail-hero::before,
+.detail-hero::after { content: none; display: none; }
 
 .detail-hero > .container { position: relative; z-index: 10; }
 
-.detail-header .eyebrow { color: #ff8aa1; }
+.detail-header .eyebrow { color: var(--accent); }
 
 .detail-header h1 {
-    font-size: clamp(1.7rem, 3.6vw, 2.5rem);
-    line-height: 1.12;
-    font-weight: 800;
-    letter-spacing: -0.015em;
+    font-size: clamp(1.9rem, 3.8vw, 2.8rem);
+    line-height: 1.1;
+    font-weight: 600;
+    letter-spacing: -0.02em;
     margin: 0 0 12px;
+    color: var(--ink-strong);
 }
 
 .detail-facts {
@@ -939,12 +1186,13 @@ button { font-family: var(--font-body); }
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 6px 13px;
-    border-radius: var(--r-sm);
-    background: rgba(255, 255, 255, 0.12);
+    padding: 7px 14px;
+    border-radius: var(--r-full);
+    background: var(--bg-gray);
+    border: 1px solid var(--line);
     font-size: 0.82rem;
     font-weight: 500;
-    color: #fff;
+    color: var(--ink-soft);
 }
 
 .detail-gallery {
@@ -971,7 +1219,7 @@ button { font-family: var(--font-body); }
     padding: 24px;
     box-shadow: var(--shadow-lg);
     position: sticky;
-    top: 118px;
+    top: var(--sticky-offset);
     color: var(--ink);
 }
 
@@ -1086,7 +1334,7 @@ button { font-family: var(--font-body); }
 
 /* ============ Promo gradient banner (BMS stream-strip style) ============ */
 
-.promo-band { padding: 6px 0 26px; background: var(--bg); }
+.promo-band { padding: var(--section-pad) 0; background: var(--bg); }
 
 .promo-banner {
     position: relative;
@@ -1095,11 +1343,11 @@ button { font-family: var(--font-body); }
     align-items: center;
     justify-content: space-between;
     gap: 28px;
-    padding: clamp(26px, 4vw, 42px) clamp(24px, 5vw, 56px);
-    border-radius: var(--r-md);
-    background: linear-gradient(108deg, #1c1130 0%, #3c1a55 48%, #7a1f49 100%);
+    padding: clamp(30px, 4vw, 52px) clamp(26px, 5vw, 60px);
+    border-radius: var(--r-xl);
+    background: linear-gradient(118deg, #312e81 0%, #4338ca 52%, #4f46e5 100%);
     color: #ffffff;
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-md);
 }
 
 .promo-banner::before,
@@ -1111,39 +1359,39 @@ button { font-family: var(--font-body); }
 }
 
 .promo-banner::before {
-    width: 340px;
-    height: 340px;
+    width: 360px;
+    height: 360px;
     right: -90px;
-    top: -160px;
-    background: radial-gradient(circle, rgba(248, 68, 100, 0.35), transparent 70%);
+    top: -170px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.16), transparent 70%);
 }
 
 .promo-banner::after {
-    width: 260px;
-    height: 260px;
-    right: 140px;
-    bottom: -170px;
-    background: radial-gradient(circle, rgba(123, 47, 247, 0.4), transparent 70%);
+    width: 280px;
+    height: 280px;
+    right: 160px;
+    bottom: -180px;
+    background: radial-gradient(circle, rgba(129, 140, 248, 0.45), transparent 70%);
 }
 
 .promo-copy { position: relative; z-index: 5; max-width: 640px; }
 
 .promo-copy .promo-kicker {
     display: inline-block;
-    margin: 0 0 8px;
+    margin: 0 0 10px;
     font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #ff8aa1;
+    color: #c7d2fe;
 }
 
 .promo-copy h2 {
-    margin: 0 0 8px;
-    font-size: clamp(1.3rem, 2.8vw, 1.9rem);
-    font-weight: 800;
-    letter-spacing: -0.01em;
-    line-height: 1.15;
+    margin: 0 0 10px;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
 }
 
 .promo-copy p {
@@ -1163,7 +1411,7 @@ button { font-family: var(--font-body); }
     padding: 0 26px;
     border-radius: var(--r-sm);
     background: #ffffff;
-    color: var(--navy) !important;
+    color: var(--navy);
     font-weight: 700;
     font-size: 0.9rem;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
@@ -1177,71 +1425,150 @@ button { font-family: var(--font-body); }
 /* ============ Best of Live Events (arch category cards) ============ */
 
 .live-band {
-    padding: 32px 0 38px;
-    background: var(--navy);
-    background-image: radial-gradient(900px 300px at 18% -30%, rgba(123, 47, 247, 0.25), transparent 70%),
-        radial-gradient(900px 300px at 85% 130%, rgba(248, 68, 100, 0.18), transparent 70%);
+    padding: var(--section-pad) 0;
+    background: var(--bg);
 }
-
-.live-band .section-heading h2 { color: #ffffff; }
 
 .arch-grid {
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 18px;
+    gap: 16px;
 }
 
 .arch-card {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    gap: 12px;
     text-align: center;
-    aspect-ratio: 3 / 4;
-    padding: clamp(18px, 2.4vw, 30px) 14px 20px;
-    border-radius: 999px 999px var(--r-lg) var(--r-lg);
-    color: #ffffff;
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease;
+    padding: 26px 16px;
+    border-radius: var(--r-lg);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease, border-color 0.2s ease;
 }
 
 .arch-card:hover {
-    transform: translateY(-6px);
+    transform: translateY(-5px);
     box-shadow: var(--shadow-md);
+    border-color: transparent;
 }
 
 .arch-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: clamp(52px, 5vw, 68px);
-    height: clamp(52px, 5vw, 68px);
-    margin: auto 0;
+    width: 56px;
+    height: 56px;
+    margin: 0;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.18);
-    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 1.6rem;
     line-height: 1;
 }
 
+.arch-icon svg {
+    width: 46%;
+    height: 46%;
+}
+
 .arch-card strong {
-    margin-top: auto;
-    font-size: clamp(0.86rem, 1.4vw, 1.02rem);
-    font-weight: 700;
+    margin-top: 0;
+    font-size: 0.98rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
     line-height: 1.25;
+    color: var(--ink-strong);
 }
 
 .arch-card span {
-    margin-top: 4px;
-    font-size: 0.72rem;
+    margin-top: 2px;
+    font-size: 0.76rem;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--muted);
 }
 
-.arch-purple { background: linear-gradient(165deg, #7b2ff7 0%, #b04ae8 100%); }
-.arch-teal { background: linear-gradient(165deg, #0e8b8b 0%, #19b8a6 100%); }
-.arch-orange { background: linear-gradient(165deg, #f0552b 0%, #f8902b 100%); }
-.arch-amber { background: linear-gradient(165deg, #c98a2b 0%, #e8b04a 100%); }
-.arch-blue { background: linear-gradient(165deg, #2b6ff0 0%, #4aa3f8 100%); }
-.arch-rose { background: linear-gradient(165deg, #d63a56 0%, #f8688a 100%); }
+/* Per-category icon tint (cards stay light & calm) */
+.arch-purple .arch-icon { background: #efe9ff; color: #6d28d9; }
+.arch-teal   .arch-icon { background: #ddf3ef; color: #0d9488; }
+.arch-orange .arch-icon { background: #fdeae0; color: #ea580c; }
+.arch-amber  .arch-icon { background: #fbf0d9; color: #b45309; }
+.arch-blue   .arch-icon { background: #e6efff; color: #2563eb; }
+.arch-rose   .arch-icon { background: #fde8ee; color: #e11d48; }
+
+/* ============ Category tiles (image-backed, editorial) ============ */
+
+.cat-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.cat-tile {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    min-height: 210px;
+    padding: 18px;
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    text-decoration: none;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.24s ease;
+}
+
+.cat-tile::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(18, 18, 28, 0.04) 0%, rgba(18, 18, 28, 0.32) 48%, rgba(18, 18, 28, 0.82) 100%);
+}
+
+.cat-tile:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+
+.cat-tile img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cat-tile:hover img { transform: scale(1.05); }
+
+.cat-tile__body { position: relative; z-index: 2; }
+
+.cat-tile__title {
+    display: block;
+    font-size: 1.08rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+}
+
+.cat-tile__sub {
+    display: block;
+    font-size: 0.76rem;
+    font-weight: 500;
+    opacity: 0.9;
+    margin-top: 3px;
+}
+
+@media (max-width: 980px) {
+    .cat-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+    .cat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .cat-tile { min-height: 150px; padding: 14px; }
+}
 
 /* ============ Empty state ============ */
 
@@ -1349,7 +1676,7 @@ button { font-family: var(--font-body); }
     padding: 0 18px;
     border-radius: var(--r-sm);
     background: var(--red);
-    color: #ffffff !important;
+    color: #ffffff;
     font-size: 0.8rem;
     font-weight: 600;
     transition: background-color 0.15s ease;
@@ -1444,30 +1771,6 @@ button { font-family: var(--font-body); }
     color: #ffffff;
 }
 
-.footer-social {
-    display: flex;
-    gap: 12px;
-}
-
-.footer-social a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: #404043;
-    color: #c2c2c2;
-    transition: all 0.15s ease;
-}
-
-.footer-social a:hover {
-    background: var(--red);
-    color: #ffffff;
-}
-
-.footer-social svg { width: 16px; height: 16px; }
-
 .footer-bottom p {
     margin: 0;
     color: #888888;
@@ -1488,9 +1791,12 @@ button { font-family: var(--font-body); }
 
     .header-search { max-width: none; }
 
-    .header-actions .header-city { display: none; }
+    /* Keep the city picker tappable at all widths; hide the CTA to make room. */
+    .header-cta { display: none; }
 
     .site-subnav { top: 58px; }
+
+    .subnav-side { display: none; }
 
     .card-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1509,15 +1815,27 @@ button { font-family: var(--font-body); }
 
     .arch-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
 
-    .footer-cols { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .footer-cols { gap: 18px; }
 }
 
 @media (max-width: 640px) {
+    :root { --section-pad: 20px; }
+
     .container { width: min(100% - 28px, 1240px); }
 
     .header-search { display: none; }
 
-    .header-cta { display: none; }
+    .header-search.is-open {
+        display: flex;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        padding: 10px 16px;
+        background: #fff;
+        box-shadow: var(--shadow-sm);
+        z-index: 60;
+    }
 
     .nav-toggle { display: block; }
 
@@ -1551,6 +1869,8 @@ button { font-family: var(--font-body); }
 
     .arch-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
+    .city-modal-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
     .promo-banner { flex-direction: column; align-items: flex-start; gap: 18px; }
 
     .footer-care {
@@ -1563,7 +1883,1029 @@ button { font-family: var(--font-body); }
     .footer-cols { grid-template-columns: 1fr; gap: 22px; text-align: center; }
 }
 
-/* Mobile slide-down nav from hamburger */
+/* ============================================================
+   Dubai & Abu Dhabi SEO pages
+   ============================================================ */
+
+/* Breadcrumbs */
+.dubai-breadcrumb ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px;
+    font-size: 0.8rem;
+}
+
+.dubai-breadcrumb a {
+    color: rgba(255, 255, 255, .8);
+    text-decoration: none;
+}
+
+.dubai-breadcrumb a:hover { color: #fff; }
+
+.dubai-breadcrumb span[aria-hidden] {
+    color: rgba(255, 255, 255, .4);
+    margin: 0 2px;
+}
+
+.dubai-breadcrumb span[aria-current] {
+    color: rgba(255, 255, 255, .6);
+}
+
+/* Dark-background breadcrumbs override for light pages */
+.dubai-category__hero .dubai-breadcrumb a,
+.dubai-hub__hero .dubai-breadcrumb a,
+.destination-hub__hero .dubai-breadcrumb a,
+.destination-city__hero .dubai-breadcrumb a { color: rgba(255, 255, 255, .85); }
+
+/* ---- Dubai & destination hub pages (shared) ---- */
+
+.dubai-hub__hero,
+.destination-hub__hero {
+    background-size: cover;
+    background-position: center;
+    padding: 80px 0 60px;
+    color: #fff;
+    text-align: center;
+}
+
+.dubai-hub__hero h1,
+.destination-hub__hero h1 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    margin: 0 0 12px;
+    letter-spacing: -.02em;
+}
+
+.dubai-hub__hero-sub,
+.destination-hub__hero-sub {
+    font-size: 1.05rem;
+    opacity: .85;
+    margin: 0 0 28px;
+}
+
+.dubai-hub__search,
+.destination-hub__search {
+    display: flex;
+    max-width: 540px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: var(--r-full);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.dubai-hub__search input,
+.destination-hub__search input {
+    flex: 1;
+    border: none;
+    padding: 14px 20px;
+    font-size: 0.95rem;
+    color: var(--ink);
+    outline: none;
+}
+
+.dubai-hub__search button,
+.destination-hub__search button {
+    background: var(--red);
+    color: #fff;
+    border: none;
+    padding: 0 28px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 0.86rem;
+}
+
+.dubai-hub__search button:hover,
+.destination-hub__search button:hover { background: var(--red-dark); }
+
+/* Stats row */
+.dubai-hub__stats,
+.dubai-hub__stats,
+.destination-hub__stats {
+    background: var(--paper);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 26px 0;
+}
+
+.dubai-hub__stats-grid,
+.destination-hub__stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    text-align: center;
+    color: var(--ink);
+}
+
+.dubai-hub__stat strong,
+.destination-hub__stat strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.85rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+}
+
+.dubai-hub__stat span,
+.destination-hub__stat span {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--muted);
+}
+
+/* Category grid */
+.dubai-hub__category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.dubai-hub__category-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 24px 16px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    text-decoration: none;
+    color: var(--ink);
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+    text-align: center;
+}
+
+.dubai-hub__category-card:hover {
+    border-color: var(--red);
+    box-shadow: var(--shadow-sm);
+}
+
+
+.dubai-hub__category-icon {
+    width: 36px;
+    height: 36px;
+    color: var(--red);
+}
+
+.dubai-hub__category-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.dubai-hub__category-title {
+    font-size: 0.86rem;
+    font-weight: 700;
+}
+
+.dubai-hub__category-sub {
+    font-size: 0.74rem;
+    color: var(--muted);
+}
+
+.dubai-hub__category-count {
+    font-size: 0.7rem;
+    background: var(--bg-gray);
+    padding: 2px 10px;
+    border-radius: var(--r-full);
+    color: var(--muted-dark);
+}
+
+/* Trust grid */
+.dubai-hub__trust-grid,
+.destination-hub__trust-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+}
+
+.dubai-hub__trust-card,
+.destination-hub__trust-card {
+    text-align: center;
+    padding: 28px 20px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+}
+
+.dubai-hub__trust-card svg,
+.destination-hub__trust-card svg {
+    width: 32px;
+    height: 32px;
+    color: var(--red);
+    margin-bottom: 12px;
+}
+
+.dubai-hub__trust-card h3,
+.destination-hub__trust-card h3 {
+    font-size: 0.95rem;
+    margin: 0 0 8px;
+}
+
+.dubai-hub__trust-card p,
+.destination-hub__trust-card p {
+    font-size: 0.8rem;
+    color: var(--muted-dark);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Guide + intro prose */
+.dubai-hub__guide-content,
+.dubai-category__intro-content,
+.destination-hub__guide-content,
+.destination-city__intro-content {
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+.dubai-hub__guide-content h2,
+.destination-hub__guide-content h2 {
+    margin-bottom: 20px;
+}
+
+.dubai-hub__guide-content p,
+.dubai-category__intro-content p,
+.destination-hub__guide-content p,
+.destination-city__intro-content p {
+    line-height: 1.75;
+    color: var(--ink);
+    margin-bottom: 16px;
+    font-size: 0.95rem;
+}
+
+/* Link grid */
+.dubai-hub__link-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.dubai-hub__link-card {
+    display: block;
+    padding: 16px 20px;
+    background: var(--bg-gray);
+    border-radius: var(--r-sm);
+    text-decoration: none;
+    color: var(--ink);
+    transition: background 0.15s ease;
+}
+
+.dubai-hub__link-card:hover { background: var(--line); }
+
+.dubai-hub__link-card strong {
+    display: block;
+    font-size: 0.86rem;
+    margin-bottom: 4px;
+}
+
+.dubai-hub__link-card span {
+    font-size: 0.74rem;
+    color: var(--muted);
+}
+
+/* ---- Dubai category & destination city pages (shared) ---- */
+
+.dubai-category__hero,
+.destination-city__hero {
+    background-size: cover;
+    background-position: center;
+    padding: 70px 0 50px;
+    color: #fff;
+}
+
+.dubai-category__hero h1,
+.destination-city__hero h1 {
+    font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+    font-weight: 800;
+    margin: 0 0 12px;
+}
+
+.dubai-category__intro {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 40px 0;
+}
+
+.dubai-category__intro h2 {
+    font-size: 1.4rem;
+    margin: 28px 0 12px;
+}
+
+.dubai-category__intro p {
+    line-height: 1.75;
+    color: var(--ink);
+    font-size: 0.95rem;
+    margin-bottom: 14px;
+}
+
+/* Hero subtitle */
+.dubai-category__hero-sub,
+.destination-city__hero-sub {
+    font-size: 1rem;
+    opacity: .85;
+    max-width: 600px;
+    margin: 4px 0 0;
+}
+
+/* Highlights */
+.dubai-category__highlights-list,
+.destination-city__highlights-list {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+}
+
+.dubai-category__highlights-list li,
+.destination-city__highlights-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 18px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    font-size: 0.86rem;
+    line-height: 1.5;
+}
+
+.dubai-category__highlights-list li svg,
+.destination-city__highlights-list li svg {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    color: var(--green);
+    margin-top: 2px;
+}
+
+/* Tips */
+.dubai-category__tips-grid,
+.destination-city__tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+    margin: 16px 0 0;
+}
+
+.dubai-category__tip,
+.destination-city__tip {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 18px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+}
+
+.dubai-category__tip svg,
+.destination-city__tip svg {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    color: var(--red);
+    margin-top: 1px;
+}
+
+.dubai-category__tip p,
+.destination-city__tip p {
+    font-size: 0.86rem;
+    line-height: 1.6;
+    color: var(--ink);
+    margin: 0;
+}
+
+/* Category CTA box */
+.dubai-category__cta-box {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.dubai-category__cta-box h2 {
+    font-size: 1.4rem;
+    margin: 0 0 12px;
+}
+
+.dubai-category__cta-box p {
+    color: var(--muted-dark);
+    margin: 0 0 24px;
+    font-size: 0.95rem;
+}
+
+/* ---- FAQ ---- */
+
+.dubai-faq {
+    padding: 40px 0;
+}
+
+.dubai-faq h2 {
+    max-width: 780px;
+    margin: 0 auto 24px;
+}
+
+.dubai-faq__list {
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+.dubai-faq__item {
+    border-bottom: 1px solid var(--line);
+}
+
+.dubai-faq__item summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 16px 0;
+    list-style: none;
+}
+
+.dubai-faq__item summary::-webkit-details-marker { display: none; }
+
+.dubai-faq__item summary h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: 0;
+    flex: 1;
+}
+
+.dubai-faq__item summary svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: var(--muted);
+    transition: transform 0.15s ease;
+}
+
+.dubai-faq__item[open] summary svg {
+    transform: rotate(180deg);
+}
+
+.dubai-faq__item p {
+    padding: 0 0 16px;
+    font-size: 0.86rem;
+    line-height: 1.7;
+    color: var(--muted-dark);
+    margin: 0;
+}
+
+/* ---- Attraction Detail Page ---- */
+
+.attraction-detail__hero {
+    background-size: cover;
+    background-position: center;
+    padding: 70px 0 50px;
+    color: #fff;
+}
+
+.attraction-detail__hero h1 {
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-weight: 800;
+    margin: 0 0 12px;
+}
+
+.attraction-detail__hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    font-size: 0.86rem;
+    margin-top: 8px;
+}
+
+.attraction-detail__price-badge {
+    background: var(--red);
+    padding: 6px 16px;
+    border-radius: var(--r-full);
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.dubai-rating__count {
+    font-weight: 400;
+    opacity: .7;
+    font-size: 0.8rem;
+}
+
+/* Gallery */
+.attraction-detail__gallery-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 200px 200px;
+    gap: 6px;
+    border-radius: var(--r-md);
+    overflow: hidden;
+}
+
+.attraction-detail__gallery-main {
+    grid-row: 1 / -1;
+}
+
+.attraction-detail__gallery-main img,
+.attraction-detail__gallery-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Two-column layout */
+.attraction-detail__grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 32px;
+}
+
+/* Section spacing within content */
+.attraction-detail__section {
+    margin-bottom: 36px;
+}
+
+.attraction-detail__section:last-child {
+    margin-bottom: 0;
+}
+
+/* Expect list */
+.attraction-detail__expect-list {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 0;
+}
+
+.attraction-detail__expect-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 0.86rem;
+    line-height: 1.6;
+}
+
+.attraction-detail__expect-list li svg {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    color: var(--green);
+    margin-top: 2px;
+}
+
+/* Variant cards */
+.attraction-detail__variants {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.attraction-detail__variant-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+}
+
+.attraction-detail__variant-card strong a {
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 0.86rem;
+}
+
+.attraction-detail__variant-card strong a:hover { color: var(--red); }
+
+.attraction-detail__variant-card span {
+    font-size: 0.8rem;
+    color: var(--muted);
+}
+
+.attraction-detail__variant-action {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    white-space: nowrap;
+}
+
+.attraction-detail__variant-action span {
+    font-weight: 700;
+    color: var(--ink);
+}
+
+/* Cancel badge */
+.attraction-detail__cancel-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.74rem;
+    color: var(--green);
+    margin-top: 4px;
+}
+
+/* Ticket action area */
+.attraction-detail__ticket-action {
+    text-align: right;
+    white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+}
+
+.attraction-detail__ticket-price {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--red);
+}
+
+/* Category back-link */
+.attraction-detail__category-link {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+}
+
+.attraction-detail__category-link a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 0.86rem;
+    font-weight: 600;
+}
+
+.attraction-detail__category-link a:hover { color: var(--red); }
+
+.attraction-detail__category-link svg {
+    width: 16px;
+    height: 16px;
+}
+
+.attraction-detail__content h2 {
+    font-size: 1.3rem;
+    margin: 32px 0 16px;
+}
+
+.attraction-detail__content h2:first-child {
+    margin-top: 0;
+}
+
+.attraction-detail__content p {
+    line-height: 1.75;
+    font-size: 0.95rem;
+    margin-bottom: 14px;
+}
+
+.attraction-detail__content ul {
+    padding-left: 20px;
+    margin: 0 0 16px;
+}
+
+.attraction-detail__content li {
+    margin-bottom: 8px;
+    font-size: 0.86rem;
+    line-height: 1.6;
+}
+
+/* Sidebar */
+.attraction-detail__sidebar {
+    position: sticky;
+    top: var(--sticky-offset);
+    align-self: start;
+}
+
+.attraction-detail__quick-facts {
+    background: var(--bg-gray);
+    border-radius: var(--r-md);
+    padding: 24px;
+    margin-bottom: 20px;
+}
+
+.attraction-detail__quick-facts h3 {
+    font-size: 0.86rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted-dark);
+    margin: 0 0 16px;
+}
+
+.attraction-detail__quick-facts dl {
+    margin: 0;
+}
+
+.attraction-detail__quick-facts dl > div {
+    margin-top: 14px;
+}
+
+.attraction-detail__quick-facts dl > div:first-child { margin-top: 0; }
+
+.attraction-detail__quick-facts dt {
+    font-size: 0.74rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.attraction-detail__quick-facts dd {
+    margin: 4px 0 0;
+    font-size: 0.86rem;
+    font-weight: 600;
+}
+
+.attraction-detail__book-panel {
+    background: var(--navy);
+    color: #fff;
+    border-radius: var(--r-md);
+    padding: 24px;
+    text-align: center;
+}
+
+.attraction-detail__book-panel .price-label {
+    font-size: 0.74rem;
+    opacity: .7;
+    text-transform: uppercase;
+}
+
+.attraction-detail__book-panel strong {
+    display: block;
+    font-size: 1.8rem;
+    margin: 4px 0 16px;
+    color: var(--amber);
+}
+
+.attraction-detail__book-panel .button-link {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: var(--red);
+    color: #fff;
+    border-radius: var(--r-sm);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.attraction-detail__book-panel .button-link:hover { background: var(--red-dark); }
+
+.attraction-detail__book-panel .checkout-note {
+    font-size: 0.74rem;
+    opacity: .6;
+    margin: 10px 0 0;
+}
+
+/* Ticket option card */
+.attraction-detail__ticket-card {
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.attraction-detail__ticket-info {
+    flex: 1;
+}
+
+.attraction-detail__ticket-info strong {
+    display: block;
+    font-size: 0.86rem;
+    margin-bottom: 4px;
+}
+
+.attraction-detail__ticket-info span {
+    font-size: 0.8rem;
+    color: var(--muted);
+}
+
+.attraction-detail__ticket-price {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.attraction-detail__ticket-price strong {
+    display: block;
+    font-size: 1rem;
+    color: var(--red);
+}
+
+.attraction-detail__ticket-price a {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 8px 20px;
+    background: var(--red);
+    color: #fff;
+    border-radius: var(--r-sm);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.attraction-detail__ticket-price a:hover { background: var(--red-dark); }
+
+/* Related attraction links in sidebar */
+.attraction-detail__related-links {
+    margin-top: 20px;
+}
+
+.attraction-detail__related-links h3 {
+    font-size: 0.86rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted-dark);
+    margin: 0 0 12px;
+}
+
+.attraction-detail__related-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.attraction-detail__related-links li a {
+    display: block;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.8rem;
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.attraction-detail__related-links li a:hover { color: var(--red); }
+
+/* ---- Abu Dhabi Hub ---- */
+
+.abu-dhabi-hub__hero {
+    background-size: cover;
+    background-position: center;
+    padding: 80px 0 60px;
+    color: #fff;
+    text-align: center;
+}
+
+.abu-dhabi-hub__hero h1 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    margin: 0 0 12px;
+}
+
+.abu-dhabi-hub__hero p {
+    font-size: 1.05rem;
+    opacity: .85;
+    margin: 0;
+}
+
+/* ---- Responsive ---- */
+
+@media (max-width: 900px) {
+    .attraction-detail__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .attraction-detail__sidebar {
+        position: static;
+    }
+
+    .attraction-detail__gallery-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 180px 180px;
+    }
+
+    .attraction-detail__gallery-main {
+        grid-column: 1 / -1;
+        grid-row: auto;
+    }
+}
+
 @media (max-width: 640px) {
-    .site-nav.is-open + .subnav-side { display: none; }
+    .dubai-hub__stats-grid,
+    .destination-hub__stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .dubai-hub__hero,
+    .destination-hub__hero { padding: 50px 0 40px; }
+
+    .dubai-hub__search,
+    .destination-hub__search {
+        flex-direction: column;
+        border-radius: var(--r-md);
+    }
+
+    .dubai-hub__search button,
+    .destination-hub__search button {
+        padding: 12px;
+        border-radius: 0;
+    }
+
+    .attraction-detail__gallery-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: 220px;
+    }
+
+    .attraction-detail__gallery-thumb { display: none; }
+
+    .attraction-detail__ticket-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .attraction-detail__ticket-action { text-align: center; align-items: center; }
+
+    .attraction-detail__variant-card {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+/* ============================================================
+   Destination hubs — country (/{country}) & city (/{country}/{city})
+   Hero, search, stats, trust, prose, highlights and tips rules are
+   shared with the Dubai pages above (comma-joined selectors).
+   ============================================================ */
+
+/* City chooser — image-backed cards */
+.destination-hub__city-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 18px;
+    margin-top: 24px;
+}
+
+.destination-hub__city-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 220px;
+    padding: 20px;
+    border-radius: var(--r-md);
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    text-decoration: none;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.destination-hub__city-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.destination-hub__city-name { font-size: 1.25rem; font-weight: 800; letter-spacing: -.01em; }
+
+.destination-hub__city-sub {
+    font-size: 0.78rem;
+    opacity: .9;
+    margin-top: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Home — explore by destination (country chooser) */
+.home-destinations__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.home-destinations__card {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    min-height: 140px;
+    padding: 16px;
+    border-radius: var(--r-md);
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.1rem;
+    text-decoration: none;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.home-destinations__card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+
+@media (max-width: 640px) {
+    .destination-hub__city-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .destination-hub__city-card { min-height: 160px; }
 }

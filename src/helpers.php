@@ -144,6 +144,20 @@ function date_params(?string $dateKey): array
     ];
 }
 
+/**
+ * Real-image map harvested from HelloTickets pages by bin/enrich-images.php.
+ * Loaded once per request and keyed by "type-id" (e.g. "activity-2459").
+ */
+function image_map(): array
+{
+    static $map = null;
+    if ($map === null) {
+        $file = __DIR__ . '/../storage/images.json';
+        $map = is_file($file) ? (json_decode((string) file_get_contents($file), true) ?: []) : [];
+    }
+    return $map;
+}
+
 function image_from_item(array $item, string $type, array $config): string
 {
     if (!empty($item['image']) && is_string($item['image'])) {
@@ -157,6 +171,16 @@ function image_from_item(array $item, string $type, array $config): string
         }
         if (is_array($first) && !empty($first['url'])) {
             return (string) $first['url'];
+        }
+    }
+
+    // Real harvested photo for this exact item, if we have one.
+    $id = (int) ($item['id'] ?? 0);
+    if ($id > 0) {
+        $map = image_map();
+        $key = $type . '-' . $id;
+        if (!empty($map[$key]) && is_string($map[$key])) {
+            return $map[$key];
         }
     }
 
@@ -181,7 +205,34 @@ function image_from_item(array $item, string $type, array $config): string
         return $config['fallback_images'][$categoryName];
     }
 
+    // Location-neutral rotation for image-less activities (the listing API omits
+    // images), so non-Dubai city/country pages never show a Dubai landmark.
+    if ($type === 'activity') {
+        $neutral = [
+            'https://images.unsplash.com/photo-1580674684081-7617fbf3d745?auto=format&fit=crop&w=1000&q=80',
+            'https://images.unsplash.com/photo-1546412414-e1885259563a?auto=format&fit=crop&w=1000&q=80',
+            'https://images.unsplash.com/photo-1597659840241-37e2b7c6e922?auto=format&fit=crop&w=1000&q=80',
+            'https://images.unsplash.com/photo-1526495124232-a04e1849168c?auto=format&fit=crop&w=1000&q=80',
+            'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80',
+        ];
+        return $neutral[$id % count($neutral)];
+    }
+
     return $config['fallback_images'][$type] ?? $config['fallback_images']['hero'];
+}
+
+function active_city_id(array $config): int
+{
+    $cookie = (int) ($_COOKIE['tb_city'] ?? 0);
+    if ($cookie > 0) {
+        foreach ($config['market_cities'] as $city) {
+            if ((int) $city['id'] === $cookie) {
+                return $cookie;
+            }
+        }
+    }
+
+    return (int) $config['default_city_id'];
 }
 
 function city_for_id(int $cityId, array $config): array
@@ -192,13 +243,32 @@ function city_for_id(int $cityId, array $config): array
         }
     }
 
+    // Never source the display name from user input (was $_GET['city'] — a content/
+    // title-injection vector). Unknown ids fall back to the default city name.
     return [
         'id' => $cityId,
-        'name' => ucwords(str_replace('-', ' ', trim((string) ($_GET['city'] ?? $config['default_city_name'])))),
+        'name' => $config['default_city_name'],
         'state' => '',
         'country' => '',
         'country_code' => '',
     ];
+}
+
+/**
+ * Path of the editorial /{country}/{city} guide hub for a market city,
+ * or null when the destinations pack has no guide for it.
+ */
+function destination_hub_path_for_city(array $destinationsContent, int $cityId): ?string
+{
+    foreach (($destinationsContent['cities'] ?? []) as $hubCity) {
+        if ((int) ($hubCity['city_id'] ?? 0) === $cityId
+            && !empty($hubCity['slug'])
+            && !empty($hubCity['country_slug'])) {
+            return '/' . $hubCity['country_slug'] . '/' . $hubCity['slug'];
+        }
+    }
+
+    return null;
 }
 
 function event_path(array $performance): string
@@ -258,8 +328,12 @@ function affiliate_url(array $config, string $destination, string $subId): strin
 
 function allowed_hellotickets_url(string $url): bool
 {
+    // Exact registrable-domain match so e.g. "hellotickets.attacker.com" is rejected
+    // (the old "contains hellotickets." regex was an open-redirect / affiliate-fraud vector).
+    $scheme = strtolower((string) parse_url($url, PHP_URL_SCHEME));
     $host = strtolower((string) parse_url($url, PHP_URL_HOST));
-    return $host !== '' && preg_match('/(^|\.)hellotickets\./', $host) === 1;
+    return in_array($scheme, ['http', 'https'], true)
+        && ($host === 'hellotickets.com' || str_ends_with($host, '.hellotickets.com'));
 }
 
 function api_result(callable $callback, array $fallback = []): array

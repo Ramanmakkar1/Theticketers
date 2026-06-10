@@ -1,0 +1,1054 @@
+{
+ "countries": {
+  "usa": {
+   "slug": "usa",
+   "name": "United States",
+   "demonym": "American",
+   "hero_image": "https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "United States Tickets & Attractions | Book Top US Sights",
+   "meta_description": "Book tickets to top United States attractions, from the Statue of Liberty and Walt Disney World to the Las Vegas Strip and Golden Gate Bridge. Skip the line and plan ahead.",
+   "intro": "The United States spans six time zones and a remarkable range of attractions, from the skyscraper canyons of New York to the desert resorts of Nevada and the theme-park capital of central Florida. Most flagship sights sell timed-entry tickets that are worth booking in advance, especially in summer and over holiday weekends when queues at places like the Empire State Building or Universal Orlando can stretch for hours.\n\nEach gateway city has its own character. New York pairs the Statue of Liberty and Top of the Rock with Broadway and world-class museums. Las Vegas runs on its neon Strip, the Bellagio Fountains and easy day trips to the Grand Canyon and Hoover Dam. Orlando is built around Walt Disney World and Universal, while Los Angeles delivers Hollywood, studio tours and Pacific beaches.\n\nOn the West Coast, San Francisco offers the Golden Gate Bridge, cable cars and the ferry to Alcatraz Island, which routinely sells out days ahead. Down in Florida, Miami leans into Art Deco architecture, South Beach and Everglades airboat tours.\n\nSpring (April to May) and fall (September to October) generally bring the best weather and lighter crowds nationwide, though theme parks and warm-weather cities stay busy year-round. Entry prices vary widely, from around $15 for a single observation deck or museum to $100-plus for full-day theme-park passes.",
+   "faqs": [
+    {
+     "q": "When is the best time to visit the United States for sightseeing?",
+     "a": "Spring (April-May) and fall (September-October) usually offer comfortable temperatures and thinner crowds at major attractions. Summer is peak season for theme parks and national parks, so book timed-entry tickets early. Winter suits warm-weather destinations like Miami and Orlando, while New York and Las Vegas stay popular around the holidays."
+    },
+    {
+     "q": "Do I need to buy attraction tickets in advance in the US?",
+     "a": "For high-demand sights like the Statue of Liberty crown, Alcatraz, the Empire State Building and theme-park days at Disney and Universal, advance booking is strongly recommended and sometimes required. Many venues use timed-entry slots that sell out, particularly on weekends and holidays. Buying ahead also lets you skip ticket-booth lines."
+    },
+    {
+     "q": "How many days should I plan for a US trip?",
+     "a": "Allow at least three to four days per major city to cover its headline attractions without rushing. New York and Las Vegas reward four or more days, while Orlando theme parks alone can fill three to five days. If you want to combine multiple cities, a week to ten days lets you pair two or three destinations comfortably."
+    },
+    {
+     "q": "Are US attraction tickets refundable?",
+     "a": "Refund policies depend on the operator. Many timed-entry and theme-park tickets are non-refundable once the date passes, while others allow free cancellation up to 24 hours before. Always check the cancellation terms at checkout, and consider flexible or refundable options if your travel dates might change."
+    },
+    {
+     "q": "What is the easiest way to get around US cities?",
+     "a": "New York and San Francisco have strong public transit, so you rarely need a car. Las Vegas is walkable along the Strip with monorail and rideshare links. Los Angeles, Orlando and Miami are more spread out, where rideshare, rental cars or attraction shuttles are usually the most practical way to reach venues."
+    }
+   ],
+   "stats": {
+    "attractions": "5,000+",
+    "price_from": "$15",
+    "support": "24/7"
+   },
+   "city_slugs": [
+    "new-york",
+    "las-vegas",
+    "orlando",
+    "los-angeles",
+    "san-francisco",
+    "miami"
+   ]
+  },
+  "canada": {
+   "slug": "canada",
+   "name": "Canada",
+   "demonym": "Canadian",
+   "hero_image": "https://images.unsplash.com/photo-1503614472-8c93d56e92ce?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "Canada Tickets & Tours | Top Attractions & City Pass Deals",
+   "meta_description": "Book Canada tickets, tours and attraction passes. Skip-the-line entry to the CN Tower, Niagara Falls, Stanley Park, Old Montreal and more, from CAD 18.",
+   "intro": "Canada rewards visitors with a rare mix of cosmopolitan cities and raw wilderness, often within an hour of each other. In Toronto you can ride to the top of the 553-metre CN Tower in the morning and stand at the edge of Niagara Falls by mid-afternoon on a guided day trip. Vancouver pairs a glassy downtown with the temperate rainforest of Stanley Park and the snow-capped peaks of Grouse Mountain. In Montreal, cobblestone lanes around the Old Port and the soaring Notre-Dame Basilica trade Old-World charm with a distinctly French-Canadian rhythm.\n\nSeasons shape every trip. Summer (June to August) brings long, warm days ideal for harbour cruises, patio dining and whale-watching off both coasts. Autumn sets Ontario and Quebec ablaze with maple colour, peaking in early October. Winter turns the country into a playground for skiing, skating on the Rideau Canal in Ottawa and chasing the northern lights in Yukon, while spring melts into festival season.\n\nMost flagship attractions sell timed-entry tickets, and popular slots, like sunset at the CN Tower or a Maid of the Mist sailing, sell out days ahead in peak months. Booking online secures your time, skips the queue and often costs less than the gate price. Attraction passes can bundle several sights at a discount across Toronto, Vancouver and beyond.\n\nWith activities starting around CAD 18 and instant mobile confirmation, planning a Canadian itinerary is straightforward whether you have a weekend or a fortnight.",
+   "faqs": [
+    {
+     "q": "What are the most popular attractions to book in Canada?",
+     "a": "Top sellers include the CN Tower and Ripley's Aquarium in Toronto, Niagara Falls boat tours and day trips, the Capilano Suspension Bridge and Grouse Mountain in Vancouver, and Notre-Dame Basilica and Old Port cruises in Montreal. Whale-watching and city sightseeing passes are also in high demand."
+    },
+    {
+     "q": "When is the best time of year to visit Canada?",
+     "a": "Summer (June to August) offers the warmest weather and the widest choice of outdoor tours. Late September to mid-October brings spectacular fall foliage in Ontario and Quebec. Winter (December to March) is prime time for skiing, skating and aurora viewing, while spring is quieter and good value."
+    },
+    {
+     "q": "Do I need to book Canada attraction tickets in advance?",
+     "a": "Yes, advance booking is strongly recommended for marquee sights. Sunset slots at the CN Tower, Maid of the Mist sailings and timed entries to popular museums frequently sell out in summer and on holidays. Booking online guarantees your preferred time and usually lets you skip the ticket line."
+    },
+    {
+     "q": "What currency are tickets priced in and can I pay online?",
+     "a": "Prices are shown in Canadian dollars (CAD). You can book securely online with a card and receive instant confirmation plus a mobile ticket, so there is no need to carry cash or exchange currency before you arrive at the attraction."
+    },
+    {
+     "q": "Are tickets refundable if my plans change?",
+     "a": "Many activities offer free cancellation up to 24 hours before the start time, though policies vary by operator and ticket type. Always check the cancellation terms listed on each attraction page before booking, especially for dated tours and day trips."
+    }
+   ],
+   "stats": {
+    "attractions": "1,200+",
+    "price_from": "$18",
+    "support": "24/7"
+   },
+   "city_slugs": [
+    "toronto",
+    "vancouver",
+    "montreal"
+   ]
+  },
+  "uk": {
+   "slug": "uk",
+   "name": "United Kingdom",
+   "demonym": "British",
+   "hero_image": "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "United Kingdom Tickets & Attractions | TickedBus",
+   "meta_description": "Book United Kingdom attraction tickets, tours and experiences. Skip-the-line entry to London landmarks, Edinburgh Castle, West End shows and more from £12.",
+   "intro": "The United Kingdom packs centuries of history, world-class culture and dramatic landscapes into a compact island nation. From the Crown Jewels at the Tower of London to the volcanic crags above Edinburgh, few destinations reward visitors with such variety in so little distance. TickedBus connects you with live ticket inventory for the country's most-visited attractions, so you can lock in entry before you even pack.\n\nLondon anchors most itineraries, but the UK rewards those who roam. Fast trains link the capital to Edinburgh in roughly four and a half hours, while Manchester, Liverpool, Bath, York and the Lake District each offer their own draws. Expect Roman walls, medieval castles, Victorian railways and Premier League stadiums, often within a short journey of one another.\n\nWeather is famously changeable, so layers and a compact umbrella are wise year-round. Summer brings long daylight hours and festival season, while winter delivers atmospheric Christmas markets and quieter galleries. Spring and autumn often strike the best balance between mild conditions and thinner crowds.\n\nBooking ahead matters in the UK, where headline sights like Warner Bros. Studio Tour and popular West End shows routinely sell out weeks in advance. Reserve timed-entry tickets through TickedBus to guarantee your spot, skip the queue and spend more of your trip enjoying the country rather than waiting in line.",
+   "faqs": [
+    {
+     "q": "What are the must-see attractions in the United Kingdom?",
+     "a": "Top draws include the Tower of London, London Eye, British Museum and West End theatre in the capital, plus Edinburgh Castle and Arthur's Seat in Scotland. Beyond the cities, Stonehenge, the Roman Baths in Bath, and the Warner Bros. Studio Tour for Harry Potter rank among the most booked experiences."
+    },
+    {
+     "q": "How much do UK attraction tickets typically cost?",
+     "a": "Prices vary widely. Smaller museums and galleries are often free, while major paid attractions usually run from about £12 to £35 for standard adult entry. Premium experiences such as the Warner Bros. Studio Tour or top West End musicals can reach £40 to £100 or more. Booking online in advance frequently saves money over gate prices."
+    },
+    {
+     "q": "When is the best time to visit the United Kingdom?",
+     "a": "May, June and September offer mild weather, long daylight and fewer crowds than peak July and August. Edinburgh is busiest in August during the Fringe festival, so book early. Winter is quieter and cheaper, with festive markets and shorter days, though many outdoor attractions keep reduced hours."
+    },
+    {
+     "q": "Do I need to book UK attractions in advance?",
+     "a": "For popular sights, yes. The Warner Bros. Studio Tour, the Tower of London, the London Eye and hit West End shows regularly sell out, especially on weekends and during school holidays. Pre-booking timed-entry tickets guarantees admission and usually lets you skip the longest queues."
+    },
+    {
+     "q": "How do I travel between UK cities?",
+     "a": "An extensive rail network connects the major cities, with frequent fast trains between London, Edinburgh, Manchester and beyond. London to Edinburgh takes around four and a half hours by train. Within cities, the London Underground, buses and trams make getting around easy, and contactless payment is accepted on most public transport."
+    }
+   ],
+   "stats": {
+    "attractions": "2,000+",
+    "price_from": "£12",
+    "support": "24/7"
+   },
+   "city_slugs": [
+    "london",
+    "edinburgh"
+   ]
+  },
+  "italy": {
+   "slug": "italy",
+   "name": "Italy",
+   "demonym": "Italian",
+   "hero_image": "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "Italy Tickets & Tours: Skip-the-Line Attractions 2026",
+   "meta_description": "Book Italy attraction tickets, skip-the-line entry and guided tours. From the Colosseum to Venice canals and the Uffizi, reserve top experiences from EUR 10.",
+   "intro": "Italy packs more UNESCO World Heritage sites than any country on earth, and its cities are open-air museums where two thousand years of history sit a short walk apart. In Rome you can stand inside the Colosseum, trace the Roman Forum and cross the Vatican border into the Sistine Chapel in a single day. Florence cradles the Renaissance, from Michelangelo's David to Brunelleschi's terracotta dome, while Venice trades roads for canals and Milan blends Gothic spires with global fashion.\n\nThe headline attractions are wildly popular, which is why skip-the-line tickets are practically essential here. Queues at the Vatican Museums, the Uffizi Gallery and the Colosseum can swallow two or three hours in summer, so timed-entry passes and small-group guided tours save the part of your trip you actually came for. Booking ahead also secures scarce slots, such as Leonardo's Last Supper in Milan, where only a few hundred visitors are admitted each day.\n\nBeyond the icons, Italy rewards slow travel: aperitivo in a Milanese piazza, a sunset gondola through quiet back canals, or Tuscan day trips to Pisa and Siena. Spring and early autumn bring the kindest weather and thinner crowds, while shoulder-season tickets often cost less. Whatever season you choose, reserving the marquee sights in advance keeps the days flexible.",
+   "faqs": [
+    {
+     "q": "Do I need to book attraction tickets in advance in Italy?",
+     "a": "For the biggest sights, yes. The Colosseum, Vatican Museums, Uffizi Gallery and Milan's Last Supper regularly sell out their timed slots days or weeks ahead in peak season. Booking online secures your entry time and lets you skip the standard ticket line, which can run two to three hours in summer."
+    },
+    {
+     "q": "What is a skip-the-line ticket and is it worth it?",
+     "a": "Skip-the-line (or priority) tickets give you a reserved entry window so you bypass the long general-admission queue. In Italy's major museums and monuments the time saved is significant, often two or more hours in high season, making them well worth the small premium over a standard ticket."
+    },
+    {
+     "q": "Is there a dress code for visiting churches in Italy?",
+     "a": "Yes. Major churches including St Peter's Basilica, the Sistine Chapel, St Mark's Basilica and most cathedrals require covered shoulders and knees for both men and women. Carry a light scarf or shawl in summer; visitors in shorts, short skirts or sleeveless tops are routinely turned away at the door."
+    },
+    {
+     "q": "When is the best time of year to visit Italy?",
+     "a": "April to early June and September to October offer warm but comfortable weather, lighter crowds and frequently lower prices than July and August. Summer brings intense heat in cities like Rome and Florence, while winter is quiet and mild in the south, though some sites keep shorter hours."
+    },
+    {
+     "q": "What currency is used and how much do attractions cost?",
+     "a": "Italy uses the euro. Individual attraction tickets typically range from about EUR 10 to EUR 30, while guided skip-the-line tours of the Colosseum or Vatican usually fall between EUR 30 and EUR 80 depending on group size and inclusions. Cards are widely accepted, but carry some cash for small cafes and tips."
+    }
+   ],
+   "stats": {
+    "attractions": "3,000+",
+    "price_from": "€10",
+    "support": "24/7"
+   },
+   "city_slugs": [
+    "rome",
+    "venice",
+    "florence",
+    "milan"
+   ]
+  },
+  "spain": {
+   "slug": "spain",
+   "name": "Spain",
+   "demonym": "Spanish",
+   "hero_image": "https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "Spain Tickets & Tours: Skip-the-Line Attractions Passes",
+   "meta_description": "Book Spain attraction tickets online: Sagrada Familia, Alhambra, Prado, Real Alcazar and more. Skip-the-line entry, flamenco shows and day trips from EUR 9.",
+   "intro": "Spain rewards travellers with an extraordinary spread of attractions, from Antoni Gaudi's still-unfinished Sagrada Familia in Barcelona to the Moorish palaces of Andalusia. The country's biggest sights sell out weeks ahead in peak season, so booking timed-entry tickets in advance is the difference between walking straight in and queuing for hours under the summer sun.\n\nBarcelona anchors the Catalan coast with Gaudi's Modernista masterpieces, Madrid offers the Golden Triangle of art museums and the cavernous Royal Palace, and Seville dazzles with its Gothic cathedral, the Giralda tower and the cinematic Plaza de Espana. Beyond the headline cities, Granada's Alhambra, Cordoba's Mezquita and Valencia's futuristic City of Arts reward anyone willing to roam.\n\nMost major monuments use timed-entry slots, and many cap daily numbers, which is why skip-the-line and fast-track tickets are essential at the Sagrada Familia and the Alhambra in particular. Combo passes that bundle several Gaudi sites, museum cards and hop-on hop-off buses can trim both cost and planning time.\n\nWith attraction tickets starting from around EUR 9, plus flamenco shows, tapas tours, day trips and guided experiences in every region, Spain is one of Europe's easiest countries to explore on a flexible, pre-booked itinerary.",
+   "faqs": [
+    {
+     "q": "Do I need to book Spain's top attractions in advance?",
+     "a": "Yes, for the busiest sites. The Sagrada Familia, the Alhambra in Granada and the Real Alcazar in Seville all use timed entry and frequently sell out days or weeks ahead, especially from April to October. Booking online guarantees your slot and usually lets you skip the main ticket queue."
+    },
+    {
+     "q": "What is the best time of year to visit Spain?",
+     "a": "Spring (April to June) and autumn (September to October) offer warm, comfortable weather and lighter crowds than the peak summer months. July and August are hot, particularly in Madrid, Seville and the rest of inland Andalusia, where temperatures regularly exceed 35C, so many travellers favour the shoulder seasons."
+    },
+    {
+     "q": "How much do attraction tickets in Spain cost?",
+     "a": "Prices vary by site. Smaller attractions and guided walks can start from around EUR 9, the Sagrada Familia runs roughly EUR 26 upward depending on tower access, and Alhambra general tickets sit near EUR 18. Combo passes and city cards can reduce the per-attraction cost if you plan several visits."
+    },
+    {
+     "q": "Are skip-the-line tickets worth it in Spain?",
+     "a": "At the most popular monuments, absolutely. Skip-the-line and fast-track tickets for the Sagrada Familia and the Alhambra can save one to two hours during peak periods. At quieter sights the time saved is smaller, but a pre-booked timed slot still removes the risk of finding tickets sold out on the day."
+    },
+    {
+     "q": "Is English widely spoken at Spanish attractions?",
+     "a": "Yes. Major attractions in Barcelona, Madrid and Seville offer signage, audio guides and guided tours in English alongside Spanish, and staff at ticketed sites typically speak at least basic English. Booking an English-language guided tour is straightforward for almost every flagship monument."
+    }
+   ],
+   "stats": {
+    "attractions": "3,500+",
+    "price_from": "EUR 9",
+    "support": "24/7"
+   },
+   "city_slugs": [
+    "barcelona",
+    "madrid",
+    "seville"
+   ]
+  },
+  "france": {
+   "slug": "france",
+   "name": "France",
+   "demonym": "French",
+   "hero_image": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "France Tickets & Attractions | Skip-the-Line Tours",
+   "meta_description": "Book France attraction tickets online: Eiffel Tower, Louvre, Versailles, Disneyland Paris and Riviera tours. Skip-the-line entry, instant mobile tickets from €11.",
+   "intro": "France is the world's most visited country, drawing over 80 million travellers a year to a landscape that runs from the boulevards of Paris to the lavender fields of Provence and the turquoise coves of the Côte d'Azur. Its appeal is breadth: a single trip can pair Gothic cathedrals and Roman amphitheatres with Michelin dining, alpine skiing and Atlantic surf. For most visitors the journey begins in Paris, but the high-speed TGV network puts Lyon, Bordeaux, Marseille and Nice within a few hours of the capital.\n\nThe country's cultural inventory is staggering. France holds more than 45 UNESCO World Heritage Sites, including the Palace of Versailles, the medieval city of Carcassonne, Mont-Saint-Michel and the prehistoric caves of the Vézère Valley. World-class museums such as the Louvre, the Musée d'Orsay and Lyon's Confluences sit alongside the country's enduring strengths in wine, gastronomy and haute couture.\n\nTiming matters. Spring (April–June) and early autumn (September–October) bring mild weather and thinner crowds, while July and August are peak season on the Riviera. Many headline sights, especially the Eiffel Tower, the Louvre and Versailles, sell timed-entry tickets that book out days ahead in summer.\n\nThrough TickedBus you can compare skip-the-line tickets, guided tours and day trips across France, with instant mobile delivery and free cancellation on most options.",
+   "faqs": [
+    {
+     "q": "Do I need to book France attraction tickets in advance?",
+     "a": "For the headline sights, yes. The Eiffel Tower, the Louvre, the Musée d'Orsay and the Palace of Versailles all use timed-entry tickets that frequently sell out in peak season, often several days ahead. Booking online also lets you skip the main ticket queue and head straight to security."
+    },
+    {
+     "q": "What is the best time of year to visit France?",
+     "a": "April to June and September to October offer mild weather, longer daylight and smaller crowds than midsummer. July and August are warmest and busiest, especially on the French Riviera, while December brings Christmas markets in Strasbourg, Paris and the Alsace region."
+    },
+    {
+     "q": "Is the Paris Museum Pass worth buying?",
+     "a": "If you plan to visit several major sights over two to four days, the Paris Museum Pass can save money and time, covering the Louvre, Orsay, Arc de Triomphe, Versailles and more. Note that it does not include the Eiffel Tower, and you may still need a timed reservation for popular museums."
+    },
+    {
+     "q": "How do I travel between French cities?",
+     "a": "The TGV high-speed rail network connects most major cities quickly: Paris to Lyon takes about two hours, Paris to Nice roughly six. Booking rail tickets in advance secures the lowest fares. Domestic flights and rental cars are alternatives, though city centres are best explored on foot or by metro."
+    },
+    {
+     "q": "What currency is used and are cards accepted?",
+     "a": "France uses the euro (EUR). Contactless and chip-and-PIN cards are accepted almost everywhere, including for metro tickets and small purchases. It is still useful to carry some cash for markets, small cafés and rural areas. Most TickedBus tickets are priced in euros from around €11."
+    }
+   ],
+   "stats": {
+    "attractions": "2,500+",
+    "price_from": "€11",
+    "support": "24/7"
+   },
+   "city_slugs": [
+    "paris",
+    "nice"
+   ]
+  }
+ },
+ "cities": {
+  "new-york": {
+   "slug": "new-york",
+   "country_slug": "usa",
+   "city_id": 1,
+   "name": "New York",
+   "hero_image": "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "New York Tickets & Attractions | Book NYC Sights Online",
+   "meta_description": "Book New York tickets: Statue of Liberty, Empire State Building, Top of the Rock, One World Observatory and Broadway. Skip the line and explore the five boroughs.",
+   "intro": "New York City packs its biggest sights into a compact, walkable core. From Lower Manhattan you can ferry to the Statue of Liberty and Ellis Island, then ride up the Empire State Building, Top of the Rock or One World Observatory for skyline views. Central Park, the Met, MoMA and the 9/11 Memorial & Museum round out a classic first visit.\n\nManhattan's neighborhoods each have a distinct feel: Times Square and the Theater District for Broadway shows, SoHo for shopping, Greenwich Village for cafes and the High Line for an elevated walk above Chelsea. Across the East River, Brooklyn's DUMBO and the Brooklyn Bridge walkway deliver some of the best photos of the city.\n\nThe subway runs 24 hours and is the fastest way to cross town, while bridges and observation decks are most atmospheric near sunset. Many attractions use timed entry, so booking ahead saves long waits.",
+   "highlights": [
+    "Ferry to the Statue of Liberty and Ellis Island",
+    "Skyline views from the Empire State Building or Top of the Rock",
+    "A Broadway show in the Theater District",
+    "Walking the Brooklyn Bridge into DUMBO"
+   ],
+   "tips": [
+    "Buy timed-entry tickets for observation decks to skip long lines, especially at sunset.",
+    "Use a tap-to-pay OMNY card on the subway instead of buying single rides.",
+    "Reserve Statue of Liberty crown or pedestal access weeks ahead, as it sells out.",
+    "Visit major museums on weekday mornings to avoid the heaviest crowds."
+   ],
+   "faqs": [
+    {
+     "q": "Which New York observation deck has the best views?",
+     "a": "Top of the Rock frames the Empire State Building and Central Park in one view, the Empire State Building offers a historic 86th-floor open-air deck, and One World Observatory gives the highest vantage over the harbor. Edge at Hudson Yards adds an outdoor sky deck. Sunset slots are the most popular, so book early."
+    },
+    {
+     "q": "How do I get cheaper Broadway tickets?",
+     "a": "Same-day discounted seats are sold at the TKTS booth in Times Square, and many shows run digital lotteries and rush tickets through their official apps. For specific dates and popular shows, booking standard tickets in advance is the safest way to secure seats."
+    },
+    {
+     "q": "Is it worth getting a New York attraction pass?",
+     "a": "If you plan to visit several paid sights in a few days, a multi-attraction pass can cut costs compared with separate tickets. Compare the pass price against the venues you actually want to see, since you need to visit a few to break even."
+    }
+   ],
+   "state": "NY",
+   "country": "United States",
+   "country_code": "USA",
+   "featured": true
+  },
+  "las-vegas": {
+   "slug": "las-vegas",
+   "country_slug": "usa",
+   "city_id": 6,
+   "name": "Las Vegas",
+   "hero_image": "https://images.unsplash.com/photo-1605833556294-ea5c7a74f57d?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "Las Vegas Tickets & Shows | Book Strip Attractions Online",
+   "meta_description": "Book Las Vegas tickets: the High Roller, Bellagio Fountains views, headline shows, helicopter tours and Grand Canyon day trips. Plan your Strip getaway.",
+   "intro": "Las Vegas centers on the Strip, a four-mile boulevard of themed resorts where many attractions are free to admire and others are worth a ticket. The Bellagio Fountains erupt on the half-hour, the High Roller observation wheel climbs 550 feet over the valley, and resorts like the Venetian and Caesars Palace recreate landmarks from around the world.\n\nNighttime is when the city comes alive, with production shows, residency concerts and Cirque du Soleil performances filling theaters along the Strip. By day, many visitors head out to the Grand Canyon, Hoover Dam or Red Rock Canyon, all reachable on guided tours or by car.\n\nThe Strip is walkable but long, so monorail, trams between resorts and rideshare help cover distances. Summers are very hot, often topping 100 F, so plan outdoor activities for early morning or evening.",
+   "highlights": [
+    "The Bellagio Fountains and free resort attractions on the Strip",
+    "Views from the High Roller observation wheel",
+    "Cirque du Soleil and headline residency shows",
+    "Day trips to the Grand Canyon and Hoover Dam"
+   ],
+   "tips": [
+    "Book big shows and Cirque du Soleil performances ahead, as prime weekend dates sell out.",
+    "Tackle outdoor tours like the Grand Canyon early to beat midday desert heat.",
+    "Use the resort trams and monorail to avoid long walks in summer temperatures.",
+    "Factor in resort fees, which are added on top of advertised hotel rates."
+   ],
+   "faqs": [
+    {
+     "q": "What is the best way to see the Grand Canyon from Las Vegas?",
+     "a": "The Grand Canyon West rim with Skywalk is about a two-hour drive and is the most common day trip, while the South Rim is farther but more dramatic. Bus tours, small-group vans and helicopter or airplane flights all depart from Las Vegas. Helicopter tours are the fastest and most scenic but cost more."
+    },
+    {
+     "q": "Are there free things to do on the Las Vegas Strip?",
+     "a": "Yes. The Bellagio Fountains, the Conservatory and Botanical Gardens, the Venetian's canals and the volcano and atrium displays at various resorts are all free to enjoy. You can also walk the Strip and Fremont Street to take in the architecture and lights without buying tickets."
+    },
+    {
+     "q": "When is the best time to visit Las Vegas?",
+     "a": "Spring (March-May) and fall (September-November) bring mild weather ideal for walking the Strip and outdoor tours. Summer is intensely hot, and winter evenings can be cool. Hotel rates fluctuate with conventions and events, so midweek stays are often cheaper than weekends."
+    }
+   ],
+   "state": "NV",
+   "country": "United States",
+   "country_code": "USA",
+   "featured": true
+  },
+  "orlando": {
+   "slug": "orlando",
+   "country_slug": "usa",
+   "city_id": 5,
+   "name": "Orlando",
+   "hero_image": "https://images.unsplash.com/photo-1597466599360-3b9775841aec?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "Orlando Tickets & Theme Parks | Book Disney & Universal",
+   "meta_description": "Book Orlando tickets: Walt Disney World, Universal Orlando, SeaWorld and more. Plan park days, skip ticket lines and make the most of central Florida.",
+   "intro": "Orlando is the theme-park capital of the world, anchored by Walt Disney World's four parks, Universal Orlando and SeaWorld. Disney spans Magic Kingdom, EPCOT, Hollywood Studios and Animal Kingdom, while Universal combines Islands of Adventure with The Wizarding World of Harry Potter across its resort.\n\nBeyond the big resorts, the city offers ICON Park on International Drive with its giant observation wheel, the Kennedy Space Center an hour east on the coast, and Gatorland for a classic Florida wildlife experience. Many visitors base themselves near International Drive or Lake Buena Vista for easy park access.\n\nPark days are long and can be hot and humid, especially from June through September when afternoon thunderstorms are common. Buying dated tickets and reserving park entry in advance is essential, and arriving at opening helps you ride headline attractions before lines build.",
+   "highlights": [
+    "Walt Disney World's four theme parks",
+    "Universal Orlando and The Wizarding World of Harry Potter",
+    "Kennedy Space Center on the Space Coast",
+    "ICON Park and the International Drive entertainment strip"
+   ],
+   "tips": [
+    "Buy dated park tickets early and check whether park reservations are required.",
+    "Arrive at park opening to ride the biggest attractions before midday crowds.",
+    "Bring a poncho and water for frequent summer thunderstorms and high humidity.",
+    "Build in rest days between parks, as full days involve a lot of walking."
+   ],
+   "faqs": [
+    {
+     "q": "How many days do I need for Orlando theme parks?",
+     "a": "Plan at least one full day per major park. Covering all four Walt Disney World parks plus Universal comfortably takes five to seven days. If you only have time for highlights, three to four park days lets you see Magic Kingdom, one Universal park and one other favorite without rushing."
+    },
+    {
+     "q": "Should I buy park tickets in advance for Orlando?",
+     "a": "Yes. Disney and Universal tickets are dated, and some periods require advance park reservations, so buying ahead secures your preferred days and price. Advance tickets also let you head straight to the entrance instead of waiting at ticket windows on busy mornings."
+    },
+    {
+     "q": "What is the best time of year to visit Orlando?",
+     "a": "Cooler, drier months from late October through April are most comfortable for long park days. Summer is hot and humid with daily storms, and holiday periods see the largest crowds. Visiting on weekdays outside school breaks generally means shorter lines."
+    }
+   ],
+   "state": "FL",
+   "country": "United States",
+   "country_code": "USA",
+   "featured": true
+  },
+  "los-angeles": {
+   "slug": "los-angeles",
+   "country_slug": "usa",
+   "city_id": 4,
+   "name": "Los Angeles",
+   "hero_image": "https://images.unsplash.com/photo-1515896769750-31548aa180ed?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "Los Angeles Tickets & Attractions | Book LA Sights Online",
+   "meta_description": "Book Los Angeles tickets: Universal Studios Hollywood, Griffith Observatory, studio tours, Hollywood and Santa Monica Pier. Plan your LA itinerary.",
+   "intro": "Los Angeles sprawls from the Hollywood Hills to the Pacific coast, blending movie-industry icons with beaches and museums. Universal Studios Hollywood pairs theme-park rides with a working studio tour, while the Griffith Observatory offers free city views and a look at the Hollywood Sign. The Walk of Fame, TCL Chinese Theatre and Dolby Theatre cluster along Hollywood Boulevard.\n\nThe city's neighborhoods reward exploration: Santa Monica and Venice for the beach, pier and boardwalk, downtown for The Broad and Grand Park, and Beverly Hills for Rodeo Drive. Art lovers head to the Getty Center and LACMA, both worth a half-day each.\n\nLA is spread out, so distances between sights are significant and traffic is heavy at rush hour. A rental car or rideshare is usually the most practical way to get around, and mornings are best for beating both crowds and freeway congestion.",
+   "highlights": [
+    "Studio tour and rides at Universal Studios Hollywood",
+    "Hollywood Walk of Fame and the TCL Chinese Theatre",
+    "Free city and Hollywood Sign views from Griffith Observatory",
+    "Santa Monica Pier and Venice Beach boardwalk"
+   ],
+   "tips": [
+    "Plan your day around traffic, sightseeing in one area before moving across the city.",
+    "Reserve a timed parking slot or arrive early at Griffith Observatory on weekends.",
+    "Buy Universal Studios Hollywood tickets ahead and consider Express for shorter waits.",
+    "Wear layers, as coastal mornings are cool while inland afternoons turn hot."
+   ],
+   "faqs": [
+    {
+     "q": "Is Universal Studios Hollywood worth a full day?",
+     "a": "Yes. Between the rides, the famous Studio Tour through backlot sets, and themed areas like The Wizarding World of Harry Potter and Super Nintendo World, a full day is realistic. Arriving at opening and considering an Express pass on busy days helps you fit in the headline attractions."
+    },
+    {
+     "q": "How do I see the Hollywood Sign?",
+     "a": "Griffith Observatory and Griffith Park trails offer some of the clearest free views of the sign and the city skyline. Other good vantage points include the Hollywood Bowl Overlook and Lake Hollywood Park. Hiking trails get you closer, but the sign itself is fenced off."
+    },
+    {
+     "q": "Do I need a car in Los Angeles?",
+     "a": "LA is very spread out, so a car or rideshare is the most practical way to cover attractions in different neighborhoods. Public transit and the Metro rail cover some routes, but service between major sights can be slow. Plan around peak-hour traffic when scheduling your day."
+    }
+   ],
+   "state": "CA",
+   "country": "United States",
+   "country_code": "USA",
+   "featured": true
+  },
+  "san-francisco": {
+   "slug": "san-francisco",
+   "country_slug": "usa",
+   "city_id": 7,
+   "name": "San Francisco",
+   "hero_image": "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "San Francisco Tickets & Attractions | Book SF Sights Online",
+   "meta_description": "Book San Francisco tickets: Alcatraz Island, Golden Gate Bridge tours, cable cars, Fisherman's Wharf and bay cruises. Plan your Bay Area visit.",
+   "intro": "San Francisco wraps a walkable peninsula in fog, hills and bay views. The ferry to Alcatraz Island is the city's signature experience, and it regularly sells out days or weeks ahead. The Golden Gate Bridge, best seen from Crissy Field or the Marin Headlands, and the historic cable cars climbing from Powell Street are equally iconic.\n\nFisherman's Wharf and PIER 39 draw visitors with sea lions and bay cruises, while neighborhoods like Chinatown, North Beach and the Mission each offer distinct food and character. Golden Gate Park holds the de Young Museum, the California Academy of Sciences and the Japanese Tea Garden.\n\nWeather is famously changeable, with cool, foggy summer mornings that often burn off by afternoon, so layers are essential year-round. The compact center is walkable, and cable cars, the Muni Metro and BART make car-free travel easy.",
+   "highlights": [
+    "Ferry tour of Alcatraz Island",
+    "Golden Gate Bridge views from Crissy Field",
+    "Riding the historic Powell-Hyde cable car",
+    "Sea lions and bay cruises at PIER 39"
+   ],
+   "tips": [
+    "Book Alcatraz tickets well in advance, as the ferry sells out days or weeks ahead.",
+    "Dress in layers for cool, foggy mornings that often clear by afternoon.",
+    "Use a Clipper card across cable cars, Muni and BART for seamless transit.",
+    "Photograph the Golden Gate Bridge in late morning once the fog lifts."
+   ],
+   "faqs": [
+    {
+     "q": "How far ahead should I book Alcatraz tickets?",
+     "a": "Alcatraz tours run through the official ferry operator and frequently sell out days to weeks in advance, especially in summer and on weekends. Book as early as your dates are firm. Night tours and ranger programs are smaller and tend to go fastest, so reserve those even earlier."
+    },
+    {
+     "q": "What is the best way to ride a San Francisco cable car?",
+     "a": "The Powell-Hyde and Powell-Mason lines from Union Square are the most scenic, ending near Fisherman's Wharf. Lines at the turnaround can be long midday, so ride early or board at a stop along the route. A single ride costs a flat fare, payable with a Clipper card or pass."
+    },
+    {
+     "q": "When is the best time to visit San Francisco?",
+     "a": "September and October bring the warmest, clearest weather, while summer mornings are often foggy and cool. Spring is pleasant and green. Whatever the season, temperatures swing through the day, so layered clothing is the key to staying comfortable."
+    }
+   ],
+   "state": "CA",
+   "country": "United States",
+   "country_code": "USA",
+   "featured": true
+  },
+  "miami": {
+   "slug": "miami",
+   "country_slug": "usa",
+   "city_id": 3,
+   "name": "Miami",
+   "hero_image": "https://images.unsplash.com/photo-1506966953602-c20cc11f75e3?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "Miami Tickets & Attractions | Book South Beach & Tours",
+   "meta_description": "Book Miami tickets: Art Deco South Beach tours, Everglades airboat trips, bay cruises and Little Havana experiences. Plan your South Florida getaway.",
+   "intro": "Miami blends pastel Art Deco architecture, Latin culture and tropical beaches. The Art Deco Historic District along Ocean Drive in South Beach is the city's visual signature, best explored on a walking tour, while the white sand and turquoise water draw beachgoers year-round. Bayside and Biscayne Bay cruises offer skyline and celebrity-home views.\n\nLittle Havana centers on Calle Ocho, where cafes, cigar shops and live music celebrate the city's Cuban heritage. Wynwood's open-air murals have turned a former warehouse district into an art destination, and the Everglades sit just west of the city for airboat tours through the wetlands.\n\nMiami is hot and humid much of the year, with a rainy, storm-prone season from June through October. Winter and early spring bring the most comfortable weather and the liveliest beach scene, though that is also peak season for crowds and prices.",
+   "highlights": [
+    "Art Deco architecture along South Beach's Ocean Drive",
+    "Everglades airboat tours west of the city",
+    "Cuban culture and cafes in Little Havana",
+    "Street-art murals in the Wynwood Walls district"
+   ],
+   "tips": [
+    "Take a guided Art Deco walking tour to learn the history behind South Beach's facades.",
+    "Visit in winter or early spring for the most comfortable, less humid weather.",
+    "Book Everglades airboat tours in the morning for cooler air and active wildlife.",
+    "Use rideshare between neighborhoods, as parking in South Beach is limited and costly."
+   ],
+   "faqs": [
+    {
+     "q": "What is the best way to explore South Beach's Art Deco district?",
+     "a": "A guided walking tour along Ocean Drive and Collins Avenue explains the 1930s Art Deco buildings and their pastel color schemes. Self-guided strolls work too, ideally in the cooler morning or at golden hour when the facades glow. The Art Deco Welcome Center is a useful starting point."
+    },
+    {
+     "q": "Are Everglades airboat tours worth it from Miami?",
+     "a": "Yes. Everglades airboat tours, many departing from operators just west of the city, glide through sawgrass marshes where you can spot alligators, turtles and wading birds. Morning departures tend to be cooler with more active wildlife. Tours usually last about an hour on the water plus a wildlife presentation."
+    },
+    {
+     "q": "When should I visit Miami?",
+     "a": "December through April offers warm, drier weather and the busiest beach scene, making it the most popular time to visit. Summer is hot and humid with frequent afternoon storms, and the Atlantic hurricane season runs June through November, so check forecasts when traveling in those months."
+    }
+   ],
+   "state": "FL",
+   "country": "United States",
+   "country_code": "USA",
+   "featured": true
+  },
+  "toronto": {
+   "slug": "toronto",
+   "country_slug": "canada",
+   "city_id": 28,
+   "name": "Toronto",
+   "hero_image": "https://images.unsplash.com/photo-1517090504586-fde19ea6066f?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "Toronto Tickets & Tours | CN Tower, Niagara Falls Trips",
+   "meta_description": "Book Toronto tickets and tours: CN Tower EdgeWalk, Ripley's Aquarium, Niagara Falls day trips and harbour cruises. Skip the line with instant mobile entry.",
+   "intro": "Toronto is Canada's largest city and its cultural engine, a place where more than half the population was born abroad and the food, festivals and neighbourhoods reflect it. The skyline is anchored by the CN Tower, whose glass-floor SkyPod and adrenaline-charged EdgeWalk reward visitors with views across Lake Ontario to the islands. At its base, Ripley's Aquarium of Canada draws crowds to its underwater tunnel and stingray bay.\n\nBeyond the core, the city sprawls into distinct districts: the cobbled Distillery District, bustling Kensington Market, and the museum corridor around the Royal Ontario Museum and the Art Gallery of Ontario. The Toronto Islands, a short ferry ride away, offer car-free beaches and the postcard skyline view.\n\nThe city is also the launchpad for one of Canada's great day trips. Niagara Falls lies about 90 minutes south, and guided tours combine a Hornblower or Maid of the Mist boat ride with stops at wineries along the Niagara Parkway, making for an easy and memorable excursion.",
+   "highlights": [
+    "CN Tower SkyPod, glass floor and EdgeWalk",
+    "Ripley's Aquarium of Canada at the tower's base",
+    "Niagara Falls boat tours and day trips",
+    "Toronto Islands ferry and skyline views"
+   ],
+   "tips": [
+    "Book the CN Tower for sunset to catch both daylight and city lights, but reserve days ahead in summer.",
+    "Buy a combined CN Tower and Ripley's Aquarium ticket to save, as both sit side by side near Bremner Boulevard.",
+    "For Niagara, choose a small-group day tour to skip driving and parking, and bring a poncho for the boat ride.",
+    "Use the PRESTO card on the TTC subway and streetcars; many attractions cluster around Union and St Andrew stations."
+   ],
+   "faqs": [
+    {
+     "q": "How long should I budget for the CN Tower?",
+     "a": "Plan on one to two hours for the LookOut and glass floor. Add a further 90 minutes if you book the EdgeWalk, which includes a safety briefing and harness fitting. Sunset visits are the most popular, so arrive with a timed ticket to avoid the queue."
+    },
+    {
+     "q": "Is a Niagara Falls day trip from Toronto worth it?",
+     "a": "Yes. Niagara is roughly 90 minutes away, and most full-day tours include a boat ride to the base of the Horseshoe Falls plus stops at scenic viewpoints and sometimes a winery. It is comfortably done as a single day out, with hotel-area pickups available."
+    },
+    {
+     "q": "What is the best way to get around central Toronto?",
+     "a": "The TTC subway, streetcars and buses cover the downtown core well, and a PRESTO card or contactless payment makes fares easy. Many headline attractions are walkable from Union Station, and the island ferries leave from the nearby Jack Layton Ferry Terminal."
+    }
+   ],
+   "state": "ON",
+   "country": "Canada",
+   "country_code": "CAN",
+   "featured": true
+  },
+  "vancouver": {
+   "slug": "vancouver",
+   "country_slug": "canada",
+   "city_id": 100,
+   "name": "Vancouver",
+   "hero_image": "https://images.unsplash.com/photo-1559511260-66a654ae982a?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "Vancouver Tickets & Tours | Capilano, Grouse & Stanley Park",
+   "meta_description": "Book Vancouver tickets and tours: Capilano Suspension Bridge, Grouse Mountain Skyride, Stanley Park and whale-watching. Skip the line with mobile entry.",
+   "intro": "Vancouver is where the Pacific meets the mountains, a glass-towered city ringed by ocean, rainforest and ski slopes. The 400-hectare Stanley Park frames the downtown peninsula with its seawall, totem poles and the Vancouver Aquarium, all easily explored on foot or by bike. Just across the harbour, the North Shore mountains rise sharply within view of the city centre.\n\nTwo of the region's signature experiences sit minutes apart on the North Shore. The Capilano Suspension Bridge sways 70 metres above a temperate rainforest canyon and connects to treetop walkways, while a short hop away the Grouse Mountain Skyride gondola climbs to alpine viewpoints, wildlife refuge and, in winter, ski runs overlooking the city lights.\n\nDown at sea level, Granville Island's public market, the historic streets of Gastown with its steam clock, and seasonal whale-watching trips into the Salish Sea round out a city that pairs urban polish with the outdoors at every turn.",
+   "highlights": [
+    "Capilano Suspension Bridge and treetop walkways",
+    "Grouse Mountain Skyride gondola and alpine views",
+    "Stanley Park seawall and Vancouver Aquarium",
+    "Whale-watching trips into the Salish Sea"
+   ],
+   "tips": [
+    "Visit Capilano early or late to beat tour-bus crowds; your ticket includes the Cliffwalk and Treetops Adventure.",
+    "Take the free shuttle to Capilano from downtown in summer rather than driving, as parking is limited.",
+    "Pack layers for Grouse Mountain; the summit is noticeably cooler than the city, even in summer.",
+    "Whale-watching is best from May to October, when orca and humpback sightings peak in the Salish Sea."
+   ],
+   "faqs": [
+    {
+     "q": "Can I do Capilano Suspension Bridge and Grouse Mountain in one day?",
+     "a": "Yes. Both are on the North Shore and lie about 15 minutes apart by car or shuttle, so many visitors pair them in a single day. Allow two to three hours for Capilano's bridge, Cliffwalk and Treetops, then head up the Grouse Mountain Skyride for the afternoon."
+    },
+    {
+     "q": "Is Stanley Park free to visit?",
+     "a": "The park itself is free to enter and explore on foot or bike along the seawall. Paid attractions inside include the Vancouver Aquarium and the seasonal miniature train. Bike rentals are available near the Georgia Street entrance if you want to ride the full 9-kilometre loop."
+    },
+    {
+     "q": "When is the best time for whale-watching from Vancouver?",
+     "a": "The main season runs from April or May through October, when resident and transient orcas, humpbacks and other marine life are most active in the Salish Sea. Tours depart from downtown and Steveston; bring a warm windproof layer, as it is cool on the water even on sunny days."
+    }
+   ],
+   "state": "BC",
+   "country": "Canada",
+   "country_code": "CAN",
+   "featured": true
+  },
+  "montreal": {
+   "slug": "montreal",
+   "country_slug": "canada",
+   "city_id": 99,
+   "name": "Montreal",
+   "hero_image": "https://images.unsplash.com/photo-1519178614-68673b201f36?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "Montreal Tickets & Tours | Old Port & Notre-Dame Basilica",
+   "meta_description": "Book Montreal tickets and tours: Notre-Dame Basilica, Old Port cruises, Mount Royal and walking tours of Old Montreal. Skip the line with instant mobile entry.",
+   "intro": "Montreal is North America's most European city, a French-speaking island metropolis where 17th-century stone facades meet a buzzing arts and food scene. The heart of it is Old Montreal, where cobblestone streets lead to the Gothic Revival Notre-Dame Basilica, whose deep-blue, star-studded ceiling and AURA light show leave visitors awestruck.\n\nAlong the St Lawrence River, the Old Port has been reinvented as a riverside playground, with sightseeing cruises, a giant observation wheel and the science centre drawing families and couples alike. Just inland, the Place Jacques-Cartier square hums with terraces, buskers and horse-drawn caleches.\n\nRising above it all is Mount Royal, the leafy hill that gives the city its name. The Kondiaronk Belvedere offers a sweeping panorama of downtown and the river, a favourite at sunset. Add the bagel-and-smoked-meat institutions of the Plateau and a calendar packed with festivals, and Montreal makes a compelling short break in any season.",
+   "highlights": [
+    "Notre-Dame Basilica and the AURA light experience",
+    "Old Port of Montreal cruises and riverside walks",
+    "Old Montreal cobblestone streets and Place Jacques-Cartier",
+    "Mount Royal lookout over downtown and the river"
+   ],
+   "tips": [
+    "Book Notre-Dame Basilica entry ahead and consider the evening AURA show for a different, immersive experience.",
+    "Explore Old Montreal on foot; the cobblestones are uneven, so wear comfortable shoes.",
+    "Time a Mount Royal visit for late afternoon to catch the city skyline glowing at sunset.",
+    "Most locals speak both French and English, but a simple bonjour goes a long way in shops and cafes."
+   ],
+   "faqs": [
+    {
+     "q": "Do I need a ticket to enter Notre-Dame Basilica?",
+     "a": "Yes, there is an admission charge for general visits, which helps maintain the basilica. Tickets can be bought online to secure entry and skip the line, and self-guided or guided options are available. The separate evening AURA multimedia show requires its own ticket."
+    },
+    {
+     "q": "What is there to do at the Old Port of Montreal?",
+     "a": "The Old Port stretches along the St Lawrence River and offers sightseeing and jet-boat cruises, the Montreal Science Centre, a tall observation wheel and seasonal activities such as skating in winter. It is an easy walk from Old Montreal's historic streets and makes a relaxed half-day."
+    },
+    {
+     "q": "Is Montreal a good destination if I do not speak French?",
+     "a": "Absolutely. Montreal is officially French-speaking, but the tourism and hospitality sectors are largely bilingual, and you will have no trouble navigating attractions, restaurants and transit in English. Learning a few French greetings is appreciated and adds to the experience."
+    }
+   ],
+   "state": "QC",
+   "country": "Canada",
+   "country_code": "CAN",
+   "featured": true
+  },
+  "london": {
+   "slug": "london",
+   "country_slug": "uk",
+   "city_id": 2,
+   "name": "London",
+   "hero_image": "https://images.unsplash.com/photo-1529655683826-aba9b3e77383?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "London Tickets & Top Attractions | TickedBus",
+   "meta_description": "Book London attraction tickets and tours: Tower of London, London Eye, West End shows, Warner Bros. Harry Potter Studio Tour and more. Skip the line from £15.",
+   "intro": "London is a city of layers, where Roman walls, royal palaces and gleaming skyscrapers share the same skyline. Cross Tower Bridge to reach the Tower of London and its Crown Jewels, then ride the London Eye for sweeping views over the Thames, Big Ben and the Houses of Parliament. World-class museums such as the British Museum and the Natural History Museum offer free entry, making the capital surprisingly accessible.\n\nThe city's neighbourhoods each have a distinct character. Soho and the West End pulse with theatre and nightlife, Camden serves up markets and music, while South Kensington clusters the great museums. Across the river, the South Bank links the Tate Modern, Shakespeare's Globe and the Borough Market food stalls in one easy walk.\n\nNo trip is complete without an excursion to the Warner Bros. Studio Tour, where the Making of Harry Potter draws fans from around the world. Combined with West End musicals and a ride on the historic Underground, London delivers an itinerary that easily fills several days. Book timed tickets ahead to skip the queues at the busiest sights.",
+   "highlights": [
+    "Tower of London and the Crown Jewels",
+    "London Eye views over the Thames",
+    "West End musicals and theatre",
+    "Warner Bros. Studio Tour: Harry Potter"
+   ],
+   "tips": [
+    "Get a contactless card or Oyster for the Tube and buses; daily fares are capped automatically.",
+    "Many top museums, including the British Museum and Tate Modern, are free, so budget for paid sights and shows.",
+    "Book Warner Bros. Studio Tour and popular West End shows weeks ahead, as they sell out fast.",
+    "Walk the South Bank from Westminster to Tower Bridge to see many landmarks in one riverside stroll."
+   ],
+   "faqs": [
+    {
+     "q": "What are the best attractions to book in London?",
+     "a": "The Tower of London, London Eye, Westminster Abbey and a West End show top most lists, along with the Warner Bros. Studio Tour for Harry Potter fans. Pair paid sights with free museums like the British Museum and Natural History Museum for a balanced visit."
+    },
+    {
+     "q": "How much do London attraction tickets cost?",
+     "a": "Standard adult entry to major paid attractions typically runs £25 to £35, with the London Eye and Tower of London in that range. West End show seats start around £25 and climb to £100-plus for premium spots. Booking online in advance often beats gate prices, and many museums are free."
+    },
+    {
+     "q": "How do I get around London?",
+     "a": "The Underground (Tube), buses, the DLR and Overground cover the city, and contactless payment is accepted everywhere with daily fare caps. Central landmarks along the Thames are walkable, and apps make planning routes simple. Avoid driving in the centre due to congestion charges."
+    }
+   ],
+   "state": "London",
+   "country": "United Kingdom",
+   "country_code": "GBR",
+   "featured": true
+  },
+  "edinburgh": {
+   "slug": "edinburgh",
+   "country_slug": "uk",
+   "city_id": 205,
+   "name": "Edinburgh",
+   "hero_image": "https://images.unsplash.com/photo-1535448033526-c0e85c9e6968?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "Edinburgh Tickets & Top Attractions | TickedBus",
+   "meta_description": "Book Edinburgh attraction tickets and tours: Edinburgh Castle, Royal Yacht Britannia, Arthur's Seat and Royal Mile experiences. Skip the line from £14.",
+   "intro": "Edinburgh wears its history dramatically, crowned by Edinburgh Castle perched on an extinct volcanic plug above the city. From the castle esplanade, the cobbled Royal Mile slopes down through the medieval Old Town to the Palace of Holyroodhouse, lined with closes, kirks and whisky shops. The contrast with the elegant Georgian New Town, a UNESCO World Heritage Site, gives Scotland's capital its singular character.\n\nThe outdoors is never far away. A hike up Arthur's Seat rewards you with panoramic views across the city to the Firth of Forth, while Calton Hill offers an easier climb to monuments and sunset vistas. Down at the waterfront in Leith, the former Royal Yacht Britannia is permanently moored and open to tour.\n\nEdinburgh transforms each August during the Fringe, the world's largest arts festival, when streets fill with performers and pop-up venues. The city is equally magical in winter, with Hogmanay celebrations and Christmas markets. Whenever you visit, book Edinburgh Castle and Britannia tickets ahead to avoid long queues at these headline attractions.",
+   "highlights": [
+    "Edinburgh Castle above the Old Town",
+    "Hike up Arthur's Seat for city views",
+    "The Royal Yacht Britannia in Leith",
+    "The Royal Mile and Edinburgh Fringe"
+   ],
+   "tips": [
+    "Book Edinburgh Castle for a morning slot to beat midday crowds, especially in summer.",
+    "Wear sturdy shoes for the cobbled Royal Mile and the climb up Arthur's Seat.",
+    "Visit in August for the Fringe, but reserve accommodation and tickets months ahead as prices spike.",
+    "Pack layers and a waterproof; Edinburgh weather changes quickly even on clear days."
+   ],
+   "faqs": [
+    {
+     "q": "What are the top attractions in Edinburgh?",
+     "a": "Edinburgh Castle is the headline sight, followed by the Royal Mile, the Palace of Holyroodhouse and the Royal Yacht Britannia in Leith. For free outdoor experiences, hike Arthur's Seat or climb Calton Hill for some of the best views in the city."
+    },
+    {
+     "q": "How much does Edinburgh Castle cost to visit?",
+     "a": "Standard adult admission to Edinburgh Castle is around £18 to £20 when booked online, with discounts for children and concessions. The Royal Yacht Britannia runs roughly £18 to £22 for adults. Booking timed tickets in advance is recommended and often slightly cheaper than buying at the gate."
+    },
+    {
+     "q": "When is the best time to visit Edinburgh?",
+     "a": "May, June and September bring milder weather and long daylight without August's peak crowds. The city is at its liveliest during the Fringe festival in August, though prices and visitor numbers surge. Winter offers atmospheric Hogmanay celebrations and Christmas markets, with shorter, colder days."
+    }
+   ],
+   "state": "Scotland",
+   "country": "United Kingdom",
+   "country_code": "GBR",
+   "featured": true
+  },
+  "rome": {
+   "slug": "rome",
+   "country_slug": "italy",
+   "city_id": 124,
+   "name": "Rome",
+   "hero_image": "https://images.unsplash.com/photo-1555992828-ca4dbe41d294?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "Rome Tickets: Colosseum & Vatican Skip-the-Line 2026",
+   "meta_description": "Book Rome attraction tickets and skip-the-line tours: Colosseum, Roman Forum, Vatican Museums and Sistine Chapel. Reserve guided experiences from EUR 16.",
+   "intro": "Rome wears its history in layers. The Colosseum and the Roman Forum anchor the ancient core, where you can walk the same paths as emperors and gladiators, then climb Palatine Hill for sweeping views over the ruins. A combined ticket covers all three, and a guided tour brings the rubble back to life.\n\nAcross the Tiber lies Vatican City, home to the Vatican Museums, the Raphael Rooms and Michelangelo's ceiling in the Sistine Chapel, leading into the vastness of St Peter's Basilica. This is the single most queue-prone spot in the city, so an early-entry or skip-the-line ticket is invaluable.\n\nBetween the headline sights, Rome is made for wandering: toss a coin in the Trevi Fountain, climb the Spanish Steps, admire the Pantheon's open oculus, and end the evening with carbonara in cobbled Trastevere. Most central marvels are free to view from the street, but the ones that charge admission are the ones worth booking ahead.",
+   "highlights": [
+    "Colosseum, Roman Forum & Palatine Hill combined entry",
+    "Vatican Museums & Sistine Chapel skip-the-line",
+    "St Peter's Basilica and dome climb",
+    "Trevi Fountain, Pantheon & Trastevere strolls"
+   ],
+   "tips": [
+    "Buy a combined Colosseum-Forum-Palatine ticket; it is the same price as separate entries and only sold for a timed slot.",
+    "Visit the Vatican Museums at opening or on a late Friday to dodge the worst crowds; book the slot online in advance.",
+    "Cover shoulders and knees for St Peter's and the Sistine Chapel or you will be refused entry.",
+    "Carry a refillable bottle and use the free 'nasoni' street fountains; Roman summers are hot and tap water is safe."
+   ],
+   "faqs": [
+    {
+     "q": "How do I skip the line at the Colosseum?",
+     "a": "Book a timed-entry ticket or a guided tour online before you arrive. The Colosseum only admits visitors in 15-minute slots, so a reserved ticket lets you bypass the standard queue. Tours that include access to the arena floor or underground tunnels must be booked well ahead, as they sell out quickly."
+    },
+    {
+     "q": "Are the Vatican Museums and St Peter's the same ticket?",
+     "a": "No. The Vatican Museums and Sistine Chapel require a paid ticket, while St Peter's Basilica is free to enter (though the dome climb has a small fee). Many guided tours bundle the museums with the basilica via an internal passage, saving you from queuing twice and re-clearing security."
+    },
+    {
+     "q": "How far in advance should I book Rome attractions?",
+     "a": "Aim for at least one to two weeks ahead in spring and autumn, and three to four weeks in July and August. Colosseum underground tours and early-morning Vatican slots are the first to disappear, so book those as soon as your dates are fixed."
+    }
+   ],
+   "state": "Lazio",
+   "country": "Italy",
+   "country_code": "ITA",
+   "featured": true
+  },
+  "venice": {
+   "slug": "venice",
+   "country_slug": "italy",
+   "city_id": 126,
+   "name": "Venice",
+   "hero_image": "https://images.unsplash.com/photo-1514890547357-a9ee288728e0?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "Venice Tickets: St Mark's, Doge's Palace & Gondolas",
+   "meta_description": "Book Venice attraction tickets and skip-the-line tours: St Mark's Basilica, Doge's Palace and gondola rides. Reserve canal experiences from EUR 25.",
+   "intro": "Venice is a city built on water, where 100-plus islands are stitched together by canals and arched bridges instead of roads. The heart of it all is Piazza San Marco, framed by the golden mosaics of St Mark's Basilica and the Gothic arcades of the Doge's Palace, where a Secret Itineraries tour leads across the Bridge of Sighs into the old prisons.\n\nThe Grand Canal curves through the city like a watery main street, best seen from a vaporetto or a classic gondola gliding beneath the Rialto Bridge. Skip-the-line tickets matter here too, as the basilica and palace draw long queues from late morning onward.\n\nBeyond the marquee sights, lose yourself in the quiet lanes of Dorsoduro and Cannaregio, browse the fish market near Rialto, and take a short boat to colourful Burano or glass-blowing Murano. Mornings and evenings, after the day-trippers leave, are when Venice feels most like itself.",
+   "highlights": [
+    "St Mark's Basilica with golden mosaics",
+    "Doge's Palace & Bridge of Sighs",
+    "Gondola ride through the back canals",
+    "Rialto Bridge, Burano & Murano excursions"
+   ],
+   "tips": [
+    "Book a timed St Mark's Basilica slot to skip the queue; large bags must be left at a nearby free deposit before entry.",
+    "Official gondola fares are fixed (around EUR 80–90 for a shared 30-minute daytime ride); confirm the price and route before stepping aboard.",
+    "Buy a vaporetto travel pass if you plan several water-bus trips; single tickets are pricey at roughly EUR 9.50 each.",
+    "Cover shoulders and knees for St Mark's Basilica, and arrive early or late to beat the cruise-ship crowds in the square."
+   ],
+   "faqs": [
+    {
+     "q": "Is St Mark's Basilica free to enter?",
+     "a": "Basic entry to St Mark's Basilica carries a small fee, and you can reserve a timed slot online to skip the long queue. Add-on tickets cover the Pala d'Oro altarpiece, the museum and the terrace, which offers a close-up of the famous bronze horses and a view over the square."
+    },
+    {
+     "q": "How much does a gondola ride cost in Venice?",
+     "a": "Gondola prices are officially set by the city. Expect roughly EUR 80 to EUR 90 for a standard 30-minute daytime ride and around EUR 100 to EUR 120 after about 7pm. The price is per gondola (up to five or six passengers), not per person, so sharing splits the cost."
+    },
+    {
+     "q": "What is the best way to skip lines at the Doge's Palace?",
+     "a": "Reserve a timed ticket or a guided Secret Itineraries tour online in advance. The combined St Mark's Square ticket also grants palace entry. Going first thing in the morning, before tour groups arrive, gives you the quietest walk through the grand chambers and across the Bridge of Sighs."
+    }
+   ],
+   "state": "Veneto",
+   "country": "Italy",
+   "country_code": "ITA",
+   "featured": true
+  },
+  "florence": {
+   "slug": "florence",
+   "country_slug": "italy",
+   "city_id": 123,
+   "name": "Florence",
+   "hero_image": "https://images.unsplash.com/photo-1528114039593-4366cc08227d?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "Florence Tickets: Uffizi, Accademia & Duomo 2026",
+   "meta_description": "Book Florence attraction tickets and skip-the-line tours: Uffizi Gallery, Accademia (David) and the Duomo. Reserve Renaissance experiences from EUR 16.",
+   "intro": "Florence is the cradle of the Renaissance, a compact city where masterpieces sit on almost every corner. The Uffizi Gallery holds Botticelli's Birth of Venus and works by Leonardo and Raphael, while the Galleria dell'Accademia is home to Michelangelo's David, carved from a single block of marble.\n\nDominating the skyline is the Duomo, whose red-tiled dome by Brunelleschi remains an engineering marvel; climbing it, or the adjacent Giotto's bell tower, rewards you with rooftop views across the terracotta city. These star attractions all draw heavy queues, so timed skip-the-line tickets are the smart move.\n\nWander across the medieval Ponte Vecchio with its goldsmiths' shops, sip Chianti in a wine bar, and climb to Piazzale Michelangelo at golden hour for the classic panorama. Florence is also the gateway to Tuscany, with easy day trips to Pisa, Siena and the rolling vineyards of the Chianti hills.",
+   "highlights": [
+    "Uffizi Gallery: Botticelli & Renaissance masters",
+    "Accademia Gallery: Michelangelo's David",
+    "Duomo dome climb & Giotto's bell tower",
+    "Ponte Vecchio and Piazzale Michelangelo views"
+   ],
+   "tips": [
+    "Reserve Uffizi and Accademia tickets for a set time slot; both routinely sell out and the David line can exceed an hour.",
+    "Dome and bell-tower climbs require a timed reservation and involve hundreds of steps with no lift, so book and pace accordingly.",
+    "The historic centre is small and walkable; wear comfortable shoes and skip taxis for most sights.",
+    "Many museums close on Mondays, so plan your David and Uffizi visits for another day to avoid disappointment."
+   ],
+   "faqs": [
+    {
+     "q": "Where can I see Michelangelo's David?",
+     "a": "The original David stands in the Galleria dell'Accademia, not outside in the piazza (that is a replica). Book a timed skip-the-line ticket online, as the standard queue often runs over an hour in peak season. The museum also displays Michelangelo's unfinished Prisoners sculptures nearby."
+    },
+    {
+     "q": "Do I need a separate ticket to climb the Duomo?",
+     "a": "Yes. Entry to the cathedral itself is free, but climbing Brunelleschi's dome requires a timed-reservation pass, usually sold as part of a combined ticket that also covers Giotto's bell tower, the baptistery and the museum. Book the dome slot in advance, as spaces are limited."
+    },
+    {
+     "q": "Can I visit the Uffizi and Accademia on the same day?",
+     "a": "Yes, and many visitors do, but book separate timed entries with a few hours between them. Both are busiest mid-morning to early afternoon, so an early Uffizi slot followed by a late-afternoon Accademia visit works well. Remember both galleries are closed on Mondays."
+    }
+   ],
+   "state": "Tuscany",
+   "country": "Italy",
+   "country_code": "ITA",
+   "featured": true
+  },
+  "milan": {
+   "slug": "milan",
+   "country_slug": "italy",
+   "city_id": 135,
+   "name": "Milan",
+   "hero_image": "https://images.unsplash.com/photo-1520440229-6469a149ac59?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "Milan Tickets: Last Supper, Duomo & La Scala 2026",
+   "meta_description": "Book Milan attraction tickets and skip-the-line tours: Leonardo's Last Supper, the Duomo rooftop and La Scala. Reserve experiences from EUR 16.",
+   "intro": "Milan blends Gothic grandeur with cutting-edge style. At its centre rises the Duomo, a vast marble cathedral bristling with spires; a rooftop ticket lets you walk among the pinnacles for views that stretch to the Alps on clear days. Beside it, the glass-roofed Galleria Vittorio Emanuele II sets the tone for Italy's fashion capital.\n\nThe city's most coveted sight is Leonardo da Vinci's Last Supper, painted on the wall of Santa Maria delle Grazie. Only a small number of visitors enter every 15 minutes, so tickets must be reserved well in advance and frequently sell out weeks ahead. Opera lovers, meanwhile, gravitate to the legendary Teatro alla Scala.\n\nBeyond the icons, Milan rewards exploration: the Sforza Castle and its museums, the canal-side Navigli district for aperitivo, and the Brera quarter's galleries and boutiques. As a major rail hub, it also makes an easy base for day trips to Lake Como.",
+   "highlights": [
+    "Leonardo's Last Supper at Santa Maria delle Grazie",
+    "Duomo cathedral & rooftop terraces",
+    "Galleria Vittorio Emanuele II & La Scala",
+    "Sforza Castle and Navigli canal district"
+   ],
+   "tips": [
+    "Book Last Supper tickets as early as possible, often weeks ahead; entry is strictly timed and limited to small groups of around 30.",
+    "Buy a Duomo rooftop ticket and take the lift to save the stairs; you can walk among the spires up top.",
+    "Dress code applies inside the Duomo: cover shoulders and knees, the same as other major Italian churches.",
+    "Milan is a rail hub, so consider a day trip to Lake Como, under an hour away by train from Milano Centrale."
+   ],
+   "faqs": [
+    {
+     "q": "How do I get tickets to see Leonardo's Last Supper?",
+     "a": "Reserve online as far ahead as you can, since only about 30 visitors are admitted per 15-minute slot and tickets sell out weeks in advance. Guided tours often release reserved blocks of tickets when individual slots are gone, so they can be the best route to securing entry."
+    },
+    {
+     "q": "Can you go up to the Duomo rooftop?",
+     "a": "Yes. A rooftop ticket lets you walk among the cathedral's marble spires and statues, with options to take the stairs or the lift. Buy a timed ticket online to skip the queue in the piazza, and consider a combined pass that also covers the cathedral interior and museum."
+    },
+    {
+     "q": "What is the best time to visit Milan's attractions?",
+     "a": "Spring and autumn offer pleasant weather and lighter crowds, while the city empties in August when many locals leave. Mornings are best for the Duomo rooftop before the midday rush. Always check La Scala and museum schedules, as opera seasons and Mondays affect opening hours."
+    }
+   ],
+   "state": "Lombardy",
+   "country": "Italy",
+   "country_code": "ITA",
+   "featured": true
+  },
+  "barcelona": {
+   "slug": "barcelona",
+   "country_slug": "spain",
+   "city_id": 122,
+   "name": "Barcelona",
+   "hero_image": "https://images.unsplash.com/photo-1650964827770-421afa7960ac?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "Barcelona Tickets: Sagrada Familia & Park Guell Passes",
+   "meta_description": "Book Barcelona attraction tickets: skip-the-line Sagrada Familia, Park Guell, Casa Batllo and Camp Nou. Timed entry, combo passes and guided tours from EUR 12.",
+   "intro": "Barcelona is Antoni Gaudi's open-air gallery, where the soaring towers of the Sagrada Familia, the mosaic terraces of Park Guell and the rippling facade of Casa Batllo turn an ordinary city walk into a tour of Modernista genius. The Sagrada Familia alone draws millions each year, so a timed skip-the-line ticket is close to essential.\n\nBeyond Gaudi, the Gothic Quarter's medieval lanes lead to the cathedral and Placa Reial, the tree-lined Ramblas spill into the bustling Boqueria market, and football fans make the pilgrimage to Camp Nou, home of FC Barcelona. La Pedrera, the Picasso Museum and the Magic Fountain of Montjuic round out an unusually dense list of must-sees.\n\nThe city is compact and walkable, with an efficient metro linking the seafront Barceloneta beaches to the hilltop viewpoints of Montjuic and Tibidabo. Combo tickets that pair several Gaudi houses, or a hop-on hop-off bus with attraction entry, are a smart way to cover ground quickly.",
+   "highlights": [
+    "Skip-the-line Sagrada Familia with tower access",
+    "Park Guell mosaic terraces and Gaudi houses",
+    "Camp Nou stadium and FC Barcelona experience",
+    "Gothic Quarter, Las Ramblas and the Boqueria"
+   ],
+   "tips": [
+    "Book the Sagrada Familia weeks ahead; tower slots are timed and sell out fastest in summer.",
+    "Visit Park Guell early morning or late afternoon to dodge the midday heat and crowds in the Monumental Zone.",
+    "Use the metro and the T-Casa combo tickets to link Gaudi sites without long walks between them.",
+    "Keep valuables secure on Las Ramblas and the metro, where pickpocketing is common in peak season."
+   ],
+   "faqs": [
+    {
+     "q": "How far ahead should I book Sagrada Familia tickets?",
+     "a": "Aim for at least two to three weeks in peak season (April to October), and earlier if you want a tower slot or a guided tour. Tickets use timed entry and regularly sell out, so same-day availability is unreliable, especially for the Nativity and Passion tower climbs."
+    },
+    {
+     "q": "Is the Barcelona City Pass or a combo ticket worth buying?",
+     "a": "If you plan to see several major sights, yes. Passes that bundle the Sagrada Familia, Park Guell and airport transfers, or combos covering multiple Gaudi houses, can save money and time versus buying each ticket separately and queuing at each entrance."
+    },
+    {
+     "q": "Can I visit Camp Nou during the stadium renovation?",
+     "a": "Access varies as the Espai Barca redevelopment progresses, so availability and the exact experience can change. Check current ticket options before you travel, as tours, the museum and matchday access may shift while construction work continues at the stadium."
+    }
+   ],
+   "state": "Catalonia",
+   "country": "Spain",
+   "country_code": "ESP",
+   "featured": true
+  },
+  "madrid": {
+   "slug": "madrid",
+   "country_slug": "spain",
+   "city_id": 121,
+   "name": "Madrid",
+   "hero_image": "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "Madrid Tickets: Prado Museum & Royal Palace Passes",
+   "meta_description": "Book Madrid attraction tickets: Prado Museum, Royal Palace, Santiago Bernabeu and Reina Sofia. Skip-the-line entry, art passes and guided tours from EUR 11.",
+   "intro": "Madrid is a capital built for art lovers, anchored by the Golden Triangle of the Prado, the Reina Sofia and the Thyssen-Bornemisza, three world-class museums within a short walk of one another. The Prado's Velazquez and Goya masterpieces and the Reina Sofia's home for Picasso's Guernica are reason enough to plan a visit around timed museum tickets.\n\nThe Royal Palace of Madrid, the largest functioning royal palace in Western Europe by floor area, anchors the historic centre alongside the Almudena Cathedral and the arcaded Plaza Mayor. Football fans head to the Santiago Bernabeu, Real Madrid's freshly redeveloped stadium, while the leafy Retiro Park and the Gran Via's grand architecture give the city its unmistakable rhythm.\n\nMadrid runs late, with tapas bars and terraces busy well past midnight, and its compact centre is easy to cover on foot. Art-pass combos covering the three main museums, plus skip-the-line palace entry, make for an efficient cultural itinerary.",
+   "highlights": [
+    "Prado Museum masterpieces by Velazquez and Goya",
+    "Royal Palace of Madrid and Almudena Cathedral",
+    "Reina Sofia and Picasso's Guernica",
+    "Santiago Bernabeu stadium tour"
+   ],
+   "tips": [
+    "Buy a Paseo del Arte combo if you want the Prado, Reina Sofia and Thyssen, as it bundles all three at a discount.",
+    "The Prado offers free entry in the last two hours of the day, but queues are long; a timed ticket is faster.",
+    "Book Royal Palace tickets ahead, as it occasionally closes for official state ceremonies at short notice.",
+    "Embrace Madrid's late schedule: dinner rarely starts before 9pm and many sights are quieter mid-afternoon."
+   ],
+   "faqs": [
+    {
+     "q": "What is the Paseo del Arte ticket and is it worth it?",
+     "a": "It is a combined ticket covering Madrid's three flagship museums, the Prado, the Reina Sofia and the Thyssen-Bornemisza, at a lower total price than three separate entries. If you intend to visit all three, it saves money and lets you skip individual ticket lines at each museum."
+    },
+    {
+     "q": "Can I see Guernica in Madrid, and where?",
+     "a": "Yes. Pablo Picasso's Guernica is displayed at the Reina Sofia museum, not the Prado. It is one of the museum's centrepieces; arrive early or book a timed slot, as the room can become crowded, and note that photography of the painting is not permitted."
+    },
+    {
+     "q": "Is the Santiago Bernabeu open for stadium tours?",
+     "a": "The Bernabeu Tour reopened following Real Madrid's major redevelopment and now features modern interactive exhibits. Availability can be limited on matchdays and during events, so book in advance and check the schedule, as tour routes occasionally change around fixtures."
+    }
+   ],
+   "state": "Madrid",
+   "country": "Spain",
+   "country_code": "ESP",
+   "featured": true
+  },
+  "seville": {
+   "slug": "seville",
+   "country_slug": "spain",
+   "city_id": 144,
+   "name": "Seville",
+   "hero_image": "https://images.unsplash.com/photo-1559386081-325882507af7?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "Seville Tickets: Real Alcazar & Cathedral Giralda Passes",
+   "meta_description": "Book Seville attraction tickets: Real Alcazar, Seville Cathedral and Giralda, Plaza de Espana and flamenco shows. Skip-the-line entry and guided tours from EUR 10.",
+   "intro": "Seville is the soul of Andalusia, a city of orange-scented courtyards, Mudejar palaces and the rhythmic stamp of flamenco. Its crown jewel is the Real Alcazar, a still-used royal palace whose intricate tilework and lush gardens earned it both UNESCO status and a starring role as a Game of Thrones filming location, so timed tickets sell quickly.\n\nThe Seville Cathedral, the largest Gothic cathedral in the world, holds the tomb of Christopher Columbus and is crowned by the Giralda, a former minaret you climb by ramp for sweeping rooftop views. Nearby, the breathtaking Plaza de Espana curves around a canal in a semicircle of ceramic-tiled alcoves, while the Santa Cruz quarter's maze of whitewashed lanes invites slow wandering.\n\nEvenings belong to flamenco, with intimate tablao shows across the city. Seville is best explored on foot in the cooler hours, as summer afternoons here are among the hottest in mainland Europe.",
+   "highlights": [
+    "Real Alcazar palace and Mudejar gardens",
+    "Seville Cathedral and the Giralda climb",
+    "Plaza de Espana and Maria Luisa Park",
+    "Authentic flamenco tablao shows"
+   ],
+   "tips": [
+    "Book Real Alcazar tickets online with a timed slot; on-the-day queues are long and entry is capped.",
+    "Climb the Giralda via its 35 ramps rather than stairs, and go early for the clearest rooftop views.",
+    "Visit Plaza de Espana at opening or near sunset for softer light and far fewer crowds in the photos.",
+    "Reserve an evening flamenco tablao in advance, as the most respected venues in Santa Cruz fill up fast."
+   ],
+   "faqs": [
+    {
+     "q": "Do I need to pre-book the Real Alcazar in Seville?",
+     "a": "Strongly recommended. The Real Alcazar caps daily visitor numbers and uses timed entry, so slots, particularly mornings, sell out well ahead in spring and autumn. Booking online with a fixed time lets you bypass the long on-site queue and guarantees you get in."
+    },
+    {
+     "q": "Can I buy a combined ticket for the Cathedral and Giralda?",
+     "a": "Yes. Entry to Seville Cathedral includes access to the Giralda bell tower, which you ascend via a series of gentle ramps rather than stairs. Combined tickets that also cover the nearby Church of the Saviour are available and offer good value if you plan to see both."
+    },
+    {
+     "q": "Where is the best place to see flamenco in Seville?",
+     "a": "Seville is widely considered the birthplace of flamenco, and intimate tablao venues in the Santa Cruz and Triana neighbourhoods offer the most atmospheric performances. Book ahead for an evening show, as the better-known venues are small and sell out, especially on weekends and in high season."
+    }
+   ],
+   "state": "Andalusia",
+   "country": "Spain",
+   "country_code": "ESP",
+   "featured": true
+  },
+  "paris": {
+   "slug": "paris",
+   "country_slug": "france",
+   "city_id": 125,
+   "name": "Paris",
+   "hero_image": "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "Paris Tickets: Eiffel Tower, Louvre & Seine Cruises",
+   "meta_description": "Book Paris tickets and tours: skip-the-line Eiffel Tower and Louvre entry, Seine river cruises, Versailles and Disneyland Paris. Instant mobile tickets from €15.",
+   "intro": "Paris rewards both first-timers and returning visitors. The Eiffel Tower anchors the skyline, best seen at dusk when it sparkles on the hour, while the Louvre, the world's largest art museum, holds the Mona Lisa, the Venus de Milo and tens of thousands of works across former royal palaces. A short walk along the Seine leads to the Musée d'Orsay and its unrivalled Impressionist collection, housed in a former railway station.\n\nThe city is a patchwork of distinctive quartiers: bohemian Montmartre climbing to the white domes of Sacré-Cœur, the café-lined Latin Quarter, the boutiques of Le Marais and the grand sweep from the Arc de Triomphe down the Champs-Élysées. A Seine river cruise threads past Notre-Dame, the Conciergerie and the Pont Alexandre III.\n\nMany travellers pair central Paris with a half-day trip to the Palace of Versailles or a full day at Disneyland Paris, both reachable by RER train. Skip-the-line tickets are strongly advised for the Eiffel Tower and the Louvre, where queues can otherwise stretch for hours in summer.",
+   "highlights": [
+    "Skip-the-line Eiffel Tower summit access",
+    "Louvre and Musée d'Orsay masterpieces",
+    "Evening Seine river dinner cruises",
+    "Day trips to Versailles and Disneyland Paris"
+   ],
+   "tips": [
+    "Book Eiffel Tower and Louvre tickets online days ahead; both use strict timed-entry slots that sell out in summer.",
+    "Buy a carnet of metro tickets or a Navigo day pass; the metro is faster than taxis across the city centre.",
+    "Visit major museums on weekday mornings or late evenings to avoid the heaviest crowds; many close on Mondays or Tuesdays.",
+    "For Versailles, arrive early and combine the Palace with the Gardens, which host musical fountain shows on select days."
+   ],
+   "faqs": [
+    {
+     "q": "How do I skip the line at the Eiffel Tower?",
+     "a": "Buy a timed-entry ticket online in advance and choose between elevator access to the second floor or all the way to the summit. You still pass through airport-style security, but you avoid the long ticket-office queue. Sunset slots are the most popular, so book early."
+    },
+    {
+     "q": "Is the Louvre too big to see in one visit?",
+     "a": "The Louvre is vast, so most visitors focus on highlights such as the Mona Lisa, the Venus de Milo, the Winged Victory and the Egyptian antiquities. Plan two to three hours, enter via the less-crowded Carrousel or Porte des Lions entrances, and pre-book a timed slot."
+    },
+    {
+     "q": "Can I do a day trip to Versailles or Disneyland from Paris?",
+     "a": "Yes. The Palace of Versailles is about 45 minutes by RER C, ideal for a half or full day. Disneyland Paris is roughly 40 minutes by RER A to Marne-la-Vallée and works best as a full-day outing. Both are popular, so book tickets ahead in peak season."
+    }
+   ],
+   "state": "Île-de-France",
+   "country": "France",
+   "country_code": "FRA",
+   "featured": true
+  },
+  "nice": {
+   "slug": "nice",
+   "country_slug": "france",
+   "city_id": 174,
+   "name": "Nice",
+   "hero_image": "https://images.unsplash.com/photo-1491166617655-0723a0999cfc?auto=format&fit=crop&w=1600&q=80",
+   "meta_title": "Nice Tickets & Tours: Old Town, Monaco & Èze Trips",
+   "meta_description": "Book Nice tickets and Riviera day trips: Promenade des Anglais, Old Town walks, Castle Hill views and tours to Monaco and Èze. Instant mobile tickets from €11.",
+   "intro": "Nice is the unofficial capital of the French Riviera, where pastel facades meet the deep blue of the Baie des Anges. The palm-lined Promenade des Anglais sweeps along the pebble shore, while the maze of Vieux Nice (Old Town) hides baroque churches, the bustling Cours Saleya flower-and-produce market and shops selling socca, the city's chickpea street snack. For the best panorama, climb or take the lift up Castle Hill (Colline du Château) above the harbour.\n\nThe city is also a cultural stop in its own right, home to the Matisse Museum and the Marc Chagall National Museum, both set among the leafy villas of the Cimiez district. Its location makes Nice the ideal base for the wider coast.\n\nDay trips are the highlight here: the principality of Monaco with its casino and palace, the clifftop medieval village of Èze, glamorous Cannes and the perfume town of Grasse are all within an hour by train or coach. The local train hugging the coastline is one of the most scenic and affordable ways to explore.",
+   "highlights": [
+    "Strolling the Promenade des Anglais and Baie des Anges",
+    "Exploring Vieux Nice and the Cours Saleya market",
+    "Panoramic views from Castle Hill",
+    "Day trips to Monaco, Èze and Cannes"
+   ],
+   "tips": [
+    "Pack water shoes; Nice's beaches are pebbled rather than sandy, which surprises many first-time visitors.",
+    "Take the regional TER train along the coast to reach Monaco, Èze-sur-Mer and Cannes cheaply, often for under €10 each way.",
+    "Visit the Cours Saleya market in Vieux Nice in the morning for produce and flowers; it switches to antiques on Mondays.",
+    "Ride the lift up Castle Hill rather than climbing the steps if it's hot, then walk back down through the Old Town."
+   ],
+   "faqs": [
+    {
+     "q": "What are the best day trips from Nice?",
+     "a": "Monaco, the hilltop village of Èze, Cannes and the perfume town of Grasse are all within about an hour. Monaco and Èze are the most popular, easily combined on a single guided tour, while the coastal train offers a budget-friendly, scenic way to reach Monaco and Cannes independently."
+    },
+    {
+     "q": "Are the beaches in Nice sandy?",
+     "a": "No. Nice's beaches along the Baie des Anges are made of smooth pebbles rather than sand. Bring water shoes and a padded mat for comfort. There are both free public sections and private beach clubs where you can rent a sunlounger and parasol for the day."
+    },
+    {
+     "q": "How do I get from Nice Airport to the city centre?",
+     "a": "Nice Côte d'Azur Airport is just west of the city. The tram line 2 runs directly to the centre and Old Town in about 25 minutes for a few euros, while taxis take 15 to 20 minutes. The tram is the fastest and most economical option for most arrivals."
+    }
+   ],
+   "state": "Provence-Alpes-Côte d'Azur",
+   "country": "France",
+   "country_code": "FRA",
+   "featured": true
+  }
+ }
+}

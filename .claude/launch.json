@@ -4,9 +4,21 @@
     {
       "name": "preview",
       "runtimeExecutable": "node",
-      "runtimeArgs": ["preview-server.mjs"],
+      "runtimeArgs": [
+        "preview-server.mjs"
+      ],
       "port": 8000,
       "autoPort": true
+    },
+    {
+      "name": "php",
+      "runtimeExecutable": "php",
+      "runtimeArgs": [
+        "-S",
+        "127.0.0.1:8099",
+        "bin/dev-router.php"
+      ],
+      "port": 8099
     }
   ]
 }
