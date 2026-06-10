@@ -35,6 +35,17 @@ final class HelloTicketsClient
         return $response['performance'] ?? $response;
     }
 
+    public function performers(array $params = []): array
+    {
+        return $this->get('/v1/performers', $params, 3600);
+    }
+
+    public function performer(int $id): array
+    {
+        $response = $this->get('/v1/performers/' . $id, [], 3600);
+        return $response['performer'] ?? $response;
+    }
+
     public function activities(array $params = []): array
     {
         return $this->get('/v1/activities', $params);

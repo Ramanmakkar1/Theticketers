@@ -47,6 +47,16 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
         return;
     }
 
+    if ($path === '/artists') {
+        render_artists_page($client, $config);
+        return;
+    }
+
+    if (preg_match('#^/artist/([^/]+)$#', $path, $match)) {
+        render_artist_detail_page($client, $config, id_from_slug($match[1]));
+        return;
+    }
+
     if ($path === '/search') {
         render_search_page($client, $config);
         return;
@@ -209,6 +219,7 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
             <nav class="site-nav" data-nav>
                 <a href="/events">Events</a>
                 <a href="/attractions">Attractions</a>
+                <a href="/artists">Artists</a>
                 <a href="/dubai">Dubai</a>
                 <a href="/abu-dhabi">Abu Dhabi</a>
                 <?php $navLabels = ['usa' => 'USA', 'canada' => 'Canada', 'uk' => 'UK', 'italy' => 'Italy', 'spain' => 'Spain', 'france' => 'France'];
@@ -355,6 +366,11 @@ function render_home_page(HelloTicketsClient $client, array $config, array $dest
         ], date_params(null))), ['performances' => []])
         : ['performances' => []];
 
+    $performers = api_result(static fn() => $client->performers([
+        'limit' => 12,
+        'page' => 1,
+    ]), ['performers' => []])['performers'] ?? [];
+
     $activities = $activitiesData['activities'] ?? [];
     $events = $eventsData['performances'] ?? [];
     $globalEvents = $globalEventsData['performances'] ?? [];
@@ -371,7 +387,7 @@ function render_home_page(HelloTicketsClient $client, array $config, array $dest
         'description' => 'Find ' . $homeCity['name'] . ' attraction tickets, concerts, theatre, sports and experiences with live prices from HelloTickets.',
         'canonical' => absolute_url($config, '/'),
         'body_class' => 'home-page',
-    ], function () use ($config, $activities, $events, $globalEvents, $homeCity, $destinationsContent): void {
+    ], function () use ($config, $activities, $events, $globalEvents, $performers, $homeCity, $destinationsContent): void {
         ?>
         <h1 class="visually-hidden"><?= e($homeCity['name']) ?> Events, Attractions &amp; Tickets</h1>
         <?php
@@ -426,6 +442,8 @@ function render_home_page(HelloTicketsClient $client, array $config, array $dest
         <?php if ($events !== []): ?>
             <?php render_card_section('Live Events in ' . $homeCity['name'], '/events', $events, 'event', $config); ?>
         <?php endif; ?>
+
+        <?php render_artists_rail($performers); ?>
 
         <?php render_live_events_band(); ?>
 
@@ -999,6 +1017,216 @@ function render_card_section(string $heading, string $href, array $items, string
     <?php
 }
 
+function artist_card(array $performer): string
+{
+    $name = (string) ($performer['name'] ?? 'Artist');
+    $category = (string) ($performer['category']['name'] ?? '');
+    $total = (int) ($performer['total_performances'] ?? 0);
+    ob_start();
+    ?>
+    <a class="artist-card" href="<?= e(artist_path($performer)) ?>">
+        <span class="artist-avatar" aria-hidden="true"><?= e(artist_initials($name)) ?></span>
+        <strong><?= e($name) ?></strong>
+        <span><?= e($category !== '' ? $category : 'Live') ?><?= $total > 0 ? ' · ' . e((string) $total) . ' shows' : '' ?></span>
+    </a>
+    <?php
+    return (string) ob_get_clean();
+}
+
+function render_artists_rail(array $performers): void
+{
+    if ($performers === []) {
+        return;
+    }
+    ?>
+    <section class="section-band">
+        <div class="container">
+            <div class="section-heading">
+                <h2>Trending Artists</h2>
+                <a href="/artists">See All</a>
+            </div>
+            <div class="rail-wrapper">
+                <button class="rail-btn prev" aria-label="Scroll left" data-scroll-dir="-1">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </button>
+                <div class="rail artist-rail">
+                    <?php foreach ($performers as $performer): ?>
+                        <?= artist_card($performer) ?>
+                    <?php endforeach; ?>
+                </div>
+                <button class="rail-btn next" aria-label="Scroll right" data-scroll-dir="1">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+            </div>
+        </div>
+    </section>
+    <?php
+}
+
+function render_artists_page(HelloTicketsClient $client, array $config): void
+{
+    $page = page_number();
+    $data = api_result(static fn() => $client->performers([
+        'limit' => 48,
+        'page' => $page,
+    ]), ['performers' => [], 'total_count' => 0]);
+    $performers = $data['performers'] ?? [];
+
+    render_layout($config, [
+        'title' => 'Artists On Tour — Concert & Show Tickets | ' . $config['site_name'],
+        'description' => 'Browse artists currently on tour. See upcoming dates, venues and live ticket prices for every show.',
+        'canonical' => absolute_url($config, '/artists'),
+    ], function () use ($performers, $data): void {
+        ?>
+        <section class="listing-hero">
+            <div class="container">
+                <p class="eyebrow">On Tour</p>
+                <h1>Trending Artists</h1>
+                <p class="listing-sub">Artists with upcoming shows — pick one to see every date, venue and ticket price.</p>
+            </div>
+        </section>
+        <section class="section-band">
+            <div class="container">
+                <?php if ($performers === []): ?>
+                    <div class="empty-state">
+                        <h2>No artists found</h2>
+                        <p>Check back soon — tours are added as soon as tickets go on sale.</p>
+                        <a class="button-link" href="/events">Browse events</a>
+                    </div>
+                <?php else: ?>
+                    <div class="artist-grid">
+                        <?php foreach ($performers as $performer): ?>
+                            <?= artist_card($performer) ?>
+                        <?php endforeach; ?>
+                    </div>
+                    <?php render_pagination($data); ?>
+                <?php endif; ?>
+            </div>
+        </section>
+        <?php
+    }, item_list_schema_for_artists($config, $performers));
+}
+
+function render_artist_detail_page(HelloTicketsClient $client, array $config, int $performerId): void
+{
+    $performer = api_result(static fn() => $client->performer($performerId));
+    if ($performer === [] || empty($performer['id'])) {
+        render_error_page($config, 404, 'Artist not found', 'This artist is not on tour right now.');
+        return;
+    }
+
+    $name = (string) ($performer['name'] ?? 'Artist');
+    $events = api_result(static fn() => $client->performances([
+        'limit' => 48,
+        'page' => 1,
+        'is_sellable' => 'true',
+        'performer_id' => $performerId,
+    ]), ['performances' => []])['performances'] ?? [];
+
+    $nextDate = '';
+    if (!empty($performer['next_performance_local_date'])) {
+        $parsed = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', (string) $performer['next_performance_local_date']);
+        $nextDate = $parsed ? $parsed->format('D, M j') : '';
+    }
+
+    render_layout($config, [
+        'title' => $name . ' Tickets, Tour Dates & Venues | ' . $config['site_name'],
+        'description' => 'See all upcoming ' . $name . ' shows with dates, venues, cities and live ticket prices. Secure checkout on our official ticket partner.',
+        'canonical' => absolute_url($config, artist_path($performer)),
+    ], function () use ($config, $performer, $name, $events, $nextDate): void {
+        ?>
+        <section class="listing-hero artist-hero">
+            <div class="container">
+                <div class="artist-hero__row">
+                    <span class="artist-avatar artist-avatar--lg" aria-hidden="true"><?= e(artist_initials($name)) ?></span>
+                    <div>
+                        <p class="eyebrow"><?= e($performer['category']['name'] ?? 'On Tour') ?></p>
+                        <h1><?= e($name) ?></h1>
+                        <div class="artist-hero__facts">
+                            <?php if (count($events) > 0): ?>
+                                <span><?= e((string) count($events)) ?> upcoming show<?= count($events) === 1 ? '' : 's' ?></span>
+                            <?php endif; ?>
+                            <?php if ($nextDate !== ''): ?>
+                                <span>Next: <?= e($nextDate) ?></span>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section-band">
+            <div class="container">
+                <?php if ($events === []): ?>
+                    <div class="empty-state">
+                        <h2>No shows on sale right now</h2>
+                        <p>New <?= e($name) ?> dates appear here as soon as tickets are released.</p>
+                        <a class="button-link" href="/artists">Browse all artists</a>
+                    </div>
+                <?php else: ?>
+                    <div class="section-heading">
+                        <h2>Tour Dates</h2>
+                    </div>
+                    <div class="card-grid">
+                        <?php foreach ($events as $event): ?>
+                            <?= event_card($event, $config) ?>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </section>
+        <?php
+    }, artist_schema($config, $performer, $events));
+}
+
+function item_list_schema_for_artists(array $config, array $performers): array
+{
+    $elements = [];
+    foreach (array_values($performers) as $index => $performer) {
+        $elements[] = [
+            '@type' => 'ListItem',
+            'position' => $index + 1,
+            'url' => absolute_url($config, artist_path($performer)),
+            'name' => $performer['name'] ?? '',
+        ];
+    }
+
+    return [
+        '@context' => 'https://schema.org',
+        '@type' => 'ItemList',
+        'itemListElement' => $elements,
+    ];
+}
+
+function artist_schema(array $config, array $performer, array $events): array
+{
+    $schema = [
+        '@context' => 'https://schema.org',
+        '@type' => ($performer['category']['name'] ?? '') === 'Sports' ? 'SportsTeam' : 'PerformingGroup',
+        'name' => $performer['name'] ?? '',
+        'url' => absolute_url($config, artist_path($performer)),
+    ];
+
+    $eventSchemas = [];
+    foreach (array_slice($events, 0, 10) as $event) {
+        $eventSchemas[] = [
+            '@type' => 'Event',
+            'name' => $event['name'] ?? '',
+            'startDate' => $event['start_date']['date_time'] ?? ($event['start_date']['local_date'] ?? ''),
+            'location' => [
+                '@type' => 'Place',
+                'name' => $event['venue']['name'] ?? '',
+                'address' => trim(($event['venue']['address'] ?? '') . ', ' . ($event['venue']['city'] ?? ''), ', '),
+            ],
+            'url' => absolute_url($config, event_path($event)),
+        ];
+    }
+    if ($eventSchemas !== []) {
+        $schema['event'] = $eventSchemas;
+    }
+
+    return $schema;
+}
+
 function render_promo_banner(array $config): void
 {
     ?>
@@ -1211,89 +1439,96 @@ function render_sitemap(HelloTicketsClient $client, array $config, array $destin
         ? require __DIR__ . '/dubai-content.php'
         : ['categories' => [], 'attractions' => []];
 
-    $urls = [
-        absolute_url($config, '/'),
-        absolute_url($config, '/dubai'),
-        absolute_url($config, '/abu-dhabi'),
-        absolute_url($config, '/events'),
-        absolute_url($config, '/attractions'),
-        absolute_url($config, '/about'),
-        absolute_url($config, '/contact'),
-        absolute_url($config, '/how-we-make-money'),
-    ];
+    // Content-modified date for editorial/hub pages, as a real recrawl signal.
+    $contentMtimes = array_filter([
+        @filemtime(__DIR__ . '/destinations-content.json') ?: null,
+        @filemtime(__DIR__ . '/dubai-content.php') ?: null,
+    ]);
+    $contentMod = $contentMtimes !== [] ? date('Y-m-d', max($contentMtimes)) : date('Y-m-d');
+    $today = date('Y-m-d');
 
+    // loc => lastmod ('' = omit), de-duped by loc, canonical URLs only.
+    $entries = [];
+    $add = static function (string $path, string $lastmod = '') use (&$entries, $config): void {
+        $loc = absolute_url($config, $path);
+        if (!array_key_exists($loc, $entries)) {
+            $entries[$loc] = $lastmod;
+        }
+    };
+
+    // Home + evergreen static pages.
+    $add('/', $today);
+    foreach (['/events', '/attractions', '/artists', '/about', '/contact', '/how-we-make-money'] as $staticPath) {
+        $add($staticPath, $contentMod);
+    }
+
+    // Editorial hubs — the highest-value SEO landing pages.
+    $add('/dubai', $contentMod);
+    $add('/abu-dhabi', $contentMod);
     foreach ($dubaiContent['categories'] ?? [] as $cat) {
-        $urls[] = absolute_url($config, '/dubai/' . $cat['slug']);
+        $add('/dubai/' . $cat['slug'], $contentMod);
     }
-
     foreach ($dubaiContent['attractions'] ?? [] as $attr) {
-        $catSlug = $attr['category_slug'] ?? 'attractions';
-        $urls[] = absolute_url($config, '/dubai/' . $catSlug . '/' . $attr['slug']);
+        $add('/dubai/' . ($attr['category_slug'] ?? 'attractions') . '/' . $attr['slug'], $contentMod);
     }
-
     foreach ($destinationsContent['countries'] ?? [] as $cSlug => $country) {
-        $urls[] = absolute_url($config, '/' . $cSlug);
+        $add('/' . $cSlug, $contentMod);
         foreach ($country['cities'] ?? [] as $hubCity) {
             if (!empty($hubCity['slug'])) {
-                $urls[] = absolute_url($config, '/' . $cSlug . '/' . $hubCity['slug']);
+                $add('/' . $cSlug . '/' . $hubCity['slug'], $contentMod);
             }
         }
     }
 
-    foreach ($config['market_cities'] as $city) {
-        $urls[] = absolute_url($config, city_path($city));
-    }
+    // /city/{slug} pages are deliberately omitted — they canonicalize to the editorial
+    // /{country}/{city} hubs, so listing them here would be non-canonical noise.
 
+    // Category listing pages.
     $categories = api_result(static fn() => $client->categories(), ['categories' => []])['categories'] ?? [];
     foreach (array_slice($categories, 0, 30) as $category) {
-        $urls[] = absolute_url($config, category_path($category));
+        $add(category_path($category));
     }
 
+    // Performers / artists.
+    $performers = api_result(static fn() => $client->performers([
+        'limit' => 48,
+        'page' => 1,
+    ]), ['performers' => []])['performers'] ?? [];
+    foreach ($performers as $performer) {
+        $add(artist_path($performer));
+    }
+
+    // Live events — real <lastmod> from the API's last_updated_at.
     $events = api_result(static fn() => $client->performances(array_merge([
         'limit' => 50,
         'page' => 1,
         'is_sellable' => 'true',
         'city_id' => (int) $config['default_city_id'],
     ], date_params(null))), ['performances' => []])['performances'] ?? [];
-    // Event URLs are the only ones with a real date to report as <lastmod>.
-    $eventUrls = [];
     foreach ($events as $event) {
-        $loc = absolute_url($config, event_path($event));
-        if (!isset($eventUrls[$loc])) {
-            $eventUrls[$loc] = (string) ($event['start_date']['local_date'] ?? '');
+        $lastmod = substr((string) ($event['last_updated_at'] ?? ''), 0, 10);
+        $add(event_path($event), preg_match('/^\d{4}-\d{2}-\d{2}$/', $lastmod) === 1 ? $lastmod : '');
+    }
+
+    // Deep activity detail pages (Dubai + Abu Dhabi inventory).
+    foreach ([132, 256] as $cityId) {
+        $activities = api_result(static fn() => $client->activities([
+            'limit' => 100,
+            'page' => 1,
+            'city_id' => $cityId,
+        ]), ['activities' => []])['activities'] ?? [];
+        foreach ($activities as $activity) {
+            $add(activity_path($activity));
         }
     }
 
-    $dubaiActivities = api_result(static fn() => $client->activities([
-        'limit' => 100,
-        'page' => 1,
-        'city_id' => 132,
-    ]), ['activities' => []])['activities'] ?? [];
-    foreach ($dubaiActivities as $activity) {
-        $urls[] = absolute_url($config, activity_path($activity));
-    }
-
-    $abuDhabiActivities = api_result(static fn() => $client->activities([
-        'limit' => 100,
-        'page' => 1,
-        'city_id' => 256,
-    ]), ['activities' => []])['activities'] ?? [];
-    foreach ($abuDhabiActivities as $activity) {
-        $urls[] = absolute_url($config, activity_path($activity));
-    }
-
-    $urls = array_values(array_unique($urls));
     header('Content-Type: application/xml; charset=utf-8');
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
     echo "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
-    foreach ($urls as $url) {
-        echo "  <url><loc>" . e($url) . "</loc></url>\n";
-    }
-    foreach ($eventUrls as $loc => $lastmod) {
-        if (in_array($loc, $urls, true)) {
-            continue;
-        }
-        echo "  <url><loc>" . e($loc) . "</loc>" . ($lastmod !== '' ? '<lastmod>' . e($lastmod) . '</lastmod>' : '') . "</url>\n";
+    foreach ($entries as $loc => $lastmod) {
+        echo "  <url><loc>" . e($loc) . "</loc>"
+            . ($lastmod !== '' ? "<lastmod>" . e($lastmod) . "</lastmod>" : '')
+            . "</url>\n";
     }
     echo "</urlset>\n";
 }

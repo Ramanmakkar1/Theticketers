@@ -281,6 +281,24 @@ function activity_path(array $activity): string
     return '/activity/' . id_slug((string) ($activity['title'] ?? 'activity'), (int) ($activity['id'] ?? 0));
 }
 
+function artist_path(array $performer): string
+{
+    return '/artist/' . id_slug((string) ($performer['name'] ?? 'artist'), (int) ($performer['id'] ?? 0));
+}
+
+function artist_initials(string $name): string
+{
+    $words = preg_split('/\s+/', trim($name)) ?: [];
+    $initials = '';
+    foreach (array_slice($words, 0, 2) as $word) {
+        $first = mb_substr($word, 0, 1);
+        if (preg_match('/[\p{L}\p{N}]/u', $first)) {
+            $initials .= mb_strtoupper($first);
+        }
+    }
+    return $initials !== '' ? $initials : '♪';
+}
+
 function city_path(array $city): string
 {
     return '/city/' . id_slug((string) $city['name'], (int) $city['id']);

@@ -1,8 +1,17 @@
+# Runtime / generated
 /storage/cache/*
 !/storage/cache/.gitkeep
 /storage/cache-preview/
 /storage/*.png
 /storage/clicks.log
+/storage/.enrich-progress.json
+
+# Pure-PHP project — no Node.js anywhere (preview runs via `php -S bin/dev-router.php`)
+node_modules/
+package.json
+package-lock.json
+*.mjs
+
+# Editor / OS / local
 .claude/settings.local.json
 .DS_Store
-/storage/.enrich-progress.json
