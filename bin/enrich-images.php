@@ -69,11 +69,34 @@ function harvest_image(string $pageUrl): ?string
     if (!is_string($html) || $html === '') {
         return null;
     }
-    if (preg_match('#https://aws-tiqets-cdn\.imgix\.net/images/content/[a-f0-9]+\.(?:jpe?g|png|webp)#i', $html, $m)) {
-        // Poster crop, optimised + compressed by imgix on the fly.
-        return $m[0] . '?w=600&h=900&fit=crop&crop=edges&auto=format,compress';
+
+    // 1) Authoritative per-item hero from the page's JSON-LD structured data.
+    //    (The "first imgix image on the page" can be a cross-sell thumbnail.)
+    if (preg_match_all('#<script[^>]*application/ld\+json[^>]*>(.*?)</script>#is', $html, $blocks)) {
+        foreach ($blocks[1] as $block) {
+            if (preg_match('#"image"\s*:\s*"([^"]+)"#', $block, $m)
+                || preg_match('#"image"\s*:\s*\[\s*"([^"]+)"#', $block, $m)) {
+                return normalize_hero(html_entity_decode($m[1], ENT_QUOTES | ENT_HTML5));
+            }
+        }
     }
+
+    // 2) Fallback: first Tiqets imgix content image on the page.
+    if (preg_match('#https://aws-tiqets-cdn\.imgix\.net/images/content/[a-f0-9]+\.(?:jpe?g|png|webp)#i', $html, $m)) {
+        return normalize_hero($m[0]);
+    }
+
     return null;
+}
+
+/** Consistent ~2:3 poster URL: imgix images get crop params; others pass through. */
+function normalize_hero(string $url): string
+{
+    if (stripos($url, 'imgix.net') !== false) {
+        $base = explode('?', $url, 2)[0];
+        return $base . '?w=600&h=900&fit=crop&crop=edges&auto=format,compress';
+    }
+    return $url;
 }
 
 // ---- Gather inventory to enrich ----
@@ -115,10 +138,30 @@ if ($withEvents) {
     }
 }
 
-// ---- Harvest ----
+// ---- Harvest (incremental checkpoint + resume) ----
+// Background jobs are capped (~10 min) and can be killed mid-run, so we persist
+// every CHECKPOINT_EVERY items and track a per-pass "done" set. A re-run with the
+// same flags resumes where it left off instead of starting over.
+const CHECKPOINT_EVERY = 20;
+$progressFile = $root . '/storage/.enrich-progress.json';
+
+$writeMap = static function () use (&$map, $mapFile): void {
+    ksort($map);
+    $tmp = $mapFile . '.tmp';
+    file_put_contents($tmp, json_encode($map, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+    rename($tmp, $mapFile);
+};
+
+// On --refresh we re-fetch everything, so we can't tell "done" from the map alone;
+// a progress file records which keys this pass has already handled.
+$done = ($refresh && is_file($progressFile))
+    ? array_flip(json_decode((string) file_get_contents($progressFile), true) ?: [])
+    : [];
+
 $hits = 0;
 $miss = 0;
 $skip = 0;
+$processed = 0;
 $seen = [];
 foreach ($items as $it) {
     $id = $it['id'];
@@ -131,10 +174,12 @@ foreach ($items as $it) {
     }
     $seen[$key] = true;
 
-    if (!$refresh && isset($map[$key])) {
+    // Skip already-handled work: known map entry (normal) or done-this-pass (refresh).
+    if ((!$refresh && isset($map[$key])) || ($refresh && isset($done[$key]))) {
         $skip++;
         continue;
     }
+
     $img = harvest_image($it['url']);
     if ($img !== null) {
         $map[$key] = $img;
@@ -144,13 +189,16 @@ foreach ($items as $it) {
         $miss++;
         say($quiet, "--  $key (no image found)");
     }
-    usleep(900000); // ~1 request/sec, polite to HelloTickets
+    $done[$key] = true;
+
+    if (++$processed % CHECKPOINT_EVERY === 0) {
+        $writeMap();
+        file_put_contents($progressFile, json_encode(array_keys($done)));
+        say($quiet, "   .. checkpoint ($processed processed, " . count($map) . ' in map)');
+    }
+    usleep(400000); // ~2.5 req/sec, polite to HelloTickets
 }
 
-// ---- Persist atomically ----
-ksort($map);
-$tmp = $mapFile . '.tmp';
-file_put_contents($tmp, json_encode($map, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
-rename($tmp, $mapFile);
-
-say($quiet, "done: $hits new, $skip already had, $miss missed | total in map: " . count($map));
+$writeMap();
+@unlink($progressFile); // pass finished cleanly — clear resume state
+say($quiet, "done: $hits new, $skip skipped, $miss missed | total in map: " . count($map));

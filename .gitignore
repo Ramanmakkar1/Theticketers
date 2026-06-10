@@ -5,3 +5,4 @@
 /storage/clicks.log
 .claude/settings.local.json
 .DS_Store
+/storage/.enrich-progress.json
