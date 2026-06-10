@@ -343,14 +343,11 @@ function render_home_page(HelloTicketsClient $client, array $config, array $dest
 {
     $cityId = active_city_id($config);
     $homeCity = city_for_id($cityId, $config);
-    $dateParams = date_params(null);
 
-    $eventsData = api_result(static fn() => $client->performances(array_merge([
-        'limit' => 12,
-        'page' => 1,
-        'is_sellable' => 'true',
-        'city_id' => $cityId,
-    ], $dateParams)), ['performances' => []]);
+    // Date-prioritised local events (today -> this week -> upcoming), with
+    // nearby-city fallback when the detected city has no inventory of its own.
+    $eventRails = home_event_rails($client, $config, $cityId, $homeCity['name']);
+    $events = $eventRails[0]['items'] ?? [];
 
     $activitiesData = api_result(static fn() => $client->activities([
         'limit' => 12,
@@ -358,7 +355,15 @@ function render_home_page(HelloTicketsClient $client, array $config, array $dest
         'city_id' => $cityId,
     ]), ['activities' => []]);
 
-    $globalEventsData = count($eventsData['performances'] ?? []) < 6
+    // Collect every event id already shown locally so worldwide never repeats one.
+    $seenIds = [];
+    foreach ($eventRails as $rail) {
+        foreach ($rail['items'] as $performance) {
+            $seenIds[] = (int) ($performance['id'] ?? 0);
+        }
+    }
+
+    $globalEventsData = count($seenIds) < 6
         ? api_result(static fn() => $client->performances(array_merge([
             'limit' => 12,
             'page' => 1,
@@ -372,13 +377,8 @@ function render_home_page(HelloTicketsClient $client, array $config, array $dest
     ]), ['performers' => []])['performers'] ?? [];
 
     $activities = $activitiesData['activities'] ?? [];
-    $events = $eventsData['performances'] ?? [];
-    $globalEvents = $globalEventsData['performances'] ?? [];
-
-    // Never repeat a performance across the local and worldwide rails.
-    $seenIds = array_map(static fn($performance) => (int) ($performance['id'] ?? 0), $events);
     $globalEvents = array_values(array_filter(
-        $globalEvents,
+        $globalEventsData['performances'] ?? [],
         static fn($performance): bool => !in_array((int) ($performance['id'] ?? 0), $seenIds, true)
     ));
 
@@ -387,16 +387,36 @@ function render_home_page(HelloTicketsClient $client, array $config, array $dest
         'description' => 'Find ' . $homeCity['name'] . ' attraction tickets, concerts, theatre, sports and experiences with live prices from HelloTickets.',
         'canonical' => absolute_url($config, '/'),
         'body_class' => 'home-page',
-    ], function () use ($config, $activities, $events, $globalEvents, $performers, $homeCity, $destinationsContent): void {
+    ], function () use ($config, $cityId, $activities, $events, $eventRails, $globalEvents, $performers, $homeCity, $destinationsContent): void {
         ?>
         <h1 class="visually-hidden"><?= e($homeCity['name']) ?> Events, Attractions &amp; Tickets</h1>
         <?php
-        $slides = [
-            ['image' => $config['fallback_images']['hero'], 'tag' => 'Featured', 'title' => 'Dubai events, attractions and experiences', 'text' => 'Live prices and availability, with secure partner checkout.', 'href' => '/attractions', 'cta' => 'Book Now'],
-            ['image' => $config['fallback_images']['burj'], 'tag' => 'Top Attraction', 'title' => 'Burj Khalifa: At the Top', 'text' => 'Skip the queue with instant e-tickets to the world\'s tallest tower.', 'href' => '/attractions?q=Burj%20Khalifa', 'cta' => 'Get Tickets'],
-            ['image' => $config['fallback_images']['desert'], 'tag' => 'Experiences', 'title' => 'Desert safaris and dune adventures', 'text' => 'Sunset drives, camel rides and Bedouin dinners under the stars.', 'href' => '/attractions?q=Desert%20Safari', 'cta' => 'Explore'],
-            ['image' => $config['fallback_images']['Concerts'], 'tag' => 'Live Events', 'title' => 'Concerts, theatre and sport in Dubai', 'text' => 'See what\'s playing this week across the city\'s biggest venues.', 'href' => '/events', 'cta' => 'See Events'],
-        ];
+        if ($cityId === (int) $config['default_city_id']) {
+            // Dubai flagship: the curated attraction-led banners.
+            $slides = [
+                ['image' => $config['fallback_images']['hero'], 'tag' => 'Featured', 'title' => 'Dubai events, attractions and experiences', 'text' => 'Live prices and availability, with secure partner checkout.', 'href' => '/attractions', 'cta' => 'Book Now'],
+                ['image' => $config['fallback_images']['burj'], 'tag' => 'Top Attraction', 'title' => 'Burj Khalifa: At the Top', 'text' => 'Skip the queue with instant e-tickets to the world\'s tallest tower.', 'href' => '/attractions?q=Burj%20Khalifa', 'cta' => 'Get Tickets'],
+                ['image' => $config['fallback_images']['desert'], 'tag' => 'Experiences', 'title' => 'Desert safaris and dune adventures', 'text' => 'Sunset drives, camel rides and Bedouin dinners under the stars.', 'href' => '/attractions?q=Desert%20Safari', 'cta' => 'Explore'],
+                ['image' => $config['fallback_images']['Concerts'], 'tag' => 'Live Events', 'title' => 'Concerts, theatre and sport in Dubai', 'text' => 'See what\'s playing this week across the city\'s biggest venues.', 'href' => '/events', 'cta' => 'See Events'],
+            ];
+        } else {
+            // Detected city: banner the visitor's own upcoming events.
+            $slides = [];
+            foreach (array_slice($events, 0, 4) as $heroEvent) {
+                $venue = $heroEvent['venue']['name'] ?? $homeCity['name'];
+                $slides[] = [
+                    'image' => image_from_item($heroEvent, 'event', $config),
+                    'tag' => $heroEvent['category']['name'] ?? 'Live Event',
+                    'title' => $heroEvent['name'] ?? ('Live in ' . $homeCity['name']),
+                    'text' => trim(format_date_time($heroEvent['start_date'] ?? []) . ' · ' . $venue, ' ·'),
+                    'href' => event_path($heroEvent),
+                    'cta' => 'Get Tickets',
+                ];
+            }
+            if ($slides === []) {
+                $slides[] = ['image' => $config['fallback_images']['Concerts'], 'tag' => 'Live Events', 'title' => 'What\'s on in ' . $homeCity['name'], 'text' => 'Concerts, theatre, sport and experiences with live prices.', 'href' => '/events', 'cta' => 'See Events'];
+            }
+        }
         ?>
         <section class="hero">
             <div class="container">
@@ -439,9 +459,9 @@ function render_home_page(HelloTicketsClient $client, array $config, array $dest
             <?php render_card_section('Recommended in ' . $homeCity['name'], '/attractions', $activities, 'activity', $config); ?>
         <?php endif; ?>
 
-        <?php if ($events !== []): ?>
-            <?php render_card_section('Live Events in ' . $homeCity['name'], '/events', $events, 'event', $config); ?>
-        <?php endif; ?>
+        <?php foreach ($eventRails as $rail): ?>
+            <?php render_card_section($rail['label'], $rail['href'], $rail['items'], 'event', $config); ?>
+        <?php endforeach; ?>
 
         <?php render_artists_rail($performers); ?>
 

@@ -1,0 +1,302 @@
+{
+ "132": {
+  "name": "Dubai",
+  "country_code": "ARE"
+ },
+ "256": {
+  "name": "Abu Dhabi",
+  "country_code": "ARE"
+ },
+ "6": {
+  "name": "Las Vegas",
+  "country_code": "USA"
+ },
+ "1": {
+  "name": "New York",
+  "country_code": "USA"
+ },
+ "2": {
+  "name": "London",
+  "country_code": "GBR"
+ },
+ "4": {
+  "name": "Los Angeles",
+  "country_code": "USA"
+ },
+ "5": {
+  "name": "Orlando",
+  "country_code": "USA"
+ },
+ "7": {
+  "name": "San Francisco",
+  "country_code": "USA"
+ },
+ "3": {
+  "name": "Miami",
+  "country_code": "USA"
+ },
+ "28": {
+  "name": "Toronto",
+  "country_code": "CAN"
+ },
+ "100": {
+  "name": "Vancouver",
+  "country_code": "CAN"
+ },
+ "99": {
+  "name": "Montreal",
+  "country_code": "CAN"
+ },
+ "205": {
+  "name": "Edinburgh",
+  "country_code": "GBR"
+ },
+ "124": {
+  "name": "Rome",
+  "country_code": "ITA"
+ },
+ "126": {
+  "name": "Venice",
+  "country_code": "ITA"
+ },
+ "123": {
+  "name": "Florence",
+  "country_code": "ITA"
+ },
+ "135": {
+  "name": "Milan",
+  "country_code": "ITA"
+ },
+ "122": {
+  "name": "Barcelona",
+  "country_code": "ESP"
+ },
+ "121": {
+  "name": "Madrid",
+  "country_code": "ESP"
+ },
+ "144": {
+  "name": "Seville",
+  "country_code": "ESP"
+ },
+ "125": {
+  "name": "Paris",
+  "country_code": "FRA"
+ },
+ "174": {
+  "name": "Nice",
+  "country_code": "FRA"
+ },
+ "22": {
+  "name": "Chicago",
+  "country_code": "USA"
+ },
+ "30": {
+  "name": "Boston",
+  "country_code": "USA"
+ },
+ "31": {
+  "name": "Seattle",
+  "country_code": "USA"
+ },
+ "9": {
+  "name": "Houston",
+  "country_code": "USA"
+ },
+ "16": {
+  "name": "Dallas",
+  "country_code": "USA"
+ },
+ "24": {
+  "name": "Atlanta",
+  "country_code": "USA"
+ },
+ "29": {
+  "name": "Philadelphia",
+  "country_code": "USA"
+ },
+ "14": {
+  "name": "Denver",
+  "country_code": "USA"
+ },
+ "12": {
+  "name": "Phoenix",
+  "country_code": "USA"
+ },
+ "168": {
+  "name": "San Diego",
+  "country_code": "USA"
+ },
+ "19": {
+  "name": "New Orleans",
+  "country_code": "USA"
+ },
+ "49": {
+  "name": "Nashville",
+  "country_code": "USA"
+ },
+ "58": {
+  "name": "Austin",
+  "country_code": "USA"
+ },
+ "265": {
+  "name": "Tampa",
+  "country_code": "USA"
+ },
+ "10": {
+  "name": "Portland",
+  "country_code": "USA"
+ },
+ "18": {
+  "name": "Minneapolis",
+  "country_code": "USA"
+ },
+ "25": {
+  "name": "Detroit",
+  "country_code": "USA"
+ },
+ "17": {
+  "name": "San Antonio",
+  "country_code": "USA"
+ },
+ "27": {
+  "name": "Charlotte",
+  "country_code": "USA"
+ },
+ "103": {
+  "name": "Calgary",
+  "country_code": "CAN"
+ },
+ "102": {
+  "name": "Ottawa",
+  "country_code": "CAN"
+ },
+ "101": {
+  "name": "Edmonton",
+  "country_code": "CAN"
+ },
+ "285": {
+  "name": "Quebec",
+  "country_code": "CAN"
+ },
+ "105": {
+  "name": "Winnipeg",
+  "country_code": "CAN"
+ },
+ "556": {
+  "name": "Manchester",
+  "country_code": "GBR"
+ },
+ "740": {
+  "name": "Birmingham",
+  "country_code": "GBR"
+ },
+ "422": {
+  "name": "Glasgow",
+  "country_code": "GBR"
+ },
+ "498": {
+  "name": "Liverpool",
+  "country_code": "GBR"
+ },
+ "745": {
+  "name": "Leeds",
+  "country_code": "GBR"
+ },
+ "434": {
+  "name": "Bristol",
+  "country_code": "GBR"
+ },
+ "814": {
+  "name": "Cardiff",
+  "country_code": "GBR"
+ },
+ "321": {
+  "name": "Belfast",
+  "country_code": "GBR"
+ },
+ "160": {
+  "name": "Naples",
+  "country_code": "ITA"
+ },
+ "271": {
+  "name": "Turin",
+  "country_code": "ITA"
+ },
+ "302": {
+  "name": "Bologna",
+  "country_code": "ITA"
+ },
+ "303": {
+  "name": "Verona",
+  "country_code": "ITA"
+ },
+ "411": {
+  "name": "Genoa",
+  "country_code": "ITA"
+ },
+ "306": {
+  "name": "Palermo",
+  "country_code": "ITA"
+ },
+ "314": {
+  "name": "Valencia",
+  "country_code": "ESP"
+ },
+ "214": {
+  "name": "Malaga",
+  "country_code": "ESP"
+ },
+ "212": {
+  "name": "Granada",
+  "country_code": "ESP"
+ },
+ "315": {
+  "name": "Bilbao",
+  "country_code": "ESP"
+ },
+ "555": {
+  "name": "Alicante",
+  "country_code": "ESP"
+ },
+ "401": {
+  "name": "Zaragoza",
+  "country_code": "ESP"
+ },
+ "293": {
+  "name": "Lyon",
+  "country_code": "FRA"
+ },
+ "217": {
+  "name": "Marseille",
+  "country_code": "FRA"
+ },
+ "288": {
+  "name": "Bordeaux",
+  "country_code": "FRA"
+ },
+ "601": {
+  "name": "Toulouse",
+  "country_code": "FRA"
+ },
+ "512": {
+  "name": "Lille",
+  "country_code": "FRA"
+ },
+ "513": {
+  "name": "Montpellier",
+  "country_code": "FRA"
+ },
+ "290": {
+  "name": "Strasbourg",
+  "country_code": "FRA"
+ },
+ "583": {
+  "name": "Nantes",
+  "country_code": "FRA"
+ },
+ "291": {
+  "name": "Cannes",
+  "country_code": "FRA"
+ }
+}

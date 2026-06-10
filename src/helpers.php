@@ -128,6 +128,10 @@ function date_bounds(?string $dateKey): array
         return [$start, $start->modify('+1 day')];
     }
 
+    if ($dateKey === 'week') {
+        return [$today, $today->modify('+7 days')];
+    }
+
     if ($dateKey === 'month') {
         return [$today, $today->modify('+30 days')];
     }
@@ -221,6 +225,21 @@ function image_from_item(array $item, string $type, array $config): string
     return $config['fallback_images'][$type] ?? $config['fallback_images']['hero'];
 }
 
+/**
+ * Canonical id => {name, country_code} for every city the browser geo-detect can
+ * resolve (mirrors the app.js list). Lets the server recognise a detected city
+ * (e.g. Edmonton) even when it isn't one of the curated "featured" market cities.
+ */
+function geo_cities(): array
+{
+    static $cities = null;
+    if ($cities === null) {
+        $file = __DIR__ . '/geo-cities.json';
+        $cities = is_file($file) ? (json_decode((string) file_get_contents($file), true) ?: []) : [];
+    }
+    return $cities;
+}
+
 function active_city_id(array $config): int
 {
     $cookie = (int) ($_COOKIE['tb_city'] ?? 0);
@@ -229,6 +248,10 @@ function active_city_id(array $config): int
             if ((int) $city['id'] === $cookie) {
                 return $cookie;
             }
+        }
+        // Any geo-detectable city is a valid choice too (the API accepts its id).
+        if (isset(geo_cities()[(string) $cookie])) {
+            return $cookie;
         }
     }
 
@@ -241,6 +264,18 @@ function city_for_id(int $cityId, array $config): array
         if ((int) $city['id'] === $cityId) {
             return $city;
         }
+    }
+
+    // A geo-detected (non-featured) city: resolve its real name from the canonical list.
+    $geo = geo_cities();
+    if (isset($geo[(string) $cityId])) {
+        return [
+            'id' => $cityId,
+            'name' => (string) $geo[(string) $cityId]['name'],
+            'state' => '',
+            'country' => '',
+            'country_code' => (string) ($geo[(string) $cityId]['country_code'] ?? ''),
+        ];
     }
 
     // Never source the display name from user input (was $_GET['city'] — a content/
@@ -269,6 +304,98 @@ function destination_hub_path_for_city(array $destinationsContent, int $cityId):
     }
 
     return null;
+}
+
+/** Other market cities in the same country (for nearby-city fallback). */
+function nearby_city_ids(int $cityId, array $config): array
+{
+    $countryCode = null;
+    foreach ($config['market_cities'] as $city) {
+        if ((int) $city['id'] === $cityId) {
+            $countryCode = $city['country_code'] ?? null;
+            break;
+        }
+    }
+    if (!$countryCode) {
+        $countryCode = geo_cities()[(string) $cityId]['country_code'] ?? null;
+    }
+    if (!$countryCode) {
+        return [];
+    }
+    $ids = [];
+    foreach ($config['market_cities'] as $city) {
+        if (($city['country_code'] ?? null) === $countryCode && (int) $city['id'] !== $cityId) {
+            $ids[] = (int) $city['id'];
+        }
+    }
+    return $ids;
+}
+
+/**
+ * Date-prioritised events for the home page, with nearby-city fallback.
+ * Returns 0–2 rails: ['label'=>.., 'items'=>[..], 'href'=>..]. Leads with the
+ * soonest window that has events in the city (today → this week → this month),
+ * then a wider "more upcoming" rail; if the city itself has none, falls back to
+ * nearby cities in the same country. Empty array => let the page show worldwide.
+ */
+function home_event_rails(HelloTicketsClient $client, array $config, int $cityId, string $cityName): array
+{
+    $fetch = static function (string $window, int $cid, int $limit = 12) use ($client): array {
+        return api_result(static fn() => $client->performances(array_merge([
+            'limit' => $limit,
+            'page' => 1,
+            'is_sellable' => 'true',
+            'city_id' => $cid,
+        ], date_params($window)), ), ['performances' => []])['performances'] ?? [];
+    };
+
+    $lead = null;
+    $leadLabel = '';
+    $leadWindow = '';
+    foreach ([
+        ['today', 'Happening today in ' . $cityName],
+        ['week', 'This week in ' . $cityName],
+        ['month', 'This month in ' . $cityName],
+    ] as [$window, $label]) {
+        $items = $fetch($window, $cityId);
+        if (count($items) >= 3) {
+            $lead = $items;
+            $leadLabel = $label;
+            $leadWindow = $window;
+            break;
+        }
+    }
+
+    $rails = [];
+    $upcoming = $fetch('upcoming', $cityId);
+
+    if ($lead !== null) {
+        $rails[] = ['label' => $leadLabel, 'items' => $lead, 'href' => route_url('/events', ['date' => $leadWindow])];
+        $leadIds = array_map(static fn($e) => (int) ($e['id'] ?? 0), $lead);
+        $more = array_values(array_filter($upcoming, static fn($e) => !in_array((int) ($e['id'] ?? 0), $leadIds, true)));
+        if (count($more) >= 4) {
+            $rails[] = ['label' => 'More upcoming events in ' . $cityName, 'items' => $more, 'href' => '/events'];
+        }
+        return $rails;
+    }
+
+    if (count($upcoming) >= 3) {
+        $rails[] = ['label' => 'Upcoming events in ' . $cityName, 'items' => $upcoming, 'href' => '/events'];
+        return $rails;
+    }
+
+    // City has no events of its own — pull from nearby cities in the same country.
+    $nearby = [];
+    foreach (nearby_city_ids($cityId, $config) as $nearbyId) {
+        $nearby = array_merge($nearby, $fetch('upcoming', $nearbyId, 8));
+        if (count($nearby) >= 12) {
+            break;
+        }
+    }
+    if ($nearby !== []) {
+        $rails[] = ['label' => 'Events near ' . $cityName, 'items' => array_slice($nearby, 0, 12), 'href' => '/events'];
+    }
+    return $rails;
 }
 
 function event_path(array $performance): string

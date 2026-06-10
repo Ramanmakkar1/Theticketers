@@ -164,7 +164,7 @@ document.querySelectorAll('[data-city-detect]').forEach(btn => {
             const match = await detectCity();
             if (match) {
                 setCityCookie(match.id);
-                window.location.href = match.slug;
+                window.location.reload(); // re-render the current page for the chosen city
                 return;
             }
             btn.textContent = 'Not found — pick a city';
@@ -175,18 +175,34 @@ document.querySelectorAll('[data-city-detect]').forEach(btn => {
     });
 });
 
-// First visit: show the city modal until a choice is made
+// First visit: silently auto-detect the visitor's city and re-render for it.
+// Only if detection fails do we fall back to the manual picker modal.
 const cityModal = document.querySelector('[data-city-modal]');
+const openCityModal = () => {
+    if (cityModal) {
+        cityModal.hidden = false;
+        document.body.classList.add('modal-open');
+    }
+};
+if (!getCityCookie()) {
+    (async () => {
+        try {
+            const match = await detectCity();
+            if (match) {
+                setCityCookie(match.id);
+                window.location.reload();
+                return;
+            }
+        } catch { /* fall through to manual pick */ }
+        openCityModal();
+    })();
+}
 if (cityModal) {
     const dismiss = () => {
         if (!getCityCookie()) setCityCookie(cityModal.getAttribute('data-default-city') || '132');
         cityModal.hidden = true;
         document.body.classList.remove('modal-open');
     };
-    if (!getCityCookie()) {
-        cityModal.hidden = false;
-        document.body.classList.add('modal-open');
-    }
     cityModal.querySelector('[data-city-close]')?.addEventListener('click', dismiss);
     cityModal.addEventListener('click', e => {
         if (e.target === cityModal) dismiss();
