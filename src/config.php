@@ -34,6 +34,10 @@ $config = [
         'ITA' => 'EUR',
         'ESP' => 'EUR',
         'FRA' => 'EUR',
+        'NLD' => 'EUR',
+        'DEU' => 'EUR',
+        'PRT' => 'EUR',
+        'AUS' => 'AUD',
     ],
     'locale' => getenv('HELLOTICKETS_LOCALE') ?: 'en-GB',
     'default_city_id' => 132,
@@ -50,12 +54,16 @@ $config = [
     // Country markets — drives /{country} and /{country}/{city} SEO hubs, nav and
     // footer groupings. city_ids are filled from the content pack below.
     'markets' => [
-        'usa'    => ['name' => 'United States',  'country_code' => 'USA', 'city_ids' => []],
-        'canada' => ['name' => 'Canada',         'country_code' => 'CAN', 'city_ids' => []],
-        'uk'     => ['name' => 'United Kingdom',  'country_code' => 'GBR', 'city_ids' => []],
-        'italy'  => ['name' => 'Italy',           'country_code' => 'ITA', 'city_ids' => []],
-        'spain'  => ['name' => 'Spain',           'country_code' => 'ESP', 'city_ids' => []],
-        'france' => ['name' => 'France',          'country_code' => 'FRA', 'city_ids' => []],
+        'usa'         => ['name' => 'United States',  'country_code' => 'USA', 'city_ids' => []],
+        'canada'      => ['name' => 'Canada',         'country_code' => 'CAN', 'city_ids' => []],
+        'uk'          => ['name' => 'United Kingdom',  'country_code' => 'GBR', 'city_ids' => []],
+        'italy'       => ['name' => 'Italy',           'country_code' => 'ITA', 'city_ids' => []],
+        'spain'       => ['name' => 'Spain',           'country_code' => 'ESP', 'city_ids' => []],
+        'france'      => ['name' => 'France',          'country_code' => 'FRA', 'city_ids' => []],
+        'netherlands' => ['name' => 'Netherlands',     'country_code' => 'NLD', 'city_ids' => []],
+        'germany'     => ['name' => 'Germany',         'country_code' => 'DEU', 'city_ids' => []],
+        'portugal'    => ['name' => 'Portugal',        'country_code' => 'PRT', 'city_ids' => []],
+        'australia'   => ['name' => 'Australia',       'country_code' => 'AUS', 'city_ids' => []],
     ],
     // The activities API has NO category filter — only free-text `query`. So activity
     // category pages search by a representative keyword. Empty/missing => list all city

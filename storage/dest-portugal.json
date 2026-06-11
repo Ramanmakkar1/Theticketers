@@ -1,0 +1,122 @@
+{
+  "country": {
+    "slug": "portugal",
+    "name": "Portugal",
+    "demonym": "Portuguese",
+    "hero_image": "https://images.unsplash.com/photo-1585208798174-6cedd86e019a?auto=format&fit=crop&w=1600&q=80",
+    "meta_title": "Portugal Tickets & Attractions: Lisbon, Porto & Sintra",
+    "meta_description": "Book tickets for Portugal's top attractions: Belém Tower, Pena Palace, port wine cellars and fado shows in Lisbon and Porto. Skip-the-line entry from €9.",
+    "intro": "Portugal rewards travellers who book ahead. In Lisbon, the riverside Belém district holds two UNESCO-listed icons — Belém Tower and the Jerónimos Monastery, whose Manueline cloisters draw long queues by mid-morning. Ride the vintage Tram 28 through Alfama's tiled lanes, then climb to São Jorge Castle for the best viewpoint over the Tagus.\n\nMost visitors add a day trip to Sintra, about 40 minutes from Lisbon by train. Pena Palace now operates timed-entry tickets, and summer slots routinely sell out days ahead — reserve your time before you travel and start early to beat the tour buses.\n\nPorto, three hours north by train, trades grand monuments for atmosphere. The Ribeira's colourful riverfront sits below the two-tier iron arch of the Dom Luís I Bridge, with the port wine cellars of Vila Nova de Gaia just across the water — Cálem, Sandeman and Graham's all run daily tastings. Bookworms queue for Livraria Lello, the neo-Gothic bookshop that requires a paid entry voucher.\n\nRound out either city with a fado show in a candlelit tavern or a sunset cruise on the Tagus or Douro. Spring and autumn bring mild weather and thinner crowds, while July and August are hot and busy. Expect attraction tickets from €9, with most major sights costing between €10 and €25.",
+    "faqs": [
+      {
+        "q": "Do I need to book Pena Palace tickets in advance?",
+        "a": "Yes. Pena Palace in Sintra uses timed-entry tickets, and slots sell out days ahead in spring and summer. Book your time slot online before you travel, arrive within your window, and aim for the first slots of the morning — the palace interior gets crowded once tour groups arrive after 10:30."
+      },
+      {
+        "q": "Is the Lisboa Card worth buying?",
+        "a": "For a sightseeing-heavy trip, usually yes. The card covers Lisbon's metro, trams and buses, the CP trains to Sintra and Cascais, and free entry to Jerónimos Monastery and Belém Tower, plus discounts at dozens of other sights. If you plan two or three full days of attractions and a Sintra day trip, it typically pays for itself. Note that Pena Palace is discounted, not free, and still needs a timed slot."
+      },
+      {
+        "q": "How many days do I need for Lisbon and Porto?",
+        "a": "Five to six days works well: three in Lisbon (including a Sintra day trip), then two to three in Porto. The two cities are linked by direct Alfa Pendular and Intercidades trains in roughly three hours, so you can check out of one and be sightseeing in the other by lunchtime."
+      },
+      {
+        "q": "When is the best time to visit Portugal?",
+        "a": "April to June and September to October offer warm weather, long days and shorter queues. July and August bring heat, peak crowds and the highest prices, especially in Sintra and on Porto's riverfront. Winters are mild and quiet — many attractions stay open year-round with reduced hours."
+      },
+      {
+        "q": "How much do attractions cost in Portugal?",
+        "a": "Entry tickets start around €9, and most major sights fall between €10 and €25. Port wine cellar tours with tastings typically run €15 to €25, Douro and Tagus river cruises start near €15 to €20, and fado shows range from €25 to €60 depending on whether dinner is included."
+      }
+    ],
+    "stats": {
+      "attractions": "150+",
+      "rating": "4.8",
+      "price_from": "€9",
+      "support": "24/7"
+    },
+    "city_slugs": ["lisbon", "porto"]
+  },
+  "cities": [
+    {
+      "slug": "lisbon",
+      "country_slug": "portugal",
+      "city_id": 138,
+      "name": "Lisbon",
+      "state": "Lisbon",
+      "country": "Portugal",
+      "country_code": "PRT",
+      "featured": true,
+      "hero_image": "https://images.unsplash.com/photo-1501927023255-9063be98970c?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Lisbon Tickets: Belém Tower, Tram 28 & Sintra Day Trips",
+      "meta_description": "Compare Lisbon tickets and tours: Belém Tower, São Jorge Castle, Tram 28 routes, fado nights and Sintra day trips. Book skip-the-line entry from €9.",
+      "intro": "Lisbon spreads across seven hills above the Tagus, and its best moments come from moving between them. Start in Belém, where Belém Tower guards the river and the Jerónimos Monastery shelters some of Europe's finest Manueline stonework — book both online, then join the locals queuing for warm pastéis de nata. Back in the centre, the vintage Tram 28 rattles from Martim Moniz through Graça and Alfama's tiled lanes, dropping you near São Jorge Castle and its rampart views over the rooftops. For a change of pace, head to LX Factory, a strip of converted warehouses under the Ponte 25 de Abril packed with bookshops, studios and rooftop bars. With a day to spare, take the train to Sintra for Pena Palace's painted turrets or to Cascais for Atlantic beaches — both run direct from central Lisbon in around 40 minutes.",
+      "highlights": [
+        "Belém Tower and Jerónimos Monastery, Lisbon's UNESCO pair on the Tagus",
+        "São Jorge Castle ramparts above the Alfama district",
+        "Tram 28's vintage route through Graça, Alfama and Baixa",
+        "Day trips to Pena Palace in Sintra and the beaches of Cascais"
+      ],
+      "tips": [
+        "Ride Tram 28 from the Martim Moniz terminus before 9am to get a seat — by mid-morning it runs standing-room only and pickpockets work the crowded cars.",
+        "Book Jerónimos Monastery and Belém Tower tickets online and visit at opening; the monastery queue regularly tops an hour by 11am in summer.",
+        "For Sintra, take the train from Rossio station, reserve a Pena Palace timed slot in advance, and use the 434 bus loop to climb the hill instead of walking.",
+        "The Lisboa Card covers metro, trams, the Sintra and Cascais trains, and free entry to the Belém sights — do the maths before buying single tickets."
+      ],
+      "faqs": [
+        {
+          "q": "Is Tram 28 worth riding?",
+          "a": "Yes — it is the cheapest scenic tour in Lisbon, passing Graça, the Sé cathedral and Alfama on regular public-transport fares. Board at the Martim Moniz or Campo de Ourique ends early in the morning for a seat, keep valuables in front pockets, and consider walking the Alfama stretch instead if the queue is long."
+        },
+        {
+          "q": "Can I visit Sintra as a day trip from Lisbon?",
+          "a": "Easily. Trains leave Rossio station roughly every 20 to 30 minutes and take about 40 minutes. Limit yourself to two major sights — Pena Palace plus the Moorish Castle or Quinta da Regaleira is a realistic day — and book Pena's timed entry before you go, as same-day slots often sell out."
+        },
+        {
+          "q": "How do I get from Lisbon Airport to the city centre?",
+          "a": "The metro's red line runs from the airport into town in about 25 to 35 minutes with one easy change for Baixa or Alfama. Licensed taxis and ride-hailing apps cost roughly €12 to €20 to the centre depending on traffic and time of day."
+        }
+      ]
+    },
+    {
+      "slug": "porto",
+      "country_slug": "portugal",
+      "city_id": 181,
+      "name": "Porto",
+      "state": "Porto",
+      "country": "Portugal",
+      "country_code": "PRT",
+      "featured": false,
+      "hero_image": "https://images.unsplash.com/photo-1555881400-74d7acaacd8b?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Porto Tickets: Port Wine Cellars, Ribeira & Douro Cruises",
+      "meta_description": "Book Porto attractions: port wine cellar tastings in Vila Nova de Gaia, Livraria Lello entry, Clérigos Tower and Douro river cruises. Tickets from €10.",
+      "intro": "Porto stacks itself in tiers of orange rooftops above the Douro, and most of what you came for sits within a walkable square mile. The Ribeira's UNESCO-listed riverfront is the natural starting point — grab a table on the quay, then cross the upper deck of the two-tier Dom Luís I Bridge for the classic panorama. On the far bank, the port wine lodges of Vila Nova de Gaia line up door to door: Cálem, Sandeman, Graham's and Taylor's all run guided cellar tours ending in tastings. Back in the centre, Livraria Lello's crimson staircase draws hour-long queues — buy the timed entry voucher online and redeem it against a book — while the baroque Clérigos Tower rewards a 225-step climb with the city's best view. Finish with a Six Bridges cruise on the Douro, a 50-minute loop that strings together Porto's full riverside skyline.",
+      "highlights": [
+        "Port wine cellar tours and tastings in Vila Nova de Gaia",
+        "Ribeira's UNESCO riverfront and the Dom Luís I Bridge",
+        "Livraria Lello, the neo-Gothic bookshop with the crimson staircase",
+        "Six Bridges sightseeing cruises on the Douro River"
+      ],
+      "tips": [
+        "Walk the upper deck of the Dom Luís I Bridge around sunset for the best light on the Ribeira — the metro shares the deck, so stay inside the pedestrian lanes.",
+        "Livraria Lello requires a timed entry voucher bought online; arrive for the first morning slot and the voucher's value is deducted from any book you buy.",
+        "Reserve port cellar tours a few days ahead in summer — English-language slots at the big Gaia lodges fill first, and late-afternoon tastings sell out earliest.",
+        "Stop inside São Bento station even if you are not catching a train; its entrance hall is covered in around 20,000 hand-painted azulejo tiles."
+      ],
+      "faqs": [
+        {
+          "q": "Do I need to book port wine cellar tours in advance?",
+          "a": "In high season, yes. The popular Vila Nova de Gaia lodges — Cálem, Sandeman, Graham's, Taylor's — sell guided tours in timed slots, and English-language departures often sell out a day or two ahead in summer. Booking online also lets you compare tasting tiers, which typically run €15 to €25."
+        },
+        {
+          "q": "Is Livraria Lello free to enter?",
+          "a": "No. Entry requires a paid voucher bought online for a timed slot, and the amount is redeemable against any book purchase inside. Queues are shortest at opening time; without a pre-booked voucher you may wait an hour or more on the street in peak season."
+        },
+        {
+          "q": "How many days do I need in Porto?",
+          "a": "Two full days cover the historic centre, the Ribeira, Livraria Lello, Clérigos Tower and an afternoon of cellar tastings in Gaia. Add a third day for a Douro Valley trip — river cruises and train-plus-tasting tours upriver to Régua or Pinhão are the most popular day trips from the city."
+        }
+      ]
+    }
+  ]
+}

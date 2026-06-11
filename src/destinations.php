@@ -298,10 +298,16 @@ function render_city_hub(HelloTicketsClient $client, array $config, array $pack,
             </section>
         <?php endif; ?>
 
-        <!-- Live attractions + events (rail links set the city cookie via /city page) -->
+        <!-- Live attractions + events (rail links set the city cookie via /city page).
+             events_first markets (DE/AU/CA — deep concerts, thin tours) lead with events. -->
         <?php $cityHref = city_path(['name' => $cityName, 'id' => $cityId]); ?>
-        <?php render_card_section('Top Attractions in ' . $cityName, $cityHref, $activities, 'activity', $config); ?>
-        <?php render_card_section('Events in ' . $cityName, $cityHref, $events, 'event', $config, 'muted'); ?>
+        <?php if (!empty($city['events_first'])): ?>
+            <?php render_card_section('Events in ' . $cityName, $cityHref, $events, 'event', $config); ?>
+            <?php render_card_section('Top Attractions in ' . $cityName, $cityHref, $activities, 'activity', $config, 'muted'); ?>
+        <?php else: ?>
+            <?php render_card_section('Top Attractions in ' . $cityName, $cityHref, $activities, 'activity', $config); ?>
+            <?php render_card_section('Events in ' . $cityName, $cityHref, $events, 'event', $config, 'muted'); ?>
+        <?php endif; ?>
 
         <!-- Highlights -->
         <?php if ($highlights !== []): ?>

@@ -1,0 +1,82 @@
+{
+  "country": {
+    "slug": "netherlands",
+    "name": "Netherlands",
+    "demonym": "Dutch",
+    "hero_image": "https://images.unsplash.com/photo-1534351590666-13e3e96b5017?auto=format&fit=crop&w=1600&q=80",
+    "meta_title": "Netherlands Tickets & Attractions | Book Tours & Museums",
+    "meta_description": "Book Netherlands tickets online: Rijksmuseum, Van Gogh Museum, Anne Frank House, canal cruises and Keukenhof. Skip-the-line entry from €12 with 24/7 support.",
+    "intro": "The Netherlands concentrates an extraordinary amount of culture into a small, easy-to-navigate country. In Amsterdam alone you can stand before Rembrandt's The Night Watch at the Rijksmuseum (around €25), explore the world's largest collection of Van Gogh paintings at the Van Gogh Museum (about €24), and visit the Anne Frank House on the Prinsengracht canal (€16 for adults). All three operate timed-entry ticketing, so booking ahead is essential rather than optional.\n\nBeyond the museums, a canal cruise remains the classic way to see Amsterdam's 17th-century ring of waterways, with one-hour boat tours starting around €16. Beer fans can tour the original brewery at the Heineken Experience for roughly €23, while spring visitors should not miss Keukenhof in Lisse — seven million tulips, daffodils and hyacinths in bloom, open only from late March to mid-May, with entry around €25.\n\nThe country's compact rail network makes day trips effortless. Zaanse Schans, with its working windmills and green wooden houses, is under 20 minutes from Amsterdam Centraal, while Rotterdam's bold modern architecture, Markthal food hall and Euromast tower are about 40 minutes away by intercity train.\n\nSpring (March–May) brings the famous blooms, summer brings long days and the biggest crowds, and September–October offers milder prices and shorter queues. Most attractions here cost between €12 and €25, making the Netherlands a strong-value city-break destination year-round.",
+    "faqs": [
+      {
+        "q": "How far in advance should I book tickets for Dutch attractions?",
+        "a": "Book the Anne Frank House as early as possible — tickets are released six weeks ahead and regularly sell out within hours of release. The Van Gogh Museum and Rijksmuseum use timed-entry slots that fill several days to a week ahead in high season, and Keukenhof is best booked a week or more in advance during peak bloom in April. Canal cruises and the Heineken Experience are more flexible, but booking a day or two ahead still secures your preferred time."
+      },
+      {
+        "q": "When is the best time to visit the Netherlands?",
+        "a": "Late March to mid-May is the headline season, when Keukenhof is open and the tulip fields around Lisse are in bloom. Summer (June–August) has the warmest weather but the longest queues and highest hotel rates. For a balance of mild weather, open attractions and thinner crowds, aim for September and early October. Winter is quieter and great for museums, with the Amsterdam Light Festival running from late November to January."
+      },
+      {
+        "q": "How much do tickets to major Dutch attractions cost?",
+        "a": "Expect around €25 for the Rijksmuseum, €24 for the Van Gogh Museum, €16 for the Anne Frank House, and roughly €25 for Keukenhof in season. Standard one-hour canal cruises start around €16, and the Heineken Experience costs about €23 when booked online. Children's tickets are heavily discounted at most museums, and under-18s enter the Rijksmuseum and Van Gogh Museum free."
+      },
+      {
+        "q": "Can I get a refund or change my ticket if my plans change?",
+        "a": "Policies vary by attraction. Many canal cruise operators and tour providers offer free cancellation up to 24 hours before your time slot, while timed-entry museum tickets such as the Anne Frank House are generally non-refundable. Always check the cancellation terms shown at checkout before you book, and choose flexible ticket options if your travel dates are not yet fixed."
+      },
+      {
+        "q": "What is the best way to get around the Netherlands?",
+        "a": "Dutch intercity trains are frequent, punctual and connect Amsterdam, Rotterdam, The Hague and Utrecht in under an hour — simply check in and out with a contactless bank card. Within cities, trams and metros run on the same tap-in system, and renting a bicycle is the most local way to explore. For Keukenhof and Zaanse Schans, direct buses and trains run from Amsterdam, and combination travel-plus-entry tickets are often the cheapest option."
+      }
+    ],
+    "stats": {
+      "attractions": "120+",
+      "rating": "4.8",
+      "price_from": "€12",
+      "support": "24/7"
+    },
+    "city_slugs": ["amsterdam"]
+  },
+  "cities": [
+    {
+      "slug": "amsterdam",
+      "country_slug": "netherlands",
+      "city_id": 127,
+      "name": "Amsterdam",
+      "state": "North Holland",
+      "country": "Netherlands",
+      "country_code": "NLD",
+      "featured": true,
+      "hero_image": "https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Amsterdam Tickets: Museums, Canal Cruises & Attractions",
+      "meta_description": "Compare Amsterdam tickets for the Van Gogh Museum, Rijksmuseum, Anne Frank House and canal cruises. Book skip-the-line entry online from €12 per person.",
+      "intro": "Amsterdam rewards visitors who plan ahead. The big three — the Rijksmuseum and Van Gogh Museum on Museumplein, and the Anne Frank House on the Prinsengracht — all run timed-entry ticketing, and the Anne Frank House in particular sells out weeks ahead. Book your slots first, then build the rest of your trip around them.\n\nBetween museum visits, the city is best explored on foot or by boat. Drift past gabled canal houses on a one-hour cruise from around €16, browse the independent boutiques and brown cafés of the Jordaan, then head south to De Pijp for the Albert Cuyp Market, the city's largest street market, and the Heineken Experience nearby. With trams, ferries and 500+ kilometres of bike lanes, getting between neighbourhoods rarely takes more than 20 minutes — and Vondelpark, the city's green heart, sits conveniently between Museumplein and the western canal belt.",
+      "highlights": [
+        "Van Gogh Museum and Rijksmuseum on Museumplein",
+        "Anne Frank House on the Prinsengracht canal",
+        "One-hour canal cruise through the UNESCO-listed canal ring",
+        "Albert Cuyp Market and the Heineken Experience in De Pijp"
+      ],
+      "tips": [
+        "Anne Frank House tickets are released six weeks ahead and sell out fast — set a reminder for the release date and book the moment slots open.",
+        "Museumplein covers the Rijksmuseum, Van Gogh Museum and Moco Museum within a five-minute walk, so schedule two in one day with a lunch break between.",
+        "Look left, right and behind for bikes before crossing any street, and never walk in the red-paved cycle lanes.",
+        "Take the free GVB ferry behind Centraal Station to NDSM Wharf or A'DAM Lookout for skyline views across the IJ."
+      ],
+      "faqs": [
+        {
+          "q": "How many days do I need in Amsterdam?",
+          "a": "Three days covers the essentials comfortably: one day for Museumplein's museums, one for the Anne Frank House, the Jordaan and a canal cruise, and one for De Pijp, Vondelpark or a half-day trip to Zaanse Schans. With two days you can still manage the highlights if you pre-book every timed-entry ticket."
+        },
+        {
+          "q": "Is the Anne Frank House really sold out weeks in advance?",
+          "a": "Yes. All tickets are sold online for a specific date and time, released six weeks ahead, and peak-season dates typically sell out within hours. There are no ticket sales at the door. If your date is gone, check the official release schedule for your travel week and book the moment sales open."
+        },
+        {
+          "q": "What is the cheapest way to see Amsterdam's canals?",
+          "a": "Standard one-hour sightseeing cruises start at around €16 when booked online, often cheaper than buying at the dock. For a free alternative, ride the GVB ferries across the IJ from Centraal Station, or simply walk the canal ring at dusk when the bridges are lit — the stretch where Prinsengracht meets Reguliersgracht is famous for its seven-bridge view."
+        }
+      ]
+    }
+  ]
+}

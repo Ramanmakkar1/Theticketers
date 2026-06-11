@@ -16,7 +16,7 @@ $data = [
         [
             'slug' => 'burj-khalifa',
             'title' => 'Burj Khalifa Tickets & Observation Deck Experiences',
-            'meta_title' => 'Burj Khalifa Tickets 2026 | TickedBus',
+            'meta_title' => 'Burj Khalifa Tickets | TickedBus',
             'meta_description' => 'Book Burj Khalifa observation deck tickets for levels 124, 125, 148 & 154. Skip the line and see Dubai from 555m. Instant confirmation.',
             'hero_image' => 'https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1200&q=80',
             'intro' => "Standing 828 metres tall with 163 floors, the Burj Khalifa is the world's tallest building and Dubai's most visited landmark. The observation decks spread across four levels offer dramatically different perspectives of the city, from the open-air terrace at Level 124 (452m) to the exclusive SKY lounge at Level 154 (555m) — the highest occupied floor open to the public anywhere on Earth.\n\nMost visitors choose between two main ticket tiers. The standard \"At the Top\" ticket grants access to levels 124 and 125, where floor-to-ceiling windows and outdoor terraces provide 360-degree views over Dubai Marina, Palm Jumeirah, and the Arabian Gulf. The premium \"At the Top SKY\" experience adds levels 148 and 154, a dedicated sky lounge with refreshments, guided tour, and an augmented-reality telescope experience.\n\nTiming matters significantly. Sunset slots (between 5:30 PM and 6:30 PM depending on season) sell out weeks in advance because they let you watch the city transition from golden desert light to a glittering carpet of city lights — but they also cost 30-50% more than morning slots. Weekday mornings offer the clearest visibility and shortest queues.",
@@ -56,7 +56,7 @@ $data = [
         [
             'slug' => 'desert-safari',
             'title' => 'Desert Safari Dubai — Evening, Morning & Overnight Adventures',
-            'meta_title' => 'Desert Safari Dubai Deals 2026 | TickedBus',
+            'meta_title' => 'Desert Safari Dubai Deals | TickedBus',
             'meta_description' => 'Book desert safari Dubai with dune bashing, camel rides, BBQ dinner & belly dancing. Evening, morning & overnight options from AED 99.',
             'hero_image' => 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80',
             'intro' => "A desert safari is the quintessential Dubai experience that takes you beyond the glass towers into the vast red dunes of the Al Lahbab or Al Marmoom deserts, just 45-60 minutes from Downtown Dubai. The most popular format — the evening desert safari — picks you up from your hotel around 3:30 PM and returns you by 9:30 PM, packing dune bashing, sandboarding, camel riding, a BBQ buffet dinner, and live entertainment into six action-filled hours.\n\nDune bashing is the adrenaline highlight: skilled drivers in Toyota Land Cruisers navigate steep dune faces at speed, tilting the vehicle at angles that feel impossible. After the drive, you arrive at a Bedouin-style camp set up in the desert, where activities include henna painting, shisha, falcon photo opportunities, and traditional tanoura dancing under the stars. Dinner is typically a lavish open-air buffet with grilled meats, Arabic mezze, and fresh salads.\n\nBeyond the classic evening safari, options include sunrise camel treks (departing at 5 AM for the quietest desert light), overnight camping under the stars with bonfire and stargazing, and premium VIP safaris with private vehicles, gourmet dining, and vintage Land Rover convoys. The desert ecosystem is also rich with wildlife — Arabian oryx, gazelles, and desert foxes are commonly spotted on morning tours.",
@@ -148,7 +148,7 @@ $data = [
         [
             'slug' => 'aquarium',
             'title' => 'Dubai Aquarium & Underwater Zoo Tickets',
-            'meta_title' => 'Dubai Aquarium Tickets 2026 | TickedBus',
+            'meta_title' => 'Dubai Aquarium Tickets | TickedBus',
             'meta_description' => 'Book Dubai Aquarium tickets for the 10-million-litre tank, underwater tunnel, and cage snorkelling with sharks. Located in Dubai Mall.',
             'hero_image' => 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80',
             'intro' => "The Dubai Aquarium and Underwater Zoo occupies a massive 10-million-litre tank on the ground floor of The Dubai Mall, housing over 33,000 aquatic animals across 140 species. Its centrepiece is a 32.88-metre-wide acrylic viewing panel — one of the largest in the world — that you can see for free from the mall concourse. But stepping inside unlocks the 48-metre walk-through tunnel, where sharks, rays, and giant groupers glide overhead in every direction.\n\nThe Underwater Zoo on Level 2 expands the experience into themed ecological zones: Rainforest, Rocky Shore, and Living Ocean. Here you encounter King Crocs (5-metre saltwater crocodiles), giant spider crabs, piranhas, and colourful poison dart frogs. Interactive touch tanks let children handle starfish and sea cucumbers under staff supervision.\n\nFor thrill-seekers, the aquarium offers cage snorkelling and shark diving experiences. The cage snorkel (no certification required) lowers you into the main tank surrounded by sand tiger sharks and pelagic rays. Certified divers can go cage-free for a 30-minute dive among 300+ sharks. Both experiences include full equipment, a briefing, and underwater photos.",
@@ -184,7 +184,7 @@ $data = [
         [
             'slug' => 'dubai-frame',
             'title' => 'Dubai Frame Tickets — 150m Observation Deck & Sky Bridge',
-            'meta_title' => 'Dubai Frame Tickets 2026 | TickedBus',
+            'meta_title' => 'Dubai Frame Tickets | TickedBus',
             'meta_description' => 'Book Dubai Frame tickets for the 150m sky deck with glass floor walkway. See old and new Dubai from the golden frame. From AED 50.',
             'hero_image' => 'https://images.unsplash.com/photo-1597659840241-37e2b60e4b01?auto=format&fit=crop&w=1200&q=80',
             'intro' => "The Dubai Frame is a 150-metre-tall architectural landmark in Zabeel Park that functions as both a giant picture frame and an observation tower. Completed in 2018, this gold-clad rectangular structure measures 93 metres wide and is designed so that when you stand at either end, the frame perfectly borders either old Dubai (Deira side with its souks and minarets) or new Dubai (Sheikh Zayed Road skyscrapers and the Burj Khalifa) — making it a literal and metaphorical bridge between the city's past and future.\n\nThe experience begins on the ground floor with an immersive museum gallery tracing Dubai's evolution from a fishing village to a global metropolis, using projection mapping and touchscreen displays. A high-speed elevator then carries you to the 150-metre Sky Deck in 75 seconds. The observation bridge features a 25-metre glass-floor walkway — panels of transparent glass beneath your feet that reveal the park 150 metres below. Views extend to the Creek, Karama, and Downtown Dubai simultaneously.\n\nAt AED 50 for adults and AED 20 for children (as of 2024), the Dubai Frame offers one of the best value-for-money observation experiences in the city — significantly cheaper than the Burj Khalifa while delivering stunning 360-degree panoramas and a genuine thrill factor from the glass floor.",
@@ -292,7 +292,7 @@ $data = [
         [
             'slug' => 'theme-parks',
             'title' => 'Dubai Theme Parks — Legoland, IMG Worlds, Ski Dubai & More',
-            'meta_title' => 'Dubai Theme Park Tickets 2026 | TickedBus',
+            'meta_title' => 'Dubai Theme Park Tickets | TickedBus',
             'meta_description' => 'Book Dubai theme park tickets: Legoland, IMG Worlds of Adventure, Ski Dubai, Motiongate & more. Compare parks and save up to 25%.',
             'hero_image' => 'https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=1200&q=80',
             'intro' => "Dubai has invested billions creating one of the world's densest concentrations of theme parks, offering everything from indoor snow skiing to Marvel superhero coasters. The main hub is Dubai Parks and Resorts in Jebel Ali, a 25-million-square-foot mega complex housing Legoland Dubai, Legoland Water Park, Motiongate (Hollywood-themed), and the Riverland retail district — all connected by walkways and reachable on a single multi-park ticket.\n\nIMG Worlds of Adventure in Dubai Land is the world's largest indoor theme park at 1.5 million square feet, featuring Marvel, Cartoon Network, Lost Valley (dinosaur), and IMG Boulevard zones. Being fully air-conditioned, it's a year-round option unaffected by summer heat. Ski Dubai inside Mall of the Emirates offers an entirely surreal experience — a 22,500 sqm indoor snow park with real penguins, a 400-metre ski slope, chairlift, and toboggan runs, all maintained at -4C while outside temperatures exceed 45C.\n\nBeyond the mega parks, AYA at WAFI Mall delivers a 40,000 sqft immersive digital art experience with 12 connected zones, Green Planet is an indoor tropical rainforest biodome housing 3,000 plants and animals, and Real Madrid World at Dubai Parks offers sports-themed rides. Multi-park passes offer significant savings — the Dubai Parks 2-day pass covers all four parks for roughly the price of two individual tickets.",
@@ -400,7 +400,7 @@ $data = [
         [
             'slug' => 'skydiving',
             'title' => 'Skydive Dubai, Indoor Skydiving & Zipline Adventures',
-            'meta_title' => 'Skydive Dubai Prices 2026 | TickedBus',
+            'meta_title' => 'Skydive Dubai Prices | TickedBus',
             'meta_description' => 'Book Skydive Dubai tandem jump over Palm Jumeirah from AED 1,899. Plus indoor skydiving at iFly and XLine zipline at Dubai Marina.',
             'hero_image' => 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80',
             'intro' => "Skydive Dubai offers what many consider the world's most scenic tandem skydive — a 13,000-foot jump directly over the Palm Jumeirah artificial island, with aerial views of the Burj Khalifa, Dubai Marina skyline, and the turquoise Gulf during 60 seconds of freefall at 200 km/h. Two drop zones operate: Palm Jumeirah (the premium, Instagram-famous location) and Dubai Desert Campus (over sand dunes, approximately AED 500 cheaper).\n\nFor those who want the sensation without the altitude, iFLY Dubai at City Centre Mirdif offers indoor skydiving in a 10-metre vertical wind tunnel generating winds of 175 km/h — enough to float you in stable flight. Sessions include 2-4 minutes of actual flight time (equivalent to multiple real skydives) with an instructor inside the tunnel controlling your movements. No experience needed; children as young as 3 can fly.\n\nThe XLine Dubai Marina zipline adds another adrenaline dimension — a 1-kilometre dual zipline that launches from a 170-metre platform at JBR, reaching speeds of 80 km/h as you fly head-first in a superman position over the marina, promenade, and yacht club below. It's the longest urban zipline in the world.",
@@ -780,7 +780,7 @@ $data = [
             'id' => 783,
             'slug' => 'dubai-aquarium-underwater-zoo',
             'title' => 'Dubai Aquarium & Underwater Zoo at Dubai Mall',
-            'meta_title' => 'Dubai Aquarium Tickets 2026 | TickedBus',
+            'meta_title' => 'Dubai Aquarium Tickets | TickedBus',
             'meta_description' => 'Book Dubai Aquarium & Underwater Zoo tickets. Walk through the 48m tunnel, see 33,000 animals & dive with sharks. Dubai Mall.',
             'hero_image' => 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -956,7 +956,7 @@ $data = [
             'id' => 2466,
             'slug' => 'legoland-dubai',
             'title' => 'Legoland Dubai — Theme Park & Water Park',
-            'meta_title' => 'Legoland Dubai Tickets 2026 | TickedBus',
+            'meta_title' => 'Legoland Dubai Tickets | TickedBus',
             'meta_description' => 'Book Legoland Dubai tickets for the theme park and water park. 60+ rides designed for ages 2-12 at Dubai Parks and Resorts.',
             'hero_image' => 'https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -1704,7 +1704,7 @@ $data = [
             'id' => 841,
             'slug' => 'dubai-explorer-pass',
             'title' => 'Dubai Explorer Pass — Multi-Attraction Savings Pass',
-            'meta_title' => 'Dubai Explorer Pass 2026 | TickedBus',
+            'meta_title' => 'Dubai Explorer Pass | TickedBus',
             'meta_description' => 'Save up to 50% with the Dubai Explorer Pass. Choose 3-7 top attractions including Burj Khalifa, Aquaventure & more. From AED 499.',
             'hero_image' => 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [

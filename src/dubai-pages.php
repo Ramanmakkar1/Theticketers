@@ -8,6 +8,31 @@ declare(strict_types=1);
    markup for Dubai tourism keywords.
    ========================================================================= */
 
+/**
+ * Rich editorial twin for a HelloTickets activity, when one exists.
+ * The hand-written /dubai/{category}/{slug} attraction pages cover the same
+ * products as some /activity/ pages; the thin twin 301s to the rich page so
+ * the two never compete in search.
+ */
+function dubai_attraction_path_for_activity(int $activityId): ?string
+{
+    static $map = null;
+    if ($map === null) {
+        $map = [];
+        $packFile = __DIR__ . '/dubai-content.php';
+        if (is_file($packFile)) {
+            $pack = require $packFile;
+            foreach ($pack['attractions'] ?? [] as $attraction) {
+                $aid = (int) ($attraction['activity_id'] ?? 0);
+                if ($aid > 0 && !empty($attraction['slug'])) {
+                    $map[$aid] = '/dubai/' . ($attraction['category_slug'] ?? 'attractions') . '/' . $attraction['slug'];
+                }
+            }
+        }
+    }
+    return $map[$activityId] ?? null;
+}
+
 // ---------------------------------------------------------------------------
 // Helper: Breadcrumb schema
 // ---------------------------------------------------------------------------
@@ -945,7 +970,7 @@ function render_dubai_attraction(HelloTicketsClient $client, array $config, arra
                                 <span class="price-label">Tickets From</span>
                                 <strong><?= e(money($price, $currency)) ?></strong>
                                 <a class="button-link wide" href="<?= e(go_url($activity, 'activity')) ?>" rel="sponsored nofollow">Check Availability</a>
-                                <p class="checkout-note">Secure checkout on our official ticket partner's site. Instant e-tickets delivered to your phone.</p>
+                                <p class="checkout-note">Secure checkout on our official ticket partner's site. Instant e-tickets delivered to your phone. We may earn a commission &mdash; at no extra cost to you.</p>
                             </div>
                         <?php endif; ?>
 
@@ -1023,7 +1048,7 @@ function render_abu_dhabi_hub(HelloTicketsClient $client, array $config, array $
     ];
 
     render_layout($config, [
-        'title' => 'Things to Do in Abu Dhabi — Tours, Tickets & Day Trips from Dubai | ' . $config['site_name'],
+        'title' => 'Things to Do in Abu Dhabi — Tours & Day Trips | ' . $config['site_name'],
         'description' => 'Book Abu Dhabi tours and tickets from Dubai. Visit Sheikh Zayed Grand Mosque, Louvre Abu Dhabi, Ferrari World and more with instant e-tickets and free cancellation on most experiences.',
         'canonical' => absolute_url($config, '/abu-dhabi'),
         'body_class' => 'abu-dhabi-hub-page',

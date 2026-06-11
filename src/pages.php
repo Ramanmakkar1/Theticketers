@@ -12,6 +12,15 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
 
     $path = current_path();
 
+    // All our slugs are lowercase; fold case variants into one URL before resolving
+    // (e.g. /artist/MAROON-5 → /artist/maroon-5). Skip /venue — legacy Ticketmaster
+    // ids in old venue URLs are case-sensitive.
+    $lowerPath = strtolower($path);
+    if ($lowerPath !== $path && strpos($path, '/venue/') !== 0 && strpos($path, '/go') !== 0) {
+        redirect_permanent($lowerPath);
+        return;
+    }
+
     if ($path === '/') {
         render_home_page($client, $config, $destinationsContent);
         return;
@@ -67,6 +76,13 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
         // for a legacy "{slug}-{id}" URL; numeric tails are only tried after it fails.
         $performerId = resolve_artist_id($client, $match[1]) ?? legacy_id_from_slug($match[1]);
         if ($performerId === null) {
+            // HelloTickets doesn't know this artist — Ticketmaster often does (NHL
+            // teams, US tours). TM-only artists get the same page, fed by TM data.
+            $tmOnly = tm_artist_by_slug($config, $match[1]);
+            if ($tmOnly !== null) {
+                render_artist_detail_page($client, $config, 0, $tmOnly);
+                return;
+            }
             render_error_page($config, 404, 'Artist not found', 'This artist is not on tour right now.');
             return;
         }
@@ -83,8 +99,15 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
         render_static_page($config, 'About ' . $config['site_name'], $config['site_name'] . ' is a ticket discovery site for events, attractions and experiences in Dubai, Abu Dhabi and top destinations worldwide.', '/about', function () use ($config): void {
             ?>
             <p><?= e($config['site_name']) ?> is a ticket discovery site for events, attractions and experiences in Dubai, Abu Dhabi and top destinations across the United States, Canada, the United Kingdom, Italy, Spain and France.</p>
-            <p>We list concerts, theatre, sports, tours and attractions with live prices and availability supplied by our official ticketing partner, HelloTickets. When you choose a ticket, you complete your booking securely on our partner's site &mdash; they handle payment, ticket delivery and customer support.</p>
-            <p><?= e($config['site_name']) ?> is operated by Town Media Labs. Questions? See our <a href="/contact">Contact</a> page.</p>
+            <p>We list concerts, theatre, sports, tours and attractions with live prices and availability supplied by official ticketing partners &mdash; HelloTickets for attractions, tours and international events, and Ticketmaster for North American sports, venues and arena tours. When you choose a ticket, you complete your booking securely on the partner's own site: they handle payment, ticket delivery and customer support, and the price you pay is the partner's price.</p>
+            <h2>What you'll find here</h2>
+            <ul>
+                <li><strong>Destination guides</strong> for <a href="/dubai">Dubai</a>, <a href="/abu-dhabi">Abu Dhabi</a> and flagship cities across six countries, each hand-written with practical tips, highlights and FAQs.</li>
+                <li><strong>Live schedules</strong> for <a href="/artists">artists on tour</a>, <a href="/venues">major venues</a> like Madison Square Garden and Wembley, and <a href="/teams">NBA, NFL, MLB and NHL teams</a> &mdash; refreshed from partner data every time a page loads.</li>
+                <li><strong>Honest answers</strong>: every count, date and starting price on the site comes from live partner inventory, never from a static copy that can go stale.</li>
+            </ul>
+            <p>Nothing on this site is pay-to-rank: listings are ordered by the partner's live data, and we earn the same way regardless of which ticket you pick &mdash; the details are on our <a href="/how-we-make-money">How We Make Money</a> page.</p>
+            <p><?= e($config['site_name']) ?> is operated by Town Media Labs. Questions, corrections or partnership ideas? See our <a href="/contact">Contact</a> page &mdash; we read everything.</p>
             <?php
         });
         return;
@@ -93,11 +116,12 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
     if ($path === '/contact') {
         render_static_page($config, 'Contact Us', 'How to reach the ' . $config['site_name'] . ' team for partnerships, listings, feedback and corrections.', '/contact', function () use ($config): void {
             ?>
-            <p>The fastest way to reach us is email: <a href="mailto:townmedialabs@gmail.com"><strong>townmedialabs@gmail.com</strong></a></p>
+            <p>The fastest way to reach us is email: <a href="mailto:townmedialabs@gmail.com"><strong>townmedialabs@gmail.com</strong></a>. We typically reply within one to two business days.</p>
             <ul>
-                <li>Booking, payment or refund questions: these are handled by our ticketing partner &mdash; use the support links in your booking confirmation email.</li>
-                <li>Partnerships and listings: email us with the subject "Partner with <?= e($config['site_name']) ?>".</li>
-                <li>Site feedback or corrections: email us and include the page link.</li>
+                <li><strong>Booking, payment or refund questions:</strong> these are handled by the ticketing partner that processed your order &mdash; use the support links in your booking confirmation email. We don't have access to partner booking systems, so the partner's support team will always be faster.</li>
+                <li><strong>Partnerships and listings:</strong> if you run an event, venue, tour or experience and want it listed, email us with the subject "Partner with <?= e($config['site_name']) ?>" and a link to what you do.</li>
+                <li><strong>Site feedback or corrections:</strong> spotted a wrong date, a broken page or an outdated price? Email us the page link and what's wrong &mdash; corrections go straight to the top of the queue.</li>
+                <li><strong>Press and media:</strong> email with the subject "Press" for facts, data or comments about the site.</li>
             </ul>
             <?php
         });
@@ -107,8 +131,57 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
     if ($path === '/how-we-make-money') {
         render_static_page($config, 'How We Make Money', $config['site_name'] . ' is free to use. Here is how affiliate commissions fund the site without changing the price you pay.', '/how-we-make-money', function () use ($config): void {
             ?>
-            <p><?= e($config['site_name']) ?> is free to use. When you buy a ticket through a link on our site, our ticketing partner may pay us a commission. This never increases the price you pay &mdash; prices and availability come directly from the partner.</p>
+            <p><?= e($config['site_name']) ?> is free to use. When you buy a ticket through a link on our site, the ticketing partner that completes your booking &mdash; HelloTickets or Ticketmaster &mdash; may pay us a commission. This never increases the price you pay: prices and availability come directly from the partner, and you'd pay exactly the same buying from them directly.</p>
             <p>We do not process payments, hold ticket inventory, or charge any fees. Commissions are how we fund the site.</p>
+            <h2>What this means in practice</h2>
+            <ul>
+                <li>Every "Find Tickets" and "Check Availability" button leads to a partner checkout page. Those links are marked as sponsored for search engines, which is the standard for affiliate links.</li>
+                <li>We earn the same commission rate regardless of which event or attraction you choose, so we have no incentive to push one listing over another &mdash; ordering comes from the partner's live data.</li>
+                <li>If a page is wrong or a price looks off, <a href="/contact">tell us</a> &mdash; accuracy is the only product we have.</li>
+            </ul>
+            <?php
+        });
+        return;
+    }
+
+    if ($path === '/privacy') {
+        render_static_page($config, 'Privacy Policy', 'What data ' . $config['site_name'] . ' collects (a city-preference cookie, anonymised click logs), how optional location detection works, and your rights.', '/privacy', function () use ($config): void {
+            ?>
+            <p>Last updated: <?= e(date('F j, Y')) ?>. <?= e($config['site_name']) ?> ("we") is a ticket discovery site operated by Town Media Labs. We collect as little personal data as a working website allows. This page lists everything we do collect, why, and your choices.</p>
+            <h2>Cookies we set</h2>
+            <ul>
+                <li><strong>tb_city</strong> &mdash; remembers which city you chose so pages open with your city's tickets. Stored for 1 year. Set when you pick a city (or use "Detect my location"). It contains only a city number &mdash; no personal data. Delete it any time in your browser settings.</li>
+            </ul>
+            <p>We set no advertising or analytics cookies.</p>
+            <h2>Optional location detection</h2>
+            <p>If you press <strong>"Detect my location"</strong> in the city chooser, your browser asks ipapi.co (a third-party geolocation service) which city your internet connection is in, so we can preselect it. This sends your IP address to ipapi.co (<a href="https://ipapi.co/privacy/" rel="noopener">their privacy policy</a>). It happens only when you press the button &mdash; never automatically.</p>
+            <h2>Click logs</h2>
+            <p>When you click out to a ticket partner, we record the ticket clicked, the time, your browser type and an <strong>anonymised</strong> IP address (last digits removed, so it no longer identifies you). We use this to count clicks and detect abuse. Logs are routinely deleted after 90 days.</p>
+            <h2>Buying tickets</h2>
+            <p>Purchases happen on our partners' sites (HelloTickets, Ticketmaster) via Impact affiliate links, which set their own tracking for commission attribution. Their privacy policies govern checkout: we never see your name, payment details or order contents.</p>
+            <h2>Your rights</h2>
+            <p>Under GDPR/UK GDPR you can request access to, correction of, or deletion of any data we hold. Since we store no accounts and anonymise click logs, there is usually nothing identifying to return &mdash; but email <a href="mailto:townmedialabs@gmail.com">townmedialabs@gmail.com</a> and we will check and respond within 30 days. EU/UK visitors may also complain to their local data-protection authority.</p>
+            <?php
+        });
+        return;
+    }
+
+    if ($path === '/terms') {
+        render_static_page($config, 'Terms of Service', 'The terms for using ' . $config['site_name'] . ': we list tickets and link to official partners; purchases are completed on the partner\'s site under their terms.', '/terms', function () use ($config): void {
+            ?>
+            <p>Last updated: <?= e(date('F j, Y')) ?>. By using <?= e($config['site_name']) ?> you agree to these terms.</p>
+            <h2>What we are (and aren't)</h2>
+            <p><?= e($config['site_name']) ?> is a free ticket discovery and comparison site. We do not sell tickets, process payments or hold inventory. Every purchase is completed on a partner's website (HelloTickets or Ticketmaster) under <em>their</em> terms of sale &mdash; including pricing, delivery, cancellations and refunds. For booking issues, contact the partner using the details in your confirmation email.</p>
+            <h2>Accuracy</h2>
+            <p>Prices, dates and availability are supplied live by our partners and can change between your viewing a page and completing checkout. The partner's checkout price is always the binding one. We work to keep listings accurate but provide the site "as is", without warranties, and are not liable for losses arising from listing errors or partner availability changes &mdash; your statutory consumer rights are unaffected.</p>
+            <h2>Affiliate disclosure</h2>
+            <p>We may earn a commission when you buy through our links, at no extra cost to you. Details: <a href="/how-we-make-money">How We Make Money</a>.</p>
+            <h2>Content and images</h2>
+            <p>Event names, artist names, venue names and images belong to their respective owners and are used to identify the events listed. If you own content shown here and want it corrected or removed, email <a href="mailto:townmedialabs@gmail.com">townmedialabs@gmail.com</a> &mdash; takedown requests are honoured within 24 hours.</p>
+            <h2>Acceptable use</h2>
+            <p>Don't scrape the site at abusive rates, attempt to break it, or misrepresent affiliation with us. We may block traffic that does.</p>
+            <h2>Contact</h2>
+            <p>Town Media Labs &mdash; <a href="mailto:townmedialabs@gmail.com">townmedialabs@gmail.com</a>. We may update these terms; the date above reflects the latest revision.</p>
             <?php
         });
         return;
@@ -176,8 +249,11 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
     }
 
     if (preg_match('#^/venue/([^/]+)$#', $path, $match)) {
-        $seedVenue = resolve_seed_venue($config, $match[1]);
-        $tmVenueId = $seedVenue !== null ? (string) $seedVenue['tm_id'] : tm_legacy_id_from_slug($match[1]);
+        $tmVenueId = venue_slug_lookup($match[1]);
+        if ($tmVenueId === null) {
+            $seedVenue = resolve_seed_venue($config, $match[1]);
+            $tmVenueId = $seedVenue !== null ? (string) $seedVenue['tm_id'] : tm_legacy_id_from_slug($match[1]);
+        }
         if ($tmVenueId === null || $tmVenueId === '') {
             render_error_page($config, 404, 'Venue not found', 'This venue page is not available.');
             return;
@@ -258,11 +334,11 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
     <meta property="og:description" content="<?= e($description) ?>">
     <meta property="og:type" content="website">
     <meta property="og:url" content="<?= e($canonical) ?>">
-    <meta property="og:image" content="<?= e($meta['image'] ?? $config['fallback_images']['hero']) ?>">
+    <meta property="og:image" content="<?= e(absolute_image_url($config, $meta['image'] ?? $config['fallback_images']['hero'])) ?>">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/styles.css">
     <?php if ($schema !== null): ?>
     <script type="application/ld+json"><?= json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?></script>
@@ -276,7 +352,7 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
         </a>
         <div class="header-search">
             <form action="/search" method="get">
-                <input type="search" name="q" value="<?= e($q) ?>" placeholder="Search for Events, Attractions, Concerts, Theatre and Tours">
+                <input type="search" name="q" value="<?= e($q) ?>" aria-label="Search events and attractions" placeholder="Search for Events, Attractions, Concerts, Theatre and Tours">
                 <button type="submit" aria-label="Search">Search</button>
             </form>
         </div>
@@ -292,7 +368,7 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
                     <?php endforeach; ?>
                 </div>
             </div>
-            <button class="nav-toggle" type="button" data-nav-toggle aria-label="Open menu">
+            <button class="nav-toggle" type="button" data-nav-toggle aria-label="Open search">
                 <span></span><span></span><span></span>
             </button>
         </div>
@@ -305,7 +381,7 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
                 <a href="/artists">Artists</a>
                 <a href="/dubai">Dubai</a>
                 <a href="/abu-dhabi">Abu Dhabi</a>
-                <?php $navLabels = ['usa' => 'USA', 'canada' => 'Canada', 'uk' => 'UK', 'italy' => 'Italy', 'spain' => 'Spain', 'france' => 'France'];
+                <?php $navLabels = ['usa' => 'USA', 'canada' => 'Canada', 'uk' => 'UK', 'italy' => 'Italy', 'spain' => 'Spain', 'france' => 'France', 'netherlands' => 'Netherlands', 'germany' => 'Germany', 'portugal' => 'Portugal', 'australia' => 'Australia'];
                 foreach (($config['markets'] ?? []) as $mSlug => $market): ?>
                     <a href="/<?= e($mSlug) ?>"><?= e($navLabels[$mSlug] ?? $market['name']) ?></a>
                 <?php endforeach; ?>
@@ -374,6 +450,8 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
                     <a href="/about">About Us</a>
                     <a href="/contact">Contact</a>
                     <a href="/how-we-make-money">How We Make Money</a>
+                    <a href="/privacy">Privacy Policy</a>
+                    <a href="/terms">Terms of Service</a>
                     <a href="/search">Search Tickets</a>
                     <a href="/sitemap.xml">Sitemap</a>
                 </nav>
@@ -622,6 +700,35 @@ function render_events_page(HelloTicketsClient $client, array $config, int $city
     $data = api_result(static fn() => $client->performances($params), ['performances' => [], 'total_count' => 0]);
     $items = $data['performances'] ?? [];
 
+    // HelloTickets-first, Ticketmaster-fill: when local HT inventory is thin, top up
+    // with TM events for the SAME city before reaching for global events. HT stays
+    // first and wins dedupe (higher commission, our own detail pages); TM covers the
+    // local long tail HT misses.
+    if (count($items) < 18 && $query === '' && $page === 1) {
+        $tmExtra = [];
+        if ($date !== 'upcoming') {
+            [$tmFrom, $tmTo] = date_bounds($date);
+            $tmExtra['localStartDateTime'] = $tmFrom->format('Y-m-d\T00:00:00') . ',' . $tmTo->format('Y-m-d\T23:59:59');
+        }
+        if ($category !== null) {
+            // HT category ids 1/2/3 map onto TM's segment taxonomy.
+            $segments = [1 => 'Sports', 2 => 'Music', 3 => 'Arts & Theatre'];
+            $segment = $segments[(int) $category['id']] ?? null;
+            if ($segment !== null) {
+                $tmExtra['segmentName'] = $segment;
+            } else {
+                $tmExtra = null; // unmapped category: skip TM rather than blend wrong genres
+            }
+        }
+        if ($tmExtra !== null) {
+            $tmEvents = tm_events_for_city($config, (string) $city['name'], (string) ($city['country_code'] ?? ''), $tmExtra, 24);
+            if ($tmEvents !== []) {
+                $items = array_slice(merge_events_dedupe($items, $tmEvents), 0, 24);
+                $data['total_count'] = max((int) ($data['total_count'] ?? 0), count($items));
+            }
+        }
+    }
+
     // Most market cities have very little sellable event inventory. When a city is thin
     // (and the user isn't searching/paging), blend in global sellable events so the page
     // is useful rather than near-empty. Local events stay first.
@@ -655,8 +762,10 @@ function render_events_page(HelloTicketsClient $client, array $config, int $city
         'title' => ($seo !== null ? $seo['meta_title'] : ucwords($title)) . ' | ' . $config['site_name'],
         'description' => $seo['meta_description'] ?? ('Browse live ' . strtolower($categoryLabel) . 'event tickets in ' . $city['name'] . ' with dates, venues and prices.'),
         'robots' => ($category !== null && $seo === null) ? 'noindex, follow' : null,
+        // Date filters (?date=today/weekend/...) are thin variants of the same
+        // listing — canonicalize them to the unfiltered page so they don't compete
+        // with /events and the dedicated /events/this-weekend-in-{city} pages.
         'canonical' => absolute_url($config, current_path(), array_filter([
-            'date' => $date !== 'upcoming' ? $date : null,
             'page' => $page > 1 ? $page : null,
         ])),
     ], $seo['h1'] ?? $title, $items, 'event', $config, $data, [
@@ -853,7 +962,7 @@ function render_search_page(HelloTicketsClient $client, array $config): void
                 <p class="eyebrow">Search</p>
                 <h1><?= $query !== '' ? 'Tickets for "' . e($query) . '"' : 'Search Tickets in ' . e($cityName) ?></h1>
                 <form class="listing-toolbar" action="/search" method="get">
-                    <input type="search" name="q" value="<?= e($query) ?>" placeholder="Search <?= e($cityName) ?> tickets">
+                    <input type="search" name="q" value="<?= e($query) ?>" aria-label="Search tickets" placeholder="Search <?= e($cityName) ?> tickets">
                     <select name="type" aria-label="Search type">
                         <option value="all">All tickets</option>
                         <option value="events">Events</option>
@@ -887,23 +996,58 @@ function render_search_page(HelloTicketsClient $client, array $config): void
 function render_city_page(HelloTicketsClient $client, array $config, int $cityId, array $destinationsContent = []): void
 {
     $city = city_for_id($cityId, $config);
-    $guidePath = destination_hub_path_for_city($destinationsContent, $cityId);
+    // Dubai/Abu Dhabi have bespoke editorial hubs outside the destinations pack;
+    // canonicalize their thin /city listings there too, like every other hub city.
+    $guidePath = destination_hub_path_for_city($destinationsContent, $cityId)
+        ?? ($cityId === 132 ? '/dubai' : null)
+        ?? ($cityId === 256 ? '/abu-dhabi' : null);
 
-    // Only known market cities get a page — unknown ids/slugs 404 instead of
-    // rendering a thin, indexable soft-404 of fallback content.
-    $isKnownCity = false;
+    // Market cities always get a page. Any other geo-detectable city qualifies too,
+    // but only if its combined HelloTickets + Ticketmaster inventory is real —
+    // thin ones still 404 so we never publish doorway pages.
+    $isMarketCity = false;
     foreach ($config['market_cities'] as $marketCity) {
         if ((int) $marketCity['id'] === $cityId) {
-            $isKnownCity = true;
+            $isMarketCity = true;
             break;
         }
     }
-    if (!$isKnownCity) {
+    if (!$isMarketCity && !isset(geo_cities()[(string) $cityId])) {
         render_error_page($config, 404, 'City not found', 'We do not have a tickets page for this city yet.');
         return;
     }
     if (current_path() !== city_path($city)) {
+        $requestedSlug = (string) substr(current_path(), strlen('/city/'));
+        if (legacy_id_from_slug($requestedSlug) === $cityId
+            && !legacy_slug_corresponds($requestedSlug, slugify((string) $city['name']))) {
+            render_error_page($config, 404, 'City not found', 'We do not have a tickets page for this city yet.');
+            return;
+        }
         redirect_permanent(city_path($city));
+        return;
+    }
+    $eventsData = api_result(static fn() => $client->performances(array_merge([
+        'limit' => 12,
+        'page' => 1,
+        'is_sellable' => 'true',
+        'city_id' => $cityId,
+    ], date_params(null))), ['performances' => []]);
+    $events = $eventsData['performances'] ?? [];
+    if (count($events) < 12) {
+        $events = array_slice(merge_events_dedupe(
+            $events,
+            tm_events_for_city($config, (string) $city['name'], (string) ($city['country_code'] ?? ''), [], 24)
+        ), 0, 24);
+    }
+    $activitiesData = api_result(static fn() => $client->activities([
+        'limit' => 12,
+        'page' => 1,
+        'city_id' => $cityId,
+    ]), ['activities' => []]);
+    $activities = $activitiesData['activities'] ?? [];
+
+    if (!$isMarketCity && count($events) + count($activities) < 5) {
+        render_error_page($config, 404, 'City not found', 'We do not have a tickets page for this city yet.');
         return;
     }
     setcookie('tb_city', (string) $cityId, [
@@ -911,17 +1055,6 @@ function render_city_page(HelloTicketsClient $client, array $config, int $cityId
         'path' => '/',
         'samesite' => 'Lax',
     ]);
-    $eventsData = api_result(static fn() => $client->performances(array_merge([
-        'limit' => 12,
-        'page' => 1,
-        'is_sellable' => 'true',
-        'city_id' => $cityId,
-    ], date_params(null))), ['performances' => []]);
-    $activitiesData = api_result(static fn() => $client->activities([
-        'limit' => 12,
-        'page' => 1,
-        'city_id' => $cityId,
-    ]), ['activities' => []]);
 
     render_layout($config, [
         'title' => $city['name'] . ' Tickets, Events & Attractions | ' . $config['site_name'],
@@ -929,7 +1062,7 @@ function render_city_page(HelloTicketsClient $client, array $config, int $cityId
         // When an editorial /{country}/{city} hub exists, point the canonical at it so
         // the thin listing page doesn't cannibalise the rich hub.
         'canonical' => absolute_url($config, $guidePath ?? city_path($city)),
-    ], function () use ($city, $eventsData, $activitiesData, $config, $guidePath): void {
+    ], function () use ($city, $events, $activities, $config, $guidePath): void {
         ?>
         <section class="listing-hero city-hero">
             <div class="container">
@@ -946,8 +1079,8 @@ function render_city_page(HelloTicketsClient $client, array $config, int $cityId
                 <?php endif; ?>
             </div>
         </section>
-        <?php render_card_section('Events in ' . $city['name'], '/events', $eventsData['performances'] ?? [], 'event', $config); ?>
-        <?php render_card_section('Attractions in ' . $city['name'], '/attractions', $activitiesData['activities'] ?? [], 'activity', $config); ?>
+        <?php render_card_section('Events in ' . $city['name'], '/events', $events, 'event', $config); ?>
+        <?php render_card_section('Attractions in ' . $city['name'], '/attractions', $activities, 'activity', $config); ?>
         <?php
     });
 }
@@ -969,6 +1102,12 @@ function render_category_page(HelloTicketsClient $client, array $config, int $ca
     }
 
     if (current_path() !== category_path($category)) {
+        $requestedSlug = (string) substr(current_path(), strlen('/category/'));
+        if (legacy_id_from_slug($requestedSlug) === $categoryId
+            && !legacy_slug_corresponds($requestedSlug, slugify((string) $category['name']))) {
+            render_error_page($config, 404, 'Category not found', 'This ticket category is not available.');
+            return;
+        }
         redirect_permanent(category_path($category));
         return;
     }
@@ -1013,6 +1152,13 @@ function render_event_detail_page(HelloTicketsClient $client, array $config, int
     // canonical clean URL. event_path() registers the new slug before we redirect,
     // so the target always resolves.
     if (current_path() !== event_path($performance)) {
+        $requestedSlug = (string) substr(current_path(), strlen('/event/'));
+        if (legacy_id_from_slug($requestedSlug) === (int) $performance['id']
+            && slug_lookup('event', $requestedSlug) !== (int) $performance['id']
+            && !legacy_slug_corresponds($requestedSlug, event_slug($performance))) {
+            render_error_page($config, 404, 'Event not found', 'This event is not available anymore.');
+            return;
+        }
         redirect_permanent(event_path($performance));
         return;
     }
@@ -1083,7 +1229,7 @@ function render_event_detail_page(HelloTicketsClient $client, array $config, int
                         <span class="price-label">Tickets From</span>
                         <strong><?= e(money($price, (string) $currency)) ?></strong>
                         <a class="button-link wide" href="<?= e(go_url($performance, 'event')) ?>" rel="sponsored nofollow">Find Tickets</a>
-                        <p class="checkout-note">Secure checkout on our official ticket partner's site.</p>
+                        <p class="checkout-note">Secure checkout on our official ticket partner's site. We may earn a commission &mdash; at no extra cost to you.</p>
                     </aside>
                 </div>
             </div>
@@ -1101,6 +1247,14 @@ function render_event_detail_page(HelloTicketsClient $client, array $config, int
 
 function render_activity_detail_page(HelloTicketsClient $client, array $config, int $activityId): void
 {
+    // The hand-written /dubai attraction pages are the rich twin for some
+    // activities — 301 the thin twin there so the two never compete in search.
+    $richTwin = dubai_attraction_path_for_activity($activityId);
+    if ($richTwin !== null) {
+        redirect_permanent($richTwin);
+        return;
+    }
+
     $activity = api_result(static fn() => $client->activity($activityId));
     if ($activity === [] || empty($activity['id'])) {
         render_error_page($config, 404, 'Activity not found', 'This activity is not available anymore.');
@@ -1108,6 +1262,13 @@ function render_activity_detail_page(HelloTicketsClient $client, array $config, 
     }
 
     if (current_path() !== activity_path($activity)) {
+        $requestedSlug = (string) substr(current_path(), strlen('/activity/'));
+        if (legacy_id_from_slug($requestedSlug) === (int) $activity['id']
+            && slug_lookup('activity', $requestedSlug) !== (int) $activity['id']
+            && !legacy_slug_corresponds($requestedSlug, activity_slug($activity))) {
+            render_error_page($config, 404, 'Activity not found', 'This activity is not available anymore.');
+            return;
+        }
         redirect_permanent(activity_path($activity));
         return;
     }
@@ -1185,7 +1346,7 @@ function render_activity_detail_page(HelloTicketsClient $client, array $config, 
                         <span class="price-label">Tickets From</span>
                         <strong><?= e(money($price, (string) $currency)) ?></strong>
                         <a class="button-link wide" href="<?= e(go_url($activity, 'activity')) ?>" rel="sponsored nofollow">Check Availability</a>
-                        <p class="checkout-note">Secure checkout on our official ticket partner's site.</p>
+                        <p class="checkout-note">Secure checkout on our official ticket partner's site. We may earn a commission &mdash; at no extra cost to you.</p>
                     </aside>
                 </div>
             </div>
@@ -1297,6 +1458,12 @@ function render_weekend_page(HelloTicketsClient $client, array $config, int $cit
     }
 
     if (current_path() !== weekend_path($city)) {
+        $requestedSlug = (string) substr(current_path(), strlen('/events/this-weekend-in-'));
+        if (legacy_id_from_slug($requestedSlug) === $cityId
+            && !legacy_slug_corresponds($requestedSlug, slugify((string) $city['name']))) {
+            render_error_page($config, 404, 'City not found', 'We do not cover weekend events for this city yet.');
+            return;
+        }
         redirect_permanent(weekend_path($city));
         return;
     }
@@ -1312,6 +1479,17 @@ function render_weekend_page(HelloTicketsClient $client, array $config, int $cit
     ], date_params('weekend'))), ['performances' => [], 'total_count' => 0]);
     $events = $data['performances'] ?? [];
     $total = max((int) ($data['total_count'] ?? 0), count($events));
+
+    // Ticketmaster fills the same weekend window when HelloTickets is thin.
+    if (count($events) < 24) {
+        $tmWeekend = tm_events_for_city($config, (string) $city['name'], (string) ($city['country_code'] ?? ''), [
+            'localStartDateTime' => $saturday->format('Y-m-d\T00:00:00') . ',' . $sunday->format('Y-m-d\T23:59:59'),
+        ], 24);
+        if ($tmWeekend !== []) {
+            $events = array_slice(merge_events_dedupe($events, $tmWeekend), 0, 24);
+            $total = max($total, count($events));
+        }
+    }
 
     $fallback = false;
     if ($events === []) {
@@ -1465,7 +1643,7 @@ function render_artists_page(HelloTicketsClient $client, array $config): void
             <div class="container">
                 <p class="eyebrow">On Tour</p>
                 <h1>Trending Artists</h1>
-                <p class="listing-sub">Artists with upcoming shows — pick one to see every date, venue and ticket price.</p>
+                <p class="listing-sub">Every artist on this page has confirmed upcoming shows — concerts, sports and stage acts, roughly ordered by how much they're touring right now. Open an artist to see their full tour in one place: every date, city, venue and the live starting price, with new shows added automatically the moment tickets go on sale.</p>
             </div>
         </section>
         <section class="section-band">
@@ -1490,26 +1668,38 @@ function render_artists_page(HelloTicketsClient $client, array $config): void
     }, item_list_schema_for_artists($config, $performers));
 }
 
-function render_artist_detail_page(HelloTicketsClient $client, array $config, int $performerId): void
+function render_artist_detail_page(HelloTicketsClient $client, array $config, int $performerId, ?array $tmOnly = null): void
 {
-    $performer = api_result(static fn() => $client->performer($performerId));
-    if ($performer === [] || empty($performer['id'])) {
-        render_error_page($config, 404, 'Artist not found', 'This artist is not on tour right now.');
-        return;
-    }
+    if ($tmOnly !== null) {
+        // Artist unknown to HelloTickets, sourced entirely from Ticketmaster.
+        $performer = tm_normalize_attraction($tmOnly);
+    } else {
+        $performer = api_result(static fn() => $client->performer($performerId));
+        if ($performer === [] || empty($performer['id'])) {
+            render_error_page($config, 404, 'Artist not found', 'This artist is not on tour right now.');
+            return;
+        }
 
-    if (current_path() !== artist_path($performer)) {
-        redirect_permanent(artist_path($performer));
-        return;
+        if (current_path() !== artist_path($performer)) {
+            $requestedSlug = (string) substr(current_path(), strlen('/artist/'));
+            if (legacy_id_from_slug($requestedSlug) === (int) $performer['id']
+                && slug_lookup('artist', $requestedSlug) !== (int) $performer['id']
+                && !legacy_slug_corresponds($requestedSlug, slugify((string) $performer['name']))) {
+                render_error_page($config, 404, 'Artist not found', 'This artist is not on tour right now.');
+                return;
+            }
+            redirect_permanent(artist_path($performer));
+            return;
+        }
     }
 
     $name = (string) ($performer['name'] ?? 'Artist');
-    $events = api_result(static fn() => $client->performances([
+    $events = $tmOnly !== null ? [] : (api_result(static fn() => $client->performances([
         'limit' => 48,
         'page' => 1,
         'is_sellable' => 'true',
         'performer_id' => $performerId,
-    ]), ['performances' => []])['performances'] ?? [];
+    ]), ['performances' => []])['performances'] ?? []);
 
     // ---- Ticketmaster fallback ----
     // HelloTickets is concert-heavy and skews EU. For US-touring acts and US sports teams,
@@ -1517,19 +1707,21 @@ function render_artist_detail_page(HelloTicketsClient $client, array $config, in
     // normalise to the HT shape, and merge by (date, venue) — HT wins on conflict so we keep
     // the higher-commission link. The threshold is generous (<10) so even artists with some
     // HT inventory still get full tour coverage on a single page that ranks for "X tour dates".
-    $tmAttraction = null;
+    $tmAttraction = $tmOnly;
     if (count($events) < 10 && ($tm = tm_client($config)) !== null) {
-        $tmRaw = api_result(static fn() => $tm->attractions(['keyword' => $name, 'size' => 3]), []);
-        $tmAttractions = $tmRaw['_embedded']['attractions'] ?? [];
-        // Best name match: prefer exact case-insensitive, else first result with upcoming events
-        foreach ($tmAttractions as $a) {
-            if (strcasecmp((string) ($a['name'] ?? ''), $name) === 0) {
-                $tmAttraction = $a;
-                break;
+        if ($tmAttraction === null) {
+            $tmRaw = api_result(static fn() => $tm->attractions(['keyword' => $name, 'size' => 3]), []);
+            $tmAttractions = $tmRaw['_embedded']['attractions'] ?? [];
+            // Best name match: prefer exact case-insensitive, else first result with upcoming events
+            foreach ($tmAttractions as $a) {
+                if (strcasecmp((string) ($a['name'] ?? ''), $name) === 0) {
+                    $tmAttraction = $a;
+                    break;
+                }
             }
-        }
-        if ($tmAttraction === null && $tmAttractions !== [] && !empty($tmAttractions[0]['upcomingEvents']['_total'])) {
-            $tmAttraction = $tmAttractions[0];
+            if ($tmAttraction === null && $tmAttractions !== [] && !empty($tmAttractions[0]['upcomingEvents']['_total'])) {
+                $tmAttraction = $tmAttractions[0];
+            }
         }
         if ($tmAttraction !== null) {
             $tmEventsRaw = api_result(static fn() => $tm->events([
@@ -1539,6 +1731,12 @@ function render_artist_detail_page(HelloTicketsClient $client, array $config, in
             $tmEvents = array_map('tm_normalize_event', $tmEventsRaw['_embedded']['events'] ?? []);
             $events = merge_events_dedupe($events, $tmEvents);
         }
+    }
+
+    // TM-only artists with zero upcoming events would be empty doorway pages — 404.
+    if ($tmOnly !== null && $events === []) {
+        render_error_page($config, 404, 'Artist not found', 'This artist is not on tour right now.');
+        return;
     }
 
     $nextDate = '';
@@ -1570,10 +1768,13 @@ function render_artist_detail_page(HelloTicketsClient $client, array $config, in
         ])),
     ];
 
+    $performerPhoto = mapped_image('performer', (int) ($performer['id'] ?? 0));
+
     render_layout($config, [
         'title' => $name . ' Tickets, Tour Dates & Venues | ' . $config['site_name'],
         'description' => $description,
         'canonical' => absolute_url($config, artist_path($performer)),
+        'image' => $performerPhoto !== null ? absolute_image_url($config, $performerPhoto) : null,
     ], function () use ($config, $performer, $name, $events, $nextDate, $tourCities, $faqs): void {
         ?>
         <section class="listing-hero artist-hero">
@@ -1796,13 +1997,16 @@ function event_card(array $performance, array $config): string
     }
 
     // Cards link straight to the partner checkout (via /go), falling back to the
-    // on-site detail page only when the item has no bookable URL.
-    $cardHref = !empty($performance['url']) ? go_url($performance, 'event') : event_path($performance);
+    // on-site detail page only when the item has no bookable URL. Only outbound
+    // links carry sponsored/nofollow — internal detail links must pass PageRank.
+    $isOutbound = !empty($performance['url']);
+    $cardHref = $isOutbound ? go_url($performance, 'event') : event_path($performance);
+    $rel = $isOutbound ? ' rel="sponsored nofollow"' : '';
 
     ob_start();
     ?>
     <article class="ticket-card">
-        <a class="card-image" href="<?= e($cardHref) ?>" rel="sponsored nofollow">
+        <a class="card-image" href="<?= e($cardHref) ?>"<?= $rel ?>>
             <img src="<?= e($image) ?>" alt="<?= e($performance['name'] ?? 'Event') ?>" loading="lazy">
             <div class="card-date-badge">
                 <span class="month"><?= e($monthAbbr) ?></span>
@@ -1813,7 +2017,7 @@ function event_card(array $performance, array $config): string
             </div>
         </a>
         <div class="card-body">
-            <a class="card-title" href="<?= e($cardHref) ?>" rel="sponsored nofollow"><?= e($performance['name'] ?? 'Event') ?></a>
+            <a class="card-title" href="<?= e($cardHref) ?>"<?= $rel ?>><?= e($performance['name'] ?? 'Event') ?></a>
             <p><?= e(format_date_time($performance['start_date'] ?? [])) ?></p>
             <p><?= e(trim(($performance['venue']['name'] ?? '') . ', ' . ($performance['venue']['city'] ?? 'Dubai'), ', ')) ?></p>
             <p class="card-onwards"><?= e(money($price, $currency)) ?><?= ((float) $price) > 0 ? ' onwards' : '' ?></p>
@@ -1832,13 +2036,16 @@ function activity_card(array $activity, array $config): string
     $reviewsCount = !empty($activity['reviews']['number_of_reviews']) ? (int) $activity['reviews']['number_of_reviews'] : null;
 
     // Cards link straight to the partner checkout (via /go), falling back to the
-    // on-site detail page only when the item has no bookable URL.
-    $cardHref = !empty($activity['url']) ? go_url($activity, 'activity') : activity_path($activity);
+    // on-site detail page only when the item has no bookable URL. Only outbound
+    // links carry sponsored/nofollow — internal detail links must pass PageRank.
+    $isOutbound = !empty($activity['url']);
+    $cardHref = $isOutbound ? go_url($activity, 'activity') : activity_path($activity);
+    $rel = $isOutbound ? ' rel="sponsored nofollow"' : '';
 
     ob_start();
     ?>
     <article class="ticket-card">
-        <a class="card-image" href="<?= e($cardHref) ?>" rel="sponsored nofollow">
+        <a class="card-image" href="<?= e($cardHref) ?>"<?= $rel ?>>
             <img src="<?= e($image) ?>" alt="<?= e($activity['title'] ?? 'Experience') ?>" loading="lazy">
             <span class="category"><?= e($activity['city']['name'] ?? 'Attraction') ?></span>
             <?php if ($rating !== null): ?>
@@ -1852,7 +2059,7 @@ function activity_card(array $activity, array $config): string
             <?php endif; ?>
         </a>
         <div class="card-body">
-            <a class="card-title" href="<?= e($cardHref) ?>" rel="sponsored nofollow"><?= e($activity['title'] ?? 'Experience') ?></a>
+            <a class="card-title" href="<?= e($cardHref) ?>"<?= $rel ?>><?= e($activity['title'] ?? 'Experience') ?></a>
             <p><?= e($activity['supplier_name'] ?? 'Ticket partner') ?></p>
             <p class="card-onwards"><?= e(money($price, $currency)) ?><?= ((float) $price) > 0 ? ' onwards' : '' ?></p>
         </div>
@@ -1911,13 +2118,20 @@ function handle_outbound_redirect(array $config): void
     // (unwritable storage, display_errors, etc.). Logging is best-effort only.
     header('Location: ' . $affiliate, true, 302);
 
+    // IP is anonymised before logging (GDPR data-minimisation; /privacy documents
+    // this). IPv4 drops the last octet, IPv6 keeps only the first 3 groups.
+    $rawIp = (string) ($_SERVER['REMOTE_ADDR'] ?? '');
+    $anonIp = str_contains($rawIp, ':')
+        ? implode(':', array_slice(explode(':', $rawIp), 0, 3)) . '::'
+        : preg_replace('/\.\d+$/', '.0', $rawIp);
+
     $logLine = json_encode([
         'time' => gmdate('c'),
         'type' => $type,
         'id' => $id,
         'source' => $source,
         'destination' => $destination,
-        'ip' => $_SERVER['REMOTE_ADDR'] ?? '',
+        'ip' => $anonIp,
         'user_agent' => substr((string) ($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 180),
     ], JSON_UNESCAPED_SLASHES) . PHP_EOL;
 
@@ -2021,7 +2235,7 @@ function render_sitemap(HelloTicketsClient $client, array $config, array $destin
 
     // Home + evergreen static pages.
     $add('/', $today);
-    foreach (['/events', '/attractions', '/artists', '/venues', '/teams', '/about', '/contact', '/how-we-make-money'] as $staticPath) {
+    foreach (['/events', '/attractions', '/artists', '/venues', '/teams', '/about', '/contact', '/how-we-make-money', '/privacy', '/terms'] as $staticPath) {
         $add($staticPath, $contentMod);
     }
 
@@ -2067,13 +2281,15 @@ function render_sitemap(HelloTicketsClient $client, array $config, array $destin
         }
     }
 
-    // Performers / artists.
-    $performers = api_result(static fn() => $client->performers([
-        'limit' => 48,
-        'page' => 1,
-    ]), ['performers' => []])['performers'] ?? [];
-    foreach ($performers as $performer) {
-        $add(artist_path($performer));
+    // Performers / artists — top 96 by popularity (two cached pages).
+    foreach ([1, 2] as $performerPage) {
+        $performers = api_result(static fn() => $client->performers([
+            'limit' => 48,
+            'page' => $performerPage,
+        ]), ['performers' => []])['performers'] ?? [];
+        foreach ($performers as $performer) {
+            $add(artist_path($performer));
+        }
     }
 
     // "This weekend in {city}" intent pages — featured cities only (always have inventory).
@@ -2109,17 +2325,10 @@ function render_sitemap(HelloTicketsClient $client, array $config, array $destin
         }
     }
 
-    // Deep activity detail pages (Dubai + Abu Dhabi inventory).
-    foreach ([132, 256] as $cityId) {
-        $activities = api_result(static fn() => $client->activities([
-            'limit' => 100,
-            'page' => 1,
-            'city_id' => $cityId,
-        ]), ['activities' => []])['activities'] ?? [];
-        foreach ($activities as $activity) {
-            $add(activity_path($activity));
-        }
-    }
+    // /activity/ detail pages are deliberately NOT in the sitemap: list-API titles
+    // produce different slugs than the detail canonical (every entry 301s), and the
+    // pages are thin. Their rich SEO twins — the /dubai/{category}/{slug} attraction
+    // pages and the city/country hubs — are the indexed surface for activities.
 
     header('Content-Type: application/xml; charset=utf-8');
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
@@ -2343,6 +2552,15 @@ function resolve_seed_venue(array $config, string $slug): ?array
             return venue_from_seed($config, $name, $city);
         }
     }
+    // Ticketmaster's canonical venue name can differ from our seed name (e.g. seed
+    // "Santiago Bernabéu" resolves to "Santiago Bernabéu Stadium") — links and
+    // canonicals use the TM name, so match those too. All calls are cached.
+    foreach (venue_seed_list() as [$name, $city]) {
+        $venue = venue_from_seed($config, $name, $city);
+        if ($venue !== null && slugify((string) $venue['name']) === $slug) {
+            return $venue;
+        }
+    }
     return null;
 }
 
@@ -2361,15 +2579,21 @@ function render_venue_page(array $config, string $tmVenueId): void
     }
     $venue = tm_normalize_venue($rawVenue);
 
-    // Legacy /venue/{name}-{tmId} URLs 301 to the clean name slug — but only for
-    // seeded venues, since only those clean slugs resolve back to a TM id.
-    if (current_path() !== tm_venue_path($venue)) {
-        foreach (venue_seed_list() as [$seedName, $seedCity]) {
-            if (slugify($seedName) === slugify((string) $venue['name'])) {
-                redirect_permanent(tm_venue_path($venue));
-                return;
-            }
+    // Legacy /venue/{name}-{tmId} URLs 301 to the clean name slug. tm_venue_path()
+    // registers that slug → TM id in the map first, so the target always resolves —
+    // seeded or not. Junk name parts on a valid id 404 instead of redirecting.
+    $venuePath = tm_venue_path($venue);
+    if (current_path() !== $venuePath) {
+        $requestedSlug = (string) substr(current_path(), strlen('/venue/'));
+        $namePart = (string) preg_replace('/-[A-Za-z0-9]{8,}$/', '', $requestedSlug);
+        if (tm_legacy_id_from_slug($requestedSlug) === (string) $venue['tm_id']
+            && venue_slug_lookup($requestedSlug) !== (string) $venue['tm_id']
+            && !legacy_slug_corresponds($namePart, slugify((string) $venue['name']))) {
+            render_error_page($config, 404, 'Venue not found', 'This venue page is not available.');
+            return;
         }
+        redirect_permanent($venuePath);
+        return;
     }
 
     $rawEvents = api_result(static fn() => $tm->events([

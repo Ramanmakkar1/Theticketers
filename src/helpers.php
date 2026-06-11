@@ -130,23 +130,104 @@ function slug_map_flush(): void
         return;
     }
     $raw = stream_get_contents($handle);
-    $disk = is_string($raw) && $raw !== '' ? (json_decode($raw, true) ?: []) : [];
+    $disk = [];
+    if (is_string($raw) && trim($raw) !== '') {
+        $decoded = json_decode($raw, true);
+        if (!is_array($decoded)) {
+            // Never "repair" a corrupt map by wiping it — losing learned slugs turns
+            // indexed clean URLs into 404s. Skip this flush; a later one will retry.
+            flock($handle, LOCK_UN);
+            fclose($handle);
+            return;
+        }
+        $disk = $decoded;
+    }
     foreach ($pending as $type => $entries) {
+        if (!is_array($disk[$type] ?? null)) {
+            $disk[$type] = [];
+        }
         foreach ($entries as $slug => $id) {
             unset($disk[$type][$slug]); // re-insert at the end = most recently seen
             $disk[$type][$slug] = $id;
         }
-        if (count($disk[$type]) > 4000) {
-            $disk[$type] = array_slice($disk[$type], -4000, null, true);
+        if (count($disk[$type]) > 6000) {
+            $disk[$type] = array_slice($disk[$type], -6000, null, true);
         }
     }
-    ftruncate($handle, 0);
-    rewind($handle);
-    fwrite($handle, json_encode($disk, JSON_UNESCAPED_SLASHES));
-    fflush($handle);
+    // Atomic replace (temp + rename) so readers never see a partial write and a
+    // disk-full fwrite can't truncate the map.
+    $json = json_encode($disk, JSON_UNESCAPED_SLASHES);
+    $tmp = $file . '.tmp' . getmypid();
+    if ($json !== false && @file_put_contents($tmp, $json) === strlen($json)) {
+        @rename($tmp, $file);
+    } else {
+        @unlink($tmp);
+    }
     flock($handle, LOCK_UN);
     fclose($handle);
     $pending = [];
+}
+
+/**
+ * Earliest slug learned for an id — pins one canonical slug per entity even when
+ * the API returns different titles for the same id (activity list vs detail).
+ */
+function slug_for_id(string $type, int $id): ?string
+{
+    static $reverse = [];
+    if (!isset($reverse[$type])) {
+        $reverse[$type] = [];
+        foreach (slug_map()[$type] ?? [] as $slug => $mappedId) {
+            if (is_numeric($mappedId) && !isset($reverse[$type][(int) $mappedId])) {
+                $reverse[$type][(int) $mappedId] = (string) $slug;
+            }
+        }
+    }
+    return $reverse[$type][$id] ?? null;
+}
+
+/** Venue slugs map to string Ticketmaster ids, so they get their own accessors. */
+function venue_slug_lookup(string $slug): ?string
+{
+    $id = slug_map()['venue'][$slug] ?? null;
+    return is_string($id) && $id !== '' ? $id : null;
+}
+
+function venue_slug_remember(string $slug, string $tmId): void
+{
+    if ($tmId === '' || $slug === '' || $slug === 'tickets' || venue_slug_lookup($slug) === $tmId) {
+        return;
+    }
+    $pending = &slug_pending();
+    if (($pending['venue'][$slug] ?? '') === $tmId) {
+        return;
+    }
+    $pending['venue'][$slug] = $tmId;
+    register_shutdown_function('slug_map_flush');
+}
+
+/**
+ * Guard for LEGACY "{name}-{id}" URLs only: the name part has to plausibly belong to
+ * the entity the id loads, otherwise /artist/anything-5 would 301 to whatever artist
+ * owns id 5 — minting infinite duplicate URLs and redirecting typos to wrong pages.
+ * Old slugs may differ from today's slugify (accents) or use an alternate API title,
+ * so accept either an alphanumeric prefix match or >=50% word overlap.
+ */
+function legacy_slug_corresponds(string $requestedSlug, string $cleanSlug): bool
+{
+    $name = (string) preg_replace('/-\d+$/', '', strtolower($requestedSlug));
+    $a = (string) preg_replace('/[^a-z0-9]/', '', $name);
+    $b = (string) preg_replace('/[^a-z0-9]/', '', strtolower($cleanSlug));
+    if ($a !== '' && strncmp($b, $a, strlen($a)) === 0) {
+        return true;
+    }
+    $reqWords = array_filter(explode('-', $name), static fn(string $w): bool => strlen($w) >= 3);
+    if ($reqWords === []) {
+        return false;
+    }
+    $cleanWords = array_flip(array_filter(explode('-', strtolower($cleanSlug)), static fn(string $w): bool => $w !== ''));
+    $hits = count(array_filter($reqWords, static fn(string $w): bool => isset($cleanWords[$w])));
+    return $hits / count($reqWords) >= 0.5;
 }
 
 function route_url(string $path, array $query = []): string
@@ -197,6 +278,7 @@ function money($amount, string $currency): string
         'USD' => '$',
         'GBP' => '£',
         'CAD' => 'C$',
+        'AUD' => 'A$',
     ];
 
     $prefix = $symbols[$currency] ?? '';
@@ -304,19 +386,27 @@ function mapped_image(string $type, int $id): ?string
     return (!empty($map[$key]) && is_string($map[$key])) ? $map[$key] : null;
 }
 
+/** Local image paths (/assets/media/…) become absolute; full URLs pass through.
+ *  og:image and JSON-LD require absolute URLs, so every image that can reach a
+ *  meta tag or schema block flows through this. */
+function absolute_image_url(array $config, string $url): string
+{
+    return str_starts_with($url, '/') ? $config['site_url'] . $url : $url;
+}
+
 function image_from_item(array $item, string $type, array $config): string
 {
     if (!empty($item['image']) && is_string($item['image'])) {
-        return $item['image'];
+        return absolute_image_url($config, $item['image']);
     }
 
     if (!empty($item['images']) && is_array($item['images'])) {
         $first = $item['images'][0] ?? null;
         if (is_string($first)) {
-            return $first;
+            return absolute_image_url($config, $first);
         }
         if (is_array($first) && !empty($first['url'])) {
-            return (string) $first['url'];
+            return absolute_image_url($config, (string) $first['url']);
         }
     }
 
@@ -326,7 +416,7 @@ function image_from_item(array $item, string $type, array $config): string
         $map = image_map();
         $key = $type . '-' . $id;
         if (!empty($map[$key]) && is_string($map[$key])) {
-            return $map[$key];
+            return absolute_image_url($config, $map[$key]);
         }
     }
 
@@ -345,7 +435,7 @@ function image_from_item(array $item, string $type, array $config): string
         foreach ($performerIds as $pid) {
             $performerImage = mapped_image('performer', $pid);
             if ($performerImage !== null) {
-                return $performerImage;
+                return absolute_image_url($config, $performerImage);
             }
         }
     }
@@ -671,8 +761,12 @@ function activity_slug(array $activity): string
 
 function activity_path(array $activity): string
 {
-    $slug = activity_slug($activity);
-    slug_remember('activity', $slug, (int) ($activity['id'] ?? 0));
+    // The API returns different titles for the same activity in list vs detail
+    // responses; pin the first slug we ever learned so the canonical URL never
+    // flip-flops between variants (older variants 301 to the pinned one).
+    $id = (int) ($activity['id'] ?? 0);
+    $slug = ($id > 0 ? slug_for_id('activity', $id) : null) ?? activity_slug($activity);
+    slug_remember('activity', $slug, $id);
     return '/activity/' . $slug;
 }
 
@@ -754,6 +848,9 @@ function resolve_artist_id(HelloTicketsClient $client, string $slug): ?int
     if ($hit !== null) {
         return $hit;
     }
+    if (strlen($slug) > 90) {
+        return null; // generated slugs are clipped at 70 — longer can't be real
+    }
 
     $needles = [str_replace('-', ' ', $slug)];
     $words = array_filter(explode('-', $slug), static fn(string $w): bool => strlen($w) >= 3);
@@ -766,6 +863,23 @@ function resolve_artist_id(HelloTicketsClient $client, string $slug): ?int
         $performers = api_result(static fn() => $client->performers([
             'name' => $needle,
             'page' => 1,
+            'limit' => 48,
+        ]), ['performers' => []])['performers'] ?? [];
+        foreach ($performers as $performer) {
+            if (slugify((string) ($performer['name'] ?? '')) === $slug) {
+                $id = (int) ($performer['id'] ?? 0);
+                slug_remember('artist', $slug, $id);
+                return $id > 0 ? $id : null;
+            }
+        }
+    }
+
+    // Last resort: scan the popularity-ordered list (cached hourly). Catches
+    // one-word accented names the name filter can't see — "rosalia" never
+    // matches "Rosalía" via name= because the filter is accent-sensitive.
+    for ($page = 1; $page <= 2; $page++) {
+        $performers = api_result(static fn() => $client->performers([
+            'page' => $page,
             'limit' => 48,
         ]), ['performers' => []])['performers'] ?? [];
         foreach ($performers as $performer) {
@@ -791,6 +905,10 @@ function resolve_event_id(HelloTicketsClient $client, string $slug): ?int
         return $hit;
     }
 
+    if (strlen($slug) > 90) {
+        return null; // generated slugs are clipped at 70 — longer can't be real
+    }
+
     $base = $slug;
     $dateParams = [];
     if (preg_match('/-(\d{4}-\d{2}-\d{2})$/', $slug, $match) === 1) {
@@ -798,8 +916,13 @@ function resolve_event_id(HelloTicketsClient $client, string $slug): ?int
         $dateParams = ['local_date_from' => $match[1], 'local_date_to' => $match[1]];
     }
 
+    // Shorten the needle word by word (the tail carries city words the API name
+    // doesn't contain), down to a single word, capped at 6 probes. The slug's own
+    // date keeps result sets tiny, and every candidate is verified by rebuilding
+    // its clean slug, so short needles can't mismatch.
     $words = explode('-', $base);
-    for ($take = count($words); $take >= max(1, count($words) - 3); $take--) {
+    $probes = 0;
+    for ($take = count($words); $take >= 1 && $probes < 6; $take--, $probes++) {
         $needle = implode(' ', array_slice($words, 0, $take));
         if ($needle === '') {
             break;
@@ -827,7 +950,11 @@ function resolve_activity_id(HelloTicketsClient $client, string $slug): ?int
     if ($hit !== null) {
         return $hit;
     }
+    if (strlen($slug) > 90) {
+        return null; // generated slugs are clipped at 70 — longer can't be real
+    }
 
+    $candidates = [];
     $words = explode('-', $slug);
     for ($take = count($words); $take >= max(1, count($words) - 3); $take--) {
         $needle = implode(' ', array_slice($words, 0, $take));
@@ -845,6 +972,22 @@ function resolve_activity_id(HelloTicketsClient $client, string $slug): ?int
                 slug_remember('activity', $slug, $id);
                 return $id > 0 ? $id : null;
             }
+        }
+        foreach (array_slice($activities, 0, 3) as $activity) {
+            $candidateId = (int) ($activity['id'] ?? 0);
+            if ($candidateId > 0) {
+                $candidates[$candidateId] = true;
+            }
+        }
+    }
+
+    // List and detail responses can title the same activity differently; a slug
+    // built from the detail title only matches when we compare against details.
+    foreach (array_slice(array_keys($candidates), 0, 5) as $candidateId) {
+        $detail = api_result(static fn() => $client->activity($candidateId));
+        if (!empty($detail['id']) && activity_slug($detail) === $slug) {
+            slug_remember('activity', $slug, (int) $detail['id']);
+            return (int) $detail['id'];
         }
     }
     return null;
@@ -1021,7 +1164,9 @@ function tm_normalize_venue(array $tm): array
 
 function tm_venue_path(array $venue): string
 {
-    return '/venue/' . slugify((string) ($venue['name'] ?? 'venue'));
+    $slug = slugify((string) ($venue['name'] ?? 'venue'));
+    venue_slug_remember($slug, (string) ($venue['tm_id'] ?? ''));
+    return '/venue/' . $slug;
 }
 
 /** TM id tail of a LEGACY /venue/{name}-{tmId} URL (TM ids are long mixed-case tokens). */
@@ -1073,6 +1218,53 @@ function merge_events_dedupe(array $primary, array $secondary): array
         (string) ($b['start_date']['local_date'] ?? '9999')
     ));
     return $primary;
+}
+
+/** ISO-3166 alpha-3 (our geo data) → alpha-2 (Ticketmaster's countryCode). */
+function tm_country_code(string $alpha3): string
+{
+    $map = ['USA' => 'US', 'CAN' => 'CA', 'GBR' => 'GB', 'ARE' => 'AE', 'ITA' => 'IT', 'ESP' => 'ES', 'FRA' => 'FR'];
+    return $map[strtoupper($alpha3)] ?? '';
+}
+
+/**
+ * Ticketmaster events for one city, normalized to the HelloTickets shape.
+ * This is the gap filler behind "HelloTickets first, Ticketmaster fills the rest":
+ * HT stays primary (higher commission, our detail pages); TM covers the local
+ * long tail HT misses, especially in North America.
+ */
+function tm_events_for_city(array $config, string $cityName, string $countryCode3, array $extra = [], int $size = 24): array
+{
+    $tm = tm_client($config);
+    if ($tm === null || trim($cityName) === '') {
+        return [];
+    }
+    $params = array_merge(['city' => $cityName, 'size' => $size], $extra);
+    $alpha2 = tm_country_code($countryCode3);
+    if ($alpha2 !== '') {
+        $params['countryCode'] = $alpha2;
+    }
+    $raw = api_result(static fn() => $tm->events($params), []);
+    return array_map('tm_normalize_event', $raw['_embedded']['events'] ?? []);
+}
+
+/** Clean /artist/{slug} → TM attraction, for artists HelloTickets doesn't know at all. */
+function tm_artist_by_slug(array $config, string $slug): ?array
+{
+    $tm = tm_client($config);
+    if ($tm === null || $slug === '' || strlen($slug) > 90) {
+        return null;
+    }
+    $raw = api_result(static fn() => $tm->attractions([
+        'keyword' => str_replace('-', ' ', $slug),
+        'size' => 5,
+    ]), []);
+    foreach ($raw['_embedded']['attractions'] ?? [] as $attraction) {
+        if (slugify((string) ($attraction['name'] ?? '')) === $slug) {
+            return $attraction;
+        }
+    }
+    return null;
 }
 
 function allowed_hellotickets_url(string $url): bool

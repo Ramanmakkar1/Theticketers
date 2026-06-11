@@ -90,6 +90,15 @@ final class TicketmasterClient
         $decoded = $body !== null ? json_decode($body, true) : null;
 
         if (!is_array($decoded)) {
+            // Stale-on-error: a TM outage serves yesterday's data instead of an
+            // empty section. touch() spaces out retries so we don't stampede.
+            if (is_file($cacheFile)) {
+                $stale = json_decode((string) file_get_contents($cacheFile), true);
+                if (is_array($stale)) {
+                    @touch($cacheFile, time() - $ttl + 300);
+                    return $stale;
+                }
+            }
             return [];
         }
 
@@ -120,7 +129,9 @@ final class TicketmasterClient
             if ($status >= 400 || $body === false) {
                 return null;
             }
-            usleep(230000); // ~4 req/s ceiling
+            if (PHP_SAPI === 'cli') {
+                usleep(230000); // ~4 req/s ceiling for batch scripts; never delay a visitor
+            }
             return (string) $body;
         }
 
@@ -137,7 +148,10 @@ final class TicketmasterClient
     private function withFutureOnly(array $params): array
     {
         if (!isset($params['startDateTime'])) {
-            $params['startDateTime'] = gmdate('Y-m-d\TH:i:s\Z');
+            // Truncated to MIDNIGHT (not now) so the cache key is stable all day —
+            // a per-second timestamp made every page view a fresh live API call,
+            // burning the 5k/day quota and writing a new cache file per hit.
+            $params['startDateTime'] = gmdate('Y-m-d\T00:00:00\Z');
         }
         if (!isset($params['sort'])) {
             $params['sort'] = 'date,asc';

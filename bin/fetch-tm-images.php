@@ -28,6 +28,7 @@ $root = dirname(__DIR__);
 $config = require $root . '/src/config.php';
 require $root . '/src/helpers.php';
 require $root . '/src/HelloTicketsClient.php';
+require $root . '/bin/resize-media.php'; // tb_resize_image() — shrink on download
 
 $opts = getopt('', ['key:', 'all', 'artists', 'events', 'pages:', 'city:', 'refresh', 'quiet']);
 $TM_KEY = (string) ($opts['key'] ?? (getenv('TICKETMASTER_API_KEY') ?: ($config['tm_api_key'] ?? '')));
@@ -172,6 +173,11 @@ function tm_download(string $url, string $key, string $mediaDir): ?string
     $file = $key . '.' . $ext;
     if (file_put_contents($mediaDir . '/' . $file, $data) === false) {
         return null;
+    }
+    // Shrink to web size on the way in (TM originals are ~2400px / 500KB).
+    $resized = tb_resize_image($mediaDir . '/' . $file);
+    if ($resized !== null) {
+        $file = $resized;
     }
     return '/assets/media/' . $file;
 }

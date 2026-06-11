@@ -94,11 +94,24 @@ final class HelloTicketsClient
             $url .= '?' . http_build_query($params);
         }
 
-        $body = $this->request($url);
-        $decoded = json_decode($body, true);
-
-        if (!is_array($decoded)) {
-            throw new RuntimeException('HelloTickets returned invalid JSON.');
+        try {
+            $body = $this->request($url);
+            $decoded = json_decode($body, true);
+            if (!is_array($decoded)) {
+                throw new RuntimeException('HelloTickets returned invalid JSON.');
+            }
+        } catch (Throwable $e) {
+            // Stale-on-error: an API blip serves slightly-old data instead of an
+            // empty page. touch() gives a 5-minute grace before the next retry,
+            // so concurrent visitors don't stampede a struggling upstream.
+            if (is_file($cacheFile)) {
+                $stale = json_decode((string) file_get_contents($cacheFile), true);
+                if (is_array($stale)) {
+                    @touch($cacheFile, time() - $ttl + 300);
+                    return $stale;
+                }
+            }
+            throw $e;
         }
 
         file_put_contents($cacheFile, json_encode($decoded, JSON_UNESCAPED_SLASHES));

@@ -9,7 +9,7 @@
     --ink: #17171f;
     --ink-strong: #0c0c14;
     --ink-soft: #41414c;
-    --muted: #76767f;          /* AA-safe muted text */
+    --muted: #6e6e77;          /* AA-safe muted text (>=4.5:1 on the warm canvas) */
     --muted-dark: #56565f;
     --line: #ececed;
     --line-soft: #f3f3f4;
@@ -227,7 +227,7 @@ button { font-family: var(--font-body); }
     color: var(--ink);
     font-family: inherit;
     font-size: 0.88rem;
-    outline: none;
+    /* focus ring provided by global :focus-visible rule */
 }
 
 .header-search input::placeholder { color: var(--muted); }
@@ -1132,7 +1132,7 @@ body.modal-open { overflow: hidden; }
     font-size: 0.9rem;
     background: var(--paper);
     color: var(--ink);
-    outline: none;
+    /* focus ring provided by global :focus-visible rule */
 }
 
 .listing-toolbar input { flex: 1; min-width: 200px; }
@@ -2140,7 +2140,7 @@ body.modal-open { overflow: hidden; }
     padding: 14px 20px;
     font-size: 0.95rem;
     color: var(--ink);
-    outline: none;
+    /* focus ring provided by global :focus-visible rule */
 }
 
 .dubai-hub__search button,
@@ -3219,4 +3219,21 @@ body.modal-open { overflow: hidden; }
 @media (max-width: 640px) {
     .destination-hub__city-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .destination-hub__city-card { min-height: 160px; }
+}
+
+/* ============ Accessibility ============ */
+
+:focus-visible {
+    outline: 2px solid var(--accent-dark);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }

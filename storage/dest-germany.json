@@ -1,0 +1,124 @@
+{
+  "country": {
+    "slug": "germany",
+    "name": "Germany",
+    "demonym": "German",
+    "hero_image": "https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=1600&q=80",
+    "meta_title": "Germany Tickets: Berlin & Munich Events & Attractions",
+    "meta_description": "Book tickets for Germany's top attractions, concerts and Bundesliga matches. Compare prices for Berlin and Munich tours, museums and events from €10.",
+    "intro": "Germany packs two very different city breaks into one trip. Berlin leads with history you can walk through: the Brandenburg Gate, the open-air East Side Gallery painted on the longest surviving stretch of the Berlin Wall, and Museum Island, a UNESCO-listed cluster of five world-class museums on the Spree. The Reichstag dome is free to visit, but registration fills days ahead — book your slot before you fly.\n\nMunich, the Bavarian capital, trades grit for polish. Watch the Glockenspiel chime over Marienplatz, tour the Residenz palace where Bavarian rulers collected treasure for 500 years, and wander BMW Welt by the Olympiapark. From late September into early October, Oktoberfest takes over the Theresienwiese, and coaches run day trips year-round to Neuschwanstein Castle in the Alpine foothills.\n\nGermany is also one of Europe's strongest live-events markets. Berlin's Mercedes-Benz Arena and Munich's Olympiahalle anchor major concert tours, while football weekends — FC Bayern at the Allianz Arena, Union and Hertha in Berlin — sell out fast, so secure match tickets weeks ahead.\n\nVisit May to September for beer gardens and open-air festivals, or December for Christmas markets. Most museum tickets cost €10-€20, stadium tours run around €19, and concert seats start near €40 — booking online usually beats the box-office queue.",
+    "faqs": [
+      {
+        "q": "What is the best time to visit Germany?",
+        "a": "May to September brings beer-garden weather and open-air festivals, while December is Christmas-market season in both Berlin and Munich. For Oktoberfest, plan for mid-September to the first Sunday of October and book hotels months in advance."
+      },
+      {
+        "q": "How much do attractions in Germany cost?",
+        "a": "Most major museums charge €10-€20, with combination tickets offering the best value — Berlin's Museum Island pass covers all five museums for around €24. Stadium tours cost about €19, and many landmarks, including the Reichstag dome and East Side Gallery, are completely free."
+      },
+      {
+        "q": "Do I need to book the Reichstag dome in advance?",
+        "a": "Yes. Entry is free, but online registration with the Bundestag is mandatory and slots regularly fill several days ahead. A limited number of short-notice places are released at the service centre near the building, but pre-booking is far more reliable."
+      },
+      {
+        "q": "How do I get Bundesliga or FC Bayern tickets?",
+        "a": "FC Bayern home matches at the Allianz Arena are heavily oversubscribed, so register for the club's official ticket sales or use reputable resale platforms. Berlin football and most other Bundesliga fixtures are easier — buy through the club shops a few weeks before matchday."
+      },
+      {
+        "q": "Can I combine Berlin and Munich in one trip?",
+        "a": "Easily. Direct ICE high-speed trains link the two cities in about four hours, and budget flights take roughly an hour. Three days in each city covers the headline sights, with a fourth day in Munich for a Neuschwanstein Castle day trip."
+      }
+    ],
+    "stats": {
+      "attractions": "100+",
+      "rating": "4.7",
+      "price_from": "€10",
+      "support": "24/7"
+    },
+    "city_slugs": ["berlin", "munich"]
+  },
+  "cities": [
+    {
+      "slug": "berlin",
+      "country_slug": "germany",
+      "city_id": 158,
+      "name": "Berlin",
+      "state": "Berlin",
+      "country": "Germany",
+      "country_code": "DEU",
+      "featured": true,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1528728329032-2972f65dfb3f?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Berlin Tickets: Concerts, Museums & Attractions 2026",
+      "meta_description": "Book Berlin tickets for Museum Island, the Reichstag dome and live concerts. Compare skip-the-line attractions, tours and events with prices from €10.",
+      "intro": "Berlin rewards travelers who book ahead. Museum Island bundles five UNESCO-listed museums on a single Spree island — the Neues Museum holds the bust of Nefertiti, the Alte Nationalgalerie its Caspar David Friedrich masterpieces — while the East Side Gallery turns 1.3 km of the Berlin Wall into the world's longest open-air gallery, free and open around the clock. The Reichstag's glass dome also costs nothing, but online registration is mandatory and slots vanish days in advance.\n\nAfter dark, Berlin becomes Europe's events capital. Mercedes-Benz Arena hosts the biggest touring acts, Kreuzberg's clubs and canalside bars run until sunrise, and Mitte mixes galleries with rooftop venues. Note that the Pergamonmuseum is closed for long-term renovation, so check current openings before buying Museum Island passes.\n\nGetting around is simple with a single AB-zone transit ticket covering U-Bahn, S-Bahn, trams and buses. Most attractions cost €10-€20, and combination tickets save real money if you plan two or more museum stops.",
+      "highlights": [
+        "Museum Island — five UNESCO-listed museums on one Spree island, including the Neues Museum and its Nefertiti bust",
+        "East Side Gallery — 1.3 km of the Berlin Wall painted by more than 100 artists, free and open 24/7",
+        "Reichstag glass dome — 360-degree city views over the government quarter, free with advance registration",
+        "Mercedes-Benz Arena — Berlin's biggest indoor venue for international concert tours and ice hockey"
+      ],
+      "tips": [
+        "Register for the Reichstag dome online at least a week ahead — same-day slots at the visitor kiosk are scarce.",
+        "Buy a Museum Island combination ticket (around €24) if you plan to enter two or more museums.",
+        "Most state museums close on Mondays, but the East Side Gallery and outdoor memorials never do.",
+        "A standard AB-zone ticket covers U-Bahn, S-Bahn, trams and buses for two hours of travel in one direction."
+      ],
+      "faqs": [
+        {
+          "q": "Is the Reichstag dome really free?",
+          "a": "Yes — both the rooftop terrace and the spiral glass dome are free, including the audio guide. You must register online with the Bundestag in advance and bring photo ID matching your booking, as security checks are airport-style."
+        },
+        {
+          "q": "How long do I need for Museum Island?",
+          "a": "Plan a half day for two museums or a full day for three. The Neues Museum and Alte Nationalgalerie are the most popular pairing while the Pergamonmuseum remains closed for renovation, and timed-entry tickets help you skip the longest queues."
+        },
+        {
+          "q": "Where do big concerts happen in Berlin?",
+          "a": "Mercedes-Benz Arena in Friedrichshain hosts the major international tours, with the Uber Eats Music Hall next door for mid-size shows. Stadium-scale acts play the Olympiastadion in summer, and tickets for all three sell fastest within days of going on sale."
+        }
+      ]
+    },
+    {
+      "slug": "munich",
+      "country_slug": "germany",
+      "city_id": 161,
+      "name": "Munich",
+      "state": "Bavaria",
+      "country": "Germany",
+      "country_code": "DEU",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1595867818082-083862f3d630?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Munich Tickets: Day Tours, FC Bayern & Attractions 2026",
+      "meta_description": "Book Munich tickets for Marienplatz tours, Allianz Arena, BMW Welt and Neuschwanstein day trips. Compare top attractions and event prices from €10.",
+      "intro": "Munich concentrates its best sights within a few walkable blocks. Start at Marienplatz at 11am or noon, when the Glockenspiel's 32 figures spin above the Neues Rathaus, then tour the Residenz — Germany's largest city palace, with some 130 rooms of Wittelsbach treasure. The English Garden sprawls larger than Central Park, complete with river surfers riding the Eisbach wave year-round.\n\nFootball is religion here: FC Bayern's Allianz Arena glows red on match nights, and the stadium tour plus FC Bayern Museum combo is the hottest non-matchday booking in town. BMW Welt by the Olympiapark is free to enter, while day trips to Neuschwanstein Castle — the fairytale fortress that inspired Disney — fill coaches in every season; timed castle entries sell out fast in summer.\n\nCome mid-September to early October for Oktoberfest on the Theresienwiese: tent entry is free, but reserved tables and city hotels need booking months ahead. Most museum tickets run €10-€15.",
+      "highlights": [
+        "Marienplatz Glockenspiel — 32 life-size figures perform above the Neues Rathaus daily at 11am and noon",
+        "Allianz Arena — FC Bayern match days, stadium tours and the club museum at Germany's most striking ground",
+        "Neuschwanstein day trips — coach tours from Munich with timed castle entry, about two hours each way",
+        "English Garden — one of the world's largest urban parks, with lakeside beer gardens and Eisbach surfers"
+      ],
+      "tips": [
+        "Book Neuschwanstein castle entry weeks ahead in summer — on-site tickets often sell out by mid-morning.",
+        "Oktoberfest tents are free to enter, but arrive before 10am on weekends or reserve a table months in advance.",
+        "The Residenz combination ticket covering the palace, Treasury and Cuvilliés Theatre beats buying single entries.",
+        "BMW Welt is free; pair it with the paid BMW Museum across the footbridge and a walk through the Olympiapark."
+      ],
+      "faqs": [
+        {
+          "q": "When is Oktoberfest in Munich?",
+          "a": "Oktoberfest runs from mid-September to the first Sunday of October on the Theresienwiese, about 16 to 18 days in total. Entry to the grounds and tents is free, but beer is sold by the litre Mass and big tents stop admitting visitors once they reach capacity."
+        },
+        {
+          "q": "Is Neuschwanstein Castle doable as a day trip?",
+          "a": "Yes — the castle sits about two hours from Munich by coach tour or by train to Füssen plus a short bus ride. Interior visits are by timed guided tour only, so reserve your slot in advance; the view from Marienbrücke bridge is the classic photo stop."
+        },
+        {
+          "q": "Can I visit the Allianz Arena without a match ticket?",
+          "a": "Yes. Arena tours run most non-match days and combine well with the FC Bayern Museum, Germany's largest club museum. On Bundesliga or Champions League match days the tours pause, and match tickets themselves should be sourced through official club channels well ahead."
+        }
+      ]
+    }
+  ]
+}

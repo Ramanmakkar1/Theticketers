@@ -1,0 +1,124 @@
+{
+  "country": {
+    "slug": "australia",
+    "name": "Australia",
+    "demonym": "Australian",
+    "hero_image": "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=1600&q=80",
+    "meta_title": "Australia Tickets: Sydney & Melbourne Tours and Events",
+    "meta_description": "Book Sydney Opera House tours, Harbour Bridge climbs, MCG tours and big-name concerts across Australia. Compare prices in AUD with instant mobile tickets.",
+    "intro": "Australia packs two of the world's great event cities into one unforgettable trip, and booking tickets ahead is the difference between watching from the sidelines and being in the room. From harbourside icons in Sydney to footy roars in Melbourne, the country runs on live experiences all year round.\n\nIn Sydney, start with the Sydney Opera House: guided tours run daily from around AUD 45, and catching an evening performance beneath those famous sails is a bucket-list essential. Add a BridgeClimb over Sydney Harbour Bridge, a ferry or lunch cruise across the harbour, a morning at Bondi Beach and an afternoon with the koalas at Taronga Zoo, reached by a short ferry ride with skyline views the whole way.\n\nMelbourne answers with culture and sport. Tour the Melbourne Cricket Ground (MCG), graze through Queen Victoria Market, hunt street art in the laneways off Flinders Lane, and book a Great Ocean Road day trip to the Twelve Apostles. The city hosts the AFL season from March to September, Boxing Day Test cricket and the Australian Open every January.\n\nAustralia is also a heavyweight stop on global concert tours, with international acts filling Accor Stadium, Marvel Stadium and Rod Laver Arena. Remember the seasons are reversed: December to February is summer and peak season, so lock in tickets early and budget in Australian dollars (AUD).",
+    "faqs": [
+      {
+        "q": "When is the best time to visit Australia for events?",
+        "a": "Remember the seasons are reversed: December to February is Australian summer and peak season, packed with cricket, the Australian Open (January) and outdoor concerts. March to May and September to November bring milder weather, smaller crowds and lower hotel prices, while the AFL winter season runs March to September in Melbourne."
+      },
+      {
+        "q": "How far in advance should I book Sydney Opera House tickets?",
+        "a": "Guided tours can usually be booked a few days out, but evening performances, especially opera and big-name concerts, often sell out two to six weeks ahead. For December and January visits, book both tours and shows as early as possible, since reversed-season summer crowds peak then."
+      },
+      {
+        "q": "Can I combine Sydney and Melbourne in one trip?",
+        "a": "Easily. The two cities are linked by frequent 90-minute flights and the route is one of the busiest in the world. Most travellers spend three to four days in each: harbour cruises, BridgeClimb and Bondi in Sydney, then MCG tours, laneways and a Great Ocean Road day trip from Melbourne."
+      },
+      {
+        "q": "What major sports can I get tickets for in Australia?",
+        "a": "Melbourne hosts AFL football from March to September at the MCG and Marvel Stadium, the Boxing Day Test each December and the Australian Open tennis in January. Sydney offers NRL rugby league, cricket at the SCG and A-League football. Marquee finals sell fast, but regular-season tickets are usually easy to find."
+      },
+      {
+        "q": "What currency are tickets priced in and what should I budget?",
+        "a": "Attractions and events are priced in Australian dollars (AUD). Expect roughly AUD 45 for a Sydney Opera House tour, AUD 35 to 40 for adult entry to Taronga Zoo, AUD 35 for an MCG tour and AUD 100 to 150 for a Great Ocean Road day trip. Booking online ahead usually beats walk-up prices."
+      }
+    ],
+    "stats": {
+      "attractions": "60+",
+      "rating": "4.7",
+      "price_from": "$15",
+      "support": "24/7"
+    },
+    "city_slugs": ["sydney", "melbourne"]
+  },
+  "cities": [
+    {
+      "slug": "sydney",
+      "country_slug": "australia",
+      "city_id": 136,
+      "name": "Sydney",
+      "state": "NSW",
+      "country": "Australia",
+      "country_code": "AUS",
+      "featured": true,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1523428096881-5bd79d043006?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Sydney Tickets & Tours: Opera House, BridgeClimb & More",
+      "meta_description": "Score tickets for Sydney Opera House shows, BridgeClimb, Taronga Zoo and harbour cruises, plus stadium concerts and NRL games. Instant booking in AUD.",
+      "intro": "Sydney is built around one of the most beautiful harbours on earth, and its best experiences put you right on the water. Tour the Sydney Opera House by day, or better, book seats to an opera, concert or comedy night beneath its sails, then climb the Sydney Harbour Bridge at dawn or twilight for a view you will never forget. Ferries double as cheap sightseeing: ride to Manly for the beach, or hop off at Taronga Zoo, where giraffes graze against the skyline. Surf mornings belong to Bondi Beach and the clifftop walk to Coogee. Sydney is also Australia's biggest stadium-concert market, with international tours filling Accor Stadium and Qudos Bank Arena, plus NRL rugby league and cricket at the SCG. Summer runs December to February and is peak season, so book marquee experiences and shows a few weeks ahead. Prices are in AUD with instant mobile delivery.",
+      "highlights": [
+        "Sydney Opera House guided tours by day and world-class opera, theatre and concerts under the sails by night",
+        "BridgeClimb to the summit of Sydney Harbour Bridge, with dawn and twilight climbs the most spectacular",
+        "Harbour cruises and public ferries past the Opera House to Manly, Watsons Bay and Taronga Zoo",
+        "Bondi Beach surf culture and the six-kilometre coastal walk from Bondi to Coogee"
+      ],
+      "tips": [
+        "Seasons are reversed: December to February is hot, busy summer, so book Opera House shows and BridgeClimb slots two to four weeks ahead",
+        "Public ferries from Circular Quay cost a fraction of a cruise and pass the same Opera House and bridge views, so tap on with any contactless card",
+        "Combine Taronga Zoo with a ferry ride and the Sky Safari cable car, and go on a weekday morning to beat school groups",
+        "For stadium concerts at Accor Stadium, take the train to Olympic Park and allow extra time, as post-show queues are long"
+      ],
+      "faqs": [
+        {
+          "q": "Do I need to book Sydney Opera House tours in advance?",
+          "a": "Yes, especially from December to February when Australian summer crowds peak. Daily guided tours from around AUD 45 can sell out a day or two ahead, and evening performances often sell out weeks in advance. Booking online also lets you pick English-language tour times that suit your day."
+        },
+        {
+          "q": "What is the cheapest way to see Sydney Harbour?",
+          "a": "Ride the public ferries from Circular Quay. The Manly ferry passes the Opera House and Harbour Bridge for just a few dollars with a contactless card. Dedicated lunch or twilight cruises add commentary and dining from about AUD 49 if you want the full experience."
+        },
+        {
+          "q": "When do big concerts and sports happen in Sydney?",
+          "a": "Stadium concert season clusters in the warmer months from October to March at Accor Stadium, while Qudos Bank Arena hosts tours year-round. NRL rugby league runs March to October, and international cricket takes over the SCG in December and January, including New Year Test matches."
+        }
+      ]
+    },
+    {
+      "slug": "melbourne",
+      "country_slug": "australia",
+      "city_id": 162,
+      "name": "Melbourne",
+      "state": "VIC",
+      "country": "Australia",
+      "country_code": "AUS",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1514395462725-fb4566210144?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Melbourne Tickets & Tours: MCG, Laneways & Live Events",
+      "meta_description": "Book MCG tours, AFL and cricket tickets, laneway food walks and Great Ocean Road day trips from Melbourne. Compare AUD prices and book in minutes.",
+      "intro": "Melbourne treats sport and culture as religion, and the Melbourne Cricket Ground anchors it all. Take a behind-the-scenes MCG tour on non-match days, or join 90,000 fans for AFL footy between March and September and the Boxing Day Test each December. In January the Australian Open takes over Melbourne Park, with ground passes that let you roam the outside courts all day. Between events, hunt street art in laneways like Hosier Lane, graze the stalls of Queen Victoria Market and ride the free City Circle tram past Flinders Street Station. Day trips along the Great Ocean Road to the Twelve Apostles are the classic excursion and sell out in summer, so reserve ahead. Melbourne's arenas, led by Rod Laver Arena and Marvel Stadium, pull the biggest international concert tours in the country. Prices are in AUD, with instant mobile tickets for most experiences.",
+      "highlights": [
+        "MCG tours through the players' race and changing rooms, plus AFL footy in winter and Boxing Day Test cricket",
+        "Australian Open tennis at Melbourne Park each January, from ground passes to Rod Laver Arena finals",
+        "Street-art laneways like Hosier Lane and AC/DC Lane, paired with coffee and food stalls at Queen Victoria Market",
+        "Great Ocean Road day trips to the Twelve Apostles, Loch Ard Gorge and the surf town of Torquay"
+      ],
+      "tips": [
+        "Melbourne weather delivers four seasons in a day even in summer, so carry a layer for evening events at outdoor stadiums",
+        "The City Circle tram and all CBD trams in the free zone cost nothing, putting Flinders Street Station, the laneways and Queen Victoria Market within easy reach",
+        "Great Ocean Road day trips run 10 to 12 hours; book the smaller sunset tours in summer (December to February) early as they sell out first",
+        "MCG stadium tours run on non-event days only, so check the AFL and cricket fixtures before planning your visit"
+      ],
+      "faqs": [
+        {
+          "q": "Can I tour the MCG on match days?",
+          "a": "No, behind-the-scenes tours only run on non-event days, usually hourly from mid-morning. On match days the better option is a ticket to the game itself: regular-season AFL entry is inexpensive and the atmosphere with 80,000-plus fans is unforgettable. Check fixtures before you plan."
+        },
+        {
+          "q": "How do Australian Open tickets work?",
+          "a": "Ground passes give all-day access to outside courts and the fan zones in January, while reserved seats for Rod Laver Arena and Margaret Court Arena are sold per session. Finals week sells out months ahead, but first-week ground passes are usually easy to get and great value."
+        },
+        {
+          "q": "Is the Great Ocean Road doable as a day trip from Melbourne?",
+          "a": "Yes, it is Melbourne's most popular excursion. Coach tours run 10 to 12 hours, covering Torquay, Apollo Bay, the rainforest at Maits Rest and the Twelve Apostles, typically from around AUD 100 to 150. In summer, book several days ahead and choose a sunset tour for the best light."
+        }
+      ]
+    }
+  ]
+}

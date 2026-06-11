@@ -175,8 +175,9 @@ document.querySelectorAll('[data-city-detect]').forEach(btn => {
     });
 });
 
-// First visit: silently auto-detect the visitor's city and re-render for it.
-// Only if detection fails do we fall back to the manual picker modal.
+// First visit: show the city picker. Location detection runs ONLY when the
+// visitor presses "Detect my location" (consent — it sends their IP to ipapi.co;
+// see /privacy). No silent geolocation.
 const cityModal = document.querySelector('[data-city-modal]');
 const openCityModal = () => {
     if (cityModal) {
@@ -185,17 +186,7 @@ const openCityModal = () => {
     }
 };
 if (!getCityCookie()) {
-    (async () => {
-        try {
-            const match = await detectCity();
-            if (match) {
-                setCityCookie(match.id);
-                window.location.reload();
-                return;
-            }
-        } catch { /* fall through to manual pick */ }
-        openCityModal();
-    })();
+    openCityModal();
 }
 if (cityModal) {
     const dismiss = () => {
@@ -247,17 +238,25 @@ document.querySelectorAll('[data-carousel]').forEach(carousel => {
         render();
     }
 
+    // Respect reduced-motion: no auto-rotation, instant (non-animated) slide moves.
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reducedMotion) track.style.transition = 'none';
+
     function restart() {
         if (timer) clearInterval(timer);
+        if (reducedMotion) return;
         timer = setInterval(() => goTo(index + 1), 5000);
     }
 
     carousel.querySelector('[data-carousel-prev]')?.addEventListener('click', () => { goTo(index - 1); restart(); });
     carousel.querySelector('[data-carousel-next]')?.addEventListener('click', () => { goTo(index + 1); restart(); });
 
-    // Pause auto-rotation while hovering
+    // Pause auto-rotation while hovering — and for keyboard/touch users too.
     carousel.addEventListener('mouseenter', () => { if (timer) clearInterval(timer); });
     carousel.addEventListener('mouseleave', restart);
+    carousel.addEventListener('focusin', () => { if (timer) clearInterval(timer); });
+    carousel.addEventListener('focusout', restart);
+    carousel.addEventListener('touchstart', () => { if (timer) clearInterval(timer); }, { passive: true });
 
     // Swipe support
     let startX = null;
