@@ -799,57 +799,27 @@ body.modal-open { overflow: hidden; }
 
 /* ============ Rails & grids ============ */
 
+/* Rails flow DOWN as a wrapping grid (was a horizontal scroll) so sections show
+   every card stacked and the page reads taller. Same column rhythm as .card-grid. */
 .rail {
     display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: 222px;
-    gap: 20px;
-    overflow-x: auto;
-    padding: 4px 4px 18px;
-    scroll-snap-type: x proximity;
-    scrollbar-width: none;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
+    gap: 22px;
+    padding: 4px 0;
 }
-
-.rail::-webkit-scrollbar { display: none; }
-
-.rail > * { scroll-snap-align: start; }
 
 .card-grid {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-auto-rows: 1fr; /* every row the same height → all cards equal across the grid */
     gap: 22px;
 }
 
 .rail-wrapper { position: relative; width: 100%; }
 
-.rail-btn {
-    position: absolute;
-    top: 38%;
-    transform: translateY(-50%);
-    z-index: 20;
-    width: 36px;
-    height: 36px;
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid var(--line);
-    border-radius: 50%;
-    box-shadow: var(--shadow-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    padding: 0;
-    color: var(--ink-strong);
-}
-
-.rail-btn:hover { background: #ffffff; transform: translateY(-50%) scale(1.08); }
-
-.rail-btn:active { transform: translateY(-50%) scale(0.95); }
-
-.rail-btn.prev { left: -16px; }
-.rail-btn.next { right: -16px; }
-
-.rail-btn svg { width: 15px; height: 15px; }
+/* Scroll arrows are obsolete now that rails wrap into a grid. */
+.rail-btn { display: none; }
 
 @media (max-width: 980px) {
     .rail-btn { display: none; }
@@ -991,6 +961,9 @@ body.modal-open { overflow: hidden; }
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    /* Always reserve two lines so single-line titles don't shrink the card and
+       the meta/CTA below stay aligned across every card in a row. */
+    min-height: 2.64em;
     transition: color 0.15s ease;
 }
 
@@ -1006,14 +979,43 @@ body.modal-open { overflow: hidden; }
     text-overflow: ellipsis;
 }
 
-/* .card-body p (0,1,1) would beat a lone class, so scope under .card-body. */
-.card-body .card-onwards {
-    margin-top: 6px;
-    color: var(--ink-strong);
-    font-weight: 600;
+/* Every card ends in a tap target straight to checkout. margin-top:auto pins it
+   to the bottom so buttons line up no matter the title length. The starting
+   price (when known) rides inside the button; no price → just "Get Tickets". */
+.card-cta {
+    margin-top: 12px;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 9px;
+    background: var(--accent);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    transition: background 0.15s ease, transform 0.15s ease;
 }
 
-.card-body .card-onwards::first-line { color: var(--ink-strong); }
+.card-cta__price {
+    font-weight: 800;
+}
+
+.card-cta__price::before {
+    content: "\2022";
+    margin-right: 8px;
+    opacity: 0.5;
+    font-size: 0.7em;
+    vertical-align: middle;
+}
+
+.card-cta:hover { background: var(--accent-dark); }
+.card-cta:active { transform: scale(0.98); }
+
+.section-band.dark .card-cta { background: var(--accent); color: #ffffff; }
+.section-band.dark .card-cta:hover { background: var(--accent-dark); }
 
 /* ============ City & category grids ============ */
 
@@ -1298,6 +1300,13 @@ body.modal-open { overflow: hidden; }
 }
 
 .detail-content > h2:not(:first-child) { margin-top: 28px; }
+
+.detail-summary {
+    margin: 0 0 18px;
+    font-size: 1.02rem;
+    line-height: 1.65;
+    color: var(--ink);
+}
 
 .detail-list {
     display: grid;
@@ -1593,7 +1602,7 @@ body.modal-open { overflow: hidden; }
     max-width: 560px;
 }
 
-.artist-rail { grid-auto-columns: 170px; }
+.artist-rail { grid-template-columns: repeat(6, minmax(0, 1fr)); }
 
 .artist-card {
     display: flex;
@@ -1707,12 +1716,13 @@ body.modal-open { overflow: hidden; }
 
 @media (max-width: 980px) {
     .artist-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .artist-rail { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
 @media (max-width: 640px) {
     .artist-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
-    .artist-rail { grid-auto-columns: 138px; }
+    .artist-rail { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
     .artist-avatar { width: 68px; height: 68px; font-size: 1.35rem; }
 
@@ -1786,6 +1796,24 @@ body.modal-open { overflow: hidden; }
     color: #fff;
 }
 
+/* Infinite-scroll loading hint on the page indicator. */
+.pagination.is-loading span::after {
+    content: '';
+    width: 13px;
+    height: 13px;
+    margin-left: 9px;
+    border: 2px solid rgba(255, 255, 255, 0.45);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+    .pagination.is-loading span::after { animation: none; }
+}
+
 /* ============ Footer (BMS dark gray, full structure) ============ */
 
 .site-footer {
@@ -1838,8 +1866,8 @@ body.modal-open { overflow: hidden; }
 /* Main row: brand block + three link columns */
 .footer-main {
     display: grid;
-    grid-template-columns: 1.7fr 1fr 1fr 1fr;
-    gap: 40px;
+    grid-template-columns: 1.5fr repeat(4, 1fr);
+    gap: 32px;
     padding: 48px 0 40px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.09);
 }
@@ -1974,7 +2002,8 @@ body.modal-open { overflow: hidden; }
 
     .subnav-side { display: none; }
 
-    .card-grid {
+    .card-grid,
+    .rail {
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 14px;
     }
@@ -2015,13 +2044,12 @@ body.modal-open { overflow: hidden; }
 
     .nav-toggle { display: block; }
 
-    .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .card-grid,
+    .rail { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 
     .tag-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
     .date-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-
-    .rail { grid-auto-columns: 152px; gap: 12px; }
 
     .card-title { font-size: 0.88rem; }
 
@@ -2095,6 +2123,40 @@ body.modal-open { overflow: hidden; }
 .dubai-hub__hero .dubai-breadcrumb a,
 .destination-hub__hero .dubai-breadcrumb a,
 .destination-city__hero .dubai-breadcrumb a { color: rgba(255, 255, 255, .85); }
+
+/* ---- More cities (long-tail internal-link list) ---- */
+
+.more-cities-intro {
+    margin: 0 0 16px;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.more-cities-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px 20px;
+}
+
+.more-cities-list a {
+    display: block;
+    padding: 8px 0;
+    color: var(--ink);
+    font-weight: 600;
+    border-bottom: 1px solid var(--line, rgba(0, 0, 0, .06));
+    transition: color .15s ease;
+}
+
+.more-cities-list a:hover { color: var(--accent); }
+
+.muted-link { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
+.muted-link:hover { color: var(--accent); }
+
+.more-link { margin: 18px 0 0; font-weight: 600; }
+.more-link a { color: var(--accent); }
 
 /* ---- Dubai & destination hub pages (shared) ---- */
 

@@ -77,11 +77,9 @@ function render_country_hub(HelloTicketsClient $client, array $config, array $pa
                 'name' => $country['meta_title'] ?? ($name . ' Tickets & Attractions'),
                 'url' => absolute_url($config, '/' . $countrySlug),
                 'description' => $country['meta_description'] ?? '',
-                'isPartOf' => [
-                    '@type' => 'WebSite',
-                    'name' => $config['site_name'],
-                    'url' => $config['site_url'],
-                ],
+                // Reference the home page's #website node instead of re-declaring an
+                // anonymous copy — disconnected duplicates fragment the entity graph.
+                'isPartOf' => ['@id' => $config['site_url'] . '/#website'],
             ],
             dubai_faq_schema($faqs),
             dubai_breadcrumb_schema($config, $breadcrumbs),
@@ -94,13 +92,43 @@ function render_country_hub(HelloTicketsClient $client, array $config, array $pa
         'support' => 'Partner Support',
     ];
 
+    // Long-tail internal linking: every inventory-having geo city in this country
+    // that isn't already a flagship editorial hub gets a /city/{slug} link here, so
+    // "events in {city}" pages (Edmonton, Quebec, Glasgow…) are discoverable and pass
+    // PageRank from the country hub instead of sitting orphaned.
+    $countryCode3 = (string) ($config['markets'][$countrySlug]['country_code'] ?? '');
+    $flagshipSlugs = [];
+    foreach ($cities as $fc) {
+        $flagshipSlugs[slugify((string) ($fc['name'] ?? ''))] = true;
+    }
+    $moreCities = [];
+    if ($countryCode3 !== '') {
+        foreach (geo_cities() as $gid => $geo) {
+            $gidInt = (int) $gid;
+            if ($gidInt === 132 || $gidInt === 256) {
+                continue;
+            }
+            if ((string) ($geo['country_code'] ?? '') !== $countryCode3 || !city_has_inventory($gidInt)) {
+                continue;
+            }
+            $gName = (string) ($geo['name'] ?? '');
+            $gSlug = slugify($gName);
+            if ($gName === '' || isset($flagshipSlugs[$gSlug])) {
+                continue;
+            }
+            $moreCities[$gSlug] = $gName;
+        }
+        ksort($moreCities);
+    }
+
     render_layout($config, [
         'title' => $country['meta_title'] ?? ($name . ' Tickets, Tours & Attractions | ' . $config['site_name']),
         'description' => $country['meta_description'] ?? ('Book tickets and tours across ' . $name . ' with instant e-tickets and free cancellation on most experiences.'),
         'canonical' => absolute_url($config, '/' . $countrySlug),
         'image' => $heroImage,
+        'preload_image' => $heroImage,
         'body_class' => 'destination-hub-page',
-    ], function () use ($config, $country, $countrySlug, $cities, $faqs, $stats, $statLabels, $heroImage, $name, $displayName, $breadcrumbs, $topActivities, $primary): void {
+    ], function () use ($config, $country, $countrySlug, $cities, $faqs, $stats, $statLabels, $heroImage, $name, $displayName, $breadcrumbs, $topActivities, $primary, $moreCities): void {
         ?>
 
         <!-- Hero -->
@@ -155,6 +183,23 @@ function render_country_hub(HelloTicketsClient $client, array $config, array $pa
         <!-- Live attractions rail (primary city) -->
         <?php if ($topActivities !== [] && $primary !== null): ?>
             <?php render_card_section('Top Things to Do in ' . $primary['name'], '/' . $countrySlug . '/' . $primary['slug'], $topActivities, 'activity', $config, 'muted'); ?>
+        <?php endif; ?>
+
+        <!-- More cities (long-tail "events in {city}" pages) -->
+        <?php if ($moreCities !== []): ?>
+            <section class="destination-hub__more-cities section-band">
+                <div class="container">
+                    <div class="section-heading">
+                        <h2>More Cities in <?= e($displayName) ?></h2>
+                    </div>
+                    <p class="more-cities-intro">Live events, concerts and sports with tickets on sale across <?= e($name) ?>.</p>
+                    <ul class="more-cities-list">
+                        <?php foreach ($moreCities as $mcSlug => $mcName): ?>
+                            <li><a href="/city/<?= e($mcSlug) ?>"><?= e($mcName) ?> events</a></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </section>
         <?php endif; ?>
 
         <!-- Guide / SEO content -->
@@ -220,18 +265,32 @@ function render_city_hub(HelloTicketsClient $client, array $config, array $pack,
     $highlights = $city['highlights'] ?? [];
     $tips = $city['tips'] ?? [];
 
-    $activities = api_result(static fn() => $client->activities([
-        'city_id' => $cityId,
-        'limit' => 12,
-        'page' => 1,
-    ]), ['activities' => []])['activities'] ?? [];
+    $page = page_number();
+    $perPage = 24;
 
-    $events = api_result(static fn() => $client->performances(array_merge([
+    // Attractions stay a teaser rail (HelloTickets; only page 1 carries them).
+    $activities = [];
+    if ($page === 1) {
+        $activities = api_result(static fn() => $client->activities([
+            'city_id' => $cityId,
+            'limit' => 12,
+            'page' => 1,
+        ]), ['activities' => []])['activities'] ?? [];
+    }
+
+    // Events are the deep catalogue: HelloTickets first, then page through
+    // Ticketmaster, then paginate on-page (24 per page) like the standalone city page.
+    $htEvents = api_result(static fn() => $client->performances(array_merge([
         'city_id' => $cityId,
-        'limit' => 12,
+        'limit' => 24,
         'page' => 1,
         'is_sellable' => 'true',
     ], date_params(null))), ['performances' => []])['performances'] ?? [];
+    $tmEvents = tm_events_for_city_deep($config, $cityName, (string) ($city['country_code'] ?? ''));
+    $eventPool = city_event_pool($htEvents, $tmEvents, $config);
+    $totalEvents = count($eventPool);
+    $events = array_slice($eventPool, ($page - 1) * $perPage, $perPage);
+    $eventsPageData = ['current_page' => $page, 'per_page' => $perPage, 'total_count' => $totalEvents];
 
     // Sibling cities for internal links.
     $siblings = [];
@@ -255,11 +314,9 @@ function render_city_hub(HelloTicketsClient $client, array $config, array $pack,
                 'name' => $cityName,
                 'url' => absolute_url($config, '/' . $countrySlug . '/' . $citySlug),
                 'description' => $city['meta_description'] ?? '',
-                'isPartOf' => [
-                    '@type' => 'WebSite',
-                    'name' => $config['site_name'],
-                    'url' => $config['site_url'],
-                ],
+                // Reference the home page's #website node instead of re-declaring an
+                // anonymous copy — disconnected duplicates fragment the entity graph.
+                'isPartOf' => ['@id' => $config['site_url'] . '/#website'],
             ],
             dubai_faq_schema($faqs),
             dubai_breadcrumb_schema($config, $breadcrumbs),
@@ -269,10 +326,11 @@ function render_city_hub(HelloTicketsClient $client, array $config, array $pack,
     render_layout($config, [
         'title' => $city['meta_title'] ?? ($cityName . ' Tickets, Tours & Attractions | ' . $config['site_name']),
         'description' => $city['meta_description'] ?? ('Book the best things to do in ' . $cityName . ' with instant e-tickets and free cancellation on most experiences.'),
-        'canonical' => absolute_url($config, '/' . $countrySlug . '/' . $citySlug),
+        'canonical' => absolute_url($config, '/' . $countrySlug . '/' . $citySlug, array_filter(['page' => $page > 1 ? $page : null])),
         'image' => $heroImage,
+        'preload_image' => $heroImage,
         'body_class' => 'destination-city-page',
-    ], function () use ($config, $city, $countrySlug, $countryName, $countryDisplay, $cityName, $cityId, $heroImage, $faqs, $highlights, $tips, $activities, $events, $siblings, $breadcrumbs): void {
+    ], function () use ($config, $city, $countrySlug, $countryName, $countryDisplay, $cityName, $cityId, $heroImage, $faqs, $highlights, $tips, $activities, $events, $eventsPageData, $siblings, $breadcrumbs): void {
         ?>
 
         <!-- Hero -->
@@ -284,11 +342,27 @@ function render_city_hub(HelloTicketsClient $client, array $config, array $pack,
             </div>
         </section>
 
-        <!-- Intro -->
+        <!-- Live attractions + events FIRST (visitors came for tickets; the city
+             write-up sits below). events_first markets (DE/AU/CA) lead with events. -->
+        <?php $cityHref = city_path(['name' => $cityName, 'id' => $cityId]); ?>
+        <?php if (!empty($city['events_first'])): ?>
+            <?php render_events_grid_section('Events in ' . $cityName, $cityName, $events, $eventsPageData, $config); ?>
+            <?php if ($activities !== []): ?>
+                <?php render_card_section('Top Attractions in ' . $cityName, $cityHref, $activities, 'activity', $config, 'muted'); ?>
+            <?php endif; ?>
+        <?php else: ?>
+            <?php if ($activities !== []): ?>
+                <?php render_card_section('Top Attractions in ' . $cityName, $cityHref, $activities, 'activity', $config); ?>
+            <?php endif; ?>
+            <?php render_events_grid_section('Events in ' . $cityName, $cityName, $events, $eventsPageData, $config, 'muted'); ?>
+        <?php endif; ?>
+
+        <!-- Intro / city write-up — below the listings -->
         <?php $paras = destination_paragraphs($city['intro'] ?? ''); ?>
         <?php if ($paras !== []): ?>
             <section class="destination-city__intro section-band">
                 <div class="container">
+                    <h2>About <?= e($cityName) ?></h2>
                     <div class="destination-city__intro-content">
                         <?php foreach ($paras as $p): ?>
                             <p><?= e($p) ?></p>
@@ -296,17 +370,6 @@ function render_city_hub(HelloTicketsClient $client, array $config, array $pack,
                     </div>
                 </div>
             </section>
-        <?php endif; ?>
-
-        <!-- Live attractions + events (rail links set the city cookie via /city page).
-             events_first markets (DE/AU/CA — deep concerts, thin tours) lead with events. -->
-        <?php $cityHref = city_path(['name' => $cityName, 'id' => $cityId]); ?>
-        <?php if (!empty($city['events_first'])): ?>
-            <?php render_card_section('Events in ' . $cityName, $cityHref, $events, 'event', $config); ?>
-            <?php render_card_section('Top Attractions in ' . $cityName, $cityHref, $activities, 'activity', $config, 'muted'); ?>
-        <?php else: ?>
-            <?php render_card_section('Top Attractions in ' . $cityName, $cityHref, $activities, 'activity', $config); ?>
-            <?php render_card_section('Events in ' . $cityName, $cityHref, $events, 'event', $config, 'muted'); ?>
         <?php endif; ?>
 
         <!-- Highlights -->

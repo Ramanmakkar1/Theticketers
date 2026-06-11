@@ -85,11 +85,15 @@ function dubai_faq_schema(array $faqs): array
 
 function dubai_tourist_attraction_schema(array $config, array $attraction, array $activity): array
 {
+    $attractionUrl = absolute_url($config, '/dubai/' . ($attraction['category_slug'] ?? 'attractions') . '/' . ($attraction['slug'] ?? ''));
     $schema = [
         '@type' => 'TouristAttraction',
-        'name' => $attraction['title'] ?? ($activity['title'] ?? ''),
+        '@id' => $attractionUrl . '#attraction',
+        // The attraction's NAME, not the page title ("Burj Khalifa", not
+        // "Burj Khalifa Tickets & Observation Deck Experiences").
+        'name' => $attraction['short_name'] ?? ($attraction['title'] ?? ($activity['title'] ?? '')),
         'description' => $attraction['meta_description'] ?? '',
-        'url' => absolute_url($config, '/dubai/' . ($attraction['category_slug'] ?? 'attractions') . '/' . ($attraction['slug'] ?? '')),
+        'url' => $attractionUrl,
         'touristType' => 'Leisure',
         'isAccessibleForFree' => false,
     ];
@@ -252,11 +256,9 @@ function render_dubai_hub(HelloTicketsClient $client, array $config, array $duba
                 'name' => 'Things to Do in Dubai - Tickets, Tours & Attractions',
                 'url' => absolute_url($config, '/dubai'),
                 'description' => 'Discover the best things to do in Dubai. Book tickets for attractions, tours, desert safaris, theme parks and more with instant e-tickets and free cancellation on most experiences.',
-                'isPartOf' => [
-                    '@type' => 'WebSite',
-                    'name' => $config['site_name'],
-                    'url' => $config['site_url'],
-                ],
+                // Reference the home page's #website node instead of re-declaring an
+                // anonymous copy — disconnected duplicates fragment the entity graph.
+                'isPartOf' => ['@id' => $config['site_url'] . '/#website'],
             ],
             dubai_faq_schema($faqs),
             dubai_breadcrumb_schema($config, $breadcrumbs),
@@ -267,6 +269,7 @@ function render_dubai_hub(HelloTicketsClient $client, array $config, array $duba
         'title' => 'Things to Do in Dubai — Tickets, Tours & Attractions | ' . $config['site_name'],
         'description' => 'Discover 100+ Dubai attractions. Book tickets for Burj Khalifa, desert safaris, theme parks, cruises and more. Instant e-tickets and free cancellation on most experiences.',
         'canonical' => absolute_url($config, '/dubai'),
+        'preload_image' => $heroImage,
         'body_class' => 'dubai-hub-page',
     ], function () use ($config, $categories, $topActivities, $faqs, $heroImage, $breadcrumbs, $dubaiContent): void {
         ?>
@@ -516,6 +519,7 @@ function render_dubai_category(HelloTicketsClient $client, array $config, array 
         'title' => $pageTitle . ' | ' . $config['site_name'],
         'description' => $category['meta_description'] ?? ('Find the best ' . strtolower($category['name']) . ' in Dubai. Compare prices, read reviews and book online with instant confirmation.'),
         'canonical' => absolute_url($config, '/dubai/' . $categorySlug),
+        'preload_image' => $heroImage,
         'body_class' => 'dubai-category-page',
     ], function () use ($config, $category, $categorySlug, $activities, $faqs, $highlights, $tips, $relatedCategories, $heroImage, $breadcrumbs, $pageTitle, $shortName): void {
         ?>
@@ -536,7 +540,10 @@ function render_dubai_category(HelloTicketsClient $client, array $config, array 
             <section class="dubai-category__activities section-band">
                 <div class="container">
                     <div class="section-heading">
-                        <h2>Best <?= e($shortName) ?> in Dubai</h2>
+                        <?php // "{X}: Tickets & Experiences" works for singular landmarks
+                              // ("Burj Khalifa") and plural categories ("Waterparks") alike —
+                              // "Best Burj Khalifa in Dubai" read as generated boilerplate. ?>
+                        <h2><?= e($shortName) ?>: Tickets &amp; Experiences in Dubai</h2>
                         <span><?= e((string) count($activities)) ?> experiences</span>
                     </div>
                     <div class="card-grid">
@@ -747,32 +754,31 @@ function render_dubai_attraction(HelloTicketsClient $client, array $config, arra
         dubai_tourist_attraction_schema($config, $attraction, $activity),
     ];
 
-    // Product + Offers schema
+    // Product (the bookable ticket) referencing the TouristAttraction entity.
+    // The rating lives ONLY on the attraction node — duplicating it on both
+    // invites review-snippet quality flags for the same entity declared twice.
+    $attractionUrl = absolute_url($config, '/dubai/' . $categorySlug . '/' . $attractionSlug);
     $productSchema = [
         '@type' => 'Product',
+        '@id' => $attractionUrl . '#tickets',
         'name' => $attraction['title'],
         'description' => $attraction['meta_description'] ?? '',
         'image' => $heroImage,
+        'mainEntityOfPage' => $attractionUrl,
         'brand' => [
             '@type' => 'Brand',
             'name' => $config['site_name'],
         ],
     ];
     if ($price > 0) {
+        // Offer emitted only while the live API returns a bookable price, so
+        // InStock is availability-gated rather than asserted blindly.
         $productSchema['offers'] = [
             '@type' => 'Offer',
-            'url' => absolute_url($config, '/dubai/' . $categorySlug . '/' . $attractionSlug),
+            'url' => $attractionUrl,
             'price' => $price,
             'priceCurrency' => $currency,
             'availability' => 'https://schema.org/InStock',
-        ];
-    }
-    if ($reviewCount > 0) {
-        $productSchema['aggregateRating'] = [
-            '@type' => 'AggregateRating',
-            'ratingValue' => $rating,
-            'reviewCount' => $reviewCount,
-            'bestRating' => 5,
         ];
     }
     $schemaGraph[] = $productSchema;
@@ -791,6 +797,7 @@ function render_dubai_attraction(HelloTicketsClient $client, array $config, arra
         'title' => $attraction['title'] . ' — Tickets & Prices | ' . $config['site_name'],
         'description' => $attraction['meta_description'] ?? ('Book ' . $attraction['title'] . ' tickets online. Skip the line with instant e-tickets and free cancellation on most experiences.'),
         'canonical' => absolute_url($config, '/dubai/' . $categorySlug . '/' . $attractionSlug),
+        'preload_image' => $heroImage,
         'body_class' => 'attraction-detail-page',
     ], function () use ($config, $attraction, $activity, $categorySlug, $categoryName, $categoryShort, $attractionShort, $attractionSlug, $heroImage, $galleryImages, $faqs, $tips, $whatToExpect, $quickFacts, $rating, $reviewCount, $price, $currency, $relatedActivities, $relatedAttractions, $breadcrumbs, $client): void {
         ?>
@@ -1051,6 +1058,7 @@ function render_abu_dhabi_hub(HelloTicketsClient $client, array $config, array $
         'title' => 'Things to Do in Abu Dhabi — Tours & Day Trips | ' . $config['site_name'],
         'description' => 'Book Abu Dhabi tours and tickets from Dubai. Visit Sheikh Zayed Grand Mosque, Louvre Abu Dhabi, Ferrari World and more with instant e-tickets and free cancellation on most experiences.',
         'canonical' => absolute_url($config, '/abu-dhabi'),
+        'preload_image' => $heroImage,
         'body_class' => 'abu-dhabi-hub-page',
     ], function () use ($config, $activities, $faqs, $heroImage, $breadcrumbs): void {
         ?>
@@ -1117,7 +1125,7 @@ function render_abu_dhabi_hub(HelloTicketsClient $client, array $config, array $
 
                     <p>The Sheikh Zayed Grand Mosque is the undisputed highlight, with its 82 white domes, gold-plated chandeliers and the world's largest hand-knotted carpet. Nearby, the Louvre Abu Dhabi showcases centuries of art beneath Jean Nouvel's spectacular dome of light. For thrill-seekers, Yas Island delivers with Ferrari World (home to the world's fastest roller coaster), Yas Waterworld and Warner Bros. World.</p>
 
-                    <p>Most Abu Dhabi day tours from Dubai include hotel pick-up, air-conditioned transport and a guide who covers history, architecture and local customs. Prices start from around AED 100 for a basic mosque visit, rising to AED 400+ for full-day packages that combine multiple attractions with lunch. Booking online with instant confirmation guarantees your spot and often saves 10-20% compared to walk-up prices.</p>
+                    <p>Most Abu Dhabi day tours from Dubai include hotel pick-up, air-conditioned transport and a guide who covers history, architecture and local customs. Basic mosque visits sit at the budget end, while full-day packages that combine multiple attractions with lunch cost more — every tour card on this page shows its live starting price. Booking online with instant confirmation guarantees your spot.</p>
                 </div>
             </div>
         </section>

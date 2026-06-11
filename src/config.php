@@ -6,9 +6,14 @@ $config = [
     'site_tagline' => 'Concerts, sports, theatre and attraction tickets',
     // SITE_URL env wins; otherwise derive from the live host so canonicals/sitemap/og
     // never silently ship as "localhost" on a shared host that can't set env vars.
+    // Scheme must respect X-Forwarded-Proto: shared hosts terminate SSL at a proxy,
+    // leaving $_SERVER['HTTPS'] unset — without this every canonical/sitemap URL
+    // would be generated as http:// and then 301'd to https by .htaccess.
     'site_url' => rtrim(getenv('SITE_URL') ?: (
         ($_SERVER['HTTP_HOST'] ?? '') !== ''
-            ? ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'])
+            ? (((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+                || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https'
+                || ($_SERVER['SERVER_PORT'] ?? '') === '443' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'])
             : 'http://localhost:8000'
     ), '/'),
     'api_base_url' => rtrim(getenv('HELLOTICKETS_API_URL') ?: 'https://api-live.hellotickets.com', '/'),

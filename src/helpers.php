@@ -249,6 +249,18 @@ function absolute_url(array $config, string $path, array $query = []): string
     return $config['site_url'] . route_url($path, $query);
 }
 
+// Content-fingerprinted asset URL (?v=mtime) so far-future Cache-Control on
+// /assets/* can never serve a stale stylesheet after a deploy.
+function asset_url(string $path): string
+{
+    static $versions = [];
+    if (!isset($versions[$path])) {
+        $file = dirname(__DIR__) . '/' . ltrim($path, '/');
+        $versions[$path] = is_file($file) ? (string) filemtime($file) : '1';
+    }
+    return $path . '?v=' . $versions[$path];
+}
+
 function current_path(): string
 {
     $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
@@ -309,6 +321,37 @@ function format_date_time(array $startDate): string
     }
 
     return $formatted;
+}
+
+/** Loading + intrinsic-size attributes for card-grid images. The first grid row
+ *  is often above the fold — lazy-loading it actively deprioritizes the page's
+ *  LCP candidate, so the first few images load eagerly. width/height give the
+ *  browser an aspect ratio before CSS arrives (the .card-image wrapper's
+ *  aspect-ratio reserves the space once styles load). */
+function card_img_attrs(): string
+{
+    static $rendered = 0;
+    $rendered++;
+    return ($rendered <= 4 ? 'loading="eager"' : 'loading="lazy"') . ' width="600" height="750"';
+}
+
+/** "A", "A and B", "A, B and C" — for city lists in generated prose. A bare
+ *  implode produced nonsense geography like "in San Antonio, New York". */
+function natural_join(array $items): string
+{
+    $items = array_values(array_filter(array_map('strval', $items), static fn($v) => $v !== ''));
+    if (count($items) <= 1) {
+        return $items[0] ?? '';
+    }
+    $last = array_pop($items);
+    return implode(', ', $items) . ' and ' . $last;
+}
+
+/** "Aug 2, 2026" from a Y-m-d string — for prose and schema descriptions. */
+function format_date_label(string $localDate): string
+{
+    $d = DateTimeImmutable::createFromFormat('!Y-m-d', $localDate);
+    return $d ? $d->format('M j, Y') : $localDate;
 }
 
 function date_bounds(?string $dateKey): array
@@ -492,6 +535,39 @@ function geo_cities(): array
     return $cities;
 }
 
+/** Pre-computed inventory gate (storage/city-index.json, built by bin/build-city-index.php).
+ *  Returns ['cities' => ['101' => ['events'=>220], …]] or null when no index exists yet. */
+function city_index(): ?array
+{
+    static $index = false;
+    if ($index === false) {
+        $file = __DIR__ . '/../storage/city-index.json';
+        $index = is_file($file) ? (json_decode((string) file_get_contents($file), true) ?: null) : null;
+    }
+    return $index ?: null;
+}
+
+/** Is a geo city worth indexing/linking? Reads the pre-built index so the SITEMAP
+ *  and internal links never call the APIs per city. When no index exists yet, assume
+ *  yes — the render-time inventory gate on /city/ and weekend pages still 404s thin
+ *  cities, so the worst case is a few sitemap entries that resolve to 404 until the
+ *  cron runs. */
+function city_has_inventory(int $cityId): bool
+{
+    $index = city_index();
+    if ($index === null) {
+        return true;
+    }
+    return isset($index['cities'][(string) $cityId]);
+}
+
+/** Approximate live event count for a city from the pre-built index (0 if unknown). */
+function city_event_count(int $cityId): int
+{
+    $index = city_index();
+    return (int) ($index['cities'][(string) $cityId]['events'] ?? 0);
+}
+
 function currency_for_country_code(array $config, string $countryCode): ?string
 {
     return $config['market_currencies'][$countryCode] ?? null;
@@ -503,6 +579,14 @@ function currency_for_city_id(array $config, int $cityId): ?string
         if ((int) $city['id'] === $cityId) {
             return currency_for_country_code($config, (string) ($city['country_code'] ?? ''));
         }
+    }
+
+    // A geo-detected city outside the flagship set (e.g. Edmonton) still has a
+    // known country in geo-cities.json — price it in that country's currency
+    // rather than silently dropping back to the AED default.
+    $geo = geo_cities();
+    if (isset($geo[(string) $cityId]['country_code'])) {
+        return currency_for_country_code($config, (string) $geo[(string) $cityId]['country_code']);
     }
 
     return null;
@@ -522,7 +606,10 @@ function request_currency(array $config): string
     }
 
     if (preg_match('#^/events/this-weekend-in-([^/]+)$#', $path, $match) === 1
-        || preg_match('#^/city/([^/]+)$#', $path, $match) === 1) {
+        || preg_match('#^/city/([^/]+)$#', $path, $match) === 1
+        || preg_match('#^/artist/[^/]+/([^/]+)$#', $path, $match) === 1) {
+        // The trailing segment is the city for all three: weekend, city listing,
+        // and "{artist} in {city}". Price in that city's market currency.
         $cityId = resolve_city_id_by_slug($config, $match[1]) ?? legacy_id_from_slug($match[1]) ?? 0;
         $currency = $cityId > 0 ? currency_for_city_id($config, $cityId) : null;
         if ($currency !== null) {
@@ -657,51 +744,82 @@ function home_event_rails(HelloTicketsClient $client, array $config, int $cityId
         ], date_params($window)), ), ['performances' => []])['performances'] ?? [];
     };
 
-    $lead = null;
-    $leadLabel = '';
-    $leadWindow = '';
-    foreach ([
-        ['today', 'Happening today in ' . $cityName],
-        ['week', 'This week in ' . $cityName],
-        ['month', 'This month in ' . $cityName],
-    ] as [$window, $label]) {
-        $items = $fetch($window, $cityId);
-        if (count($items) >= 3) {
-            $lead = $items;
-            $leadLabel = $label;
-            $leadWindow = $window;
-            break;
+    // One date-sorted upcoming pool for the city. Gate on how many HelloTickets events
+    // carry a REAL cover, not the raw count: cities like Edmonton return plenty of HT
+    // rows but with no images (HT serves none), so we must still page deep through
+    // Ticketmaster — which has the posters — and let real-image events lead.
+    $htUpcoming = $fetch('upcoming', $cityId, 24);
+    $htWithImages = 0;
+    foreach ($htUpcoming as $htEvent) {
+        if (strpos(image_from_item($htEvent, 'event', $config), 'images.unsplash.com') === false) {
+            $htWithImages++;
         }
     }
+    if ($htWithImages >= 12) {
+        $pool = $htUpcoming;
+        usort($pool, static fn($a, $b): int => strcmp(
+            (string) ($a['start_date']['local_date'] ?? '9999'),
+            (string) ($b['start_date']['local_date'] ?? '9999')
+        ));
+    } else {
+        $city = city_for_id($cityId, $config);
+        $pool = city_event_pool(
+            $htUpcoming,
+            tm_events_for_city_deep($config, $cityName, (string) ($city['country_code'] ?? '')),
+            $config
+        );
+    }
 
-    $rails = [];
-    $upcoming = $fetch('upcoming', $cityId);
-
-    if ($lead !== null) {
-        $rails[] = ['label' => $leadLabel, 'items' => $lead, 'href' => route_url('/events', ['date' => $leadWindow])];
-        $leadIds = array_map(static fn($e) => (int) ($e['id'] ?? 0), $lead);
-        $more = array_values(array_filter($upcoming, static fn($e) => !in_array((int) ($e['id'] ?? 0), $leadIds, true)));
-        if (count($more) >= 4) {
-            $rails[] = ['label' => 'More upcoming events in ' . $cityName, 'items' => $more, 'href' => '/events'];
+    // Nothing of its own even after TM — fall back to nearby cities (unchanged).
+    if (count($pool) < 3) {
+        $nearby = [];
+        foreach (nearby_city_ids($cityId, $config) as $nearbyId) {
+            $nearby = array_merge($nearby, $fetch('upcoming', $nearbyId, 8));
+            if (count($nearby) >= 12) {
+                break;
+            }
         }
-        return $rails;
+        return $nearby === [] ? [] : [[
+            'label' => 'Events near ' . $cityName,
+            'items' => array_slice($nearby, 0, 12),
+            'href' => '/events',
+        ]];
     }
 
-    if (count($upcoming) >= 3) {
-        $rails[] = ['label' => 'Upcoming events in ' . $cityName, 'items' => $upcoming, 'href' => '/events'];
-        return $rails;
-    }
-
-    // City has no events of its own — pull from nearby cities in the same country.
-    $nearby = [];
-    foreach (nearby_city_ids($cityId, $config) as $nearbyId) {
-        $nearby = array_merge($nearby, $fetch('upcoming', $nearbyId, 8));
-        if (count($nearby) >= 12) {
-            break;
+    // Smart, honest label: name the narrowest timeframe that genuinely has enough on
+    // (so "today" only when today is busy), but always fill the rail from the soonest
+    // events so it never looks empty — today rolls into tomorrow rolls into this week.
+    $today = (new DateTimeImmutable('today'))->format('Y-m-d');
+    $weekEnd = (new DateTimeImmutable('today'))->modify('+7 days')->format('Y-m-d');
+    $todayCount = 0;
+    $weekCount = 0;
+    foreach ($pool as $event) {
+        $d = (string) ($event['start_date']['local_date'] ?? '');
+        if ($d === '') {
+            continue;
+        }
+        if ($d === $today) {
+            $todayCount++;
+        }
+        if ($d >= $today && $d <= $weekEnd) {
+            $weekCount++;
         }
     }
-    if ($nearby !== []) {
-        $rails[] = ['label' => 'Events near ' . $cityName, 'items' => array_slice($nearby, 0, 12), 'href' => '/events'];
+    if ($todayCount >= 5) {
+        $leadLabel = 'Happening today in ' . $cityName;
+        $leadHref = route_url('/events', ['date' => 'today']);
+    } elseif ($weekCount >= 5) {
+        $leadLabel = 'Happening this week in ' . $cityName;
+        $leadHref = route_url('/events', ['date' => 'week']);
+    } else {
+        $leadLabel = 'Upcoming events in ' . $cityName;
+        $leadHref = '/events';
+    }
+
+    $rails = [['label' => $leadLabel, 'items' => array_slice($pool, 0, 12), 'href' => $leadHref]];
+    $more = array_slice($pool, 12, 12);
+    if (count($more) >= 4) {
+        $rails[] = ['label' => 'More events in ' . $cityName, 'items' => $more, 'href' => '/events'];
     }
     return $rails;
 }
@@ -733,6 +851,98 @@ function event_path(array $performance): string
     $slug = event_slug($performance);
     slug_remember('event', $slug, (int) ($performance['id'] ?? 0));
     return '/event/' . $slug;
+}
+
+/** ISO 3166-1 alpha-2 code for the country names our two APIs return; Google
+ *  recommends the 2-letter code for addressCountry. Unknown names pass through
+ *  (plain text is still valid). */
+function iso_country_code(string $country): string
+{
+    static $map = [
+        'united arab emirates' => 'AE',
+        'united states' => 'US',
+        'united states of america' => 'US',
+        'usa' => 'US',
+        'united kingdom' => 'GB',
+        'great britain' => 'GB',
+        'canada' => 'CA',
+        'italy' => 'IT',
+        'spain' => 'ES',
+        'france' => 'FR',
+        'netherlands' => 'NL',
+        'germany' => 'DE',
+        'portugal' => 'PT',
+        'australia' => 'AU',
+        'ireland' => 'IE',
+        'singapore' => 'SG',
+        'switzerland' => 'CH',
+        'austria' => 'AT',
+        'belgium' => 'BE',
+        'saudi arabia' => 'SA',
+        'qatar' => 'QA',
+    ];
+    return $map[strtolower(trim($country))] ?? $country;
+}
+
+/** Structured PostalAddress for schema location nodes — flat concatenated strings
+ *  ("13 5 Street , Dubai") read as machine-mangled and lower location-match
+ *  confidence. Falls back to the city string when nothing more is known. */
+function schema_postal_address(array $venue)
+{
+    $street = trim((string) ($venue['street'] ?? $venue['address'] ?? ''), " \t,");
+    $city = trim((string) ($venue['city'] ?? ''));
+    // TM-normalized 'address' embeds ", City ST" — don't repeat the locality.
+    if ($city !== '' && $street !== '' && stripos($street, $city) !== false) {
+        $street = trim((string) ($venue['street'] ?? ''));
+    }
+    $address = array_filter([
+        '@type' => 'PostalAddress',
+        'streetAddress' => $street,
+        'addressLocality' => $city,
+        'addressRegion' => trim((string) ($venue['state'] ?? '')),
+        'postalCode' => trim((string) ($venue['zip_code'] ?? '')),
+        'addressCountry' => iso_country_code((string) ($venue['country_code'] ?? $venue['country'] ?? '')),
+    ], static fn($v) => $v !== '');
+    if (count($address) <= 1) {
+        return $city;
+    }
+    return $address;
+}
+
+/** Schema.org startDate in VENUE-LOCAL time with its UTC offset, per Google's Event
+ *  guidance. Emitting the raw UTC "…Z" timestamp made rich results show 4:00 PM for
+ *  an 8 PM Dubai show — and contradicted the times printed on the page itself.
+ *  The offset is derived from the API's paired local + UTC datetimes; with no UTC
+ *  to compare against, plain local time (no zone) is still treated as venue-local. */
+function schema_start_date(array $event): string
+{
+    $sd = $event['start_date'] ?? [];
+    $localDate = (string) ($sd['local_date'] ?? '');
+    $localTime = (string) ($sd['local_time'] ?? '');
+    $utc = (string) ($sd['date_time'] ?? '');
+    if ($localDate === '') {
+        return $utc;
+    }
+    if ($localTime === '' || !empty($sd['time_tba'])) {
+        return $localDate;
+    }
+    if (strlen($localTime) === 5) {
+        $localTime .= ':00';
+    }
+    $local = $localDate . 'T' . $localTime;
+    if ($utc !== '') {
+        try {
+            $utcTs = (new DateTimeImmutable($utc))->getTimestamp();
+            $localTs = (new DateTimeImmutable($local, new DateTimeZone('UTC')))->getTimestamp();
+            $offsetMin = (int) round(($localTs - $utcTs) / 60 / 15) * 15;
+            if (abs($offsetMin) <= 14 * 60) {
+                return $local . sprintf('%s%02d:%02d', $offsetMin < 0 ? '-' : '+', intdiv(abs($offsetMin), 60), abs($offsetMin) % 60);
+            }
+        } catch (Exception $e) {
+            // fall through to plain local time
+        }
+    }
+    return $local;
 }
 
 /** Canonical "where this event lives" URL — TM-sourced events point straight at the partner page
@@ -1071,9 +1281,13 @@ function tm_best_image(array $images): ?string
         if (empty($img['url'])) {
             continue;
         }
-        $score = (int) ($img['width'] ?? 0)
+        // Prefer the CDN variant closest to ~1024px. "Widest wins" used to pick
+        // _SOURCE — TM's unresized original upload, often 1-5 MB — for 300px cards.
+        $width = (int) ($img['width'] ?? 0);
+        $score = -abs($width - 1024)
             + (empty($img['fallback']) ? 100000 : 0)
-            + (($img['ratio'] ?? '') === '16_9' ? 5000 : 0);
+            + (($img['ratio'] ?? '') === '16_9' ? 5000 : 0)
+            + (strpos((string) $img['url'], '_SOURCE') !== false ? -50000 : 0);
         if ($score > $bestScore) {
             $bestScore = $score;
             $best = (string) $img['url'];
@@ -1095,7 +1309,9 @@ function tm_normalize_event(array $tmEvent): array
         'id' => 0, // TM ids are strings; we don't expose a TM-only event detail route yet
         'tm_id' => (string) ($tmEvent['id'] ?? ''),
         'source' => 'ticketmaster',
-        'name' => (string) ($tmEvent['name'] ?? ''),
+        // TM returns HTML-encoded names ("Girls&#39; Semi-Finals") — decode once
+        // here so JSON-LD carries clean text and templates don't double-escape.
+        'name' => html_entity_decode((string) ($tmEvent['name'] ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
         'url' => tm_canonical_url((string) ($tmEvent['url'] ?? '')),
         'image' => tm_best_image($tmEvent['images'] ?? []) ?? '',
         'category' => [
@@ -1104,6 +1320,7 @@ function tm_normalize_event(array $tmEvent): array
         'start_date' => [
             'local_date' => (string) ($dates['localDate'] ?? ''),
             'local_time' => (string) ($dates['localTime'] ?? ''),
+            'date_time' => (string) ($dates['dateTime'] ?? ''),
             'date_tba' => !empty($dates['dateTBA']),
             'time_tba' => !empty($dates['timeTBA']),
         ],
@@ -1116,6 +1333,10 @@ function tm_normalize_event(array $tmEvent): array
                 (string) ($venue['state']['stateCode'] ?? ''),
                 ', '
             ),
+            'street' => (string) ($venue['address']['line1'] ?? ''),
+            'state' => (string) ($venue['state']['stateCode'] ?? ''),
+            'zip_code' => (string) ($venue['postalCode'] ?? ''),
+            'country_code' => (string) ($venue['country']['countryCode'] ?? ''),
             'tm_id' => (string) ($venue['id'] ?? ''),
         ],
         'price_range' => [
@@ -1246,6 +1467,101 @@ function tm_events_for_city(array $config, string $cityName, string $countryCode
     }
     $raw = api_result(static fn() => $tm->events($params), []);
     return array_map('tm_normalize_event', $raw['_embedded']['events'] ?? []);
+}
+
+/**
+ * Deep city pull: page through Ticketmaster so a city page can show its FULL
+ * catalogue (hundreds of events) instead of a thin 24-event fill. Each TM page
+ * is cached by the client, so repeat loads (and deeper pagination) are free.
+ * De-duplicated by TM event id, so distinct shows at the same venue/date survive
+ * (unlike the date|venue collapse used when blending HT + TM).
+ */
+function tm_events_for_city_deep(array $config, string $cityName, string $countryCode3, array $extra = [], int $maxPages = 2, int $perPage = 100): array
+{
+    $tm = tm_client($config);
+    if ($tm === null || trim($cityName) === '') {
+        return [];
+    }
+    $alpha2 = tm_country_code($countryCode3);
+    $out = [];
+    $seen = [];
+    for ($page = 0; $page < $maxPages; $page++) {
+        $params = array_merge(['city' => $cityName, 'size' => $perPage, 'page' => $page], $extra);
+        if ($alpha2 !== '') {
+            $params['countryCode'] = $alpha2;
+        }
+        $raw = api_result(static fn() => $tm->events($params), []);
+        foreach ($raw['_embedded']['events'] ?? [] as $tmEvent) {
+            $event = tm_normalize_event($tmEvent);
+            $id = (string) ($event['tm_id'] ?? '');
+            if ($id !== '' && isset($seen[$id])) {
+                continue;
+            }
+            if ($id !== '') {
+                $seen[$id] = true;
+            }
+            $out[] = $event;
+        }
+        $totalPages = (int) ($raw['page']['totalPages'] ?? 1);
+        if ($page + 1 >= $totalPages) {
+            break;
+        }
+    }
+    return $out;
+}
+
+/**
+ * Combine HelloTickets (primary, higher commission + own detail pages) with a deep
+ * Ticketmaster pull into one date-sorted listing. HT wins any HT/TM duplicate
+ * (matched loosely on date + venue); TM events are otherwise kept whole so the city
+ * page is as deep as the catalogue allows.
+ */
+function city_event_pool(array $htEvents, array $tmEvents, array $config): array
+{
+    // Loose same-show key: date + first words of the name. Catches the common case
+    // where HelloTickets and Ticketmaster both list a show (HT carries no image, TM
+    // does) so we don't print the same gig twice.
+    $nameKey = static function (array $e): string {
+        $date = (string) ($e['start_date']['local_date'] ?? '');
+        $name = strtolower((string) preg_replace('/[^a-z0-9 ]/i', '', (string) ($e['name'] ?? '')));
+        $words = array_slice(array_values(array_filter(explode(' ', $name))), 0, 3);
+        return $date . '|' . implode(' ', $words);
+    };
+    // Does this event resolve to a real cover, or just a generic Unsplash fallback?
+    // (HelloTickets returns no images; un-harvested cities fall back, which looks empty.)
+    $hasRealImage = static fn(array $e): int =>
+        strpos(image_from_item($e, 'event', $config), 'images.unsplash.com') === false ? 1 : 0;
+
+    // Merge, keeping ONE row per show — prefer the copy that actually has a picture.
+    $best = [];
+    $loose = [];
+    foreach (array_merge($htEvents, $tmEvents) as $event) {
+        $k = $nameKey($event);
+        if ($k === '|' || trim($k, '|') === '') {
+            $loose[] = $event;
+            continue;
+        }
+        if (!isset($best[$k]) || $hasRealImage($event) > $hasRealImage($best[$k])) {
+            $best[$k] = $event;
+        }
+    }
+    $pool = array_merge(array_values($best), $loose);
+
+    // Order: real-cover events first (so a city looks full of real listings, not a
+    // wall of fallbacks), then soonest first. Decorate-sort so image_from_item runs
+    // once per event, not on every comparison.
+    $decorated = array_map(static fn(array $e): array => [
+        'e' => $e,
+        'img' => $hasRealImage($e),
+        'date' => (string) ($e['start_date']['local_date'] ?? '9999'),
+    ], $pool);
+    usort($decorated, static function (array $a, array $b): int {
+        if ($a['img'] !== $b['img']) {
+            return $b['img'] - $a['img'];
+        }
+        return strcmp($a['date'], $b['date']);
+    });
+    return array_map(static fn(array $x): array => $x['e'], $decorated);
 }
 
 /** Clean /artist/{slug} → TM attraction, for artists HelloTickets doesn't know at all. */

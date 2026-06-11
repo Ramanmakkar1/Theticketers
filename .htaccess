@@ -36,3 +36,23 @@ RewriteRule ^ index.php [L]
     ExpiresByType text/css "access plus 7 days"
     ExpiresByType application/javascript "access plus 7 days"
 </IfModule>
+
+# ---- Security + caching headers (mod_headers fallback when mod_expires is absent). ----
+<IfModule mod_headers.c>
+    # Browsers only honour HSTS over https, so sending it unconditionally is safe.
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    Header always unset X-Powered-By
+    # CSS/JS links carry a ?v= content fingerprint, so long-lived caching is safe.
+    <FilesMatch "\.(css|js)$">
+        Header set Cache-Control "public, max-age=2592000"
+    </FilesMatch>
+    <FilesMatch "\.(jpg|jpeg|png|webp|avif)$">
+        Header set Cache-Control "public, max-age=2592000"
+    </FilesMatch>
+    <FilesMatch "\.svg$">
+        Header set Cache-Control "public, max-age=604800"
+    </FilesMatch>
+</IfModule>
+<IfModule mod_php.c>
+    php_flag expose_php Off
+</IfModule>

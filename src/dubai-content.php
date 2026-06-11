@@ -27,7 +27,7 @@ $data = [
                 'Sunset and prime-time slots available with advance booking'
             ],
             'tips' => [
-                'Book sunset slots at least 2 weeks ahead — they sell out fast and cost AED 50-100 more than morning entries.',
+                'Book sunset slots at least 2 weeks ahead — they sell out fast and are priced higher than morning entries.',
                 'Arrive 30 minutes before your time slot. Security screening and the elevator ride take 15-20 minutes.',
                 'For clear photos without haze, visit between October and March when humidity is lowest.',
                 'The Level 148 SKY lounge includes complimentary dates and Arabic coffee — no need to buy refreshments separately.'
@@ -1792,8 +1792,8 @@ $data = [
 
     'hub_faqs' => [
         ['q' => 'What are the best things to do in Dubai?', 'a' => 'Dubai\'s top attractions include the Burj Khalifa observation deck, desert safaris with dune bashing and BBQ dinners, Aquaventure Waterpark at Atlantis, Dubai Aquarium in Dubai Mall, and dhow dinner cruises on the Marina or Creek. Most experiences offer skip-the-line tickets with instant confirmation.'],
-        ['q' => 'How much do Dubai attraction tickets cost?', 'a' => 'Prices range from AED 26 for city tours and fountain shows to AED 550+ for premium experiences like skydiving or Burj Khalifa SKY lounge access. Most popular attractions like Dubai Frame (AED 50), Aquaventure (AED 115), and desert safaris (AED 60-150) offer good value. Booking online typically saves 10-20% versus walk-up prices.'],
-        ['q' => 'When is the best time to visit Dubai?', 'a' => 'November to March offers the most comfortable weather with temperatures around 20-25 degrees Celsius, ideal for outdoor activities and desert excursions. Summer months (June-September) bring extreme heat but significant discounts on indoor attractions and hotels — up to 50% off peak-season rates.'],
+        ['q' => 'How much do Dubai attraction tickets cost?', 'a' => 'Entry-level experiences like city tours and fountain shows start cheapest, while premium experiences like skydiving or Burj Khalifa SKY lounge access sit at the top end. Every attraction card on this page shows its current starting price, pulled live from our ticketing partner — so the number you see is the number you book at.'],
+        ['q' => 'When is the best time to visit Dubai?', 'a' => 'November to March offers the most comfortable weather with temperatures around 20-25 degrees Celsius, ideal for outdoor activities and desert excursions. Summer months (June-September) bring extreme heat, and many indoor attractions and hotels run seasonal promotions then.'],
         ['q' => 'Are Dubai attraction tickets refundable?', 'a' => 'Many tickets include free cancellation — the exact policy is shown at partner checkout before you pay. Some premium or time-specific tickets (like Burj Khalifa sunset slots) may have stricter cancellation policies, which are clearly shown before you book.'],
         ['q' => 'Do I need to book Dubai attractions in advance?', 'a' => 'For popular attractions like Burj Khalifa, Museum of the Future, and Aquaventure, advance booking is strongly recommended — especially during peak season (December-February) when sunset slots and weekends sell out days ahead. Walk-up availability is usually fine for city tours, cruises, and water sports.'],
     ],

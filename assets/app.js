@@ -272,3 +272,67 @@ document.querySelectorAll('[data-carousel]').forEach(carousel => {
     render();
     restart();
 });
+
+// ===== Infinite scroll — progressive enhancement over real pagination =====
+// The server-rendered <nav class="pagination"> stays intact (crawlers + no-JS page
+// normally); this just auto-appends the next page's cards as the visitor nears the
+// bottom. Both work together, exactly as requested.
+(function () {
+    const firstPagination = document.querySelector('[data-pagination]');
+    if (!firstPagination || !('IntersectionObserver' in window)) return;
+
+    // The grid these pages append into sits just before the pagination.
+    const gridFor = el => {
+        let n = el ? el.previousElementSibling : null;
+        while (n && !n.classList.contains('card-grid')) n = n.previousElementSibling;
+        return n;
+    };
+    const grid = gridFor(firstPagination);
+    if (!grid) return;
+
+    let loading = false;
+    let pager = firstPagination;
+
+    const observer = new IntersectionObserver(entries => {
+        if (entries.some(e => e.isIntersecting)) loadNext();
+    }, { rootMargin: '700px 0px' });
+
+    const watch = () => { if (pager.getAttribute('data-next')) observer.observe(pager); };
+
+    async function loadNext() {
+        if (loading) return;
+        const next = pager.getAttribute('data-next');
+        if (!next) { observer.disconnect(); return; }
+        loading = true;
+        observer.disconnect();
+        pager.classList.add('is-loading');
+        try {
+            const res = await fetch(next, { headers: { 'X-Requested-With': 'fetch' } });
+            if (!res.ok) throw new Error('status ' + res.status);
+            const doc = new DOMParser().parseFromString(await res.text(), 'text/html');
+            const nextPager = doc.querySelector('[data-pagination]');
+            const nextGrid = gridFor(nextPager) || doc.querySelector('.card-grid');
+            if (nextGrid) {
+                const frag = document.createDocumentFragment();
+                Array.from(nextGrid.children).forEach(c => frag.appendChild(document.importNode(c, true)));
+                grid.appendChild(frag);
+            }
+            pager.classList.remove('is-loading');
+            if (nextPager) {
+                const fresh = document.importNode(nextPager, true);
+                pager.replaceWith(fresh);
+                pager = fresh;
+            } else {
+                pager.removeAttribute('data-next');
+            }
+            try { history.replaceState(null, '', next); } catch (e) {}
+        } catch (e) {
+            pager.classList.remove('is-loading');
+        } finally {
+            loading = false;
+            watch();
+        }
+    }
+
+    watch();
+})();
