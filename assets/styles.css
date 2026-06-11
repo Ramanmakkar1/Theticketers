@@ -2338,22 +2338,58 @@ body.modal-open { overflow: hidden; }
     margin: 0 0 12px;
 }
 
+/* Full-width SEO content band with an editorial card */
 .dubai-category__intro {
-    max-width: 780px;
+    background: var(--bg-tint);
+    padding: clamp(44px, 6vw, 76px) 0;
+}
+
+.dubai-category__intro .dubai-category__intro-content {
+    max-width: 880px;
     margin: 0 auto;
-    padding: 40px 0;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    padding: clamp(28px, 4vw, 48px) clamp(24px, 4vw, 52px);
+    box-shadow: var(--shadow-sm);
 }
 
 .dubai-category__intro h2 {
-    font-size: 1.4rem;
-    margin: 28px 0 12px;
+    font-size: clamp(1.45rem, 2.6vw, 1.9rem);
+    font-weight: 800;
+    margin: 0 0 22px;
+    padding-bottom: 14px;
+    border-bottom: 3px solid var(--accent);
+    display: inline-block;
+}
+
+.dubai-category__intro h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--ink-strong);
+    margin: 28px 0 10px;
 }
 
 .dubai-category__intro p {
-    line-height: 1.75;
+    line-height: 1.85;
     color: var(--ink);
-    font-size: 0.95rem;
-    margin-bottom: 14px;
+    font-size: 1rem;
+    margin-bottom: 16px;
+}
+
+/* Lead paragraph: larger, with a red drop-cap for editorial polish */
+.dubai-category__intro-content > p:first-of-type {
+    font-size: 1.08rem;
+    color: var(--ink-strong);
+}
+
+.dubai-category__intro-content > p:first-of-type::first-letter {
+    float: left;
+    font-size: 3.1rem;
+    font-weight: 800;
+    line-height: 0.82;
+    margin: 6px 12px 0 0;
+    color: var(--accent);
 }
 
 /* Hero subtitle */
