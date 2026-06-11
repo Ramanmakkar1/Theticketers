@@ -24,7 +24,19 @@ declare(strict_types=1);
  */
 
 return [
-    'tm_api_key' => 'PASTE_YOUR_TICKETMASTER_DISCOVERY_API_KEY_HERE',
+    // Recommended: a LIST of Ticketmaster Discovery consumer keys. They are rotated
+    // per request (each key has its own 5,000/day + ~5 req/s quota, so N keys ≈ N×
+    // the headroom) with automatic failover to the next key on a 429. Use the
+    // Consumer KEY only — the Consumer Secret is for TM's Commerce/OAuth API, which
+    // this site never calls, so it is not needed here.
+    'tm_api_keys' => [
+        'PASTE_TICKETMASTER_CONSUMER_KEY_1',
+        'PASTE_TICKETMASTER_CONSUMER_KEY_2',
+        'PASTE_TICKETMASTER_CONSUMER_KEY_3',
+    ],
+
+    // Or, if you only have one key, use this instead of the list above:
+    // 'tm_api_key' => 'YOUR_SINGLE_TICKETMASTER_CONSUMER_KEY',
 
     // Optional overrides (uncomment only if you need them):
     // 'api_key'   => 'pub-...your-HelloTickets-public-key...',

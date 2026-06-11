@@ -31,9 +31,18 @@ $config = [
     // and earns commission too: its Impact vanity link honours ?u= deep links + subId1 tracking,
     // exactly like the HelloTickets one. tm_api_key drives the live Discovery API data layer.
     'tm_impact_url' => getenv('TICKETMASTER_IMPACT_URL') ?: 'https://ticketmaster.evyy.net/c/7072456/264167/4272',
-    // Key lives OUTSIDE git: TICKETMASTER_API_KEY env (.htaccess SetEnv works on
-    // shared hosts) or gitignored src/config.local.php returning ['tm_api_key'=>'...'].
+    // Keys live OUTSIDE git: env vars or the gitignored src/config.local.php.
+    //   - tm_api_key  : a single Discovery consumer key (legacy / simplest).
+    //   - tm_api_keys : an ARRAY of consumer keys that get rotated per request so each
+    //                   key's independent 5k/day + 5 req/s quota adds up (N keys ≈ N×
+    //                   headroom) with automatic 429 failover. Set in config.local.php as
+    //                   ['tm_api_keys' => ['key1','key2','key3']], or via the
+    //                   TICKETMASTER_API_KEYS env (comma-separated).
     'tm_api_key' => getenv('TICKETMASTER_API_KEY') ?: '',
+    'tm_api_keys' => array_values(array_filter(array_map(
+        'trim',
+        getenv('TICKETMASTER_API_KEYS') !== false ? explode(',', (string) getenv('TICKETMASTER_API_KEYS')) : []
+    ), static fn($k): bool => $k !== '')),
     'currency' => getenv('HELLOTICKETS_CURRENCY') ?: 'AED',
     // Display currency per market — request_currency() picks one per request from
     // the page's city/country (URL first, then the visitor's saved city cookie).

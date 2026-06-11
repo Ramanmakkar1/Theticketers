@@ -1406,11 +1406,17 @@ function tm_client(array $config): ?TicketmasterClient
     if ($client !== null) {
         return $client;
     }
-    $key = (string) ($config['tm_api_key'] ?? '');
-    if ($key === '') {
+    // Prefer the multi-key list (tm_api_keys) for rotation; fall back to the single
+    // tm_api_key. Both live in the gitignored config.local.php / env, never in git.
+    $keys = $config['tm_api_keys'] ?? [];
+    if (!is_array($keys) || $keys === []) {
+        $keys = (string) ($config['tm_api_key'] ?? '');
+    }
+    $candidate = new TicketmasterClient($keys, $config['cache_dir'], (int) $config['cache_ttl']);
+    if (!$candidate->isConfigured()) {
         return null;
     }
-    $client = new TicketmasterClient($key, $config['cache_dir'], (int) $config['cache_ttl']);
+    $client = $candidate;
     return $client;
 }
 
