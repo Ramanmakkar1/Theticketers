@@ -348,6 +348,9 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?php if (!empty($config['google_site_verification'])): ?>
+    <meta name="google-site-verification" content="<?= e($config['google_site_verification']) ?>">
+    <?php endif; ?>
     <title><?= e($title) ?></title>
     <meta name="description" content="<?= e($description) ?>">
     <?php if (!empty($meta['robots'])): ?>
@@ -385,6 +388,26 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
     <link rel="stylesheet" href="<?= e(asset_url('/assets/styles.css')) ?>">
     <?php if ($schema !== null): ?>
     <script type="application/ld+json"><?= json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?></script>
+    <?php endif; ?>
+    <?php if (!empty($config['ga_measurement_id'])): $gaId = $config['ga_measurement_id']; ?>
+    <!-- Google Analytics 4 (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<?= e(rawurlencode($gaId)) ?>"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', <?= json_encode($gaId, JSON_UNESCAPED_SLASHES) ?>);
+    </script>
+    <?php endif; ?>
+    <?php if (!empty($config['clarity_id'])): ?>
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", <?= json_encode($config['clarity_id'], JSON_UNESCAPED_SLASHES) ?>);
+    </script>
     <?php endif; ?>
 </head>
 <body class="<?= e($bodyClass) ?>">

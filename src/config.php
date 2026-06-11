@@ -21,6 +21,11 @@ $config = [
     // Splitforms public access key — drives the /contact form so the team email is
     // never exposed to scrapers. Public by design (like a form id), safe to commit.
     'splitforms_key' => getenv('SPLITFORMS_KEY') ?: '1dbfd5aad7054619b993f1c5985f6f4c',
+    // Analytics / Search Console — all client-side public IDs (safe to commit).
+    // Env overrides let staging run without tracking.
+    'google_site_verification' => getenv('GOOGLE_SITE_VERIFICATION') ?: '1_7QgnPWR9Tf9XEQQdbFrkPZwLVQnpyWCMDhvDaX_CY',
+    'ga_measurement_id' => getenv('GA_MEASUREMENT_ID') ?: 'G-CT6FHQ50VG',
+    'clarity_id' => getenv('CLARITY_ID') ?: 'x5ja8hr9p7',
     'impact_url' => getenv('IMPACT_BASE_URL') ?: 'https://hellotickets.sjv.io/MKNd7K',
     // Ticketmaster is the FALLBACK source (fills US sports/venues/Broadway HelloTickets lacks)
     // and earns commission too: its Impact vanity link honours ?u= deep links + subId1 tracking,
