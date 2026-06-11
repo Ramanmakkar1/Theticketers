@@ -506,29 +506,9 @@ function render_dubai_category(HelloTicketsClient $client, array $config, array 
             </div>
         </section>
 
-        <!-- Intro content -->
-        <?php if (!empty($category['intro'])): ?>
-            <section class="dubai-category__intro section-band">
-                <div class="container">
-                    <div class="dubai-category__intro-content">
-                        <?php
-                        $introParts = is_array($category['intro']) ? $category['intro'] : [$category['intro']];
-                        foreach ($introParts as $part):
-                            if (is_array($part) && !empty($part['heading'])): ?>
-                                <h2><?= e($part['heading']) ?></h2>
-                                <p><?= e($part['text']) ?></p>
-                            <?php elseif (is_string($part)): ?>
-                                <p><?= e($part) ?></p>
-                            <?php endif;
-                        endforeach; ?>
-                    </div>
-                </div>
-            </section>
-        <?php endif; ?>
-
-        <!-- Activity listings -->
+        <!-- Activity listings (directly after the hero) -->
         <?php if ($activities !== []): ?>
-            <section class="dubai-category__activities section-band muted">
+            <section class="dubai-category__activities section-band">
                 <div class="container">
                     <div class="section-heading">
                         <h2>Best <?= e($shortName) ?> in Dubai</h2>
@@ -572,6 +552,27 @@ function render_dubai_category(HelloTicketsClient $client, array $config, array 
                                 <p><?= e($tip) ?></p>
                             </div>
                         <?php endforeach; ?>
+                    </div>
+                </div>
+            </section>
+        <?php endif; ?>
+
+        <!-- Long-form SEO content (kept low on the page so products lead) -->
+        <?php if (!empty($category['intro'])): ?>
+            <section class="dubai-category__intro section-band">
+                <div class="container">
+                    <div class="dubai-category__intro-content">
+                        <h2>About <?= e($shortName) ?> in Dubai</h2>
+                        <?php
+                        $introParts = is_array($category['intro']) ? $category['intro'] : [$category['intro']];
+                        foreach ($introParts as $part):
+                            if (is_array($part) && !empty($part['heading'])): ?>
+                                <h3><?= e($part['heading']) ?></h3>
+                                <p><?= e($part['text']) ?></p>
+                            <?php elseif (is_string($part)): ?>
+                                <p><?= e($part) ?></p>
+                            <?php endif;
+                        endforeach; ?>
                     </div>
                 </div>
             </section>
