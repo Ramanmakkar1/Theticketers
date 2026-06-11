@@ -2148,7 +2148,9 @@ function render_robots(array $config): void
     echo "User-agent: *\n";
     echo "Allow: /\n";
     echo "Disallow: /go\n";
-    echo "Disallow: /search\n";
+    // /search is intentionally crawlable: the page sends "noindex, follow", and
+    // crawlers must be able to fetch it to see that. It also keeps the WebSite
+    // SearchAction target in website_schema() pointing at a crawlable URL.
     echo "\n";
     // AI search & assistant crawlers are explicitly welcome — AI citations are a
     // traffic channel for this site (see /llms.txt for a machine-readable summary).
