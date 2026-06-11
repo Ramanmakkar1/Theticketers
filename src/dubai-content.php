@@ -84,6 +84,26 @@ $data = [
                 [
                     'q' => 'How far is the desert from Dubai hotels?',
                     'a' => 'The Al Lahbab red dunes (most popular safari location) are about 50 km from Downtown Dubai, roughly 45-60 minutes by car depending on traffic. Pickup times account for this — expect collection between 3:00 and 3:30 PM for an evening safari that starts activities around 4:30 PM.'
+                ],
+                [
+                    'q' => 'What should I wear and bring for a desert safari?',
+                    'a' => 'Wear light, breathable clothing and closed-toe shoes, since sand gets into sandals quickly. Bring a light jacket or shawl for the evenings between November and March, when desert temperatures drop sharply after sunset. Sunglasses, a hat and sunscreen are useful for daytime stops, and a fully charged phone or camera is worth packing for the dunes and sunset.'
+                ],
+                [
+                    'q' => 'What is the best time of year for a Dubai desert safari?',
+                    'a' => 'October to April offers the most comfortable conditions, with daytime highs around 24-30C and pleasant evenings at the camp. Summer safaris (June to September) still run but are very hot during the day, so sunrise and later evening departures are the better choice in those months.'
+                ],
+                [
+                    'q' => 'Can I do a desert safari without the dune bashing?',
+                    'a' => 'Yes. If you prefer to skip the off-road driving, you can ask for a gentle drive or book a camp-only experience that goes straight to the Bedouin camp for the camel rides, dinner and entertainment. Many morning and culture-focused safaris are designed without aggressive dune bashing at all.'
+                ],
+                [
+                    'q' => 'Is the desert safari suitable for vegetarians and special diets?',
+                    'a' => 'The BBQ buffet almost always includes vegetarian dishes, salads, Arabic mezze and bread, so vegetarians are well catered for. If you are vegan or have allergies or need halal-only options, mention it when you book — most operators can prepare for dietary requirements with advance notice.'
+                ],
+                [
+                    'q' => 'How long does the whole evening safari take?',
+                    'a' => 'A standard evening desert safari runs about six hours door to door. Pickup is typically between 3:00 and 3:30 PM and drop-off back at your hotel is usually around 9:00 to 9:30 PM, covering the drive, dune bashing, sunset, camp activities and dinner with live shows.'
                 ]
             ],
             'activity_ids' => [831, 832, 7492, 7486, 7450, 830, 7485, 2462, 11683, 828],

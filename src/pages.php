@@ -38,7 +38,12 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
     }
 
     if (preg_match('#^/events/this-weekend-in-([^/]+)$#', $path, $match)) {
-        render_weekend_page($client, $config, id_from_slug($match[1]));
+        $weekendCityId = resolve_city_id_by_slug($config, $match[1]) ?? legacy_id_from_slug($match[1]);
+        if ($weekendCityId === null) {
+            render_error_page($config, 404, 'City not found', 'We do not cover weekend events for this city yet.');
+            return;
+        }
+        render_weekend_page($client, $config, $weekendCityId);
         return;
     }
 
@@ -58,7 +63,14 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
     }
 
     if (preg_match('#^/artist/([^/]+)$#', $path, $match)) {
-        render_artist_detail_page($client, $config, id_from_slug($match[1]));
+        // Clean-name resolution first so artists like "maroon-5" never get mistaken
+        // for a legacy "{slug}-{id}" URL; numeric tails are only tried after it fails.
+        $performerId = resolve_artist_id($client, $match[1]) ?? legacy_id_from_slug($match[1]);
+        if ($performerId === null) {
+            render_error_page($config, 404, 'Artist not found', 'This artist is not on tour right now.');
+            return;
+        }
+        render_artist_detail_page($client, $config, $performerId);
         return;
     }
 
@@ -123,22 +135,81 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
     }
 
     if (preg_match('#^/city/([^/]+)$#', $path, $match)) {
-        render_city_page($client, $config, id_from_slug($match[1]), $destinationsContent);
+        $cityId = resolve_city_id_by_slug($config, $match[1]) ?? legacy_id_from_slug($match[1]);
+        if ($cityId === null) {
+            render_error_page($config, 404, 'City not found', 'We do not have a tickets page for this city yet.');
+            return;
+        }
+        render_city_page($client, $config, $cityId, $destinationsContent);
         return;
     }
 
     if (preg_match('#^/category/([^/]+)$#', $path, $match)) {
-        render_category_page($client, $config, id_from_slug($match[1]));
+        $category = resolve_category_by_slug($client, $match[1]);
+        $categoryId = $category !== null ? (int) $category['id'] : legacy_id_from_slug($match[1]);
+        if ($categoryId === null) {
+            render_error_page($config, 404, 'Category not found', 'This ticket category is not available.');
+            return;
+        }
+        render_category_page($client, $config, $categoryId);
         return;
     }
 
     if (preg_match('#^/event/([^/]+)$#', $path, $match)) {
-        render_event_detail_page($client, $config, id_from_slug($match[1]));
+        $performanceId = resolve_event_id($client, $match[1]) ?? legacy_id_from_slug($match[1]);
+        if ($performanceId === null) {
+            render_error_page($config, 404, 'Event not found', 'This event is not available anymore.');
+            return;
+        }
+        render_event_detail_page($client, $config, $performanceId);
         return;
     }
 
     if (preg_match('#^/activity/([^/]+)$#', $path, $match)) {
-        render_activity_detail_page($client, $config, id_from_slug($match[1]));
+        $activityId = resolve_activity_id($client, $match[1]) ?? legacy_id_from_slug($match[1]);
+        if ($activityId === null) {
+            render_error_page($config, 404, 'Activity not found', 'This activity is not available anymore.');
+            return;
+        }
+        render_activity_detail_page($client, $config, $activityId);
+        return;
+    }
+
+    if (preg_match('#^/venue/([^/]+)$#', $path, $match)) {
+        $seedVenue = resolve_seed_venue($config, $match[1]);
+        $tmVenueId = $seedVenue !== null ? (string) $seedVenue['tm_id'] : tm_legacy_id_from_slug($match[1]);
+        if ($tmVenueId === null || $tmVenueId === '') {
+            render_error_page($config, 404, 'Venue not found', 'This venue page is not available.');
+            return;
+        }
+        render_venue_page($config, $tmVenueId);
+        return;
+    }
+
+    if ($path === '/venues') {
+        render_venues_index($config);
+        return;
+    }
+
+    // League hubs — /nba, /nfl, /mlb, /nhl, /mls. Guarded by league_from_slug() so unknown
+    // slugs fall through to /{country} → 404. Matched BEFORE the country catch-all below.
+    if (preg_match('#^/([a-z]+)$#', $path, $match) && league_from_slug($match[1]) !== null) {
+        render_league_page($config, $match[1]);
+        return;
+    }
+
+    if (preg_match('#^/team/([^/]+)$#', $path, $match)) {
+        $team = resolve_seed_team($config, $match[1]);
+        if ($team === null) {
+            render_error_page($config, 404, 'Team not found', 'This team page is not available.');
+            return;
+        }
+        render_team_page($config, $team);
+        return;
+    }
+
+    if ($path === '/teams') {
+        render_teams_index($config);
         return;
     }
 
@@ -257,53 +328,56 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
             </div>
         </div>
         <div class="container">
-            <div class="footer-care">
-                <div>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
-                    24/7 Partner Support
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <a class="footer-logo" href="/">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg>
+                        Ticked<em>Bus</em>
+                    </a>
+                    <p>Your guide to events, attractions and experiences in Dubai and top destinations worldwide — with live prices and secure partner checkout.</p>
+                    <ul class="footer-trust">
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"></path><line x1="13" y1="5" x2="13" y2="7"></line><line x1="13" y1="11" x2="13" y2="13"></line><line x1="13" y1="17" x2="13" y2="19"></line></svg>
+                            Live prices &amp; availability
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
+                            Secure partner checkout
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
+                            24/7 partner support
+                        </li>
+                    </ul>
                 </div>
-                <div>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"></path><line x1="13" y1="5" x2="13" y2="7"></line><line x1="13" y1="11" x2="13" y2="13"></line><line x1="13" y1="17" x2="13" y2="19"></line></svg>
-                    Live Prices &amp; Availability
-                </div>
-                <div>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
-                    Secure Partner Checkout
-                </div>
-            </div>
-            <div class="footer-cols">
-                <div>
+                <nav class="footer-col" aria-label="Destinations">
                     <h4>Destinations</h4>
                     <a href="/dubai">Dubai</a>
                     <a href="/abu-dhabi">Abu Dhabi</a>
                     <?php foreach (($config['markets'] ?? []) as $mSlug => $market): ?>
                         <a href="/<?= e($mSlug) ?>"><?= e($market['name']) ?></a>
                     <?php endforeach; ?>
-                </div>
-                <div>
+                </nav>
+                <nav class="footer-col" aria-label="Categories">
                     <h4>Categories</h4>
                     <a href="<?= e(category_path(['id' => 2, 'name' => 'Concerts'])) ?>">Concerts</a>
                     <a href="<?= e(category_path(['id' => 3, 'name' => 'Theatre'])) ?>">Theatre</a>
                     <a href="<?= e(category_path(['id' => 1, 'name' => 'Sports'])) ?>">Sports</a>
                     <a href="/attractions">Attractions &amp; Tours</a>
-                </div>
-                <div>
-                    <h4>Discover</h4>
                     <a href="/events">All Events</a>
-                    <a href="/events?date=weekend">This Weekend</a>
-                    <a href="/search">Search Tickets</a>
+                </nav>
+                <nav class="footer-col" aria-label="Company">
+                    <h4>Company</h4>
                     <a href="/about">About Us</a>
                     <a href="/contact">Contact</a>
                     <a href="/how-we-make-money">How We Make Money</a>
+                    <a href="/search">Search Tickets</a>
                     <a href="/sitemap.xml">Sitemap</a>
-                </div>
+                </nav>
             </div>
-            <div class="footer-bottom">
-                <strong>
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="width: 22px; height: 22px;"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg>
-                    Ticked<em style="font-style: normal; color: var(--red);">Bus</em>
-                </strong>
-                <p>Your guide to events, attractions and experiences in Dubai and top destinations worldwide. Prices and availability are live from our ticket partner, and checkout is completed securely on their site. We may earn a commission on bookings at no extra cost to you. &copy; <?= e(date('Y')) ?> <?= e($config['site_name']) ?>. All events, images and trademarks belong to their respective owners.</p>
+            <div class="footer-bar">
+                <p>&copy; <?= e(date('Y')) ?> <?= e($config['site_name']) ?>. All events, images and trademarks belong to their respective owners.</p>
+                <p class="footer-bar__note">Prices and availability are live from our ticket partner; checkout completes securely on their site. We may earn a commission on bookings at no extra cost to you.</p>
             </div>
         </div>
     </footer>
@@ -533,7 +607,9 @@ function render_events_page(HelloTicketsClient $client, array $config, int $city
     ], date_params($date));
 
     if ($query !== '') {
-        $params['performance'] = $query;
+        // 'name' is the filter the API actually honors; 'performance' is silently
+        // ignored and used to return the whole unfiltered catalog.
+        $params['name'] = $query;
     }
 
     if ($category !== null) {
@@ -682,7 +758,7 @@ function render_search_page(HelloTicketsClient $client, array $config): void
         'page' => 1,
         'is_sellable' => 'true',
         'city_id' => $cityId,
-        'performance' => $query,
+        'name' => $query,
     ], date_params(null))), ['performances' => []])['performances'] ?? []);
 
     $activities = $query === '' ? [] : (api_result(static fn() => $client->activities([
@@ -756,6 +832,10 @@ function render_city_page(HelloTicketsClient $client, array $config, int $cityId
         render_error_page($config, 404, 'City not found', 'We do not have a tickets page for this city yet.');
         return;
     }
+    if (current_path() !== city_path($city)) {
+        redirect_permanent(city_path($city));
+        return;
+    }
     setcookie('tb_city', (string) $cityId, [
         'expires' => time() + 31536000,
         'path' => '/',
@@ -818,6 +898,11 @@ function render_category_page(HelloTicketsClient $client, array $config, int $ca
         return;
     }
 
+    if (current_path() !== category_path($category)) {
+        redirect_permanent(category_path($category));
+        return;
+    }
+
     if (in_array($categoryId, [1, 2, 3], true)) {
         render_events_page($client, $config, active_city_id($config), $category);
         return;
@@ -834,6 +919,14 @@ function render_event_detail_page(HelloTicketsClient $client, array $config, int
     $performance = api_result(static fn() => $client->performance($performanceId));
     if ($performance === [] || empty($performance['id'])) {
         render_error_page($config, 404, 'Event not found', 'This event is not available anymore.');
+        return;
+    }
+
+    // Legacy "{slug}-{id}" URLs and stale slugs (date/title changes) 301 to the one
+    // canonical clean URL. event_path() registers the new slug before we redirect,
+    // so the target always resolves.
+    if (current_path() !== event_path($performance)) {
+        redirect_permanent(event_path($performance));
         return;
     }
 
@@ -924,6 +1017,11 @@ function render_activity_detail_page(HelloTicketsClient $client, array $config, 
     $activity = api_result(static fn() => $client->activity($activityId));
     if ($activity === [] || empty($activity['id'])) {
         render_error_page($config, 404, 'Activity not found', 'This activity is not available anymore.');
+        return;
+    }
+
+    if (current_path() !== activity_path($activity)) {
+        redirect_permanent(activity_path($activity));
         return;
     }
 
@@ -1111,6 +1209,11 @@ function render_weekend_page(HelloTicketsClient $client, array $config, int $cit
         return;
     }
 
+    if (current_path() !== weekend_path($city)) {
+        redirect_permanent(weekend_path($city));
+        return;
+    }
+
     [$saturday, $sunday] = date_bounds('weekend');
     $rangeLabel = $saturday->format('M j') . '–' . $sunday->format($saturday->format('M') === $sunday->format('M') ? 'j' : 'M j');
 
@@ -1131,7 +1234,7 @@ function render_weekend_page(HelloTicketsClient $client, array $config, int $cit
             'page' => 1,
             'is_sellable' => 'true',
             'city_id' => $cityId,
-        ], date_params('month'))), ['performances' => []])['performances'] ?? [];
+        ], date_params(null))), ['performances' => []])['performances'] ?? [];
     }
 
     $minPrice = null;
@@ -1161,7 +1264,7 @@ function render_weekend_page(HelloTicketsClient $client, array $config, int $cit
             . ($topNames !== [] ? ', including ' . implode(', ', array_slice($topNames, 0, 2)) : '')
             . ($minPrice !== null ? ', with tickets from ' . money($minPrice, $currency) : '') . '.';
     } elseif ($events !== []) {
-        $directAnswer = 'No events are on sale for this weekend (' . $rangeLabel . ') in ' . $city['name'] . ' yet — here is what is coming up over the next month instead. New weekend dates appear as soon as they go on sale.';
+        $directAnswer = 'No events are on sale for this weekend (' . $rangeLabel . ') in ' . $city['name'] . ' yet — here is what is coming up next instead. New weekend dates appear as soon as they go on sale.';
     } else {
         $directAnswer = 'There are no live events on sale in ' . $city['name'] . ' right now. Check the city page for attractions and tours, or browse nearby cities.';
     }
@@ -1283,6 +1386,11 @@ function render_artist_detail_page(HelloTicketsClient $client, array $config, in
         return;
     }
 
+    if (current_path() !== artist_path($performer)) {
+        redirect_permanent(artist_path($performer));
+        return;
+    }
+
     $name = (string) ($performer['name'] ?? 'Artist');
     $events = api_result(static fn() => $client->performances([
         'limit' => 48,
@@ -1290,6 +1398,36 @@ function render_artist_detail_page(HelloTicketsClient $client, array $config, in
         'is_sellable' => 'true',
         'performer_id' => $performerId,
     ]), ['performances' => []])['performances'] ?? [];
+
+    // ---- Ticketmaster fallback ----
+    // HelloTickets is concert-heavy and skews EU. For US-touring acts and US sports teams,
+    // HT often returns just a couple of shows (or none). Pull Ticketmaster for the SAME name,
+    // normalise to the HT shape, and merge by (date, venue) — HT wins on conflict so we keep
+    // the higher-commission link. The threshold is generous (<10) so even artists with some
+    // HT inventory still get full tour coverage on a single page that ranks for "X tour dates".
+    $tmAttraction = null;
+    if (count($events) < 10 && ($tm = tm_client($config)) !== null) {
+        $tmRaw = api_result(static fn() => $tm->attractions(['keyword' => $name, 'size' => 3]), []);
+        $tmAttractions = $tmRaw['_embedded']['attractions'] ?? [];
+        // Best name match: prefer exact case-insensitive, else first result with upcoming events
+        foreach ($tmAttractions as $a) {
+            if (strcasecmp((string) ($a['name'] ?? ''), $name) === 0) {
+                $tmAttraction = $a;
+                break;
+            }
+        }
+        if ($tmAttraction === null && $tmAttractions !== [] && !empty($tmAttractions[0]['upcomingEvents']['_total'])) {
+            $tmAttraction = $tmAttractions[0];
+        }
+        if ($tmAttraction !== null) {
+            $tmEventsRaw = api_result(static fn() => $tm->events([
+                'attractionId' => (string) $tmAttraction['id'],
+                'size' => 50,
+            ]), []);
+            $tmEvents = array_map('tm_normalize_event', $tmEventsRaw['_embedded']['events'] ?? []);
+            $events = merge_events_dedupe($events, $tmEvents);
+        }
+    }
 
     $nextDate = '';
     if (!empty($performer['next_performance_local_date'])) {
@@ -1467,7 +1605,7 @@ function artist_schema(array $config, array $performer, array $events): array
                 'name' => $event['venue']['name'] ?? '',
                 'address' => trim(($event['venue']['address'] ?? '') . ', ' . ($event['venue']['city'] ?? ''), ', '),
             ],
-            'url' => absolute_url($config, event_path($event)),
+            'url' => event_canonical_url($config, $event),
         ];
     }
     if ($eventSchemas !== []) {
@@ -1643,7 +1781,8 @@ function handle_outbound_redirect(array $config): void
 
     $destination = base64_url_decode((string) ($_GET['u'] ?? ''));
     $type = preg_replace('/[^a-z]/', '', (string) ($_GET['type'] ?? 'ticket')) ?: 'ticket';
-    $id = (int) ($_GET['id'] ?? 0);
+    // id is alphanumeric: integer HT ids OR "tm-{tm-id}" for Ticketmaster items.
+    $id = preg_replace('/[^a-zA-Z0-9\-]/', '', (string) ($_GET['id'] ?? '0')) ?: '0';
 
     $subId = $type . '-' . $id;
     // Domain decides the affiliate program: HelloTickets URLs earn via the HelloTickets
@@ -1753,8 +1892,19 @@ function render_sitemap(HelloTicketsClient $client, array $config, array $destin
 
     // Home + evergreen static pages.
     $add('/', $today);
-    foreach (['/events', '/attractions', '/artists', '/about', '/contact', '/how-we-make-money'] as $staticPath) {
+    foreach (['/events', '/attractions', '/artists', '/venues', '/teams', '/about', '/contact', '/how-we-make-money'] as $staticPath) {
         $add($staticPath, $contentMod);
+    }
+
+    // Ticketmaster-sourced hubs — daily lastmod since these are live schedules.
+    foreach (league_seed_list() as $league) {
+        $add('/' . $league['slug'], $today);
+    }
+    foreach (venue_seed_list() as [$venueName]) {
+        $add('/venue/' . slugify($venueName), $today);
+    }
+    foreach (team_seed_list() as [$teamName]) {
+        $add('/team/' . slugify($teamName), $today);
     }
 
     // Editorial hubs — the highest-value SEO landing pages.
@@ -1947,4 +2097,591 @@ function activity_schema(array $config, array $activity): array
     }
 
     return $schema;
+}
+
+/* ============================================================================
+ * VENUE pages (Ticketmaster-sourced) — targets "{venue} tickets / events /
+ * upcoming shows / what's on" keyword clusters HelloTickets doesn't cover:
+ * Madison Square Garden, Red Rocks, Sphere Las Vegas, Allegiant Stadium, MetLife,
+ * Wembley, Anfield, Camp Nou, etc.
+ * ========================================================================== */
+
+/** Hand-curated, high-volume venues for the /venues hub. Names are matched against TM by
+ *  keyword, so we don't need to memorise IDs — they're resolved on render and cached. */
+function venue_seed_list(): array
+{
+    return [
+        ['Madison Square Garden', 'New York'],
+        ['Sphere', 'Las Vegas'],
+        ['Red Rocks Amphitheatre', 'Morrison'],
+        ['Allegiant Stadium', 'Las Vegas'],
+        ['MetLife Stadium', 'East Rutherford'],
+        ['SoFi Stadium', 'Inglewood'],
+        ['Fenway Park', 'Boston'],
+        ['Yankee Stadium', 'Bronx'],
+        ['Wrigley Field', 'Chicago'],
+        ['Soldier Field', 'Chicago'],
+        ['Barclays Center', 'Brooklyn'],
+        ['Radio City Music Hall', 'New York'],
+        ['T-Mobile Arena', 'Las Vegas'],
+        ['Dodger Stadium', 'Los Angeles'],
+        ['Petco Park', 'San Diego'],
+        ['Citizens Bank Park', 'Philadelphia'],
+        ['Wembley Stadium', 'London'],
+        ['The O2', 'London'],
+        ['Camp Nou', 'Barcelona'],
+        ['Santiago Bernabéu', 'Madrid'],
+    ];
+}
+
+/** Resolve one seed-list entry to a normalized TM venue (keyword search, exact name+city preferred). */
+function venue_from_seed(array $config, string $name, string $city): ?array
+{
+    $tm = tm_client($config);
+    if ($tm === null) {
+        return null;
+    }
+    $raw = api_result(static fn() => $tm->venues([
+        'keyword' => $name,
+        'size' => 5,
+        'sort' => 'relevance,desc',
+    ]), []);
+    $best = null;
+    foreach ($raw['_embedded']['venues'] ?? [] as $candidate) {
+        if (strcasecmp((string) ($candidate['name'] ?? ''), $name) === 0
+            && strcasecmp((string) ($candidate['city']['name'] ?? ''), $city) === 0) {
+            $best = $candidate;
+            break;
+        }
+    }
+    if ($best === null) {
+        $best = ($raw['_embedded']['venues'] ?? [])[0] ?? null;
+    }
+    return $best !== null && !empty($best['id']) ? tm_normalize_venue($best) : null;
+}
+
+/** Clean /venue/{slug} → normalized TM venue, via the seed list (the only venues we link). */
+function resolve_seed_venue(array $config, string $slug): ?array
+{
+    foreach (venue_seed_list() as [$name, $city]) {
+        if (slugify($name) === $slug) {
+            return venue_from_seed($config, $name, $city);
+        }
+    }
+    return null;
+}
+
+function render_venue_page(array $config, string $tmVenueId): void
+{
+    $tm = tm_client($config);
+    if ($tm === null || $tmVenueId === '') {
+        render_error_page($config, 404, 'Venue not found', 'This venue page is not available.');
+        return;
+    }
+
+    $rawVenue = api_result(static fn() => $tm->venue($tmVenueId), []);
+    if (empty($rawVenue['id'])) {
+        render_error_page($config, 404, 'Venue not found', 'This venue page is not available.');
+        return;
+    }
+    $venue = tm_normalize_venue($rawVenue);
+
+    // Legacy /venue/{name}-{tmId} URLs 301 to the clean name slug — but only for
+    // seeded venues, since only those clean slugs resolve back to a TM id.
+    if (current_path() !== tm_venue_path($venue)) {
+        foreach (venue_seed_list() as [$seedName, $seedCity]) {
+            if (slugify($seedName) === slugify((string) $venue['name'])) {
+                redirect_permanent(tm_venue_path($venue));
+                return;
+            }
+        }
+    }
+
+    $rawEvents = api_result(static fn() => $tm->events([
+        'venueId' => $tmVenueId,
+        'size' => 50,
+    ]), []);
+    $events = array_map('tm_normalize_event', $rawEvents['_embedded']['events'] ?? []);
+    $totalUpcoming = (int) ($rawEvents['page']['totalElements'] ?? count($events));
+
+    // Page meta — direct-answer first paragraph (Google AI Overviews quotes these).
+    $title = $venue['name'] . ' Tickets & Upcoming Events | ' . $config['site_name'];
+    $direct = $events !== []
+        ? 'There ' . ($totalUpcoming === 1 ? 'is 1 upcoming event' : 'are ' . number_format($totalUpcoming) . ' upcoming events')
+            . ' at ' . $venue['name']
+            . ($venue['city'] !== '' ? ' in ' . $venue['city'] : '')
+            . '. The full schedule with dates and ticket prices is below.'
+        : 'No on-sale events at ' . $venue['name'] . ' right now. New dates appear here as soon as tickets are released.';
+
+    $description = $direct;
+
+    $faqs = [
+        ['q' => 'What events are coming up at ' . $venue['name'] . '?',
+         'a' => $direct],
+        ['q' => 'Where is ' . $venue['name'] . ' located?',
+         'a' => trim($venue['address'] . ', ' . $venue['city'] . ' ' . $venue['state'] . ', ' . $venue['country'], ', ')],
+        ['q' => 'How often is this schedule updated?',
+         'a' => 'Listings, dates and ticket prices are pulled live from our ticketing partner, so this page always reflects what is currently on sale at ' . $venue['name'] . '.'],
+    ];
+
+    $schemaGraph = [
+        '@context' => 'https://schema.org',
+        '@graph' => array_values(array_filter([
+            [
+                '@type' => 'MusicVenue',
+                'name' => $venue['name'],
+                'url' => absolute_url($config, tm_venue_path($venue)),
+                'address' => [
+                    '@type' => 'PostalAddress',
+                    'streetAddress' => $venue['address'],
+                    'addressLocality' => $venue['city'],
+                    'addressRegion' => $venue['state'],
+                    'addressCountry' => $venue['country'],
+                ],
+            ],
+            $events !== [] ? array_merge(item_list_schema($config, $events, 'event'), ['@context' => null]) : null,
+            dubai_faq_schema($faqs),
+        ])),
+    ];
+    foreach ($schemaGraph['@graph'] as &$node) {
+        unset($node['@context']);
+    }
+    unset($node);
+
+    render_layout($config, [
+        'title' => $title,
+        'description' => $description,
+        'canonical' => absolute_url($config, tm_venue_path($venue)),
+    ], function () use ($venue, $events, $totalUpcoming, $direct, $faqs, $config): void {
+        ?>
+        <section class="listing-hero">
+            <div class="container">
+                <p class="eyebrow">Venue<?= $venue['city'] !== '' ? ' · ' . e($venue['city']) : '' ?></p>
+                <h1><?= e($venue['name']) ?> Tickets</h1>
+                <p class="listing-sub"><?= e($direct) ?></p>
+            </div>
+        </section>
+        <section class="section-band" id="upcoming">
+            <div class="container">
+                <?php if ($events === []): ?>
+                    <div class="empty-state">
+                        <h2>No events on sale right now</h2>
+                        <p>New dates at <?= e($venue['name']) ?> appear here as soon as tickets are released.</p>
+                        <a class="button-link" href="/venues">Browse all venues</a>
+                    </div>
+                <?php else: ?>
+                    <div class="section-heading">
+                        <h2>Upcoming Events at <?= e($venue['name']) ?></h2>
+                        <span class="muted"><?= e((string) $totalUpcoming) ?> upcoming</span>
+                    </div>
+                    <div class="card-grid">
+                        <?php foreach ($events as $event): ?>
+                            <?= event_card($event, $config) ?>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </section>
+        <?php dubai_render_faq($faqs, $venue['name'] . ' — Visitor FAQs'); ?>
+        <?php
+    }, $schemaGraph);
+}
+
+function render_venues_index(array $config): void
+{
+    $venues = [];
+    foreach (venue_seed_list() as [$name, $city]) {
+        $venue = venue_from_seed($config, $name, $city);
+        if ($venue !== null) {
+            $venues[] = $venue;
+        }
+    }
+
+    render_layout($config, [
+        'title' => 'Top Venues — Tickets & Upcoming Events | ' . $config['site_name'],
+        'description' => 'Browse upcoming events at top music, sports and theatre venues — Madison Square Garden, Sphere, Red Rocks, Wembley and more. Live prices, on-sale dates and seat maps.',
+        'canonical' => absolute_url($config, '/venues'),
+    ], function () use ($venues): void {
+        ?>
+        <section class="listing-hero">
+            <div class="container">
+                <p class="eyebrow">Venues</p>
+                <h1>Top Venues</h1>
+                <p class="listing-sub">Concert, sports and theatre arenas — pick one to see every upcoming show and ticket price.</p>
+            </div>
+        </section>
+        <section class="section-band">
+            <div class="container">
+                <?php if ($venues === []): ?>
+                    <div class="empty-state">
+                        <h2>Venues loading</h2>
+                        <p>Check back in a moment.</p>
+                    </div>
+                <?php else: ?>
+                    <div class="card-grid">
+                        <?php foreach ($venues as $v): ?>
+                            <article class="ticket-card">
+                                <a class="card-image" href="<?= e(tm_venue_path($v)) ?>">
+                                    <?php if ($v['image'] !== ''): ?>
+                                        <img src="<?= e($v['image']) ?>" alt="<?= e($v['name']) ?>" loading="lazy">
+                                    <?php endif; ?>
+                                    <div class="card-rating-strip">
+                                        <span class="votes"><?= e($v['city']) ?><?= $v['state'] !== '' ? ', ' . e($v['state']) : '' ?></span>
+                                    </div>
+                                </a>
+                                <div class="card-body">
+                                    <a class="card-title" href="<?= e(tm_venue_path($v)) ?>"><?= e($v['name']) ?></a>
+                                    <p><?= e($v['upcoming_total']) ?> upcoming events</p>
+                                </div>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </section>
+        <?php
+    });
+}
+
+/* ============================================================================
+ * LEAGUE hubs + TEAM pages (Ticketmaster-sourced) — targets US sports keyword
+ * clusters that dominate Ticketmaster's organic traffic (and that HelloTickets
+ * doesn't cover): "nba schedule", "nfl games today", "mlb tickets",
+ * "yankees tickets", "lakers schedule", etc.
+ * ========================================================================== */
+
+/** Hand-curated leagues we expose as /{slug}. Mapped 1:1 to a TM Discovery genre name. */
+function league_seed_list(): array
+{
+    return [
+        ['slug' => 'nba',  'name' => 'NBA',  'sport' => 'Basketball', 'classification' => 'NBA',
+         'title' => 'NBA Schedule, Games & Tickets',
+         'lead' => 'Every upcoming NBA game — regular season, playoffs and Finals — with date, arena and live ticket prices.'],
+        ['slug' => 'nfl',  'name' => 'NFL',  'sport' => 'Football',   'classification' => 'NFL',
+         'title' => 'NFL Schedule, Games & Tickets',
+         'lead' => 'Every upcoming NFL game with date, stadium and live ticket prices.'],
+        ['slug' => 'mlb',  'name' => 'MLB',  'sport' => 'Baseball',   'classification' => 'MLB',
+         'title' => 'MLB Schedule, Games & Tickets',
+         'lead' => 'Every upcoming Major League Baseball game with date, ballpark and live ticket prices.'],
+        ['slug' => 'nhl',  'name' => 'NHL',  'sport' => 'Hockey',     'classification' => 'NHL',
+         'title' => 'NHL Schedule, Games & Tickets',
+         'lead' => 'Every upcoming NHL game — regular season and Stanley Cup playoffs — with date, arena and live prices.'],
+        ['slug' => 'mls',  'name' => 'MLS',  'sport' => 'Soccer',     'classification' => 'MLS',
+         'title' => 'MLS Schedule, Matches & Tickets',
+         'lead' => 'Every upcoming MLS match with date, stadium and live ticket prices.'],
+    ];
+}
+
+function league_from_slug(string $slug): ?array
+{
+    foreach (league_seed_list() as $league) {
+        if ($league['slug'] === $slug) {
+            return $league;
+        }
+    }
+    return null;
+}
+
+function render_league_page(array $config, string $slug): void
+{
+    $tm = tm_client($config);
+    $league = league_from_slug($slug);
+    if ($tm === null || $league === null) {
+        render_error_page($config, 404, 'League not found', 'This league hub is not available.');
+        return;
+    }
+
+    $raw = api_result(static fn() => $tm->events([
+        'classificationName' => $league['classification'],
+        'size' => 50,
+    ]), []);
+    $events = array_map('tm_normalize_event', $raw['_embedded']['events'] ?? []);
+    $total = (int) ($raw['page']['totalElements'] ?? count($events));
+
+    $direct = $events !== []
+        ? 'There ' . ($total === 1 ? 'is 1 upcoming ' : 'are ' . number_format($total) . ' upcoming ')
+            . $league['name'] . ' game' . ($total === 1 ? '' : 's')
+            . ' on sale right now. The full schedule with dates, arenas and ticket prices is below.'
+        : 'No on-sale ' . $league['name'] . ' games right now. New dates appear here as soon as tickets are released.';
+
+    $faqs = [
+        ['q' => 'What ' . $league['name'] . ' games are coming up?', 'a' => $direct],
+        ['q' => 'How do I buy ' . $league['name'] . ' tickets?',
+         'a' => 'Pick any game on this page — checkout completes securely on our official ticketing partner. Prices and seat availability are live.'],
+        ['q' => 'How often is this ' . $league['name'] . ' schedule updated?',
+         'a' => 'Listings, dates and prices are pulled live from our partner so this page always reflects what is currently on sale.'],
+    ];
+
+    $schemaGraph = [
+        '@context' => 'https://schema.org',
+        '@graph' => array_values(array_filter([
+            $events !== [] ? array_merge(item_list_schema($config, $events, 'event'), ['@context' => null]) : null,
+            dubai_faq_schema($faqs),
+        ])),
+    ];
+    foreach ($schemaGraph['@graph'] as &$node) {
+        unset($node['@context']);
+    }
+    unset($node);
+
+    render_layout($config, [
+        'title' => $league['title'] . ' | ' . $config['site_name'],
+        'description' => $league['lead'] . ' Updated daily.',
+        'canonical' => absolute_url($config, '/' . $league['slug']),
+    ], function () use ($league, $events, $total, $direct, $faqs, $config): void {
+        ?>
+        <section class="listing-hero">
+            <div class="container">
+                <p class="eyebrow"><?= e($league['sport']) ?></p>
+                <h1><?= e($league['title']) ?></h1>
+                <p class="listing-sub"><?= e($direct) ?></p>
+            </div>
+        </section>
+        <section class="section-band" id="schedule">
+            <div class="container">
+                <?php if ($events === []): ?>
+                    <div class="empty-state">
+                        <h2>No games on sale right now</h2>
+                        <p>New <?= e($league['name']) ?> dates appear here as soon as tickets go on sale.</p>
+                        <a class="button-link" href="/teams">Browse teams</a>
+                    </div>
+                <?php else: ?>
+                    <div class="section-heading">
+                        <h2>Upcoming <?= e($league['name']) ?> Games</h2>
+                        <span class="muted"><?= e((string) $total) ?> on sale</span>
+                    </div>
+                    <div class="card-grid">
+                        <?php foreach ($events as $event): ?>
+                            <?= event_card($event, $config) ?>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </section>
+        <?php dubai_render_faq($faqs, $league['name'] . ' — Ticket FAQs'); ?>
+        <?php
+    }, $schemaGraph);
+}
+
+/** Hand-curated teams we expose as /team/{slug}. Resolved against TM by exact name. */
+function team_seed_list(): array
+{
+    return [
+        // NBA
+        ['New York Knicks', 'NBA'], ['Los Angeles Lakers', 'NBA'], ['Boston Celtics', 'NBA'],
+        ['Golden State Warriors', 'NBA'], ['Brooklyn Nets', 'NBA'], ['Chicago Bulls', 'NBA'],
+        ['Miami Heat', 'NBA'], ['Dallas Mavericks', 'NBA'], ['Denver Nuggets', 'NBA'],
+        ['Philadelphia 76ers', 'NBA'], ['Phoenix Suns', 'NBA'], ['Milwaukee Bucks', 'NBA'],
+        // MLB
+        ['New York Yankees', 'MLB'], ['New York Mets', 'MLB'], ['Boston Red Sox', 'MLB'],
+        ['Los Angeles Dodgers', 'MLB'], ['Chicago Cubs', 'MLB'], ['Philadelphia Phillies', 'MLB'],
+        ['Atlanta Braves', 'MLB'], ['Houston Astros', 'MLB'], ['San Francisco Giants', 'MLB'],
+        ['St. Louis Cardinals', 'MLB'], ['Texas Rangers', 'MLB'], ['Detroit Tigers', 'MLB'],
+        // NFL
+        ['Dallas Cowboys', 'NFL'], ['Kansas City Chiefs', 'NFL'], ['Philadelphia Eagles', 'NFL'],
+        ['San Francisco 49ers', 'NFL'], ['Buffalo Bills', 'NFL'], ['Green Bay Packers', 'NFL'],
+        ['New England Patriots', 'NFL'], ['Pittsburgh Steelers', 'NFL'],
+        // NHL
+        ['New York Rangers', 'NHL'], ['Boston Bruins', 'NHL'], ['Chicago Blackhawks', 'NHL'],
+        ['Vegas Golden Knights', 'NHL'], ['Detroit Red Wings', 'NHL'],
+    ];
+}
+
+/** Map league name → classification id used for /{league} link from a team page. */
+function league_slug_for_team(string $sport): ?string
+{
+    $map = ['NBA' => 'nba', 'NFL' => 'nfl', 'MLB' => 'mlb', 'NHL' => 'nhl', 'MLS' => 'mls'];
+    return $map[$sport] ?? null;
+}
+
+function tm_team_path(array $team): string
+{
+    return '/team/' . slugify((string) ($team['name'] ?? 'team'));
+}
+
+function team_from_seed(array $config, string $name, string $sport): ?array
+{
+    $tm = tm_client($config);
+    if ($tm === null) {
+        return null;
+    }
+    $raw = api_result(static fn() => $tm->attractions([
+        'keyword' => $name,
+        'classificationName' => $sport,
+        'size' => 5,
+        'sort' => 'relevance,desc',
+    ]), []);
+    foreach ($raw['_embedded']['attractions'] ?? [] as $a) {
+        if (strcasecmp((string) ($a['name'] ?? ''), $name) === 0) {
+            $team = tm_normalize_attraction($a);
+            $team['sport'] = $sport;
+            return $team;
+        }
+    }
+    return null;
+}
+
+function resolve_seed_team(array $config, string $slug): ?array
+{
+    foreach (team_seed_list() as [$name, $sport]) {
+        if (slugify($name) === $slug) {
+            return team_from_seed($config, $name, $sport);
+        }
+    }
+    return null;
+}
+
+function render_team_page(array $config, array $team): void
+{
+    $tm = tm_client($config);
+    if ($tm === null || empty($team['tm_id'])) {
+        render_error_page($config, 404, 'Team not found', 'This team page is not available.');
+        return;
+    }
+
+    $raw = api_result(static fn() => $tm->events([
+        'attractionId' => (string) $team['tm_id'],
+        'size' => 50,
+    ]), []);
+    $events = array_map('tm_normalize_event', $raw['_embedded']['events'] ?? []);
+    $total = (int) ($raw['page']['totalElements'] ?? count($events));
+
+    $name = $team['name'];
+    $sport = (string) ($team['sport'] ?? '');
+    $leagueSlug = league_slug_for_team($sport);
+
+    $cities = [];
+    foreach ($events as $e) {
+        $c = trim((string) ($e['venue']['city'] ?? ''));
+        if ($c !== '' && !in_array($c, $cities, true)) {
+            $cities[] = $c;
+        }
+    }
+
+    $direct = $events !== []
+        ? 'There ' . ($total === 1 ? 'is 1 upcoming ' : 'are ' . number_format($total) . ' upcoming ')
+            . $name . ' game' . ($total === 1 ? '' : 's')
+            . ($cities !== [] ? ' in ' . implode(', ', array_slice($cities, 0, 4))
+                . (count($cities) > 4 ? ' and more cities' : '') : '')
+            . '. The full schedule with dates and ticket prices is below.'
+        : 'No on-sale ' . $name . ' games right now. New dates appear here as soon as tickets are released.';
+
+    $faqs = [
+        ['q' => 'What ' . $name . ' games are coming up?', 'a' => $direct],
+        ['q' => 'How much are ' . $name . ' tickets?',
+         'a' => 'Prices vary by date, opponent and seat — pick any game on this page to see live prices and seat availability on our partner.'],
+        ['q' => 'How often is this ' . $name . ' schedule updated?',
+         'a' => 'Listings, dates and prices are pulled live so this page always reflects what is currently on sale.'],
+    ];
+
+    $schemaGraph = [
+        '@context' => 'https://schema.org',
+        '@graph' => array_values(array_filter([
+            [
+                '@type' => 'SportsTeam',
+                'name' => $name,
+                'sport' => $sport,
+                'url' => absolute_url($config, tm_team_path($team)),
+            ],
+            $events !== [] ? array_merge(item_list_schema($config, $events, 'event'), ['@context' => null]) : null,
+            dubai_faq_schema($faqs),
+        ])),
+    ];
+    foreach ($schemaGraph['@graph'] as &$node) {
+        unset($node['@context']);
+    }
+    unset($node);
+
+    render_layout($config, [
+        'title' => $name . ' Tickets, Schedule & Upcoming Games | ' . $config['site_name'],
+        'description' => $direct,
+        'canonical' => absolute_url($config, tm_team_path($team)),
+    ], function () use ($name, $sport, $leagueSlug, $events, $total, $direct, $faqs, $config): void {
+        ?>
+        <section class="listing-hero">
+            <div class="container">
+                <p class="eyebrow"><?= e($sport) ?><?php if ($leagueSlug !== null): ?> · <a href="/<?= e($leagueSlug) ?>" class="muted-link"><?= e(strtoupper($leagueSlug)) ?> schedule</a><?php endif; ?></p>
+                <h1><?= e($name) ?> Tickets &amp; Schedule</h1>
+                <p class="listing-sub"><?= e($direct) ?></p>
+            </div>
+        </section>
+        <section class="section-band" id="schedule">
+            <div class="container">
+                <?php if ($events === []): ?>
+                    <div class="empty-state">
+                        <h2>No games on sale right now</h2>
+                        <p>New <?= e($name) ?> dates appear here as soon as tickets are released.</p>
+                        <?php if ($leagueSlug !== null): ?>
+                            <a class="button-link" href="/<?= e($leagueSlug) ?>">See all <?= e(strtoupper($leagueSlug)) ?> games</a>
+                        <?php endif; ?>
+                    </div>
+                <?php else: ?>
+                    <div class="section-heading">
+                        <h2>Upcoming Games</h2>
+                        <span class="muted"><?= e((string) $total) ?> on sale</span>
+                    </div>
+                    <div class="card-grid">
+                        <?php foreach ($events as $event): ?>
+                            <?= event_card($event, $config) ?>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </section>
+        <?php dubai_render_faq($faqs, $name . ' — Ticket FAQs'); ?>
+        <?php
+    }, $schemaGraph);
+}
+
+function render_teams_index(array $config): void
+{
+    $teams = [];
+    foreach (team_seed_list() as [$name, $sport]) {
+        $t = team_from_seed($config, $name, $sport);
+        if ($t !== null) {
+            $teams[] = $t;
+        }
+    }
+
+    render_layout($config, [
+        'title' => 'Top Sports Teams — Tickets & Schedules | ' . $config['site_name'],
+        'description' => 'Browse upcoming games for the top NBA, NFL, MLB, NHL and MLS teams. Schedules, opponents, venues and live ticket prices.',
+        'canonical' => absolute_url($config, '/teams'),
+    ], function () use ($teams): void {
+        ?>
+        <section class="listing-hero">
+            <div class="container">
+                <p class="eyebrow">Sports</p>
+                <h1>Top Sports Teams</h1>
+                <p class="listing-sub">NBA, NFL, MLB, NHL and MLS — pick a team to see every upcoming game and live ticket prices.</p>
+            </div>
+        </section>
+        <section class="section-band">
+            <div class="container">
+                <?php if ($teams === []): ?>
+                    <div class="empty-state"><h2>Loading</h2></div>
+                <?php else: ?>
+                    <div class="card-grid">
+                        <?php foreach ($teams as $t): ?>
+                            <article class="ticket-card">
+                                <a class="card-image" href="<?= e(tm_team_path($t)) ?>">
+                                    <?php if (!empty($t['image'])): ?>
+                                        <img src="<?= e($t['image']) ?>" alt="<?= e($t['name']) ?>" loading="lazy">
+                                    <?php endif; ?>
+                                    <div class="card-rating-strip">
+                                        <span class="votes"><?= e($t['sport'] ?? '') ?></span>
+                                    </div>
+                                </a>
+                                <div class="card-body">
+                                    <a class="card-title" href="<?= e(tm_team_path($t)) ?>"><?= e($t['name']) ?></a>
+                                    <p><?= e((string) ($t['total_performances'] ?? 0)) ?> upcoming games</p>
+                                </div>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </section>
+        <?php
+    });
 }

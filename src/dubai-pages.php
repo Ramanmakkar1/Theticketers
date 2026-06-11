@@ -586,11 +586,22 @@ function render_dubai_category(HelloTicketsClient $client, array $config, array 
             <section class="dubai-category__related section-band">
                 <div class="container">
                     <h2>More Things to Do in Dubai</h2>
-                    <div class="dubai-hub__link-grid">
-                        <?php foreach (array_slice(array_values($relatedCategories), 0, 8) as $related): ?>
-                            <a class="dubai-hub__link-card" href="/dubai/<?= e($related['slug']) ?>">
-                                <strong><?= e($related['short_name'] ?? $related['name']) ?></strong>
-                                <span><?= e($related['subtitle'] ?? '') ?></span>
+                    <?php
+                    // Keep the grid balanced: show a multiple of 4 so rows are even (4+4),
+                    // never an orphan row like 5+3.
+                    $relatedList = array_values($relatedCategories);
+                    $relatedList = array_slice($relatedList, 0, (intdiv(min(count($relatedList), 8), 4)) * 4 ?: count($relatedList));
+                    ?>
+                    <div class="dubai-related-grid">
+                        <?php foreach ($relatedList as $related): ?>
+                            <a class="dubai-related-card" href="/dubai/<?= e($related['slug']) ?>">
+                                <span class="dubai-related-card__img">
+                                    <img src="<?= e($related['hero_image'] ?? $config['fallback_images']['hero']) ?>" alt="<?= e($related['short_name'] ?? $related['name']) ?>" loading="lazy">
+                                </span>
+                                <span class="dubai-related-card__body">
+                                    <strong><?= e($related['short_name'] ?? $related['name']) ?></strong>
+                                    <span><?= e($related['subtitle'] ?? '') ?></span>
+                                </span>
                             </a>
                         <?php endforeach; ?>
                     </div>
