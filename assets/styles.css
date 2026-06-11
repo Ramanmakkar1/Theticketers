@@ -1676,6 +1676,10 @@ body.modal-open { overflow: hidden; }
     margin-top: 10px;
 }
 
+.artist-hero__cta {
+    margin-top: 16px;
+}
+
 .artist-hero__facts span {
     display: inline-flex;
     align-items: center;

@@ -37,6 +37,11 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
         return;
     }
 
+    if (preg_match('#^/events/this-weekend-in-([^/]+)$#', $path, $match)) {
+        render_weekend_page($client, $config, id_from_slug($match[1]));
+        return;
+    }
+
     if ($path === '/events') {
         render_events_page($client, $config, active_city_id($config));
         return;
@@ -104,6 +109,11 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
 
     if ($path === '/robots.txt') {
         render_robots($config);
+        return;
+    }
+
+    if ($path === '/llms.txt') {
+        render_llms_txt($client, $config, $destinationsContent);
         return;
     }
 
@@ -208,7 +218,6 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
                     <?php endforeach; ?>
                 </div>
             </div>
-            <a class="header-cta" href="/attractions">Get Tickets</a>
             <button class="nav-toggle" type="button" data-nav-toggle aria-label="Open menu">
                 <span></span><span></span><span></span>
             </button>
@@ -778,7 +787,7 @@ function render_city_page(HelloTicketsClient $client, array $config, int $cityId
                 <h1><?= e($city['name']) ?> tickets, events and attractions</h1>
                 <div class="filter-row inverse">
                     <a href="/events?date=today">Today</a>
-                    <a href="/events?date=weekend">This Weekend</a>
+                    <a href="<?= e(weekend_path($city)) ?>">This Weekend</a>
                     <a href="/attractions">Attractions</a>
                     <a href="/events">Events</a>
                 </div>
@@ -1088,6 +1097,140 @@ function render_artists_rail(array $performers): void
     <?php
 }
 
+function render_weekend_page(HelloTicketsClient $client, array $config, int $cityId): void
+{
+    $city = null;
+    foreach ($config['market_cities'] as $marketCity) {
+        if ((int) $marketCity['id'] === $cityId) {
+            $city = $marketCity;
+            break;
+        }
+    }
+    if ($city === null) {
+        render_error_page($config, 404, 'City not found', 'We do not cover weekend events for this city yet.');
+        return;
+    }
+
+    [$saturday, $sunday] = date_bounds('weekend');
+    $rangeLabel = $saturday->format('M j') . '–' . $sunday->format($saturday->format('M') === $sunday->format('M') ? 'j' : 'M j');
+
+    $data = api_result(static fn() => $client->performances(array_merge([
+        'limit' => 24,
+        'page' => 1,
+        'is_sellable' => 'true',
+        'city_id' => $cityId,
+    ], date_params('weekend'))), ['performances' => [], 'total_count' => 0]);
+    $events = $data['performances'] ?? [];
+    $total = max((int) ($data['total_count'] ?? 0), count($events));
+
+    $fallback = false;
+    if ($events === []) {
+        $fallback = true;
+        $events = api_result(static fn() => $client->performances(array_merge([
+            'limit' => 12,
+            'page' => 1,
+            'is_sellable' => 'true',
+            'city_id' => $cityId,
+        ], date_params('month'))), ['performances' => []])['performances'] ?? [];
+    }
+
+    $minPrice = null;
+    $currency = (string) $config['currency'];
+    $venues = [];
+    $topNames = [];
+    foreach ($events as $event) {
+        $price = (float) ($event['price_range']['min_price'] ?? 0);
+        if ($price > 0 && ($minPrice === null || $price < $minPrice)) {
+            $minPrice = $price;
+            $currency = (string) ($event['price_range']['currency'] ?? $currency);
+        }
+        $venue = trim((string) ($event['venue']['name'] ?? ''));
+        if ($venue !== '' && !in_array($venue, $venues, true)) {
+            $venues[] = $venue;
+        }
+        if (count($topNames) < 3) {
+            $eventName = trim((string) ($event['name'] ?? ''));
+            if ($eventName !== '' && !in_array($eventName, $topNames, true)) {
+                $topNames[] = $eventName;
+            }
+        }
+    }
+
+    if (!$fallback && $events !== []) {
+        $directAnswer = 'There ' . ($total === 1 ? 'is 1 live event' : 'are ' . number_format($total) . ' live events') . ' in ' . $city['name'] . ' this weekend (' . $rangeLabel . ')'
+            . ($topNames !== [] ? ', including ' . implode(', ', array_slice($topNames, 0, 2)) : '')
+            . ($minPrice !== null ? ', with tickets from ' . money($minPrice, $currency) : '') . '.';
+    } elseif ($events !== []) {
+        $directAnswer = 'No events are on sale for this weekend (' . $rangeLabel . ') in ' . $city['name'] . ' yet — here is what is coming up over the next month instead. New weekend dates appear as soon as they go on sale.';
+    } else {
+        $directAnswer = 'There are no live events on sale in ' . $city['name'] . ' right now. Check the city page for attractions and tours, or browse nearby cities.';
+    }
+
+    $faqs = [];
+    if (!$fallback && $events !== []) {
+        $faqs[] = ['q' => 'What\'s happening in ' . $city['name'] . ' this weekend?', 'a' => ($total === 1 ? '1 live event is' : number_format($total) . ' live events are') . ' on sale for ' . $rangeLabel . ($topNames !== [] ? ', including ' . implode(', ', $topNames) : '') . '. The full list with dates and prices is on this page.'];
+        if ($minPrice !== null) {
+            $faqs[] = ['q' => 'How much are tickets for ' . $city['name'] . ' events this weekend?', 'a' => 'Tickets start from ' . money($minPrice, $currency) . '. Every price on this page is live from our official ticketing partner and includes instant e-ticket delivery.'];
+        }
+        if ($venues !== []) {
+            $faqs[] = ['q' => 'Which venues have events in ' . $city['name'] . ' this weekend?', 'a' => 'This weekend\'s events take place at ' . implode(', ', array_slice($venues, 0, 5)) . (count($venues) > 5 ? ' and more venues' : '') . '.'];
+        }
+    }
+    $faqs[] = ['q' => 'How often is this page updated?', 'a' => 'Listings, prices and availability are pulled live from our official ticketing partner, so this page always reflects what is currently on sale for the upcoming weekend in ' . $city['name'] . '.'];
+
+    $schemaGraph = [
+        '@context' => 'https://schema.org',
+        '@graph' => array_values(array_filter([
+            array_merge(item_list_schema($config, $events, 'event'), ['@context' => null]),
+            dubai_faq_schema($faqs),
+        ])),
+    ];
+    // item_list_schema sets @context — strip it inside the graph
+    foreach ($schemaGraph['@graph'] as &$node) {
+        unset($node['@context']);
+    }
+    unset($node);
+
+    render_layout($config, [
+        'title' => 'Events This Weekend in ' . $city['name'] . ' (' . $rangeLabel . ') | ' . $config['site_name'],
+        'description' => 'What\'s on in ' . $city['name'] . ' this weekend: live events for ' . $rangeLabel . ' with venues and ticket prices' . ($minPrice !== null ? ' from ' . money($minPrice, $currency) : '') . '. Updated daily.',
+        'canonical' => absolute_url($config, weekend_path($city)),
+    ], function () use ($config, $city, $events, $fallback, $rangeLabel, $directAnswer, $faqs): void {
+        ?>
+        <section class="listing-hero">
+            <div class="container">
+                <p class="eyebrow"><?= e($rangeLabel) ?></p>
+                <h1>Events This Weekend in <?= e($city['name']) ?></h1>
+                <p class="listing-sub"><?= e($directAnswer) ?></p>
+            </div>
+        </section>
+        <section class="section-band">
+            <div class="container">
+                <?php if ($events === []): ?>
+                    <div class="empty-state">
+                        <h2>Nothing on sale right now</h2>
+                        <p>Browse <?= e($city['name']) ?> attractions and tours instead.</p>
+                        <a class="button-link" href="<?= e(city_path($city)) ?>">Explore <?= e($city['name']) ?></a>
+                    </div>
+                <?php else: ?>
+                    <?php if ($fallback): ?>
+                        <div class="section-heading"><h2>Coming Up in <?= e($city['name']) ?></h2><a href="<?= e(city_path($city)) ?>">City guide</a></div>
+                    <?php else: ?>
+                        <div class="section-heading"><h2>This Weekend's Lineup</h2><a href="<?= e(city_path($city)) ?>">City guide</a></div>
+                    <?php endif; ?>
+                    <div class="card-grid">
+                        <?php foreach ($events as $event): ?>
+                            <?= event_card($event, $config) ?>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </section>
+        <?php dubai_render_faq($faqs, 'This Weekend in ' . $city['name'] . ' — FAQs'); ?>
+        <?php
+    }, $schemaGraph);
+}
+
 function render_artists_page(HelloTicketsClient $client, array $config): void
 {
     $page = page_number();
@@ -1154,11 +1297,34 @@ function render_artist_detail_page(HelloTicketsClient $client, array $config, in
         $nextDate = $parsed ? $parsed->format('D, M j') : '';
     }
 
+    $tourCities = [];
+    foreach ($events as $tourEvent) {
+        $tourCity = trim((string) ($tourEvent['venue']['city'] ?? ''));
+        if ($tourCity !== '' && !in_array($tourCity, $tourCities, true)) {
+            $tourCities[] = $tourCity;
+        }
+    }
+    $faqs = artist_faqs($performer, $events, $config);
+
+    $description = $tourCities !== []
+        ? 'See ' . count($events) . ' upcoming ' . $name . ' shows in ' . implode(', ', array_slice($tourCities, 0, 4)) . (count($tourCities) > 4 ? ' and more cities' : '') . ' with dates, venues and live ticket prices.'
+        : 'See all upcoming ' . $name . ' shows with dates, venues, cities and live ticket prices. Secure checkout on our official ticket partner.';
+
+    $artistSchema = artist_schema($config, $performer, $events);
+    unset($artistSchema['@context']);
+    $schemaGraph = [
+        '@context' => 'https://schema.org',
+        '@graph' => array_values(array_filter([
+            $artistSchema,
+            $faqs !== [] ? dubai_faq_schema($faqs) : null,
+        ])),
+    ];
+
     render_layout($config, [
         'title' => $name . ' Tickets, Tour Dates & Venues | ' . $config['site_name'],
-        'description' => 'See all upcoming ' . $name . ' shows with dates, venues, cities and live ticket prices. Secure checkout on our official ticket partner.',
+        'description' => $description,
         'canonical' => absolute_url($config, artist_path($performer)),
-    ], function () use ($config, $performer, $name, $events, $nextDate): void {
+    ], function () use ($config, $performer, $name, $events, $nextDate, $tourCities, $faqs): void {
         ?>
         <section class="listing-hero artist-hero">
             <div class="container">
@@ -1180,11 +1346,19 @@ function render_artist_detail_page(HelloTicketsClient $client, array $config, in
                                 <span>Next: <?= e($nextDate) ?></span>
                             <?php endif; ?>
                         </div>
+                        <?php if ($tourCities !== []): ?>
+                            <p class="listing-sub">On tour in <?= e(implode(', ', array_slice($tourCities, 0, 8))) ?><?= count($tourCities) > 8 ? ' and ' . e((string) (count($tourCities) - 8)) . ' more cities' : '' ?>.</p>
+                        <?php endif; ?>
+                        <?php if (count($events) === 1 && !empty($events[0]['url'])): ?>
+                            <a class="button-link artist-hero__cta" href="<?= e(go_url($events[0], 'event')) ?>" rel="sponsored nofollow">Get Tickets</a>
+                        <?php elseif (count($events) > 1): ?>
+                            <a class="button-link artist-hero__cta" href="#tour-dates">See Tour Dates</a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
         </section>
-        <section class="section-band">
+        <section class="section-band" id="tour-dates">
             <div class="container">
                 <?php if ($events === []): ?>
                     <div class="empty-state">
@@ -1204,8 +1378,54 @@ function render_artist_detail_page(HelloTicketsClient $client, array $config, in
                 <?php endif; ?>
             </div>
         </section>
+        <?php dubai_render_faq($faqs, $name . ' Ticket FAQs'); ?>
         <?php
-    }, artist_schema($config, $performer, $events));
+    }, $schemaGraph);
+}
+
+function artist_faqs(array $performer, array $events, array $config): array
+{
+    $name = (string) ($performer['name'] ?? 'this artist');
+    $faqs = [];
+
+    if ($events !== []) {
+        $first = $events[0];
+        $firstWhen = format_date_time($first['start_date'] ?? []);
+        $firstVenue = trim((string) ($first['venue']['name'] ?? ''));
+        $firstCity = trim((string) ($first['venue']['city'] ?? ''));
+        $answer = 'The next ' . $name . ' show is ' . $firstWhen
+            . ($firstVenue !== '' ? ' at ' . $firstVenue : '')
+            . ($firstCity !== '' ? ' in ' . $firstCity : '') . '.';
+        $faqs[] = ['q' => 'Where is ' . $name . ' performing next?', 'a' => $answer];
+
+        $minPrice = null;
+        $currency = (string) $config['currency'];
+        foreach ($events as $event) {
+            $price = (float) ($event['price_range']['min_price'] ?? 0);
+            if ($price > 0 && ($minPrice === null || $price < $minPrice)) {
+                $minPrice = $price;
+                $currency = (string) ($event['price_range']['currency'] ?? $currency);
+            }
+        }
+        if ($minPrice !== null) {
+            $faqs[] = ['q' => 'How much are ' . $name . ' tickets?', 'a' => 'Tickets currently start from ' . money($minPrice, $currency) . ' depending on the city and seat. Prices come live from our official ticketing partner and can change as the show date approaches.'];
+        }
+
+        $cities = [];
+        foreach ($events as $event) {
+            $city = trim((string) ($event['venue']['city'] ?? ''));
+            if ($city !== '' && !in_array($city, $cities, true)) {
+                $cities[] = $city;
+            }
+        }
+        if ($cities !== []) {
+            $faqs[] = ['q' => 'Which cities is ' . $name . ' playing on this tour?', 'a' => count($events) . ' shows are currently on sale across ' . implode(', ', array_slice($cities, 0, 8)) . (count($cities) > 8 ? ' and more' : '') . '. Each date links to live seat availability.'];
+        }
+    }
+
+    $faqs[] = ['q' => 'How do I buy official ' . $name . ' tickets?', 'a' => 'Pick a date on this page and complete checkout on our official ticketing partner\'s secure site. Tickets are delivered instantly by email, and prices shown are live.'];
+
+    return $faqs;
 }
 
 function item_list_schema_for_artists(array $config, array $performers): array
@@ -1425,21 +1645,26 @@ function handle_outbound_redirect(array $config): void
     $type = preg_replace('/[^a-z]/', '', (string) ($_GET['type'] ?? 'ticket')) ?: 'ticket';
     $id = (int) ($_GET['id'] ?? 0);
 
-    if (!allowed_hellotickets_url($destination)) {
+    $subId = $type . '-' . $id;
+    // Domain decides the affiliate program: HelloTickets URLs earn via the HelloTickets
+    // Impact link, Ticketmaster URLs (the fallback source) via the Ticketmaster Impact link.
+    $affiliate = outbound_affiliate_url($config, $destination, $subId);
+    if ($affiliate === null) {
         render_error_page($config, 400, 'Invalid ticket link', 'This outbound ticket link is not valid.');
         return;
     }
 
-    $subId = $type . '-' . $id;
+    $source = allowed_ticketmaster_url($destination) ? 'ticketmaster' : 'hellotickets';
 
     // Redirect FIRST so the affiliate click is never lost to a logging hiccup
     // (unwritable storage, display_errors, etc.). Logging is best-effort only.
-    header('Location: ' . affiliate_url($config, $destination, $subId), true, 302);
+    header('Location: ' . $affiliate, true, 302);
 
     $logLine = json_encode([
         'time' => gmdate('c'),
         'type' => $type,
         'id' => $id,
+        'source' => $source,
         'destination' => $destination,
         'ip' => $_SERVER['REMOTE_ADDR'] ?? '',
         'user_agent' => substr((string) ($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 180),
@@ -1459,7 +1684,47 @@ function render_robots(array $config): void
     echo "Allow: /\n";
     echo "Disallow: /go\n";
     echo "Disallow: /search\n";
+    echo "\n";
+    // AI search & assistant crawlers are explicitly welcome — AI citations are a
+    // traffic channel for this site (see /llms.txt for a machine-readable summary).
+    foreach (['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-User', 'Claude-SearchBot', 'PerplexityBot', 'Perplexity-User', 'Google-Extended', 'GoogleOther', 'Applebot-Extended', 'meta-externalagent', 'CCBot'] as $bot) {
+        echo 'User-agent: ' . $bot . "\n";
+        echo "Allow: /\n";
+        echo "Disallow: /go\n\n";
+    }
     echo 'Sitemap: ' . $config['site_url'] . "/sitemap.xml\n";
+}
+
+function render_llms_txt(HelloTicketsClient $client, array $config, array $destinationsContent): void
+{
+    header('Content-Type: text/plain; charset=utf-8');
+    $site = $config['site_url'];
+    $name = $config['site_name'];
+
+    echo '# ' . $name . "\n\n";
+    echo '> ' . $name . " is a ticket discovery site for live events, concerts, sports, theatre, attractions and tours in Dubai, Abu Dhabi and 100+ cities across the United States, Canada, the United Kingdom, Italy, Spain and France. Prices and availability are live from an official ticketing partner; checkout happens on the partner's secure site. Pages include live counts, starting prices, venues and FAQs that are safe to cite.\n\n";
+
+    echo "## Key pages\n\n";
+    echo '- [Dubai tickets & attractions](' . $site . "/dubai): editorial hub with 25+ attraction guides, prices and FAQs\n";
+    echo '- [Abu Dhabi tickets & attractions](' . $site . "/abu-dhabi)\n";
+    echo '- [Artists on tour](' . $site . "/artists): every artist with upcoming shows, dates, venues and starting prices\n";
+    echo '- [All live events](' . $site . "/events)\n";
+    echo '- [All attractions & tours](' . $site . "/attractions)\n\n";
+
+    echo "## Countries\n\n";
+    foreach (($destinationsContent['countries'] ?? []) as $slug => $country) {
+        echo '- [' . ($country['name'] ?? $slug) . ' tickets](' . $site . '/' . $slug . ")\n";
+    }
+    echo "\n## What's on this weekend\n\n";
+    foreach ($config['market_cities'] as $city) {
+        if (empty($city['featured'])) {
+            continue;
+        }
+        echo '- [Events this weekend in ' . $city['name'] . '](' . $site . weekend_path($city) . ")\n";
+    }
+    echo "\n## About\n\n";
+    echo '- [About ' . $name . '](' . $site . "/about)\n";
+    echo '- [How we make money](' . $site . "/how-we-make-money): affiliate model disclosure\n";
 }
 
 function render_sitemap(HelloTicketsClient $client, array $config, array $destinationsContent = []): void
@@ -1526,6 +1791,13 @@ function render_sitemap(HelloTicketsClient $client, array $config, array $destin
     ]), ['performers' => []])['performers'] ?? [];
     foreach ($performers as $performer) {
         $add(artist_path($performer));
+    }
+
+    // "This weekend in {city}" intent pages — featured cities only (always have inventory).
+    foreach ($config['market_cities'] as $weekendCity) {
+        if (!empty($weekendCity['featured'])) {
+            $add(weekend_path($weekendCity), $today);
+        }
     }
 
     // Live events — real <lastmod> from the API's last_updated_at.
