@@ -336,3 +336,46 @@ document.querySelectorAll('[data-carousel]').forEach(carousel => {
 
     watch();
 })();
+
+// Contact form: progressive enhancement. The form is a working plain HTML POST to
+// Splitforms on its own; this intercepts it to submit via fetch so the visitor
+// stays on-site and sees an inline confirmation. Any failure falls back gracefully
+// (the message is shown and the form stays, so nothing is lost).
+(function () {
+    const form = document.querySelector('[data-contact-form]');
+    if (!form) return;
+    const status = form.querySelector('[data-contact-status]');
+    const submit = form.querySelector('[type="submit"]');
+    const say = (msg, ok) => {
+        if (!status) return;
+        status.textContent = msg;
+        status.hidden = false;
+        status.classList.toggle('is-ok', !!ok);
+        status.classList.toggle('is-error', !ok);
+    };
+    form.addEventListener('submit', async (e) => {
+        // Honeypot tripped -> silently pretend success, never hit the network.
+        if (form.querySelector('[name="botcheck"]') && form.querySelector('[name="botcheck"]').checked) { e.preventDefault(); return; }
+        if (!form.checkValidity()) { return; } // let the browser show native validation
+        e.preventDefault();
+        const label = submit ? submit.textContent : '';
+        if (submit) { submit.disabled = true; submit.textContent = 'Sending…'; }
+        try {
+            const res = await fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' },
+            });
+            if (res.ok) {
+                form.reset();
+                say('Thanks — your message is on its way. We\'ll reply within one to two business days.', true);
+            } else {
+                say('Something went wrong sending your message. Please try again in a moment.', false);
+            }
+        } catch (err) {
+            say('We couldn\'t reach the form service. Please check your connection and try again.', false);
+        } finally {
+            if (submit) { submit.disabled = false; submit.textContent = label; }
+        }
+    });
+})();

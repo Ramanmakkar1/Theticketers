@@ -18,6 +18,9 @@ $config = [
     ), '/'),
     'api_base_url' => rtrim(getenv('HELLOTICKETS_API_URL') ?: 'https://api-live.hellotickets.com', '/'),
     'api_key' => getenv('HELLOTICKETS_PUBLIC_KEY') ?: 'pub-bcaaca28-c7df-4fc1-9274-61a0f1439d13',
+    // Splitforms public access key — drives the /contact form so the team email is
+    // never exposed to scrapers. Public by design (like a form id), safe to commit.
+    'splitforms_key' => getenv('SPLITFORMS_KEY') ?: '1dbfd5aad7054619b993f1c5985f6f4c',
     'impact_url' => getenv('IMPACT_BASE_URL') ?: 'https://hellotickets.sjv.io/MKNd7K',
     // Ticketmaster is the FALLBACK source (fills US sports/venues/Broadway HelloTickets lacks)
     // and earns commission too: its Impact vanity link honours ?u= deep links + subId1 tracking,

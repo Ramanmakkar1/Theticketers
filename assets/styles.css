@@ -131,6 +131,79 @@ button { font-family: var(--font-body); }
 
 .city-guide-link a:hover { color: var(--red-dark); }
 
+/* ============ Contact / partnership form ============ */
+
+.contact-form {
+    max-width: 640px;
+    margin: 28px 0 0;
+    display: grid;
+    gap: 16px;
+}
+
+.contact-form__row { display: grid; gap: 6px; }
+
+.contact-form label {
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--ink-strong, var(--ink));
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+    width: 100%;
+    padding: 11px 13px;
+    font: inherit;
+    color: var(--ink);
+    background: var(--paper, #fff);
+    border: 1px solid var(--line, rgba(0, 0, 0, .14));
+    border-radius: var(--r-sm, 8px);
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.contact-form textarea { resize: vertical; min-height: 120px; }
+
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft, rgba(79, 70, 229, .15));
+}
+
+/* honeypot — visually gone, still in the DOM for bots */
+.contact-form__hp {
+    position: absolute !important;
+    left: -9999px !important;
+    width: 1px; height: 1px;
+    opacity: 0;
+}
+
+.contact-form__submit {
+    justify-self: start;
+    border: none;
+    cursor: pointer;
+}
+
+.contact-form__submit[disabled] { opacity: .6; cursor: default; }
+
+.contact-form__status {
+    margin: 0;
+    padding: 11px 14px;
+    border-radius: var(--r-sm, 8px);
+    font-weight: 600;
+    font-size: 0.92rem;
+}
+
+.contact-form__status.is-ok { background: rgba(22, 163, 74, .1); color: #15803d; }
+.contact-form__status.is-error { background: rgba(220, 38, 38, .1); color: #b91c1c; }
+
+.contact-form__note {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--muted);
+}
+
 /* ============ Top header (white tier) ============ */
 
 .site-header {

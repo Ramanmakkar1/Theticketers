@@ -131,15 +131,16 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
     }
 
     if ($path === '/contact') {
-        render_static_page($config, 'Contact Us', 'How to reach the ' . $config['site_name'] . ' team for partnerships, listings, feedback and corrections.', '/contact', function () use ($config): void {
+        render_static_page($config, 'Contact Us', 'Get in touch with the ' . $config['site_name'] . ' team about partnerships, listings, corrections or press &mdash; we reply within one to two business days.', '/contact', function () use ($config): void {
             ?>
-            <p>The fastest way to reach us is email: <a href="mailto:townmedialabs@gmail.com"><strong>townmedialabs@gmail.com</strong></a>. We typically reply within one to two business days.</p>
+            <p>Use the form below to reach the <?= e($config['site_name']) ?> team. Tell us what it's about and we'll reply within one to two business days.</p>
             <ul>
                 <li><strong>Booking, payment or refund questions:</strong> these are handled by the ticketing partner that processed your order &mdash; use the support links in your booking confirmation email. We don't have access to partner booking systems, so the partner's support team will always be faster.</li>
-                <li><strong>Partnerships and listings:</strong> if you run an event, venue, tour or experience and want it listed, email us with the subject "Partner with <?= e($config['site_name']) ?>" and a link to what you do.</li>
-                <li><strong>Site feedback or corrections:</strong> spotted a wrong date, a broken page or an outdated price? Email us the page link and what's wrong &mdash; corrections go straight to the top of the queue.</li>
-                <li><strong>Press and media:</strong> email with the subject "Press" for facts, data or comments about the site.</li>
+                <li><strong>Partnerships and listings:</strong> run an event, venue, tour or experience and want it listed? Pick &ldquo;Business partnership&rdquo; below and include a link to what you do.</li>
+                <li><strong>Site feedback or corrections:</strong> spotted a wrong date, a broken page or an outdated price? Send the page link and what's wrong &mdash; corrections go to the top of the queue.</li>
+                <li><strong>Press and media:</strong> choose &ldquo;Press &amp; media&rdquo; for facts, data or comments about the site.</li>
             </ul>
+            <?php render_contact_form($config, 'Contact ' . $config['site_name']); ?>
             <?php
         });
         return;
@@ -177,7 +178,7 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
             <h2>Buying tickets</h2>
             <p>Purchases happen on our partners' sites (HelloTickets, Ticketmaster) via Impact affiliate links, which set their own tracking for commission attribution. Their privacy policies govern checkout: we never see your name, payment details or order contents.</p>
             <h2>Your rights</h2>
-            <p>Under GDPR/UK GDPR you can request access to, correction of, or deletion of any data we hold. Since we store no accounts and anonymise click logs, there is usually nothing identifying to return &mdash; but email <a href="mailto:townmedialabs@gmail.com">townmedialabs@gmail.com</a> and we will check and respond within 30 days. EU/UK visitors may also complain to their local data-protection authority.</p>
+            <p>Under GDPR/UK GDPR you can request access to, correction of, or deletion of any data we hold. Since we store no accounts and anonymise click logs, there is usually nothing identifying to return &mdash; but send a request through our <a href="/contact">contact form</a> and we will check and respond within 30 days. EU/UK visitors may also complain to their local data-protection authority.</p>
             <?php
         });
         return;
@@ -194,11 +195,11 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
             <h2>Affiliate disclosure</h2>
             <p>We may earn a commission when you buy through our links, at no extra cost to you. Details: <a href="/how-we-make-money">How We Make Money</a>.</p>
             <h2>Content and images</h2>
-            <p>Event names, artist names, venue names and images belong to their respective owners and are used to identify the events listed. If you own content shown here and want it corrected or removed, email <a href="mailto:townmedialabs@gmail.com">townmedialabs@gmail.com</a> &mdash; takedown requests are honoured within 24 hours.</p>
+            <p>Event names, artist names, venue names and images belong to their respective owners and are used to identify the events listed. If you own content shown here and want it corrected or removed, send a takedown request through our <a href="/contact">contact form</a> &mdash; requests are honoured within 24 hours.</p>
             <h2>Acceptable use</h2>
             <p>Don't scrape the site at abusive rates, attempt to break it, or misrepresent affiliation with us. We may block traffic that does.</p>
             <h2>Contact</h2>
-            <p>Town Media Labs &mdash; <a href="mailto:townmedialabs@gmail.com">townmedialabs@gmail.com</a>. We may update these terms; the date above reflects the latest revision.</p>
+            <p>Operated by Town Media Labs. Questions about these terms? Use our <a href="/contact">contact form</a>. We may update these terms; the date above reflects the latest revision.</p>
             <?php
         });
         return;
@@ -544,6 +545,55 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
     <?php
 }
 
+/**
+ * Splitforms-backed contact / partnership form. The team email is never rendered
+ * anywhere on the site, so scrapers have nothing to harvest — submissions are
+ * routed through Splitforms' public access key (safe in client code by design).
+ * Works as a plain HTML POST with no JS; app.js progressively enhances it to an
+ * inline AJAX submit so visitors stay on-site.
+ */
+function render_contact_form(array $config, string $subject = 'New enquiry'): void
+{
+    $key = (string) ($config['splitforms_key'] ?? '');
+    if ($key === '') {
+        return;
+    }
+    ?>
+    <form class="contact-form" action="https://splitforms.com/api/submit" method="POST" data-contact-form novalidate>
+        <input type="hidden" name="access_key" value="<?= e($key) ?>">
+        <input type="hidden" name="subject" value="<?= e($subject) ?>">
+        <input type="hidden" name="from_site" value="<?= e($config['site_name']) ?>">
+        <div class="contact-form__row">
+            <label for="cf-name">Your name *</label>
+            <input id="cf-name" type="text" name="name" placeholder="Jane Builder" autocomplete="name" required>
+        </div>
+        <div class="contact-form__row">
+            <label for="cf-email">Your email *</label>
+            <input id="cf-email" type="email" name="email" placeholder="jane@example.com" autocomplete="email" required>
+        </div>
+        <div class="contact-form__row">
+            <label for="cf-topic">What's this about?</label>
+            <select id="cf-topic" name="topic">
+                <option>Business partnership</option>
+                <option>List my event or venue</option>
+                <option>Correction or wrong info</option>
+                <option>Press &amp; media</option>
+                <option>Something else</option>
+            </select>
+        </div>
+        <div class="contact-form__row">
+            <label for="cf-message">Message *</label>
+            <textarea id="cf-message" name="message" rows="5" placeholder="Tell us what you need — include any relevant links." required></textarea>
+        </div>
+        <!-- honeypot: bots fill every field; humans never see this -->
+        <input type="checkbox" name="botcheck" class="contact-form__hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="button-link contact-form__submit" type="submit">Send message</button>
+        <p class="contact-form__status" data-contact-status role="status" aria-live="polite" hidden></p>
+        <p class="contact-form__note">By sending this you agree we may reply to the email address you provide. We don't share it.</p>
+    </form>
+    <?php
+}
+
 function render_static_page(array $config, string $title, string $desc, string $path, callable $body): void
 {
     // About/Contact are E-E-A-T anchor pages — typed schema + the site-wide
@@ -567,11 +617,11 @@ function render_static_page(array $config, string $title, string $desc, string $
                     '@id' => $config['site_url'] . '/#organization',
                     'name' => $config['site_name'],
                     'url' => $config['site_url'],
-                    'email' => 'townmedialabs@gmail.com',
+                    // Contact is via the on-site form, so no email is exposed to scrapers.
                     'contactPoint' => [
                         '@type' => 'ContactPoint',
                         'contactType' => 'customer support',
-                        'email' => 'townmedialabs@gmail.com',
+                        'url' => absolute_url($config, '/contact'),
                     ],
                 ],
             ],
@@ -2993,7 +3043,12 @@ function website_schema(array $config): array
                     'width' => 512,
                     'height' => 512,
                 ],
-                'email' => 'townmedialabs@gmail.com',
+                // Contact via the on-site form — no scrapeable email in markup.
+                'contactPoint' => [
+                    '@type' => 'ContactPoint',
+                    'contactType' => 'customer support',
+                    'url' => $config['site_url'] . '/contact',
+                ],
                 'parentOrganization' => [
                     '@type' => 'Organization',
                     'name' => 'Town Media Labs',
