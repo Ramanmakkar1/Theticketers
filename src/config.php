@@ -2,8 +2,8 @@
 declare(strict_types=1);
 
 $config = [
-    'site_name' => getenv('SITE_NAME') ?: 'TickedBus',
-    'site_tagline' => 'Dubai events, attractions and experiences',
+    'site_name' => getenv('SITE_NAME') ?: 'The Ticketers',
+    'site_tagline' => 'Concerts, sports, theatre and attraction tickets',
     // SITE_URL env wins; otherwise derive from the live host so canonicals/sitemap/og
     // never silently ship as "localhost" on a shared host that can't set env vars.
     'site_url' => rtrim(getenv('SITE_URL') ?: (
@@ -14,7 +14,27 @@ $config = [
     'api_base_url' => rtrim(getenv('HELLOTICKETS_API_URL') ?: 'https://api-live.hellotickets.com', '/'),
     'api_key' => getenv('HELLOTICKETS_PUBLIC_KEY') ?: 'pub-bcaaca28-c7df-4fc1-9274-61a0f1439d13',
     'impact_url' => getenv('IMPACT_BASE_URL') ?: 'https://hellotickets.sjv.io/MKNd7K',
+    // Ticketmaster is the FALLBACK source (fills US sports/venues/Broadway HelloTickets lacks)
+    // and earns commission too: its Impact vanity link honours ?u= deep links + subId1 tracking,
+    // exactly like the HelloTickets one. tm_api_key drives the live Discovery API data layer.
+    'tm_impact_url' => getenv('TICKETMASTER_IMPACT_URL') ?: 'https://ticketmaster.evyy.net/c/7072456/264167/4272',
+    // Key lives OUTSIDE git: TICKETMASTER_API_KEY env (.htaccess SetEnv works on
+    // shared hosts) or gitignored src/config.local.php returning ['tm_api_key'=>'...'].
+    'tm_api_key' => getenv('TICKETMASTER_API_KEY') ?: '',
     'currency' => getenv('HELLOTICKETS_CURRENCY') ?: 'AED',
+    // Display currency per market — request_currency() picks one per request from
+    // the page's city/country (URL first, then the visitor's saved city cookie).
+    // The API converts all prices to the requested X-Currency, and the client
+    // cache is keyed by currency, so pages stay consistent per market.
+    'market_currencies' => [
+        'ARE' => 'AED',
+        'USA' => 'USD',
+        'CAN' => 'CAD',
+        'GBR' => 'GBP',
+        'ITA' => 'EUR',
+        'ESP' => 'EUR',
+        'FRA' => 'EUR',
+    ],
     'locale' => getenv('HELLOTICKETS_LOCALE') ?: 'en-GB',
     'default_city_id' => 132,
     'default_city_name' => 'Dubai',
@@ -96,6 +116,15 @@ foreach (($destinationsPack['cities'] ?? []) as $packCity) {
     $countrySlug = (string) ($packCity['country_slug'] ?? '');
     if ($countrySlug !== '' && isset($config['markets'][$countrySlug])) {
         $config['markets'][$countrySlug]['city_ids'][] = (int) $packCity['city_id'];
+    }
+}
+
+// Gitignored local overrides (secrets like tm_api_key live here, never in git).
+$localFile = __DIR__ . '/config.local.php';
+if (is_file($localFile)) {
+    $local = require $localFile;
+    if (is_array($local)) {
+        $config = array_replace($config, $local);
     }
 }
 

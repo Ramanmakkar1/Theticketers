@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="The Ticketers">
+  <g transform="rotate(-14 50 50)">
+    <g stroke="#e50914" stroke-width="3.6" stroke-linecap="round" fill="none">
+      <path d="M 8 44 H 24"/>
+      <path d="M 2 54 H 22"/>
+      <path d="M 12 64 H 24"/>
+    </g>
+    <path fill="#ffffff" stroke="#e50914" stroke-width="4" stroke-linejoin="round"
+          d="M 32 28 H 78 A 4 4 0 0 1 82 32
+             V 44 A 6 6 0 0 1 82 56
+             V 68 A 4 4 0 0 1 78 72
+             H 32 A 4 4 0 0 1 28 68
+             V 56 A 6 6 0 0 1 28 44
+             V 32 A 4 4 0 0 1 32 28 Z"/>
+    <path d="M 60 35 V 65" stroke="#e50914" stroke-width="2" stroke-linecap="round" stroke-dasharray="2.5 3" fill="none"/>
+    <path fill="#e50914" d="M 33 38 H 57 V 45 H 48 V 64 H 42 V 45 H 33 Z"/>
+  </g>
+</svg>

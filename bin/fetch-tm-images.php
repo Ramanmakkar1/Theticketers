@@ -30,9 +30,9 @@ require $root . '/src/helpers.php';
 require $root . '/src/HelloTicketsClient.php';
 
 $opts = getopt('', ['key:', 'all', 'artists', 'events', 'pages:', 'city:', 'refresh', 'quiet']);
-$TM_KEY = (string) ($opts['key'] ?? (getenv('TICKETMASTER_API_KEY') ?: ''));
+$TM_KEY = (string) ($opts['key'] ?? (getenv('TICKETMASTER_API_KEY') ?: ($config['tm_api_key'] ?? '')));
 if ($TM_KEY === '') {
-    fwrite(STDERR, "Missing Ticketmaster key. Pass --key=XXXX or set TICKETMASTER_API_KEY.\n");
+    fwrite(STDERR, "Missing Ticketmaster key. Pass --key=XXXX, set TICKETMASTER_API_KEY, or create src/config.local.php.\n");
     exit(1);
 }
 $refresh = isset($opts['refresh']);

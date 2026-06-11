@@ -13,6 +13,7 @@ $config = require __DIR__ . '/src/config.php';
 
 require __DIR__ . '/src/helpers.php';
 require __DIR__ . '/src/HelloTicketsClient.php';
+require __DIR__ . '/src/TicketmasterClient.php';
 require __DIR__ . '/src/pages.php';
 require __DIR__ . '/src/dubai-pages.php';
 require __DIR__ . '/src/destinations.php';
@@ -24,6 +25,10 @@ $dubaiContent = file_exists(__DIR__ . '/src/dubai-content.php')
 $destinationsContent = file_exists(__DIR__ . '/src/destinations-content.php')
     ? require __DIR__ . '/src/destinations-content.php'
     : ['countries' => [], 'cities' => []];
+
+// Resolve the display currency for this request (page market wins, then the
+// visitor's saved city) so API prices, "from" prices and schema all agree.
+$config['currency'] = request_currency($config);
 
 $client = new HelloTicketsClient(
     $config['api_base_url'],

@@ -157,12 +157,26 @@ button { font-family: var(--font-body); }
     color: var(--ink-strong);
 }
 
-.brand span em {
+.brand .brand-text em {
     font-style: normal;
     color: var(--red);
 }
 
-.brand svg {
+.brand .brand-the {
+    color: var(--muted-dark);
+    font-weight: 700;
+    letter-spacing: 0;
+    font-size: 0.85em;
+}
+
+.brand .brand-mark {
+    width: 36px;
+    height: 36px;
+    display: block;
+}
+
+/* Back-compat: when the inline SVG variant is still used somewhere */
+.brand > svg {
     width: 32px;
     height: 32px;
     padding: 6px;
@@ -1843,8 +1857,21 @@ body.modal-open { overflow: hidden; }
 }
 
 .footer-logo em { font-style: normal; color: var(--accent); }
+.footer-logo .brand-the {
+    color: rgba(255,255,255,0.75);
+    font-weight: 700;
+    font-size: 0.85em;
+}
 
-.footer-logo svg {
+.footer-logo .footer-logo-mark {
+    width: 32px;
+    height: 32px;
+    display: block;
+    /* Logo's red on dark background stays vivid; no inversion needed. */
+}
+
+/* Back-compat for the old inline SVG variant */
+.footer-logo > svg {
     width: 32px;
     height: 32px;
     padding: 6px;
