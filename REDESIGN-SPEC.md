@@ -1,4 +1,4 @@
-# TickedBus Redesign Spec (v1 — 2026-06-09)
+# TheTicketers Redesign Spec (v1 — 2026-06-09)
 
 Synthesized from 78 audit findings. Owner intent: keep the red/white BookMyShow look,
 remove clutter and fake data, make every link and control actually work.
@@ -75,23 +75,23 @@ using `render_layout()`. Register routes in `dispatch()` **BEFORE** the `/{count
 Add all three URLs to `render_sitemap()`. Link from footer "Discover" column (About Us / Contact / How We Make Money).
 Mirror routes + markup in preview-server.mjs. Copy (use verbatim, simple `<section class="section-band"><div class="container prose">` wrapper; add a minimal `.prose { max-width: 780px; margin: 0 auto; }` style):
 
-**/about — "About TickedBus"**
-> TickedBus is a ticket discovery site for events, attractions and experiences in Dubai, Abu Dhabi and top
+**/about — "About TheTicketers"**
+> TheTicketers is a ticket discovery site for events, attractions and experiences in Dubai, Abu Dhabi and top
 > destinations across the United States, Canada, the United Kingdom, Italy, Spain and France.
 > We list concerts, theatre, sports, tours and attractions with live prices and availability supplied by our
 > official ticketing partner, HelloTickets. When you choose a ticket, you complete your booking securely on our
 > partner's site — they handle payment, ticket delivery and customer support.
-> TickedBus is operated by Town Media Labs. Questions? See our [Contact](/contact) page.
+> TheTicketers is operated by Town Media Labs. Questions? See our [Contact](/contact) page.
 
 **/contact — "Contact Us"**
 > The fastest way to reach us is email: **townmedialabs@gmail.com** (mailto link).
 > • Booking, payment or refund questions: these are handled by our ticketing partner — use the support links in
 >   your booking confirmation email.
-> • Partnerships and listings: email us with the subject "Partner with TickedBus".
+> • Partnerships and listings: email us with the subject "Partner with TheTicketers".
 > • Site feedback or corrections: email us and include the page link.
 
 **/how-we-make-money — "How We Make Money"**
-> TickedBus is free to use. When you buy a ticket through a link on our site, our ticketing partner may pay us a
+> TheTicketers is free to use. When you buy a ticket through a link on our site, our ticketing partner may pay us a
 > commission. This never increases the price you pay — prices and availability come directly from the partner.
 > We do not process payments, hold ticket inventory, or charge any fees. Commissions are how we fund the site.
 
@@ -154,7 +154,7 @@ Extend `COUNTRY_FALLBACK` with `CA: 28, IT: 124, ES: 122, FR: 125` (keep AE/GB/U
 
 ## 6. CSS CLEANUP (assets/styles.css)
 
-1. Header comment: "TicketSouq" → "TickedBus".
+1. Header comment: "TicketSouq" → "TheTicketers".
 2. Spacing scale: add `--section-pad: 32px` to `:root`; set `.section-band`, `.promo-band`, `.live-band` to
    `padding: var(--section-pad) 0`; in the ≤640px block set `--section-pad: 20px` once. Remove the
    `border-bottom` hairline from `.section-band.compact` (keep its smaller 12px padding).
@@ -217,7 +217,7 @@ Extend `COUNTRY_FALLBACK` with `CA: 28, IT: 124, ES: 122, FR: 125` (keep AE/GB/U
 | dubai meta descriptions | `…free cancellation and best price guarantee` | `…instant e-tickets and free cancellation on most experiences.` |
 | hub FAQs (dubai-content) | `Most tickets booked through our platform include free cancellation` | `Many tickets include free cancellation — the exact policy is shown at partner checkout before you pay.` |
 | /dubai category card count | `<count> activities` (renders `11 experiences activities`) | value alone, hidden when empty |
-| promo banner | `Why TickedBus / Endless entertainment. One ticket hub.` | `Featured / Burj Khalifa: At the Top` (§3.6) |
+| promo banner | `Why TheTicketers / Endless entertainment. One ticket hub.` | `Featured / Burj Khalifa: At the Top` (§3.6) |
 | dubai-content.json subtitles | `Dubai tickets & tours` (burj-khalifa, aquarium, skydiving) | `At the Top: Levels 124, 125 & 148` / `Tunnel Walk, Glass-Bottom Boat & Zoo` / `Palm Drop, iFly & XLine Zipline` |
 | destinations.php city-card fallback | `'Tickets, tours &amp; attractions'` | `'Tickets, tours & attractions'` (let `e()` escape) |
 | `114+` (3 places dubai-pages) | `114+` | `100+` |
@@ -252,7 +252,7 @@ Extend `COUNTRY_FALLBACK` with `CA: 28, IT: 124, ES: 122, FR: 125` (keep AE/GB/U
    ("Best {x} in Dubai", "Ready to Explore {x} in Dubai?", "Related {x} Tickets", "All {x}", "More {x} in Dubai",
    breadcrumb label, hub card titles). Full SEO name stays only in category-page H1/<title>.
 6. Category card count fix (`activity_count` rendered alone, hidden when empty); replace 43 stale "TicketSouq"
-   meta_title strings in dubai-content.php with "TickedBus" (or delete the keys — nothing reads them).
+   meta_title strings in dubai-content.php with "TheTicketers" (or delete the keys — nothing reads them).
 7. /dubai hub: repurpose "Popular Dubai Experiences" grid to link the 23 attraction pages (§2.9).
 8. destinations.php: city-hub rail "See All ›" hrefs → `city_path(['name' => $cityName, 'id' => $cityId])`
    (cookie-setting /city page, fixes wrong-city navigation); hub search forms get

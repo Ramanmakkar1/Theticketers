@@ -77,7 +77,7 @@ function tm_get(string $path, array $params): ?array
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_TIMEOUT => 15,
         CURLOPT_CONNECTTIMEOUT => 8,
-        CURLOPT_USERAGENT => 'TickedBus-image-cache/1.0',
+        CURLOPT_USERAGENT => 'TheTicketers-image-cache/1.0',
     ]);
     $body = curl_exec($ch);
     $code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -160,7 +160,7 @@ function tm_download(string $url, string $key, string $mediaDir): ?string
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_TIMEOUT => 25,
         CURLOPT_CONNECTTIMEOUT => 8,
-        CURLOPT_USERAGENT => 'TickedBus-image-cache/1.0',
+        CURLOPT_USERAGENT => 'TheTicketers-image-cache/1.0',
     ]);
     $data = curl_exec($ch);
     $code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);

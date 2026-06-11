@@ -16,7 +16,7 @@ $data = [
         [
             'slug' => 'burj-khalifa',
             'title' => 'Burj Khalifa Tickets & Observation Deck Experiences',
-            'meta_title' => 'Burj Khalifa Tickets | TickedBus',
+            'meta_title' => 'Burj Khalifa Tickets | TheTicketers',
             'meta_description' => 'Book Burj Khalifa observation deck tickets for levels 124, 125, 148 & 154. Skip the line and see Dubai from 555m. Instant confirmation.',
             'hero_image' => 'https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1200&q=80',
             'intro' => "Standing 828 metres tall with 163 floors, the Burj Khalifa is the world's tallest building and Dubai's most visited landmark. The observation decks spread across four levels offer dramatically different perspectives of the city, from the open-air terrace at Level 124 (452m) to the exclusive SKY lounge at Level 154 (555m) — the highest occupied floor open to the public anywhere on Earth.\n\nMost visitors choose between two main ticket tiers. The standard \"At the Top\" ticket grants access to levels 124 and 125, where floor-to-ceiling windows and outdoor terraces provide 360-degree views over Dubai Marina, Palm Jumeirah, and the Arabian Gulf. The premium \"At the Top SKY\" experience adds levels 148 and 154, a dedicated sky lounge with refreshments, guided tour, and an augmented-reality telescope experience.\n\nTiming matters significantly. Sunset slots (between 5:30 PM and 6:30 PM depending on season) sell out weeks in advance because they let you watch the city transition from golden desert light to a glittering carpet of city lights — but they also cost 30-50% more than morning slots. Weekday mornings offer the clearest visibility and shortest queues.",
@@ -56,7 +56,7 @@ $data = [
         [
             'slug' => 'desert-safari',
             'title' => 'Desert Safari Dubai — Evening, Morning & Overnight Adventures',
-            'meta_title' => 'Desert Safari Dubai Deals | TickedBus',
+            'meta_title' => 'Desert Safari Dubai Deals | TheTicketers',
             'meta_description' => 'Book desert safari Dubai with dune bashing, camel rides, BBQ dinner & belly dancing. Evening, morning & overnight options from AED 99.',
             'hero_image' => 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80',
             'intro' => "A desert safari is the quintessential Dubai experience that takes you beyond the glass towers into the vast red dunes of the Al Lahbab or Al Marmoom deserts, just 45-60 minutes from Downtown Dubai. The most popular format — the evening desert safari — picks you up from your hotel around 3:30 PM and returns you by 9:30 PM, packing dune bashing, sandboarding, camel riding, a BBQ buffet dinner, and live entertainment into six action-filled hours.\n\nDune bashing is the adrenaline highlight: skilled drivers in Toyota Land Cruisers navigate steep dune faces at speed, tilting the vehicle at angles that feel impossible. After the drive, you arrive at a Bedouin-style camp set up in the desert, where activities include henna painting, shisha, falcon photo opportunities, and traditional tanoura dancing under the stars. Dinner is typically a lavish open-air buffet with grilled meats, Arabic mezze, and fresh salads.\n\nBeyond the classic evening safari, options include sunrise camel treks (departing at 5 AM for the quietest desert light), overnight camping under the stars with bonfire and stargazing, and premium VIP safaris with private vehicles, gourmet dining, and vintage Land Rover convoys. The desert ecosystem is also rich with wildlife — Arabian oryx, gazelles, and desert foxes are commonly spotted on morning tours.",
@@ -112,7 +112,7 @@ $data = [
         [
             'slug' => 'waterparks',
             'title' => 'Dubai Waterpark Tickets — Aquaventure, Wild Wadi & More',
-            'meta_title' => 'Aquaventure Waterpark Tickets | TickedBus',
+            'meta_title' => 'Aquaventure Waterpark Tickets | TheTicketers',
             'meta_description' => 'Book Aquaventure waterpark tickets with 105 slides and a private beach. Compare Dubai waterparks and save up to 20% online.',
             'hero_image' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
             'intro' => "Dubai's waterparks rank among the world's largest and most thrilling, offering respite from the desert heat with dozens of record-breaking slides, lazy rivers, and wave pools. Aquaventure at Atlantis The Palm is the headliner — spanning 22.5 hectares with 105 slides and attractions, it holds the Guinness record for the most waterslides in a single park and includes direct beach access on the Palm Jumeirah shoreline.\n\nAquaventure's standout rides include the Leap of Faith (a near-vertical 9-storey drop through a clear tube surrounded by sharks), Poseidon's Revenge (a trapdoor freefall reaching 60 km/h), and the 2.3 km Torrent River — the longest lazy river in the Middle East. The park also includes Aquaventure World, an indoor section with younger-child zones and a massive wave pool generating 3-metre swells.\n\nWild Wadi, located next to the Burj Al Arab in Jumeirah, offers a more compact but equally fun experience with 30 rides themed around the tale of Juha. Its Jumeirah Sceirah twin slides offer 120-metre tandem racing drops with views of the iconic sail-shaped hotel. For families with younger children, Laguna Waterpark at La Mer offers a boutique experience with a surf simulator and Instagram-ready design.",
@@ -148,7 +148,7 @@ $data = [
         [
             'slug' => 'aquarium',
             'title' => 'Dubai Aquarium & Underwater Zoo Tickets',
-            'meta_title' => 'Dubai Aquarium Tickets | TickedBus',
+            'meta_title' => 'Dubai Aquarium Tickets | TheTicketers',
             'meta_description' => 'Book Dubai Aquarium tickets for the 10-million-litre tank, underwater tunnel, and cage snorkelling with sharks. Located in Dubai Mall.',
             'hero_image' => 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80',
             'intro' => "The Dubai Aquarium and Underwater Zoo occupies a massive 10-million-litre tank on the ground floor of The Dubai Mall, housing over 33,000 aquatic animals across 140 species. Its centrepiece is a 32.88-metre-wide acrylic viewing panel — one of the largest in the world — that you can see for free from the mall concourse. But stepping inside unlocks the 48-metre walk-through tunnel, where sharks, rays, and giant groupers glide overhead in every direction.\n\nThe Underwater Zoo on Level 2 expands the experience into themed ecological zones: Rainforest, Rocky Shore, and Living Ocean. Here you encounter King Crocs (5-metre saltwater crocodiles), giant spider crabs, piranhas, and colourful poison dart frogs. Interactive touch tanks let children handle starfish and sea cucumbers under staff supervision.\n\nFor thrill-seekers, the aquarium offers cage snorkelling and shark diving experiences. The cage snorkel (no certification required) lowers you into the main tank surrounded by sand tiger sharks and pelagic rays. Certified divers can go cage-free for a 30-minute dive among 300+ sharks. Both experiences include full equipment, a briefing, and underwater photos.",
@@ -184,7 +184,7 @@ $data = [
         [
             'slug' => 'dubai-frame',
             'title' => 'Dubai Frame Tickets — 150m Observation Deck & Sky Bridge',
-            'meta_title' => 'Dubai Frame Tickets | TickedBus',
+            'meta_title' => 'Dubai Frame Tickets | TheTicketers',
             'meta_description' => 'Book Dubai Frame tickets for the 150m sky deck with glass floor walkway. See old and new Dubai from the golden frame. From AED 50.',
             'hero_image' => 'https://images.unsplash.com/photo-1597659840241-37e2b60e4b01?auto=format&fit=crop&w=1200&q=80',
             'intro' => "The Dubai Frame is a 150-metre-tall architectural landmark in Zabeel Park that functions as both a giant picture frame and an observation tower. Completed in 2018, this gold-clad rectangular structure measures 93 metres wide and is designed so that when you stand at either end, the frame perfectly borders either old Dubai (Deira side with its souks and minarets) or new Dubai (Sheikh Zayed Road skyscrapers and the Burj Khalifa) — making it a literal and metaphorical bridge between the city's past and future.\n\nThe experience begins on the ground floor with an immersive museum gallery tracing Dubai's evolution from a fishing village to a global metropolis, using projection mapping and touchscreen displays. A high-speed elevator then carries you to the 150-metre Sky Deck in 75 seconds. The observation bridge features a 25-metre glass-floor walkway — panels of transparent glass beneath your feet that reveal the park 150 metres below. Views extend to the Creek, Karama, and Downtown Dubai simultaneously.\n\nAt AED 50 for adults and AED 20 for children (as of 2024), the Dubai Frame offers one of the best value-for-money observation experiences in the city — significantly cheaper than the Burj Khalifa while delivering stunning 360-degree panoramas and a genuine thrill factor from the glass floor.",
@@ -220,7 +220,7 @@ $data = [
         [
             'slug' => 'cruises',
             'title' => 'Dubai Cruises — Dhow Dinner, Yacht Parties & Marina Tours',
-            'meta_title' => 'Dubai Cruise Tickets & Dhow Dinner | TickedBus',
+            'meta_title' => 'Dubai Cruise Tickets & Dhow Dinner | TheTicketers',
             'meta_description' => 'Book Dubai dhow cruises, luxury yacht dinners & Marina boat tours. Cruise Dubai Creek or Marina with buffet dinner from AED 99.',
             'hero_image' => 'https://images.unsplash.com/photo-1512632578888-169bbfe07284?auto=format&fit=crop&w=1200&q=80',
             'intro' => "Cruising Dubai's waterways is one of the city's most atmospheric experiences, whether aboard a traditional wooden dhow on the historic Creek or a glass-enclosed mega yacht in the modern Marina. Dubai's maritime heritage runs deep — before oil was discovered, the Creek was the city's economic lifeline for pearl diving and trade — and today's dinner cruises echo that tradition with an elegant twist.\n\nDhow cruise dinners are the most popular choice, operating nightly from Dubai Creek and Dubai Marina. Creek dhow cruises (2 hours, departing from Al Seef or Bur Dubai) glide past illuminated heritage buildings, spice souks, and the winding waterway that divides old Deira from Bur Dubai. Marina dhow cruises (2 hours, departing from Marina Walk or JBR) pass beneath the twisted Cayan Tower, the Marina skyline, and the Ain Dubai observation wheel.\n\nFor a more exclusive experience, mega yacht cruises accommodate groups of 10-100 on multi-deck vessels with live entertainment, premium buffets, and panoramic decks. Shared yacht cruises (single tickets available) depart from Dubai Marina and cruise past Palm Jumeirah, Atlantis, and the Burj Al Arab. Morning sightseeing boats, speed boat tours, and sunset cruises round out the options for those who want water views without a full dinner commitment.",
@@ -256,7 +256,7 @@ $data = [
         [
             'slug' => 'museum-of-the-future',
             'title' => 'Museum of the Future Dubai — Tickets & Visitor Guide',
-            'meta_title' => 'Museum of the Future Tickets | TickedBus',
+            'meta_title' => 'Museum of the Future Tickets | TheTicketers',
             'meta_description' => 'Book Museum of the Future Dubai tickets. Explore the iconic torus building with immersive exhibits on space, ecology & AI. From AED 149.',
             'hero_image' => 'https://images.unsplash.com/photo-1643228001916-c1ba35831e5f?auto=format&fit=crop&w=1200&q=80',
             'intro' => "The Museum of the Future is a 77-metre-tall torus-shaped building on Sheikh Zayed Road that has been called 'the most beautiful building on Earth' by National Geographic. Opened in February 2022, its stainless-steel facade is inscribed with Arabic calligraphy quotes about the future, and the void in its centre represents humanity's unknown tomorrow. Inside, immersive exhibits transport visitors to the year 2071 — the UAE's centennial — exploring themes of space colonization, climate healing, bioengineering, and wellness.\n\nThe museum spans seven floors connected by escalator and elevator. Each floor is a self-contained immersive environment rather than a traditional exhibit hall. Floor 5 simulates a space station orbiting Earth, complete with a shuttle ride experience. Floor 4 explores a bioengineered Amazon rainforest. Floor 3 — Al Waha — is a sensory wellness spa designed for meditation and digital detox. The children's floor, Future Heroes, lets kids aged 4-10 design imaginary creatures and watch them come alive in a digital ecosystem.\n\nUnlike conventional museums, there are few static displays or text panels. The experience is built around spatial storytelling, scent design, surround sound, and projection mapping. A visit feels more like walking through a film than reading exhibits. Timed entry keeps crowds manageable, and the average visit lasts 2-3 hours.",
@@ -292,7 +292,7 @@ $data = [
         [
             'slug' => 'theme-parks',
             'title' => 'Dubai Theme Parks — Legoland, IMG Worlds, Ski Dubai & More',
-            'meta_title' => 'Dubai Theme Park Tickets | TickedBus',
+            'meta_title' => 'Dubai Theme Park Tickets | TheTicketers',
             'meta_description' => 'Book Dubai theme park tickets: Legoland, IMG Worlds of Adventure, Ski Dubai, Motiongate & more. Compare parks and save up to 25%.',
             'hero_image' => 'https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=1200&q=80',
             'intro' => "Dubai has invested billions creating one of the world's densest concentrations of theme parks, offering everything from indoor snow skiing to Marvel superhero coasters. The main hub is Dubai Parks and Resorts in Jebel Ali, a 25-million-square-foot mega complex housing Legoland Dubai, Legoland Water Park, Motiongate (Hollywood-themed), and the Riverland retail district — all connected by walkways and reachable on a single multi-park ticket.\n\nIMG Worlds of Adventure in Dubai Land is the world's largest indoor theme park at 1.5 million square feet, featuring Marvel, Cartoon Network, Lost Valley (dinosaur), and IMG Boulevard zones. Being fully air-conditioned, it's a year-round option unaffected by summer heat. Ski Dubai inside Mall of the Emirates offers an entirely surreal experience — a 22,500 sqm indoor snow park with real penguins, a 400-metre ski slope, chairlift, and toboggan runs, all maintained at -4C while outside temperatures exceed 45C.\n\nBeyond the mega parks, AYA at WAFI Mall delivers a 40,000 sqft immersive digital art experience with 12 connected zones, Green Planet is an indoor tropical rainforest biodome housing 3,000 plants and animals, and Real Madrid World at Dubai Parks offers sports-themed rides. Multi-park passes offer significant savings — the Dubai Parks 2-day pass covers all four parks for roughly the price of two individual tickets.",
@@ -328,7 +328,7 @@ $data = [
         [
             'slug' => 'helicopter-tours',
             'title' => 'Dubai Helicopter Tours — Aerial Sightseeing Flights',
-            'meta_title' => 'Dubai Helicopter Tour Prices | TickedBus',
+            'meta_title' => 'Dubai Helicopter Tour Prices | TheTicketers',
             'meta_description' => 'Book a Dubai helicopter tour from AED 650. Fly over Palm Jumeirah, Burj Khalifa & the World Islands. 12, 17 & 25-minute flights.',
             'hero_image' => 'https://images.unsplash.com/photo-1558618666-fcd25c85f7e7?auto=format&fit=crop&w=1200&q=80',
             'intro' => "A helicopter tour is the most dramatic way to experience Dubai's extraordinary skyline — seeing the Palm Jumeirah's perfect palm-tree shape from directly above, the Burj Khalifa shrinking below you, and The World Islands' map-like archipelago stretching across the Gulf. Flights depart from the Atlantis Helipad on Palm Jumeirah, putting you airborne within seconds of takeoff.\n\nThree main durations are offered: 12 minutes (Iconic Tour covering Palm Jumeirah, Atlantis, and Burj Al Arab), 17 minutes (adding Dubai Marina, JBR, and Ain Dubai), and 25 minutes (the full circuit adding Burj Khalifa, Downtown, World Islands, and Port Rashid). The most popular is the 17-minute flight, which covers the photogenic highlights without the premium price of the 25-minute option.\n\nHelicopters seat 5-6 passengers with every seat offering window views (thanks to the bubble-style glass canopy). Flights operate daily from 9 AM to 5 PM, weather permitting. Morning flights (before 11 AM) offer the clearest visibility and best photography conditions, while late afternoon flights catch golden-hour light on the glass towers. Weight limits apply (combined passenger weight distributed per seat), and children must be at least 2 years old.",
@@ -364,7 +364,7 @@ $data = [
         [
             'slug' => 'jet-ski',
             'title' => 'Jet Ski Dubai — Guided Tours & Rental at Burj Al Arab',
-            'meta_title' => 'Jet Ski Dubai Tours & Rental | TickedBus',
+            'meta_title' => 'Jet Ski Dubai Tours & Rental | TheTicketers',
             'meta_description' => 'Rent a jet ski in Dubai and ride past Burj Al Arab, Palm Jumeirah & Atlantis. 30 and 60-minute guided tours from AED 350.',
             'hero_image' => 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80',
             'intro' => "Jet skiing in Dubai combines high-speed thrills with some of the world's most photogenic coastal scenery. The most popular route departs from the JBR (Jumeirah Beach Residence) coastline and takes you on a guided tour past the iconic Burj Al Arab sail-shaped hotel, around the Palm Jumeirah breakwater, and up to Atlantis The Palm — all at speeds reaching 60-80 km/h across warm turquoise Gulf waters.\n\nTwo main formats are available: guided tours and free-ride sessions. Guided tours (30 or 60 minutes) follow a set route with a lead instructor, stopping at photo points near the Burj Al Arab and Atlantis. You ride your own jet ski but stay in formation. Free-ride sessions give you a designated zone near JBR beach to ride independently at your own pace — better for experienced riders who want maximum speed.\n\nNo prior experience is needed for guided tours — a 10-minute briefing covers throttle control, steering, and emergency stops. The jet skis used are Yamaha VX or Sea-Doo GTI models rated for beginners. Minimum age is 16 for solo riders (with parental consent) or 8 years old as a passenger with an adult driver. Life jackets are mandatory and provided.",
@@ -400,7 +400,7 @@ $data = [
         [
             'slug' => 'skydiving',
             'title' => 'Skydive Dubai, Indoor Skydiving & Zipline Adventures',
-            'meta_title' => 'Skydive Dubai Prices | TickedBus',
+            'meta_title' => 'Skydive Dubai Prices | TheTicketers',
             'meta_description' => 'Book Skydive Dubai tandem jump over Palm Jumeirah from AED 1,899. Plus indoor skydiving at iFly and XLine zipline at Dubai Marina.',
             'hero_image' => 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80',
             'intro' => "Skydive Dubai offers what many consider the world's most scenic tandem skydive — a 13,000-foot jump directly over the Palm Jumeirah artificial island, with aerial views of the Burj Khalifa, Dubai Marina skyline, and the turquoise Gulf during 60 seconds of freefall at 200 km/h. Two drop zones operate: Palm Jumeirah (the premium, Instagram-famous location) and Dubai Desert Campus (over sand dunes, approximately AED 500 cheaper).\n\nFor those who want the sensation without the altitude, iFLY Dubai at City Centre Mirdif offers indoor skydiving in a 10-metre vertical wind tunnel generating winds of 175 km/h — enough to float you in stable flight. Sessions include 2-4 minutes of actual flight time (equivalent to multiple real skydives) with an instructor inside the tunnel controlling your movements. No experience needed; children as young as 3 can fly.\n\nThe XLine Dubai Marina zipline adds another adrenaline dimension — a 1-kilometre dual zipline that launches from a 170-metre platform at JBR, reaching speeds of 80 km/h as you fly head-first in a superman position over the marina, promenade, and yacht club below. It's the longest urban zipline in the world.",
@@ -436,7 +436,7 @@ $data = [
         [
             'slug' => 'hot-air-balloon',
             'title' => 'Hot Air Balloon Dubai — Sunrise Desert Flight Experience',
-            'meta_title' => 'Hot Air Balloon Dubai Ride | TickedBus',
+            'meta_title' => 'Hot Air Balloon Dubai Ride | TheTicketers',
             'meta_description' => 'Book a hot air balloon ride over the Dubai desert at sunrise. Float above dunes and spot oryx and gazelles. Includes breakfast. From AED 950.',
             'hero_image' => 'https://images.unsplash.com/photo-1507608616759-54f48f0af0ee?auto=format&fit=crop&w=1200&q=80',
             'intro' => "A hot air balloon ride over the Dubai desert is one of the most serene and visually stunning experiences in the Emirates. Launching at sunrise from the Al Marmoom Desert Conservation Reserve — a 40 km protected wilderness area south of the city — you float silently at altitudes of 1,200 to 4,000 feet above endless amber dunes, with the distant Dubai skyline shimmering on the horizon.\n\nThe experience begins early: hotel pickup is typically between 4:00 and 5:00 AM depending on season, with a 45-minute drive to the launch site. You watch the balloon inflate in the pre-dawn darkness (itself a spectacle), then ascend as the sun rises over the dune crests. Flights last approximately 60 minutes, drifting with the wind over the conservation reserve where you can often spot Arabian oryx herds, gazelles, and desert foxes from above.\n\nAfter landing, a 4x4 vehicle collects you and transports you to a desert camp for a complimentary gourmet breakfast with fresh pastries, omelettes, and Arabic coffee. A 20-minute vintage Land Rover safari through the dunes is also included. The entire experience from hotel pickup to return takes 5-6 hours, getting you back to your hotel by 10-11 AM — leaving the rest of your day free.\n\nFlights operate from September to May only. Summer months (June-August) are too hot for safe balloon operation, with ground temperatures exceeding 45C at dawn.",
@@ -472,7 +472,7 @@ $data = [
         [
             'slug' => 'city-tours',
             'title' => 'Dubai City Tours — Sightseeing, Bus Tours & Day Trips',
-            'meta_title' => 'Dubai City Tour & Bus Tickets | TickedBus',
+            'meta_title' => 'Dubai City Tour & Bus Tickets | TheTicketers',
             'meta_description' => 'Book Dubai city tours, hop-on hop-off bus passes & guided sightseeing. Visit old Dubai, souks, museums & landmarks with expert guides.',
             'hero_image' => 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80',
             'intro' => "Dubai city tours cover an extraordinary range — from the wind-tower houses and spice souks of historic Deira to the record-breaking skyline of Downtown and the artificial islands of Palm Jumeirah. The best city tours tie these contrasts together into a coherent narrative, explaining how a small Creek-side trading port became one of the world's most futuristic cities in just 50 years.\n\nThe most comprehensive option is the full-day guided tour (6-8 hours), which typically includes the Dubai Museum in Al Fahidi Fort, a traditional abra (water taxi) crossing of the Creek, walking tours through the Gold Souk and Spice Souk, photo stops at Jumeirah Mosque, Burj Al Arab, and Atlantis, followed by the modern landmarks: Dubai Marina, Palm Jumeirah, and a drive along Sheikh Zayed Road past the Museum of the Future and Burj Khalifa.\n\nFor independent explorers, the hop-on hop-off double-decker bus (Big Bus Dubai) covers 35+ stops across 4 routes — City Tour (historic Dubai), Marina Tour (JBR and Marina), Palm Tour, and Night Tour. A 24-hour pass costs around AED 229 with unlimited rides and includes a free dhow cruise and walking tour. Multi-day passes extend to 48 and 72 hours at discounted rates.",
@@ -508,7 +508,7 @@ $data = [
         [
             'slug' => 'night-tours',
             'title' => 'Dubai Night Tours — City Lights, Dinner & Evening Sightseeing',
-            'meta_title' => 'Dubai Night Tour & Evening Tours | TickedBus',
+            'meta_title' => 'Dubai Night Tour & Evening Tours | TheTicketers',
             'meta_description' => 'Experience Dubai by night with guided evening tours. See illuminated landmarks, the Dubai Fountain show & glittering skyline.',
             'hero_image' => 'https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1200&q=80',
             'intro' => "Dubai transforms after dark. The glass towers of Sheikh Zayed Road become vertical light displays, the Dubai Fountain erupts in choreographed water jets reaching 150 metres, and the Burj Khalifa's LED facade runs its nightly light show. A Dubai night tour captures this transformation, taking you through the city when its architecture is at its most dramatic and the desert heat recedes to comfortable temperatures.\n\nEvening city tours typically depart between 7:00 and 8:00 PM, lasting 3-4 hours. Standard routes include the illuminated Dubai Frame (spectacular when the gold exterior is lit from within), a drive along Sheikh Zayed Road past the Museum of the Future's glowing Arabic calligraphy, the Dubai Fountain show viewed from Burj Khalifa Lake, and a cruise through Dubai Marina's skyscraper canyon. Most tours include a stop at a rooftop viewpoint for skyline photography.\n\nNight tours are particularly recommended during summer months (June-September) when daytime temperatures of 40-48C make outdoor sightseeing impractical. After sunset, temperatures drop to 30-34C, and the city comes alive with pedestrian activity, outdoor dining, and illuminated landmarks that actually look more impressive in the dark than in daylight.",
@@ -544,7 +544,7 @@ $data = [
         [
             'slug' => 'water-sports',
             'title' => 'Dubai Water Sports — Flyboard, Parasailing & Jetpack',
-            'meta_title' => 'Dubai Water Sports Tickets | TickedBus',
+            'meta_title' => 'Dubai Water Sports Tickets | TheTicketers',
             'meta_description' => 'Book Dubai water sports: flyboarding, parasailing, wakeboarding & jetpack. Activities at JBR Beach and Dubai Marina from AED 200.',
             'hero_image' => 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80',
             'intro' => "Dubai's coastline and warm year-round waters (24-34C) make it a playground for water sports enthusiasts. Beyond jet skiing, the city offers a full range of powered and non-powered water activities concentrated around JBR Beach, Kite Beach, and the Palm Jumeirah shoreline. Whether you want to hover above the water on a flyboard, parasail at 150 metres with views of the entire coastline, or ride a jetpack like something from science fiction, Dubai delivers.\n\nFlyboarding is the most popular newcomer — a water-propelled board launches you up to 15 metres above the sea surface using pressurized water jets channeled from a personal watercraft. First-timers typically achieve stable flight within 10 minutes, and the experience is accessible to anyone who can swim. The jetpack (similar concept, worn on your back) offers a more upright, Iron Man-style hover that many find more intuitive.\n\nParasailing offers the gentlest aerial thrill — you're harnessed into a parachute canopy and towed behind a speedboat, rising to 100-150 metres with no effort required. Single, tandem, and triple flights are available. It's the only water sport here with no minimum fitness requirement — children as young as 6 and adults of any age can participate. Wakeboarding, kneeboarding, banana boat rides, and paddle boarding round out the options for all skill levels.",
@@ -580,7 +580,7 @@ $data = [
         [
             'slug' => 'fountain-show',
             'title' => 'Dubai Fountain Show — Tickets, Timings & Best Viewing Spots',
-            'meta_title' => 'Dubai Fountain Show Tickets | TickedBus',
+            'meta_title' => 'Dubai Fountain Show Tickets | TheTicketers',
             'meta_description' => 'Book Dubai Fountain show experiences — lake rides, boardwalk access & VIP dining. Free shows every 30 min from 6 PM at Burj Khalifa Lake.',
             'hero_image' => 'https://images.unsplash.com/photo-1582672060674-bc2bd808a6d6?auto=format&fit=crop&w=1200&q=80',
             'intro' => "The Dubai Fountain is the world's largest choreographed water feature, spanning 275 metres across Burj Khalifa Lake with jets capable of shooting water 150 metres into the air — as high as a 50-storey building. Every evening from 6:00 PM to 11:00 PM (and 1:00 PM and 1:30 PM daily), the fountain performs a 5-minute show set to a rotating playlist of Arabic, Hindi, and Western songs, with 6,600 lights and 25 colour projectors illuminating the water in sync.\n\nWatching the Dubai Fountain is free from any viewpoint around Burj Khalifa Lake — the most popular spots are the Dubai Mall waterfront terrace (Level G), the Souk Al Bahar bridge, and the Burj Park promenade. However, paid experiences bring you dramatically closer: the Fountain Boardwalk (a floating platform 9 metres from the jets) and the Fountain Lake Ride (a traditional abra that sails into the spray zone during the performance) offer perspectives you simply cannot get from shore.\n\nThe fountain performs different songs on different evenings, and the choreography changes for each track. Highlights include Whitney Houston's 'I Will Always Love You' (the tallest jets), the Andrea Bocelli sequence (the most graceful), and the Arabic classic 'Baba Yetu' (the most dramatic light effects). Peak viewing is Friday and Saturday evenings when the plaza is liveliest.",
@@ -616,7 +616,7 @@ $data = [
         [
             'slug' => 'sky-views',
             'title' => 'Sky Views Observatory Dubai — Glass Slide & Edge Walk',
-            'meta_title' => 'Sky Views Observatory Tickets | TickedBus',
+            'meta_title' => 'Sky Views Observatory Tickets | TheTicketers',
             'meta_description' => 'Book Sky Views Observatory tickets with glass slide, edge walk & observation deck at Address Sky View hotel. From AED 60.',
             'hero_image' => 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80',
             'intro' => "Sky Views Observatory at Address Sky View hotel in Downtown Dubai offers a multi-experience observation attraction at 219.5 metres above ground — combining a glass-floor observation deck, an external glass slide between the hotel's two towers, and a hands-free edge walk along the building's exterior. It opened in 2022 as a more interactive alternative to the Burj Khalifa, appealing to visitors who want thrills beyond just looking at a view.\n\nThe Observatory (Level 52) features floor-to-ceiling windows and a transparent glass-bottom walkway looking straight down to the street below. The views encompass Burj Khalifa (just 500 metres away at eye level), Downtown Dubai, Dubai Canal, and the Sheikh Zayed Road skyline. But the signature experience is the Glass Slide — a transparent tube that slides you from Level 53 to Level 52 along the exterior of the building, with nothing but clear glass between you and the 220-metre drop. The 25-second ride reaches speeds of 15 km/h.\n\nThe Edge Walk takes it further — you're harnessed to a rail on the building's exterior and walk along a narrow ledge 219 metres above the ground with no glass barriers. Only available to those 21+ and in good physical health, it's Dubai's most extreme urban adventure and the highest edge walk in the Middle East.",
@@ -652,7 +652,7 @@ $data = [
         [
             'slug' => 'food-tours',
             'title' => 'Dubai Food Tours — Street Food, Market Walks & Tastings',
-            'meta_title' => 'Dubai Food Tour & Tasting | TickedBus',
+            'meta_title' => 'Dubai Food Tour & Tasting | TheTicketers',
             'meta_description' => 'Book Dubai food tours through old souks, street food stalls & hidden gems. Taste authentic Emirati, Arabic & Indian cuisines with local guides.',
             'hero_image' => 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80',
             'intro' => "Dubai's food scene is one of the world's most diverse — with over 200 nationalities living in the city, you can eat authentic Emirati, Lebanese, Iranian, Indian, Pakistani, Filipino, Ethiopian, and Japanese food within a single neighbourhood. Dubai food tours navigate this culinary labyrinth with local guides who know which stalls have been serving the same recipes for 40 years and which hidden doorways lead to underground dining rooms.\n\nThe most popular food tours focus on the old Dubai neighbourhoods of Deira, Al Karama, and Bur Dubai, where the density of family-run restaurants and street food stalls is highest. A typical 3-4 hour walking tour visits 6-10 food stops, sampling everything from Iranian saffron ice cream and Yemeni mandi to Pakistani seekh kebabs and Emirati luqaimat (sweet dumplings). The spice and gold souks provide aromatic interludes between tasting stops.\n\nBeyond walking tours, specialized options include a Dubai Marina dinner crawl (upscale restaurants), a street food after-dark tour (the best stalls open at 10 PM when kitchen workers eat), and Emirati home-dining experiences where a local family hosts you for a traditional machboos and harees meal. For the adventurous, camel milk chocolate tastings and date-pairing workshops offer uniquely Emirati flavours.",
@@ -692,7 +692,7 @@ $data = [
             'id' => 779,
             'slug' => 'burj-khalifa-at-the-top',
             'title' => 'Burj Khalifa At the Top — Levels 124 & 125 Observation Deck',
-            'meta_title' => 'Burj Khalifa At the Top Tickets | TickedBus',
+            'meta_title' => 'Burj Khalifa At the Top Tickets | TheTicketers',
             'meta_description' => 'Book Burj Khalifa At the Top tickets for levels 124 & 125. 360-degree views from 452m with outdoor terrace. From AED 149.',
             'hero_image' => 'https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -736,7 +736,7 @@ $data = [
             'id' => 2459,
             'slug' => 'aquaventure-waterpark',
             'title' => 'Aquaventure Waterpark at Atlantis The Palm',
-            'meta_title' => 'Aquaventure Waterpark Tickets | TickedBus',
+            'meta_title' => 'Aquaventure Waterpark Tickets | TheTicketers',
             'meta_description' => 'Book Aquaventure Waterpark tickets with 105 slides, private beach & lazy river. Located at Atlantis The Palm. From AED 249.',
             'hero_image' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -780,7 +780,7 @@ $data = [
             'id' => 783,
             'slug' => 'dubai-aquarium-underwater-zoo',
             'title' => 'Dubai Aquarium & Underwater Zoo at Dubai Mall',
-            'meta_title' => 'Dubai Aquarium Tickets | TickedBus',
+            'meta_title' => 'Dubai Aquarium Tickets | TheTicketers',
             'meta_description' => 'Book Dubai Aquarium & Underwater Zoo tickets. Walk through the 48m tunnel, see 33,000 animals & dive with sharks. Dubai Mall.',
             'hero_image' => 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -824,7 +824,7 @@ $data = [
             'id' => 2317,
             'slug' => 'dubai-frame-tickets',
             'title' => 'Dubai Frame — 150m Observation Bridge & Glass Floor',
-            'meta_title' => 'Dubai Frame Tickets & Prices | TickedBus',
+            'meta_title' => 'Dubai Frame Tickets & Prices | TheTicketers',
             'meta_description' => 'Book Dubai Frame tickets for the 150m sky bridge with glass floor walkway. Old and new Dubai views from AED 50. Skip the line.',
             'hero_image' => 'https://images.unsplash.com/photo-1597659840241-37e2b60e4b01?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -868,7 +868,7 @@ $data = [
             'id' => 11551,
             'slug' => 'museum-of-the-future-tickets',
             'title' => 'Museum of the Future Dubai — Immersive Exhibition Experience',
-            'meta_title' => 'Museum of the Future Tickets | TickedBus',
+            'meta_title' => 'Museum of the Future Tickets | TheTicketers',
             'meta_description' => 'Book Museum of the Future Dubai tickets. Explore the torus building with exhibits on space, ecology & AI set in 2071. From AED 149.',
             'hero_image' => 'https://images.unsplash.com/photo-1643228001916-c1ba35831e5f?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -912,7 +912,7 @@ $data = [
             'id' => 831,
             'slug' => 'evening-desert-safari',
             'title' => 'Evening Desert Safari Dubai with BBQ Dinner & Shows',
-            'meta_title' => 'Evening Desert Safari Dubai | TickedBus',
+            'meta_title' => 'Evening Desert Safari Dubai | TheTicketers',
             'meta_description' => 'Book evening desert safari with dune bashing, camel ride, BBQ dinner & belly dancing. Hotel pickup included. From AED 99.',
             'hero_image' => 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -956,7 +956,7 @@ $data = [
             'id' => 2466,
             'slug' => 'legoland-dubai',
             'title' => 'Legoland Dubai — Theme Park & Water Park',
-            'meta_title' => 'Legoland Dubai Tickets | TickedBus',
+            'meta_title' => 'Legoland Dubai Tickets | TheTicketers',
             'meta_description' => 'Book Legoland Dubai tickets for the theme park and water park. 60+ rides designed for ages 2-12 at Dubai Parks and Resorts.',
             'hero_image' => 'https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -1000,7 +1000,7 @@ $data = [
             'id' => 782,
             'slug' => 'ski-dubai',
             'title' => 'Ski Dubai — Indoor Snow Park at Mall of the Emirates',
-            'meta_title' => 'Ski Dubai Tickets & Prices | TickedBus',
+            'meta_title' => 'Ski Dubai Tickets & Prices | TheTicketers',
             'meta_description' => 'Book Ski Dubai tickets for the indoor ski slope, snow park & penguin encounters at Mall of the Emirates. From AED 180.',
             'hero_image' => 'https://images.unsplash.com/photo-1551524559-8af4e6624178?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -1044,7 +1044,7 @@ $data = [
             'id' => 2460,
             'slug' => 'la-perle-show-dubai',
             'title' => 'La Perle by Dragone — Dubai Aqua Theatre Show',
-            'meta_title' => 'La Perle Dubai Show Tickets | TickedBus',
+            'meta_title' => 'La Perle Dubai Show Tickets | TheTicketers',
             'meta_description' => 'Book La Perle show tickets at Al Habtoor City. Spectacular aquatic theatre with acrobats, divers & special effects. From AED 250.',
             'hero_image' => 'https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -1088,7 +1088,7 @@ $data = [
             'id' => 5602,
             'slug' => 'skydive-dubai-palm',
             'title' => 'Skydive Dubai — Tandem Jump Over Palm Jumeirah',
-            'meta_title' => 'Skydive Dubai Palm Jumeirah | TickedBus',
+            'meta_title' => 'Skydive Dubai Palm Jumeirah | TheTicketers',
             'meta_description' => 'Book a tandem skydive over Palm Jumeirah from 13,000 feet. 60 seconds freefall at 200 km/h with certified instructor. AED 1,899.',
             'hero_image' => 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -1132,7 +1132,7 @@ $data = [
             'id' => 5603,
             'slug' => 'xline-dubai-marina-zipline',
             'title' => 'XLine Dubai Marina — World\'s Longest Urban Zipline',
-            'meta_title' => 'XLine Dubai Marina Zipline | TickedBus',
+            'meta_title' => 'XLine Dubai Marina Zipline | TheTicketers',
             'meta_description' => 'Book XLine Dubai Marina zipline. Fly 1 km at 80 km/h over the marina in a superman position. World\'s longest urban zipline. AED 650.',
             'hero_image' => 'https://images.unsplash.com/photo-1512632578888-169bbfe07284?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -1176,7 +1176,7 @@ $data = [
             'id' => 2465,
             'slug' => 'helicopter-tour-dubai',
             'title' => 'Dubai Helicopter Tour — Aerial Sightseeing Experience',
-            'meta_title' => 'Dubai Helicopter Tour Booking | TickedBus',
+            'meta_title' => 'Dubai Helicopter Tour Booking | TheTicketers',
             'meta_description' => 'Book Dubai helicopter tour from Atlantis helipad. Fly over Palm Jumeirah, Burj Khalifa & World Islands. 12 to 25-minute flights.',
             'hero_image' => 'https://images.unsplash.com/photo-1558618666-fcd25c85f7e7?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -1220,7 +1220,7 @@ $data = [
             'id' => 836,
             'slug' => 'hot-air-balloon-dubai-desert',
             'title' => 'Hot Air Balloon Ride — Sunrise Over Dubai Desert',
-            'meta_title' => 'Hot Air Balloon Dubai Desert | TickedBus',
+            'meta_title' => 'Hot Air Balloon Dubai Desert | TheTicketers',
             'meta_description' => 'Book a hot air balloon ride over the Dubai desert at sunrise. 60-minute flight with gourmet breakfast and falcon show. From AED 950.',
             'hero_image' => 'https://images.unsplash.com/photo-1507608616759-54f48f0af0ee?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -1264,7 +1264,7 @@ $data = [
             'id' => 2457,
             'slug' => 'yacht-dinner-cruise-dubai-marina',
             'title' => 'Luxury Yacht Dinner Cruise — Dubai Marina',
-            'meta_title' => 'Dubai Yacht Dinner Cruise | TickedBus',
+            'meta_title' => 'Dubai Yacht Dinner Cruise | TheTicketers',
             'meta_description' => 'Book a luxury yacht dinner cruise in Dubai Marina. Mega yacht with buffet dinner, live entertainment & views of JBR and Ain Dubai.',
             'hero_image' => 'https://images.unsplash.com/photo-1512632578888-169bbfe07284?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -1308,7 +1308,7 @@ $data = [
             'id' => 12751,
             'slug' => 'dubai-fountain-show-experience',
             'title' => 'Dubai Fountain Show — Lake Ride & Boardwalk Experience',
-            'meta_title' => 'Dubai Fountain Tickets & Times | TickedBus',
+            'meta_title' => 'Dubai Fountain Tickets & Times | TheTicketers',
             'meta_description' => 'Experience the Dubai Fountain up close with lake ride and boardwalk tickets. World\'s largest fountain show, free every 30 min from 6 PM.',
             'hero_image' => 'https://images.unsplash.com/photo-1582672060674-bc2bd808a6d6?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -1352,7 +1352,7 @@ $data = [
             'id' => 2464,
             'slug' => 'madame-tussauds-dubai',
             'title' => 'Madame Tussauds Dubai — Bluewaters Island',
-            'meta_title' => 'Madame Tussauds Dubai Tickets | TickedBus',
+            'meta_title' => 'Madame Tussauds Dubai Tickets | TheTicketers',
             'meta_description' => 'Book Madame Tussauds Dubai at Bluewaters Island. Life-size wax figures of celebrities, sports stars & world leaders. From AED 135.',
             'hero_image' => 'https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -1396,7 +1396,7 @@ $data = [
             'id' => 5599,
             'slug' => 'aya-universe-dubai',
             'title' => 'AYA Universe — Immersive Digital Art Park at WAFI',
-            'meta_title' => 'AYA Universe Dubai Tickets | TickedBus',
+            'meta_title' => 'AYA Universe Dubai Tickets | TheTicketers',
             'meta_description' => 'Book AYA Universe tickets at WAFI Mall Dubai. 40,000 sqft immersive art with 12 interconnected zones of light, sound & projection.',
             'hero_image' => 'https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -1440,7 +1440,7 @@ $data = [
             'id' => 12746,
             'slug' => 'img-worlds-of-adventure',
             'title' => 'IMG Worlds of Adventure — World\'s Largest Indoor Theme Park',
-            'meta_title' => 'IMG Worlds of Adventure Tickets | TickedBus',
+            'meta_title' => 'IMG Worlds of Adventure Tickets | TheTicketers',
             'meta_description' => 'Book IMG Worlds of Adventure tickets. 1.5M sqft indoor theme park with Marvel, Cartoon Network & dinosaur zones. Air-conditioned year-round.',
             'hero_image' => 'https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -1484,7 +1484,7 @@ $data = [
             'id' => 12513,
             'slug' => 'sky-views-observatory-dubai',
             'title' => 'Sky Views Observatory — Glass Slide & Edge Walk',
-            'meta_title' => 'Sky Views Observatory Dubai | TickedBus',
+            'meta_title' => 'Sky Views Observatory Dubai | TheTicketers',
             'meta_description' => 'Book Sky Views Observatory with glass slide at 220m. Edge walk, observation deck & close-up Burj Khalifa views. From AED 60.',
             'hero_image' => 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -1528,7 +1528,7 @@ $data = [
             'id' => 818,
             'slug' => 'dhow-cruise-dubai-creek',
             'title' => 'Dhow Cruise Dubai Creek — Traditional Dinner Cruise',
-            'meta_title' => 'Dhow Cruise Dubai Creek | TickedBus',
+            'meta_title' => 'Dhow Cruise Dubai Creek | TheTicketers',
             'meta_description' => 'Book Dubai Creek dhow cruise with buffet dinner, live music & views of old Dubai. 2-hour traditional wooden boat experience from AED 99.',
             'hero_image' => 'https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -1572,7 +1572,7 @@ $data = [
             'id' => 792,
             'slug' => 'old-dubai-walking-tour',
             'title' => 'Old Dubai Walking Tour — Souks, Creek & Al Fahidi',
-            'meta_title' => 'Old Dubai Tour & Creek Walk | TickedBus',
+            'meta_title' => 'Old Dubai Tour & Creek Walk | TheTicketers',
             'meta_description' => 'Explore old Dubai with a guided walking tour through Gold Souk, Spice Souk, Dubai Creek & Al Fahidi heritage district. From AED 99.',
             'hero_image' => 'https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -1616,7 +1616,7 @@ $data = [
             'id' => 825,
             'slug' => 'hop-on-hop-off-bus-dubai',
             'title' => 'Big Bus Dubai — Hop-On Hop-Off Sightseeing Tour',
-            'meta_title' => 'Big Bus Dubai Hop-On Hop-Off | TickedBus',
+            'meta_title' => 'Big Bus Dubai Hop-On Hop-Off | TheTicketers',
             'meta_description' => 'Book Big Bus Dubai hop-on hop-off with 35+ stops across 4 routes. Includes free dhow cruise & walking tour. 24-hour pass from AED 229.',
             'hero_image' => 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -1660,7 +1660,7 @@ $data = [
             'id' => 828,
             'slug' => 'camel-ride-dubai-sunrise',
             'title' => 'Sunrise Camel Ride — Al Marmoom Desert Dubai',
-            'meta_title' => 'Camel Ride Dubai Sunrise | TickedBus',
+            'meta_title' => 'Camel Ride Dubai Sunrise | TheTicketers',
             'meta_description' => 'Book a sunrise camel ride in the Dubai desert. 45-minute trek across Al Marmoom dunes with Bedouin guide. From AED 199.',
             'hero_image' => 'https://images.unsplash.com/photo-1547234856443-53c580aab0b1?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -1704,7 +1704,7 @@ $data = [
             'id' => 841,
             'slug' => 'dubai-explorer-pass',
             'title' => 'Dubai Explorer Pass — Multi-Attraction Savings Pass',
-            'meta_title' => 'Dubai Explorer Pass | TickedBus',
+            'meta_title' => 'Dubai Explorer Pass | TheTicketers',
             'meta_description' => 'Save up to 50% with the Dubai Explorer Pass. Choose 3-7 top attractions including Burj Khalifa, Aquaventure & more. From AED 499.',
             'hero_image' => 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [
@@ -1748,7 +1748,7 @@ $data = [
             'id' => 12740,
             'slug' => 'green-planet-dubai',
             'title' => 'The Green Planet — Indoor Tropical Rainforest Dubai',
-            'meta_title' => 'Green Planet Dubai Tickets | TickedBus',
+            'meta_title' => 'Green Planet Dubai Tickets | TheTicketers',
             'meta_description' => 'Visit The Green Planet Dubai — an indoor tropical rainforest with 3,000+ plants and animals. Sloths, toucans & butterflies. From AED 99.',
             'hero_image' => 'https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=1200&q=80',
             'gallery' => [

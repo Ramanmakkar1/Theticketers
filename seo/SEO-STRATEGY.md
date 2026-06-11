@@ -1,4 +1,4 @@
-# TickedBus SEO Strategy
+# TheTicketers SEO Strategy
 
 **Goal:** 1,000–2,000 daily organic visitors. **Realistic timeline:** months 6–12 for a brand-new domain, IF the content plan below ships consistently. Months 1–3 are about foundations and indexation, not traffic.
 
@@ -8,7 +8,7 @@
 
 ## 1. The honest constraint: affiliate sites and Google
 
-Google's site reputation and "thin affiliate" policies punish sites that only re-list partner inventory. TickedBus already re-renders HelloTickets data — that alone will NOT rank. Every indexable page must add something the partner page doesn't have:
+Google's site reputation and "thin affiliate" policies punish sites that only re-list partner inventory. TheTicketers already re-renders HelloTickets data — that alone will NOT rank. Every indexable page must add something the partner page doesn't have:
 
 - Comparison context ("Burj Khalifa 124/125 vs 148 vs Sky — which level is worth it")
 - Local logistics (best time slots, metro stop, dress code, Ramadan hours)
@@ -55,7 +55,7 @@ Auto-generate FAQ blocks (with FAQPage schema) from structured facts you already
 
 ## 4. E-E-A-T for an affiliate
 
-- About page: who runs TickedBus, why Dubai expertise (photos, real name or brand persona)
+- About page: who runs TheTicketers, why Dubai expertise (photos, real name or brand persona)
 - Visible "How we make money" disclosure page (you already have the footer line — make it a page, link it)
 - Author byline + bio on every guide
 - Last-updated dates on guides and price-bearing pages

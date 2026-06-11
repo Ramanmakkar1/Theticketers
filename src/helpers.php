@@ -84,7 +84,11 @@ function slug_map(): array
 function slug_lookup(string $type, string $slug): ?int
 {
     $id = slug_map()[$type][$slug] ?? null;
-    return is_numeric($id) && (int) $id > 0 ? (int) $id : null;
+    if (is_numeric($id) && (int) $id > 0) {
+        return (int) $id;
+    }
+    $fallback = seo_index()['maps'][$type][$slug] ?? null;
+    return is_numeric($fallback) && (int) $fallback > 0 ? (int) $fallback : null;
 }
 
 function &slug_pending(): array
@@ -190,7 +194,11 @@ function slug_for_id(string $type, int $id): ?string
 function venue_slug_lookup(string $slug): ?string
 {
     $id = slug_map()['venue'][$slug] ?? null;
-    return is_string($id) && $id !== '' ? $id : null;
+    if (is_string($id) && $id !== '') {
+        return $id;
+    }
+    $fallback = seo_index()['maps']['venue'][$slug] ?? null;
+    return is_string($fallback) && $fallback !== '' ? $fallback : null;
 }
 
 function venue_slug_remember(string $slug, string $tmId): void
@@ -203,6 +211,29 @@ function venue_slug_remember(string $slug, string $tmId): void
         return;
     }
     $pending['venue'][$slug] = $tmId;
+    register_shutdown_function('slug_map_flush');
+}
+
+function tm_artist_slug_lookup(string $slug): ?string
+{
+    $id = slug_map()['tm_artist'][$slug] ?? null;
+    if (is_string($id) && $id !== '') {
+        return $id;
+    }
+    $fallback = seo_index()['maps']['tm_artist'][$slug] ?? null;
+    return is_string($fallback) && $fallback !== '' ? $fallback : null;
+}
+
+function tm_artist_slug_remember(string $slug, string $tmId): void
+{
+    if ($tmId === '' || $slug === '' || $slug === 'tickets' || tm_artist_slug_lookup($slug) === $tmId) {
+        return;
+    }
+    $pending = &slug_pending();
+    if (($pending['tm_artist'][$slug] ?? '') === $tmId) {
+        return;
+    }
+    $pending['tm_artist'][$slug] = $tmId;
     register_shutdown_function('slug_map_flush');
 }
 
@@ -605,10 +636,11 @@ function request_currency(array $config): string
         return 'AED';
     }
 
-    if (preg_match('#^/events/this-weekend-in-([^/]+)$#', $path, $match) === 1
+    if (preg_match('#^/events/(?:today|this-week|this-weekend)-in-([^/]+)$#', $path, $match) === 1
         || preg_match('#^/city/([^/]+)$#', $path, $match) === 1
+        || preg_match('#^/city/([^/]+)/(?:concerts|sports|theatre|comedy)$#', $path, $match) === 1
         || preg_match('#^/artist/[^/]+/([^/]+)$#', $path, $match) === 1) {
-        // The trailing segment is the city for all three: weekend, city listing,
+        // The captured segment is the city for date, city/category, city listing,
         // and "{artist} in {city}". Price in that city's market currency.
         $cityId = resolve_city_id_by_slug($config, $match[1]) ?? legacy_id_from_slug($match[1]) ?? 0;
         $currency = $cityId > 0 ? currency_for_city_id($config, $cityId) : null;
@@ -824,6 +856,122 @@ function home_event_rails(HelloTicketsClient $client, array $config, int $cityId
     return $rails;
 }
 
+function city_intent_categories(): array
+{
+    return [
+        'concerts' => [
+            'label' => 'Concerts',
+            'singular' => 'concert',
+            'ht_category_ids' => [2],
+            'tm_classification_names' => ['Music'],
+        ],
+        'sports' => [
+            'label' => 'Sports',
+            'singular' => 'sports event',
+            'ht_category_ids' => [1],
+            'tm_classification_names' => ['Sports'],
+        ],
+        'theatre' => [
+            'label' => 'Theatre',
+            'singular' => 'theatre show',
+            'ht_category_ids' => [3],
+            'tm_classification_names' => ['Arts & Theatre'],
+        ],
+        'comedy' => [
+            'label' => 'Comedy',
+            'singular' => 'comedy show',
+            'ht_category_ids' => [],
+            'tm_classification_names' => ['Comedy'],
+        ],
+    ];
+}
+
+function city_date_label(string $dateKey): string
+{
+    [$from, $to] = date_bounds($dateKey);
+    return match ($dateKey) {
+        'today' => 'today, ' . $from->format('M j'),
+        'week' => 'this week, ' . $from->format('M j') . '-' . $to->format($from->format('M') === $to->format('M') ? 'j' : 'M j'),
+        'weekend' => 'this weekend, ' . $from->format('M j') . '-' . $to->format($from->format('M') === $to->format('M') ? 'j' : 'M j'),
+        default => 'upcoming',
+    };
+}
+
+function tm_local_start_range(string $dateKey): string
+{
+    [$from, $to] = date_bounds($dateKey);
+    return $from->format('Y-m-d\T00:00:00') . ',' . $to->format('Y-m-d\T23:59:59');
+}
+
+function city_date_events(HelloTicketsClient $client, array $config, int $cityId, string $dateKey, int $tmMaxPages = 2): array
+{
+    $city = city_for_id($cityId, $config);
+    $ht = api_result(static fn() => $client->performances(array_merge([
+        'limit' => 48,
+        'page' => 1,
+        'is_sellable' => 'true',
+        'city_id' => $cityId,
+    ], date_params($dateKey))), ['performances' => []])['performances'] ?? [];
+
+    $tm = tm_events_for_city_deep($config, (string) $city['name'], (string) ($city['country_code'] ?? ''), [
+        'localStartDateTime' => tm_local_start_range($dateKey),
+    ], $tmMaxPages, 100);
+
+    return city_event_pool($ht, $tm, $config);
+}
+
+function city_category_events(HelloTicketsClient $client, array $config, int $cityId, string $categorySlug, int $tmMaxPages = 2): array
+{
+    $categories = city_intent_categories();
+    if (!isset($categories[$categorySlug])) {
+        return [];
+    }
+
+    $city = city_for_id($cityId, $config);
+    $ht = [];
+    foreach ($categories[$categorySlug]['ht_category_ids'] as $categoryId) {
+        $data = api_result(static fn() => $client->performances(array_merge([
+            'limit' => 48,
+            'page' => 1,
+            'is_sellable' => 'true',
+            'city_id' => $cityId,
+            'category_id' => (int) $categoryId,
+        ], date_params(null))), ['performances' => []]);
+        $ht = array_merge($ht, $data['performances'] ?? []);
+    }
+
+    $tm = [];
+    foreach ($categories[$categorySlug]['tm_classification_names'] as $classificationName) {
+        $tm = array_merge($tm, tm_events_for_city_deep($config, (string) $city['name'], (string) ($city['country_code'] ?? ''), [
+            'classificationName' => $classificationName,
+        ], $tmMaxPages, 100));
+    }
+
+    return city_event_pool($ht, $tm, $config);
+}
+
+function seo_index_file(): string
+{
+    return __DIR__ . '/../storage/seo-index.json';
+}
+
+function seo_index(): array
+{
+    static $index = null;
+    if ($index === null) {
+        $file = seo_index_file();
+        $index = is_file($file) ? (json_decode((string) file_get_contents($file), true) ?: []) : [];
+    }
+    return $index;
+}
+
+function seo_index_urls(string $bucket): array
+{
+    $index = seo_index();
+    $urls = $index['urls'][$bucket] ?? [];
+    return is_array($urls) ? array_values(array_filter(array_map('strval', $urls))) : [];
+}
+
 /**
  * Clean descriptive event slug: name + city + date ("bad-bunny-san-juan-2026-07-18").
  * City and date make same-name shows (tours, repeat nights) unique without exposing
@@ -1005,9 +1153,25 @@ function weekend_path(array $city): string
     return '/events/this-weekend-in-' . slugify((string) ($city['name'] ?? 'city'));
 }
 
+function city_date_path(array $city, string $dateKey): string
+{
+    $slug = slugify((string) ($city['name'] ?? 'city'));
+    return match ($dateKey) {
+        'today' => '/events/today-in-' . $slug,
+        'week' => '/events/this-week-in-' . $slug,
+        'weekend' => '/events/this-weekend-in-' . $slug,
+        default => city_path($city),
+    };
+}
+
 function city_path(array $city): string
 {
     return '/city/' . slugify((string) $city['name']);
+}
+
+function city_category_path(array $city, string $categorySlug): string
+{
+    return city_path($city) . '/' . slugify($categorySlug);
 }
 
 function category_path(array $category): string
@@ -1450,7 +1614,19 @@ function merge_events_dedupe(array $primary, array $secondary): array
 /** ISO-3166 alpha-3 (our geo data) → alpha-2 (Ticketmaster's countryCode). */
 function tm_country_code(string $alpha3): string
 {
-    $map = ['USA' => 'US', 'CAN' => 'CA', 'GBR' => 'GB', 'ARE' => 'AE', 'ITA' => 'IT', 'ESP' => 'ES', 'FRA' => 'FR'];
+    $map = [
+        'USA' => 'US',
+        'CAN' => 'CA',
+        'GBR' => 'GB',
+        'ARE' => 'AE',
+        'ITA' => 'IT',
+        'ESP' => 'ES',
+        'FRA' => 'FR',
+        'NLD' => 'NL',
+        'DEU' => 'DE',
+        'PRT' => 'PT',
+        'AUS' => 'AU',
+    ];
     return $map[strtoupper($alpha3)] ?? '';
 }
 
@@ -1577,12 +1753,20 @@ function tm_artist_by_slug(array $config, string $slug): ?array
     if ($tm === null || $slug === '' || strlen($slug) > 90) {
         return null;
     }
+    $rememberedId = tm_artist_slug_lookup($slug);
+    if ($rememberedId !== null) {
+        $remembered = api_result(static fn() => $tm->attraction($rememberedId), []);
+        if (!empty($remembered['id'])) {
+            return $remembered;
+        }
+    }
     $raw = api_result(static fn() => $tm->attractions([
         'keyword' => str_replace('-', ' ', $slug),
         'size' => 5,
     ]), []);
     foreach ($raw['_embedded']['attractions'] ?? [] as $attraction) {
         if (slugify((string) ($attraction['name'] ?? '')) === $slug) {
+            tm_artist_slug_remember($slug, (string) ($attraction['id'] ?? ''));
             return $attraction;
         }
     }

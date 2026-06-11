@@ -57,6 +57,16 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
         return;
     }
 
+    if (preg_match('#^/events/(today|this-week)-in-([^/]+)$#', $path, $match)) {
+        $dateCityId = resolve_city_id_by_slug($config, $match[2]) ?? legacy_id_from_slug($match[2]);
+        if ($dateCityId === null) {
+            render_error_page($config, 404, 'City not found', 'We do not cover events for this city yet.');
+            return;
+        }
+        render_city_date_page($client, $config, $dateCityId, $match[1] === 'today' ? 'today' : 'week');
+        return;
+    }
+
     if ($path === '/events') {
         render_events_page($client, $config, active_city_id($config));
         return;
@@ -220,8 +230,28 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
         return;
     }
 
-    if ($path === '/sitemap.xml') {
-        render_sitemap($client, $config, $destinationsContent);
+    if ($path === '/ai-index.json') {
+        render_ai_index_json($config, $destinationsContent);
+        return;
+    }
+
+    if ($path === '/sitemap.xml' || $path === '/sitemap-index.xml') {
+        render_sitemap_index($config);
+        return;
+    }
+
+    if (preg_match('#^/sitemap-(static|events|artists|venues|cities)\.xml$#', $path, $match)) {
+        render_phase_one_sitemap($client, $config, $destinationsContent, $match[1]);
+        return;
+    }
+
+    if (preg_match('#^/city/([^/]+)/(concerts|sports|theatre|comedy)$#', $path, $match)) {
+        $cityId = resolve_city_id_by_slug($config, $match[1]) ?? legacy_id_from_slug($match[1]);
+        if ($cityId === null) {
+            render_error_page($config, 404, 'City not found', 'We do not have a tickets page for this city yet.');
+            return;
+        }
+        render_city_category_page($client, $config, $cityId, $match[2]);
         return;
     }
 
@@ -340,6 +370,8 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
     $canonical = $meta['canonical'] ?? absolute_url($config, current_path());
     $bodyClass = $meta['body_class'] ?? '';
     $q = search_query();
+    $robots = $meta['robots'] ?? 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
+    $schemaForOutput = schema_for_output($config, $schema, $robots);
 
     header('Content-Type: text/html; charset=utf-8');
     ?>
@@ -353,9 +385,7 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
     <?php endif; ?>
     <title><?= e($title) ?></title>
     <meta name="description" content="<?= e($description) ?>">
-    <?php if (!empty($meta['robots'])): ?>
-    <meta name="robots" content="<?= e($meta['robots']) ?>">
-    <?php endif; ?>
+    <meta name="robots" content="<?= e($robots) ?>">
     <?php if ($canonical !== ''): ?>
     <link rel="canonical" href="<?= e($canonical) ?>">
     <?php endif; ?>
@@ -386,8 +416,8 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
     <link rel="dns-prefetch" href="https://s1.ticketm.net">
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?= e(asset_url('/assets/styles.css')) ?>">
-    <?php if ($schema !== null): ?>
-    <script type="application/ld+json"><?= json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?></script>
+    <?php if ($schemaForOutput !== null): ?>
+    <script type="application/ld+json"><?= json_encode($schemaForOutput, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?></script>
     <?php endif; ?>
     <?php if (!empty($config['ga_measurement_id'])): $gaId = $config['ga_measurement_id']; ?>
     <!-- Google Analytics 4 (gtag.js) -->
@@ -414,7 +444,7 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
     <header class="site-header">
         <a class="brand" href="/" aria-label="<?= e($config['site_name']) ?> home">
             <img class="brand-mark" src="/assets/logo.svg" alt="" width="36" height="36">
-            <span class="brand-text"><span class="brand-the">The</span> <em>Ticketers</em></span>
+            <span class="brand-text"><span class="brand-the">The</span><em>Ticketers</em></span>
         </a>
         <div class="header-search">
             <form action="/search" method="get">
@@ -477,7 +507,7 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
                 <div class="footer-brand">
                     <a class="footer-logo" href="/">
                         <img class="footer-logo-mark" src="/assets/logo.svg" alt="" width="32" height="32">
-                        <span class="brand-the">The</span> <em>Ticketers</em>
+                        <span class="brand-the">The</span><em>Ticketers</em>
                     </a>
                     <p>Your guide to events, attractions and experiences in Dubai and top destinations worldwide — with live prices and secure partner checkout.</p>
                     <ul class="footer-trust">
@@ -1337,10 +1367,13 @@ function render_city_page(HelloTicketsClient $client, array $config, int $cityId
                 <p class="eyebrow"><?= e($city['country'] ?: 'Destination') ?></p>
                 <h1><?= e($city['name']) ?> tickets, events and attractions</h1>
                 <div class="filter-row inverse">
-                    <a href="/events?date=today">Today</a>
+                    <a href="<?= e(city_date_path($city, 'today')) ?>">Today</a>
+                    <a href="<?= e(city_date_path($city, 'week')) ?>">This Week</a>
                     <a href="<?= e(weekend_path($city)) ?>">This Weekend</a>
+                    <a href="<?= e(city_category_path($city, 'concerts')) ?>">Concerts</a>
+                    <a href="<?= e(city_category_path($city, 'sports')) ?>">Sports</a>
+                    <a href="<?= e(city_category_path($city, 'theatre')) ?>">Theatre</a>
                     <a href="/attractions">Attractions</a>
-                    <a href="/events">Events</a>
                 </div>
                 <?php if ($guidePath !== null): ?>
                     <p class="city-guide-link"><a href="<?= e($guidePath) ?>">Read the full <?= e($city['name']) ?> guide &rarr;</a></p>
@@ -1986,6 +2019,244 @@ function render_weekend_page(HelloTicketsClient $client, array $config, int $cit
         </section>
         <?php render_card_section('Things to Do in ' . $city['name'] . ' This Weekend', city_path($city), $weekendActivities, 'activity', $config, 'muted'); ?>
         <?php dubai_render_faq($faqs, 'This Weekend in ' . $city['name'] . ' — FAQs'); ?>
+        <?php
+    }, $schemaGraph);
+}
+
+function render_city_date_page(HelloTicketsClient $client, array $config, int $cityId, string $dateKey): void
+{
+    if (!in_array($dateKey, ['today', 'week'], true)) {
+        render_error_page($config, 404, 'Page not found', 'This event date page is not available.');
+        return;
+    }
+
+    $city = city_for_id($cityId, $config);
+    $canonicalPath = city_date_path($city, $dateKey);
+    if (current_path() !== $canonicalPath) {
+        redirect_permanent($canonicalPath);
+        return;
+    }
+
+    $page = page_number();
+    $perPage = 24;
+    $eventPool = city_date_events($client, $config, $cityId, $dateKey);
+    $total = count($eventPool);
+    $minRequired = $dateKey === 'today' ? 1 : 3;
+    if ($total < $minRequired) {
+        render_error_page($config, 404, 'No events found', 'There are not enough on-sale events in ' . $city['name'] . ' for this date page right now.');
+        return;
+    }
+    $events = array_slice($eventPool, ($page - 1) * $perPage, $perPage);
+    if ($events === [] && $page > 1) {
+        render_error_page($config, 404, 'Page not found', 'This page of events is not available.');
+        return;
+    }
+
+    $rangeLabel = city_date_label($dateKey);
+    $topNames = [];
+    $venues = [];
+    $minPrice = null;
+    $currency = (string) $config['currency'];
+    foreach ($eventPool as $event) {
+        $eventName = trim((string) ($event['name'] ?? ''));
+        if ($eventName !== '' && count($topNames) < 3 && !in_array($eventName, $topNames, true)) {
+            $topNames[] = $eventName;
+        }
+        $venue = trim((string) ($event['venue']['name'] ?? ''));
+        if ($venue !== '' && count($venues) < 6 && !in_array($venue, $venues, true)) {
+            $venues[] = $venue;
+        }
+        $price = (float) ($event['price_range']['min_price'] ?? 0);
+        if ($price > 0 && ($minPrice === null || $price < $minPrice)) {
+            $minPrice = $price;
+            $currency = (string) ($event['price_range']['currency'] ?? $currency);
+        }
+    }
+
+    $headline = $dateKey === 'today'
+        ? 'Events Today in ' . $city['name']
+        : 'Events This Week in ' . $city['name'];
+    $summary = 'There ' . ($total === 1 ? 'is 1 live event' : 'are ' . number_format($total) . ' live events')
+        . ' in ' . $city['name'] . ' ' . $rangeLabel
+        . ($topNames !== [] ? ', including ' . natural_join(array_slice($topNames, 0, 2)) : '')
+        . ($minPrice !== null ? ', with tickets from ' . money($minPrice, $currency) : '')
+        . '.';
+
+    $faqs = [
+        ['q' => 'What events are happening in ' . $city['name'] . ' ' . $rangeLabel . '?',
+         'a' => ($total === 1 ? '1 event is' : number_format($total) . ' events are') . ' on sale'
+            . ($topNames !== [] ? ', including ' . natural_join($topNames) : '') . '.'],
+    ];
+    if ($minPrice !== null) {
+        $faqs[] = ['q' => 'How much are tickets in ' . $city['name'] . ' ' . $rangeLabel . '?',
+            'a' => 'Tickets currently start from ' . money($minPrice, $currency) . '. Prices and availability are live from our ticketing partners.'];
+    }
+    if ($venues !== []) {
+        $faqs[] = ['q' => 'Which venues have events in ' . $city['name'] . '?',
+            'a' => 'Events are listed at ' . natural_join($venues) . '.'];
+    }
+    $faqs[] = ['q' => 'How often is this page updated?',
+        'a' => 'Dates, venues, prices and availability are refreshed from live partner inventory when the page loads.'];
+
+    $listSchema = item_list_schema($config, $events, 'event');
+    $schemaGraph = [
+        '@context' => 'https://schema.org',
+        '@graph' => array_values(array_filter([
+            $listSchema !== [] ? $listSchema : null,
+            dubai_faq_schema($faqs),
+            dubai_breadcrumb_schema($config, [
+                ['name' => 'Home', 'url' => absolute_url($config, '/')],
+                ['name' => $city['name'], 'url' => absolute_url($config, city_path($city))],
+                ['name' => $headline, 'url' => absolute_url($config, $canonicalPath)],
+            ]),
+        ])),
+    ];
+    foreach ($schemaGraph['@graph'] as &$node) {
+        unset($node['@context']);
+    }
+    unset($node);
+
+    $pageData = ['current_page' => $page, 'per_page' => $perPage, 'total_count' => $total];
+    render_layout($config, [
+        'title' => $headline . ' | ' . $config['site_name'],
+        'description' => $headline . ': ' . number_format($total) . ' live events with dates, venues and ticket prices' . ($minPrice !== null ? ' from ' . money($minPrice, $currency) : '') . '.',
+        'canonical' => absolute_url($config, $canonicalPath, array_filter(['page' => $page > 1 ? $page : null])),
+    ], function () use ($config, $city, $headline, $summary, $events, $pageData, $faqs): void {
+        ?>
+        <section class="listing-hero">
+            <div class="container">
+                <p class="eyebrow"><?= e($city['name']) ?></p>
+                <h1><?= e($headline) ?></h1>
+                <p class="listing-sub"><?= e($summary) ?></p>
+                <div class="filter-row inverse">
+                    <a href="<?= e(city_path($city)) ?>">All Events</a>
+                    <a href="<?= e(city_date_path($city, 'today')) ?>">Today</a>
+                    <a href="<?= e(city_date_path($city, 'week')) ?>">This Week</a>
+                    <a href="<?= e(weekend_path($city)) ?>">This Weekend</a>
+                </div>
+            </div>
+        </section>
+        <?php render_events_grid_section($headline, (string) $city['name'], $events, $pageData, $config); ?>
+        <?php dubai_render_faq($faqs, $headline . ' — FAQs'); ?>
+        <?php
+    }, $schemaGraph);
+}
+
+function render_city_category_page(HelloTicketsClient $client, array $config, int $cityId, string $categorySlug): void
+{
+    $categories = city_intent_categories();
+    if (!isset($categories[$categorySlug])) {
+        render_error_page($config, 404, 'Category not found', 'This city category page is not available.');
+        return;
+    }
+
+    $city = city_for_id($cityId, $config);
+    $canonicalPath = city_category_path($city, $categorySlug);
+    if (current_path() !== $canonicalPath) {
+        redirect_permanent($canonicalPath);
+        return;
+    }
+
+    $page = page_number();
+    $perPage = 24;
+    $eventPool = city_category_events($client, $config, $cityId, $categorySlug);
+    $total = count($eventPool);
+    if ($total < 3) {
+        render_error_page($config, 404, 'No events found', 'There are not enough on-sale ' . strtolower($categories[$categorySlug]['label']) . ' events in ' . $city['name'] . ' right now.');
+        return;
+    }
+    $events = array_slice($eventPool, ($page - 1) * $perPage, $perPage);
+    if ($events === [] && $page > 1) {
+        render_error_page($config, 404, 'Page not found', 'This page of events is not available.');
+        return;
+    }
+
+    $label = (string) $categories[$categorySlug]['label'];
+    $singular = (string) $categories[$categorySlug]['singular'];
+    $headline = $label . ' in ' . $city['name'];
+    $topNames = [];
+    $venues = [];
+    $minPrice = null;
+    $currency = (string) $config['currency'];
+    foreach ($eventPool as $event) {
+        $eventName = trim((string) ($event['name'] ?? ''));
+        if ($eventName !== '' && count($topNames) < 3 && !in_array($eventName, $topNames, true)) {
+            $topNames[] = $eventName;
+        }
+        $venue = trim((string) ($event['venue']['name'] ?? ''));
+        if ($venue !== '' && count($venues) < 6 && !in_array($venue, $venues, true)) {
+            $venues[] = $venue;
+        }
+        $price = (float) ($event['price_range']['min_price'] ?? 0);
+        if ($price > 0 && ($minPrice === null || $price < $minPrice)) {
+            $minPrice = $price;
+            $currency = (string) ($event['price_range']['currency'] ?? $currency);
+        }
+    }
+
+    $summary = 'There ' . ($total === 1 ? 'is 1 upcoming ' . $singular : 'are ' . number_format($total) . ' upcoming ' . strtolower($label) . ' events')
+        . ' in ' . $city['name']
+        . ($topNames !== [] ? ', including ' . natural_join(array_slice($topNames, 0, 2)) : '')
+        . ($minPrice !== null ? ', with tickets from ' . money($minPrice, $currency) : '')
+        . '.';
+
+    $faqs = [
+        ['q' => 'What ' . strtolower($label) . ' events are coming up in ' . $city['name'] . '?',
+         'a' => ($total === 1 ? '1 event is' : number_format($total) . ' events are') . ' currently on sale'
+            . ($topNames !== [] ? ', including ' . natural_join($topNames) : '') . '.'],
+    ];
+    if ($minPrice !== null) {
+        $faqs[] = ['q' => 'How much are ' . strtolower($label) . ' tickets in ' . $city['name'] . '?',
+            'a' => 'Tickets currently start from ' . money($minPrice, $currency) . '. Prices are live and can change by date, seat and demand.'];
+    }
+    if ($venues !== []) {
+        $faqs[] = ['q' => 'Where are ' . strtolower($label) . ' events held in ' . $city['name'] . '?',
+            'a' => 'Current listings include ' . natural_join($venues) . '.'];
+    }
+    $faqs[] = ['q' => 'Are these official ticket listings?',
+        'a' => 'Every listing links to checkout with an official ticketing partner. ' . $config['site_name'] . ' may earn a commission at no extra cost to you.'];
+
+    $listSchema = item_list_schema($config, $events, 'event');
+    $schemaGraph = [
+        '@context' => 'https://schema.org',
+        '@graph' => array_values(array_filter([
+            $listSchema !== [] ? $listSchema : null,
+            dubai_faq_schema($faqs),
+            dubai_breadcrumb_schema($config, [
+                ['name' => 'Home', 'url' => absolute_url($config, '/')],
+                ['name' => $city['name'], 'url' => absolute_url($config, city_path($city))],
+                ['name' => $label, 'url' => absolute_url($config, $canonicalPath)],
+            ]),
+        ])),
+    ];
+    foreach ($schemaGraph['@graph'] as &$node) {
+        unset($node['@context']);
+    }
+    unset($node);
+
+    $pageData = ['current_page' => $page, 'per_page' => $perPage, 'total_count' => $total];
+    render_layout($config, [
+        'title' => $headline . ' Tickets | ' . $config['site_name'],
+        'description' => $headline . ': ' . number_format($total) . ' upcoming events with dates, venues and live ticket prices' . ($minPrice !== null ? ' from ' . money($minPrice, $currency) : '') . '.',
+        'canonical' => absolute_url($config, $canonicalPath, array_filter(['page' => $page > 1 ? $page : null])),
+    ], function () use ($config, $city, $headline, $summary, $events, $pageData, $faqs): void {
+        $cityCategories = city_intent_categories();
+        ?>
+        <section class="listing-hero">
+            <div class="container">
+                <p class="eyebrow"><?= e($city['name']) ?></p>
+                <h1><?= e($headline) ?></h1>
+                <p class="listing-sub"><?= e($summary) ?></p>
+                <div class="filter-row inverse">
+                    <a href="<?= e(city_path($city)) ?>">All Events</a>
+                    <?php foreach ($cityCategories as $slug => $meta): ?>
+                        <a href="<?= e(city_category_path($city, $slug)) ?>"><?= e($meta['label']) ?></a>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </section>
+        <?php render_events_grid_section($headline, (string) $city['name'], $events, $pageData, $config); ?>
+        <?php dubai_render_faq($faqs, $headline . ' — FAQs'); ?>
         <?php
     }, $schemaGraph);
 }
@@ -2739,58 +3010,141 @@ function handle_outbound_redirect(array $config): void
     @file_put_contents($logDir . '/clicks.log', $logLine, FILE_APPEND | LOCK_EX);
 }
 
+function ai_crawler_user_agents(): array
+{
+    return [
+        'OAI-SearchBot',
+        'ChatGPT-User',
+        'GPTBot',
+        'ClaudeBot',
+        'Claude-SearchBot',
+        'Claude-User',
+        'anthropic-ai',
+        'PerplexityBot',
+        'Perplexity-User',
+        'Googlebot',
+        'GoogleOther',
+        'Google-Extended',
+        'Bingbot',
+        'Applebot',
+        'Applebot-Extended',
+        'meta-externalagent',
+        'FacebookBot',
+        'CCBot',
+        'Amazonbot',
+        'Bytespider',
+        'YouBot',
+        'cohere-ai',
+        'DuckAssistBot',
+        // Best-effort aliases for answer engines that have not published a
+        // stable crawler string, harmless if they never request the file.
+        'xAI-Bot',
+        'GrokBot',
+        'Grok',
+        'Twitterbot',
+    ];
+}
+
+function configured_market_names(array $config): array
+{
+    return array_values(array_filter(array_map(
+        static fn(array $m): string => trim((string) ($m['name'] ?? '')),
+        array_values($config['markets'] ?? [])
+    )));
+}
+
+function content_last_modified_date(): string
+{
+    $contentMtimes = array_filter([
+        @filemtime(__DIR__ . '/destinations-content.json') ?: null,
+        @filemtime(__DIR__ . '/dubai-content.php') ?: null,
+        @filemtime(__DIR__ . '/category-content.php') ?: null,
+        @filemtime(__FILE__) ?: null,
+    ]);
+
+    return $contentMtimes !== [] ? date('Y-m-d', max($contentMtimes)) : date('Y-m-d');
+}
+
 function render_robots(array $config): void
 {
     header('Content-Type: text/plain; charset=utf-8');
+    header('X-Robots-Tag: index, follow');
+
+    $rules = [
+        'Allow: /',
+        'Allow: /llms.txt',
+        'Allow: /ai-index.json',
+        'Allow: /sitemap.xml',
+        'Disallow: /go',
+    ];
+
+    echo "# TheTicketers crawler policy\n";
+    echo "# AI/search discovery: " . $config['site_url'] . "/llms.txt and " . $config['site_url'] . "/ai-index.json\n\n";
     echo "User-agent: *\n";
-    echo "Allow: /\n";
-    echo "Disallow: /go\n";
+    echo implode("\n", $rules) . "\n\n";
     // /search is intentionally crawlable: the page sends "noindex, follow", and
     // crawlers must be able to fetch it to see that. It also keeps the WebSite
     // SearchAction target in website_schema() pointing at a crawlable URL.
-    echo "\n";
-    // AI search & assistant crawlers are explicitly welcome — AI citations are a
-    // traffic channel for this site (see /llms.txt for a machine-readable summary).
-    foreach (['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-User', 'Claude-SearchBot', 'PerplexityBot', 'Perplexity-User', 'Google-Extended', 'GoogleOther', 'Applebot-Extended', 'meta-externalagent', 'CCBot'] as $bot) {
+
+    foreach (ai_crawler_user_agents() as $bot) {
         echo 'User-agent: ' . $bot . "\n";
-        echo "Allow: /\n";
-        echo "Disallow: /go\n\n";
+        echo implode("\n", $rules) . "\n\n";
     }
+
     echo 'Sitemap: ' . $config['site_url'] . "/sitemap.xml\n";
 }
 
 function render_llms_txt(HelloTicketsClient $client, array $config, array $destinationsContent): void
 {
     header('Content-Type: text/plain; charset=utf-8');
+    header('X-Robots-Tag: index, follow');
     $site = $config['site_url'];
     $name = $config['site_name'];
-
-    // Country list derived from config so this self-description can never go
-    // stale as markets launch (it previously claimed 6 countries when 10 were live).
-    $marketNames = natural_join(array_map(
-        static fn(array $m): string => (string) $m['name'],
-        array_values($config['markets'] ?? [])
-    ));
+    $marketNames = natural_join(configured_market_names($config));
+    $lastUpdated = content_last_modified_date();
+    $dubaiContent = file_exists(__DIR__ . '/dubai-content.php')
+        ? require __DIR__ . '/dubai-content.php'
+        : ['categories' => [], 'attractions' => []];
 
     echo '# ' . $name . "\n\n";
-    echo '> ' . $name . ' is a ticket discovery site for live events, concerts, sports, theatre, attractions and tours in Dubai, Abu Dhabi and 100+ cities across ' . $marketNames . ". Prices and availability are live from an official ticketing partner; checkout happens on the partner's secure site. Pages include live counts, starting prices, venues and FAQs that are safe to cite.\n\n";
+    echo '> ' . $name . ' is a ticket discovery site for live events, concerts, sports, theatre, attractions and tours in Dubai, Abu Dhabi and 100+ cities across ' . $marketNames . ". Prices and availability are live from official ticketing partners; checkout happens on the partner's secure site. Last editorial update: " . $lastUpdated . ".\n\n";
+
+    echo "## Discovery files\n\n";
+    echo '- [XML sitemap](' . $site . "/sitemap.xml): canonical URLs for crawl discovery\n";
+    echo '- [AI index JSON](' . $site . "/ai-index.json): compact machine-readable site summary\n";
+    echo '- [Robots policy](' . $site . "/robots.txt): crawler access rules\n\n";
+
+    echo "## What " . $name . " is safe to cite for\n\n";
+    echo "- Live event, concert, sports, theatre, attraction and tour discovery pages.\n";
+    echo "- Upcoming dates, venue names, city coverage, starting prices and availability when shown on a current page.\n";
+    echo "- Destination and attraction guides for Dubai, Abu Dhabi and major ticket markets.\n";
+    echo "- Affiliate disclosure: the site may earn commission; users complete booking and payment on partner sites.\n";
+    echo "- Important limitation: prices, dates and availability can change after a page is fetched, so cite the page URL and timestamp-sensitive details carefully.\n\n";
 
     echo "## Key pages\n\n";
-    echo '- [Dubai tickets & attractions](' . $site . "/dubai): editorial hub with 25+ attraction guides, prices and FAQs\n";
+    echo '- [Dubai tickets & attractions](' . $site . "/dubai): editorial hub with attraction guides, prices and FAQs\n";
     echo '- [Abu Dhabi tickets & attractions](' . $site . "/abu-dhabi)\n";
-    echo '- [Artists on tour](' . $site . "/artists): every artist with upcoming shows, dates, venues and starting prices\n";
+    echo '- [Artists on tour](' . $site . "/artists): artists with upcoming shows, dates, venues and starting prices\n";
     echo '- [All live events](' . $site . "/events)\n";
-    echo '- [All attractions & tours](' . $site . "/attractions)\n\n";
+    echo '- [All attractions & tours](' . $site . "/attractions)\n";
+    echo '- [Top venues](' . $site . "/venues)\n";
+    echo '- [Top sports teams](' . $site . "/teams)\n\n";
 
-    echo "## Countries\n\n";
+    echo "## Countries and cities\n\n";
     foreach (($destinationsContent['countries'] ?? []) as $slug => $country) {
-        echo '- [' . ($country['name'] ?? $slug) . ' tickets](' . $site . '/' . $slug . ")\n";
+        $cityNames = array_values(array_filter(array_map(
+            static fn(array $city): string => (string) ($city['name'] ?? ''),
+            array_slice($country['cities'] ?? [], 0, 8)
+        )));
+        $suffix = $cityNames !== [] ? ': includes ' . natural_join($cityNames) : '';
+        echo '- [' . ($country['name'] ?? $slug) . ' tickets](' . $site . '/' . $slug . ')' . $suffix . "\n";
     }
+
     echo "\n## Sports schedules\n\n";
     foreach (league_seed_list() as $league) {
         echo '- [' . $league['title'] . '](' . $site . '/' . $league['slug'] . '): ' . $league['lead'] . "\n";
     }
-    echo '- [Top sports teams](' . $site . "/teams): schedules and tickets for top NBA, NFL, MLB and NHL teams\n";
+    echo '- [Top sports teams](' . $site . "/teams): schedules and tickets for top NBA, NFL, MLB, NHL and MLS teams\n";
 
     echo "\n## Top venues\n\n";
     echo '- [All venues](' . $site . "/venues)\n";
@@ -2803,6 +3157,15 @@ function render_llms_txt(HelloTicketsClient $client, array $config, array $desti
         echo '- [' . $cat['h1'] . '](' . $site . '/category/' . $catSlug . ")\n";
     }
 
+    echo "\n## Dubai attraction guides\n\n";
+    foreach (array_slice($dubaiContent['attractions'] ?? [], 0, 12) as $attr) {
+        if (empty($attr['slug'])) {
+            continue;
+        }
+        $path = '/dubai/' . ($attr['category_slug'] ?? 'attractions') . '/' . $attr['slug'];
+        echo '- [' . ($attr['name'] ?? $attr['title'] ?? $attr['slug']) . '](' . $site . $path . ")\n";
+    }
+
     echo "\n## What's on this weekend\n\n";
     foreach ($config['market_cities'] as $city) {
         if (empty($city['featured'])) {
@@ -2810,9 +3173,293 @@ function render_llms_txt(HelloTicketsClient $client, array $config, array $desti
         }
         echo '- [Events this weekend in ' . $city['name'] . '](' . $site . weekend_path($city) . ")\n";
     }
-    echo "\n## About\n\n";
+
+    echo "\n## Data and attribution\n\n";
+    echo "- Event, attraction, price and availability data comes from ticketing partners including HelloTickets and Ticketmaster where configured.\n";
+    echo "- TheTicketers does not process payment, issue tickets or handle refunds; partner checkout terms apply.\n";
+    echo "- Prefer citing canonical page URLs from this site, not outbound /go redirect URLs.\n\n";
+
+    echo "## About\n\n";
     echo '- [About ' . $name . '](' . $site . "/about)\n";
     echo '- [How we make money](' . $site . "/how-we-make-money): affiliate model disclosure\n";
+    echo '- [Contact](' . $site . "/contact)\n";
+}
+
+function render_ai_index_json(array $config, array $destinationsContent): void
+{
+    header('Content-Type: application/json; charset=utf-8');
+    header('X-Robots-Tag: index, follow');
+
+    $site = $config['site_url'];
+    $dubaiContent = file_exists(__DIR__ . '/dubai-content.php')
+        ? require __DIR__ . '/dubai-content.php'
+        : ['categories' => [], 'attractions' => []];
+
+    $countries = [];
+    foreach (($destinationsContent['countries'] ?? []) as $slug => $country) {
+        $cities = [];
+        foreach (array_slice($country['cities'] ?? [], 0, 12) as $city) {
+            if (empty($city['slug'])) {
+                continue;
+            }
+            $cities[] = [
+                'name' => (string) ($city['name'] ?? $city['slug']),
+                'url' => $site . '/' . $slug . '/' . $city['slug'],
+            ];
+        }
+        $countries[] = [
+            'name' => (string) ($country['name'] ?? $slug),
+            'url' => $site . '/' . $slug,
+            'cities' => $cities,
+        ];
+    }
+
+    $featuredCities = [];
+    foreach ($config['market_cities'] as $city) {
+        if (empty($city['featured'])) {
+            continue;
+        }
+        $featuredCities[] = [
+            'name' => (string) ($city['name'] ?? ''),
+            'country' => (string) ($city['country'] ?? ''),
+            'events_url' => $site . city_path($city),
+            'weekend_url' => $site . weekend_path($city),
+        ];
+    }
+
+    $categories = [];
+    foreach (category_content() as $slug => $cat) {
+        $categories[] = [
+            'name' => (string) ($cat['h1'] ?? ucwords(str_replace('-', ' ', (string) $slug))),
+            'url' => $site . '/category/' . $slug,
+            'description' => (string) ($cat['meta_description'] ?? $cat['intro'] ?? ''),
+        ];
+    }
+
+    $dubaiGuides = [];
+    foreach (array_slice($dubaiContent['attractions'] ?? [], 0, 20) as $attr) {
+        if (empty($attr['slug'])) {
+            continue;
+        }
+        $dubaiGuides[] = [
+            'name' => (string) ($attr['name'] ?? $attr['title'] ?? $attr['slug']),
+            'url' => $site . '/dubai/' . ($attr['category_slug'] ?? 'attractions') . '/' . $attr['slug'],
+        ];
+    }
+
+    $payload = [
+        'schema_version' => 1,
+        'name' => $config['site_name'],
+        'url' => $site,
+        'last_updated' => content_last_modified_date(),
+        'primary_language' => 'en',
+        'description' => $config['site_name'] . ' is a ticket discovery site for live events, concerts, sports, theatre, attractions and tours with live partner prices and secure partner checkout.',
+        'entity_ids' => [
+            'website' => $site . '/#website',
+            'organization' => $site . '/#organization',
+        ],
+        'discovery' => [
+            'sitemap' => $site . '/sitemap.xml',
+            'llms_txt' => $site . '/llms.txt',
+            'robots_txt' => $site . '/robots.txt',
+        ],
+        'canonical_surfaces' => [
+            'home' => $site . '/',
+            'events' => $site . '/events',
+            'attractions' => $site . '/attractions',
+            'artists' => $site . '/artists',
+            'venues' => $site . '/venues',
+            'teams' => $site . '/teams',
+            'dubai' => $site . '/dubai',
+            'abu_dhabi' => $site . '/abu-dhabi',
+            'about' => $site . '/about',
+            'affiliate_disclosure' => $site . '/how-we-make-money',
+            'contact' => $site . '/contact',
+        ],
+        'coverage' => [
+            'markets' => configured_market_names($config),
+            'countries' => $countries,
+            'featured_cities' => array_slice($featuredCities, 0, 30),
+            'sports_leagues' => array_map(
+                static fn(array $league): array => [
+                    'name' => (string) ($league['name'] ?? ''),
+                    'url' => $site . '/' . $league['slug'],
+                    'description' => (string) ($league['lead'] ?? ''),
+                ],
+                league_seed_list()
+            ),
+            'top_venues' => array_map(
+                static fn(array $venue): array => [
+                    'name' => (string) ($venue[0] ?? ''),
+                    'city' => (string) ($venue[1] ?? ''),
+                    'url' => $site . '/venue/' . slugify((string) ($venue[0] ?? '')),
+                ],
+                venue_seed_list()
+            ),
+            'categories' => $categories,
+            'dubai_guides' => $dubaiGuides,
+        ],
+        'data_sources' => [
+            'HelloTickets for attractions, tours and international events where configured',
+            'Ticketmaster for North American sports, venues and arena tours where configured',
+        ],
+        'commercial_disclosure' => 'TheTicketers may earn affiliate commission when users buy through partner links. The user completes checkout, payment, delivery and support on the partner site.',
+        'citation_guidance' => [
+            'Use canonical TheTicketers URLs as citations.',
+            'Do not cite outbound /go redirect URLs as source pages.',
+            'Treat prices, dates and availability as time-sensitive partner data.',
+        ],
+    ];
+
+    echo json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+}
+
+function render_sitemap_index(array $config): void
+{
+    header('Content-Type: application/xml; charset=utf-8');
+    $lastmod = content_last_modified_date();
+    $sitemaps = [
+        '/sitemap-static.xml',
+        '/sitemap-events.xml',
+        '/sitemap-artists.xml',
+        '/sitemap-venues.xml',
+        '/sitemap-cities.xml',
+    ];
+
+    $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+    $xml .= "<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
+    foreach ($sitemaps as $path) {
+        $xml .= "  <sitemap><loc>" . e(absolute_url($config, $path)) . "</loc><lastmod>" . e($lastmod) . "</lastmod></sitemap>\n";
+    }
+    $xml .= "</sitemapindex>\n";
+    echo $xml;
+}
+
+function render_phase_one_sitemap(HelloTicketsClient $client, array $config, array $destinationsContent, string $bucket): void
+{
+    header('Content-Type: application/xml; charset=utf-8');
+    $entries = [];
+    $lastmod = (string) (seo_index()['generated_at'] ?? content_last_modified_date());
+    $add = static function (string $path, string $mod = '') use (&$entries, $config, $lastmod): void {
+        if ($path === '') {
+            return;
+        }
+        $loc = str_starts_with($path, 'http://') || str_starts_with($path, 'https://')
+            ? $path
+            : absolute_url($config, $path);
+        if (!isset($entries[$loc])) {
+            $entries[$loc] = $mod !== '' ? $mod : $lastmod;
+        }
+    };
+
+    if ($bucket === 'static') {
+        foreach (phase_one_static_sitemap_paths($client, $config, $destinationsContent) as $path => $mod) {
+            $add((string) $path, (string) $mod);
+        }
+    } elseif ($bucket === 'events') {
+        foreach (seo_index_urls('events') as $path) {
+            $add($path);
+        }
+    } elseif ($bucket === 'artists') {
+        foreach (array_merge(seo_index_urls('artists'), seo_index_urls('artist_cities')) as $path) {
+            $add($path);
+        }
+    } elseif ($bucket === 'venues') {
+        foreach (seo_index_urls('venues') as $path) {
+            $add($path);
+        }
+    } elseif ($bucket === 'cities') {
+        foreach (phase_one_city_sitemap_paths($config, $destinationsContent) as $path) {
+            $add($path);
+        }
+        foreach (array_merge(seo_index_urls('city_dates'), seo_index_urls('city_categories')) as $path) {
+            $add($path);
+        }
+    }
+
+    echo sitemap_xml_from_entries($entries);
+}
+
+function sitemap_xml_from_entries(array $entries): string
+{
+    $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+    $xml .= "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
+    foreach ($entries as $loc => $lastmod) {
+        $xml .= "  <url><loc>" . e($loc) . "</loc>"
+            . ($lastmod !== '' ? "<lastmod>" . e($lastmod) . "</lastmod>" : '')
+            . "</url>\n";
+    }
+    $xml .= "</urlset>\n";
+    return $xml;
+}
+
+function phase_one_static_sitemap_paths(HelloTicketsClient $client, array $config, array $destinationsContent): array
+{
+    $contentMod = content_last_modified_date();
+    $paths = ['/'=> ''];
+    foreach (['/events', '/attractions', '/artists', '/venues', '/teams', '/about', '/contact', '/how-we-make-money', '/privacy', '/terms', '/llms.txt', '/ai-index.json'] as $staticPath) {
+        $paths[$staticPath] = $contentMod;
+    }
+    foreach (league_seed_list() as $league) {
+        $paths['/' . $league['slug']] = '';
+    }
+    foreach (team_seed_list() as [$teamName]) {
+        $paths['/team/' . slugify($teamName)] = '';
+    }
+    foreach (venue_seed_list() as [$venueName]) {
+        $paths['/venue/' . slugify($venueName)] = '';
+    }
+
+    $dubaiContent = file_exists(__DIR__ . '/dubai-content.php')
+        ? require __DIR__ . '/dubai-content.php'
+        : ['categories' => [], 'attractions' => []];
+    $paths['/dubai'] = $contentMod;
+    $paths['/abu-dhabi'] = $contentMod;
+    foreach ($dubaiContent['categories'] ?? [] as $cat) {
+        if (!empty($cat['slug'])) {
+            $paths['/dubai/' . $cat['slug']] = $contentMod;
+        }
+    }
+    foreach ($dubaiContent['attractions'] ?? [] as $attr) {
+        if (!empty($attr['slug'])) {
+            $paths['/dubai/' . ($attr['category_slug'] ?? 'attractions') . '/' . $attr['slug']] = $contentMod;
+        }
+    }
+    foreach ($destinationsContent['countries'] ?? [] as $cSlug => $country) {
+        $paths['/' . $cSlug] = $contentMod;
+        foreach ($country['cities'] ?? [] as $hubCity) {
+            if (!empty($hubCity['slug'])) {
+                $paths['/' . $cSlug . '/' . $hubCity['slug']] = $contentMod;
+            }
+        }
+    }
+    foreach (array_keys(category_content()) as $catSlug) {
+        $paths['/category/' . $catSlug] = $contentMod;
+    }
+
+    return $paths;
+}
+
+function phase_one_city_sitemap_paths(array $config, array $destinationsContent): array
+{
+    $paths = [];
+    foreach (geo_cities() as $geoId => $geo) {
+        $gid = (int) $geoId;
+        if ($gid === 132 || $gid === 256 || !city_has_inventory($gid)) {
+            continue;
+        }
+        $city = ['id' => $gid, 'name' => (string) ($geo['name'] ?? '')];
+        if (destination_hub_path_for_city($destinationsContent, $gid) === null) {
+            $paths[] = city_path($city);
+        }
+        $paths[] = weekend_path($city);
+    }
+    foreach ($config['market_cities'] as $city) {
+        if (!empty($city['featured'])) {
+            $paths[] = weekend_path($city);
+        }
+    }
+    return array_values(array_unique($paths));
 }
 
 function render_sitemap(HelloTicketsClient $client, array $config, array $destinationsContent = []): void
@@ -2854,7 +3501,7 @@ function render_sitemap(HelloTicketsClient $client, array $config, array $destin
 
     // Home + evergreen static pages.
     $add('/');
-    foreach (['/events', '/attractions', '/artists', '/venues', '/teams', '/about', '/contact', '/how-we-make-money', '/privacy', '/terms'] as $staticPath) {
+    foreach (['/events', '/attractions', '/artists', '/venues', '/teams', '/about', '/contact', '/how-we-make-money', '/privacy', '/terms', '/llms.txt', '/ai-index.json'] as $staticPath) {
         $add($staticPath, $contentMod);
     }
 
@@ -3035,10 +3682,55 @@ function render_error_page(array $config, int $status, string $heading, string $
     });
 }
 
+function schema_for_output(array $config, ?array $schema, string $robots): ?array
+{
+    if (stripos($robots, 'noindex') !== false) {
+        return $schema;
+    }
+
+    return merge_schema_graphs(website_schema($config), $schema);
+}
+
+function merge_schema_graphs(array $base, ?array $schema): array
+{
+    $nodes = [];
+    $seenIds = [];
+    foreach (array_merge(schema_graph_nodes($base), $schema !== null ? schema_graph_nodes($schema) : []) as $node) {
+        if (!is_array($node) || $node === []) {
+            continue;
+        }
+        unset($node['@context']);
+        $id = is_string($node['@id'] ?? null) ? $node['@id'] : '';
+        if ($id !== '') {
+            if (isset($seenIds[$id])) {
+                continue;
+            }
+            $seenIds[$id] = true;
+        }
+        $nodes[] = $node;
+    }
+
+    return [
+        '@context' => 'https://schema.org',
+        '@graph' => $nodes,
+    ];
+}
+
+function schema_graph_nodes(array $schema): array
+{
+    if (isset($schema['@graph']) && is_array($schema['@graph'])) {
+        return $schema['@graph'];
+    }
+
+    return [$schema];
+}
+
 function website_schema(array $config): array
 {
     // WebSite + Organization in one graph — the Organization node is the entity
     // signal Google's knowledge graph and AI answer engines key brand facts off.
+    $marketNames = configured_market_names($config);
+
     return [
         '@context' => 'https://schema.org',
         '@graph' => [
@@ -3047,6 +3739,8 @@ function website_schema(array $config): array
                 '@id' => $config['site_url'] . '/#website',
                 'name' => $config['site_name'],
                 'url' => $config['site_url'],
+                'inLanguage' => 'en',
+                'description' => $config['site_name'] . ' helps people discover live events, concerts, sports, theatre, attractions and tours with live partner prices and secure partner checkout.',
                 'publisher' => ['@id' => $config['site_url'] . '/#organization'],
                 'potentialAction' => [
                     '@type' => 'SearchAction',
@@ -3075,6 +3769,21 @@ function website_schema(array $config): array
                 'parentOrganization' => [
                     '@type' => 'Organization',
                     'name' => 'Town Media Labs',
+                ],
+                'areaServed' => array_map(
+                    static fn(string $name): array => ['@type' => 'Country', 'name' => $name],
+                    $marketNames
+                ),
+                'knowsAbout' => [
+                    'event tickets',
+                    'concert tickets',
+                    'sports tickets',
+                    'theatre tickets',
+                    'Dubai attractions',
+                    'Abu Dhabi attractions',
+                    'artist tour dates',
+                    'venue event schedules',
+                    'ticket prices and availability',
                 ],
                 'description' => $config['site_name'] . ' is a ticket discovery site for live events, concerts, sports, theatre, attractions and tours worldwide. Prices and availability come live from official ticketing partners; checkout completes on the partner\'s secure site.',
             ],

@@ -1,4 +1,4 @@
-# Implementation Roadmap — TickedBus
+# Implementation Roadmap — TheTicketers
 
 ## Phase 0 — Pre-launch tech checklist (week 0)
 - [ ] Buy domain, HTTPS, set SITE_URL env

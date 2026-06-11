@@ -1,4 +1,4 @@
-# Pre-Launch SEO Audit — The Ticketers
+# Pre-Launch SEO Audit — TheTicketers
 **Date:** 2026-06-11 · **Method:** 6 parallel specialist audits (technical, schema, sitemap, content/E-E-A-T, GEO/AI-search, performance) against http://localhost:8000 + source review.
 **SEO Health Score: ~66/100** (technical 75 · content 60 · on-page 70 · schema 65 · performance 55 · AI-readiness 70 · images 50, per claude-seo weights). The fundamentals are genuinely strong — the score is dragged down by a handful of systematic, fixable issues.
 
@@ -58,7 +58,7 @@ On /nba (23/23), /events (12/13), /venue/msg (50/50), /team/knicks, /category/co
 /about: "every count, date and starting price … never from a static copy". But /dubai FAQ hard-codes "Aquaventure (AED 115)" while the live card on the same page says AED 110; "save 10-20% vs walk-up", "up to 50% off peak", "sunset slots cost AED 50-100 more" are unsourced. One editing pass: delete or live-source every static number in dubai-content.json / destinations-content.json FAQs.
 
 ### B9. Event/category metadata wastes the highest-intent templates
-- Event titles: "Def Leppard Tickets | The Ticketers" (35 chars — no city/venue/date; collides across same-performer events). Make it "Def Leppard Tickets — Coca-Cola Arena, Dubai, Aug 2, 2026 | The Ticketers".
+- Event titles: "Def Leppard Tickets | TheTicketers" (35 chars — no city/venue/date; collides across same-performer events). Make it "Def Leppard Tickets — Coca-Cola Arena, Dubai, Aug 2, 2026 | TheTicketers".
 - Team/category/venue titles run 67-70 chars (truncation). 
 - /category/concerts claims "across the US, Canada, the UK, Europe and the Middle East" but renders 11 Dubai-only results (session-city filter leaking into an indexable global page) — make indexable category pages city-neutral or honest about scope.
 
@@ -81,7 +81,7 @@ On /nba (23/23), /events (12/13), /venue/msg (50/50), /team/knicks, /category/co
 13. **HTML entities inside JSON-LD** ("Girls&#39;") — escape at template layer only, not in schema values.
 14. **Icons/logos:** apple-touch-icon is SVG (iOS ignores → blank tile; ship 180×180 PNG); Organization logo is SVG (provide PNG for schema).
 15. **AboutPage/ContactPage schema + Organization.contactPoint** on /about and /contact (currently zero JSON-LD — cheap E-E-A-T anchors).
-16. **Verify .md/seo/ blocking on the live host** (REDESIGN-SPEC.md still contains TicketSouq/TickedBus brand history; .htaccess blocks it on Apache — confirm prod actually enforces it).
+16. **Verify .md/seo/ blocking on the live host** (REDESIGN-SPEC.md still contains TicketSouq/TheTicketers brand history; .htaccess blocks it on Apache — confirm prod actually enforces it).
 17. **addressCountry** non-ISO ("United States Of America" vs "AE"); location.address as mangled flat strings ("13 5 Street , Dubai") instead of PostalAddress; SportsTeam `sport: "NBA"` should be "Basketball"; Event missing performer/organizer/endDate/description/offers.validFrom.
 
 ---

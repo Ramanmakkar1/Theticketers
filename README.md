@@ -1,4 +1,4 @@
-# TickedBus
+# TheTicketers
 
 A lightweight, server-rendered **PHP** ticket marketplace for Dubai events and attractions, powered by the HelloTickets Discovery API with Impact affiliate deep links. No framework, no Composer, no build step — upload and it runs on any PHP 8.1+ shared host.
 
@@ -12,14 +12,15 @@ A lightweight, server-rendered **PHP** ticket marketplace for Dubai events and a
 - HelloTickets API client with file caching and currency/locale headers.
 - Impact tracking redirect at `/go`, including click logging in `storage/clicks.log`.
 - Dynamic `sitemap.xml` and `robots.txt`, canonical URLs, Open Graph tags and JSON-LD schema.
+- Phase 1 programmatic SEO index (`storage/seo-index.json`) for expanded event, artist, artist-city, venue, city-date and city-category URLs, exposed through split sitemaps.
 
 ## Configuration
 
 Set these environment variables in production (sensible fallbacks are built into `src/config.php` so the site also works without them):
 
 ```bash
-SITE_NAME="TickedBus"
-SITE_URL="https://your-domain.com"
+SITE_NAME="TheTicketers"
+SITE_URL="https://TheTicketers.com"
 HELLOTICKETS_API_URL="https://api-live.hellotickets.com"
 HELLOTICKETS_PUBLIC_KEY="pub-bcaaca28-c7df-4fc1-9274-61a0f1439d13"
 HELLOTICKETS_CURRENCY="AED"
@@ -42,6 +43,17 @@ node preview-server.mjs   # http://127.0.0.1:8000
 ```
 
 The production site is the PHP code (`index.php` + `src/` + `assets/`); the preview server is never deployed.
+
+## SEO index
+
+Generate the expanded Phase 1 sitemap inventory after Ticketmaster keys are configured:
+
+```bash
+php bin/build-city-index.php
+php bin/build-seo-index.php
+```
+
+`/sitemap.xml` is a sitemap index that points to `/sitemap-static.xml`, `/sitemap-events.xml`, `/sitemap-artists.xml`, `/sitemap-venues.xml` and `/sitemap-cities.xml`.
 
 ## Deploy
 

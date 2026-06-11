@@ -1,4 +1,4 @@
-# TickedBus — Production Readiness Plan
+# TheTicketers — Production Readiness Plan
 
 Status: **plan only, nothing implemented** (per request, while a parallel Dubai-hub build is editing `pages.php` / `styles.css` / `app.js`).
 Author: diagnosis run against the **live HelloTickets API** and the **real PHP app** (PHP 8.3.14 now installed at `~/.local/bin/php`).

@@ -1,4 +1,4 @@
-# TickedBus — Aggregator SEO + Data Plan
+# TheTicketers — Aggregator SEO + Data Plan
 
 **Pivot:** from "Dubai affiliate" to a **global ticket-discovery aggregator** that ranks on
 artist / team / venue / event / attraction keywords by being **data-rich and always current**.

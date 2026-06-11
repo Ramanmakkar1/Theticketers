@@ -1,4 +1,4 @@
-# Site Structure — TickedBus
+# Site Structure — TheTicketers
 
 ## Current (already built)
 ```

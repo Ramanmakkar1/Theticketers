@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 $config = [
-    'site_name' => getenv('SITE_NAME') ?: 'The Ticketers',
+    'site_name' => getenv('SITE_NAME') ?: 'TheTicketers',
     'site_tagline' => 'Concerts, sports, theatre and attraction tickets',
     // SITE_URL env wins; otherwise derive from the live host so canonicals/sitemap/og
     // never silently ship as "localhost" on a shared host that can't set env vars.

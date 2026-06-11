@@ -1,4 +1,4 @@
-# Competitor Analysis — TickedBus
+# Competitor Analysis — TheTicketers
 
 ## Direct competitors (Dubai/UAE market)
 
