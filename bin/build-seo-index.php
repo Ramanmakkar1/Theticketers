@@ -12,8 +12,8 @@ declare(strict_types=1);
  *   php bin/build-seo-index.php
  *
  * Useful knobs:
- *   php bin/build-seo-index.php --events=1200 --artists=600 --cities=60
- *   php bin/build-seo-index.php --venues=500 --artist-cities=700
+ *   php bin/build-seo-index.php --events=3000 --artists=5000 --cities=75
+ *   php bin/build-seo-index.php --venues=1500 --artist-cities=5000
  */
 
 $root = dirname(__DIR__);
@@ -33,11 +33,11 @@ $opts = getopt('', [
     'quiet',
 ]);
 
-$eventLimit = max(0, (int) ($opts['events'] ?? 1200));
-$artistLimit = max(0, (int) ($opts['artists'] ?? 600));
-$cityLimit = max(1, (int) ($opts['cities'] ?? 60));
-$venueLimit = max(0, (int) ($opts['venues'] ?? 500));
-$artistCityLimit = max(0, (int) ($opts['artist-cities'] ?? 700));
+$eventLimit = max(0, (int) ($opts['events'] ?? 3000));
+$artistLimit = max(0, (int) ($opts['artists'] ?? 5000));
+$cityLimit = max(1, (int) ($opts['cities'] ?? 75));
+$venueLimit = max(0, (int) ($opts['venues'] ?? 1500));
+$artistCityLimit = max(0, (int) ($opts['artist-cities'] ?? 5000));
 $cityCategoryLimit = max(0, (int) ($opts['city-categories'] ?? 500));
 $quiet = isset($opts['quiet']);
 
@@ -144,7 +144,7 @@ $addEventEntities = static function (array $event) use (&$add, &$teamSlugs, &$kn
 // Local event detail pages: HelloTickets only. TM events currently resolve to the
 // partner URL, not a local /event/{slug} detail page.
 $say('Collecting HelloTickets event pages...');
-for ($page = 1; count($urls['events']) < $eventLimit && $page <= 80; $page++) {
+for ($page = 1; count($urls['events']) < $eventLimit && $page <= 150; $page++) {
     $data = api_result(static fn() => $client->performances(array_merge([
         'limit' => 48,
         'page' => $page,
@@ -170,7 +170,7 @@ $say('Events: ' . count($urls['events']));
 
 // Artist index from HelloTickets performer pages.
 $say('Collecting artist pages...');
-for ($page = 1; count($urls['artists']) < $artistLimit && $page <= 30; $page++) {
+for ($page = 1; count($urls['artists']) < $artistLimit && $page <= 120; $page++) {
     $data = api_result(static fn() => $client->performers([
         'limit' => 48,
         'page' => $page,
@@ -247,8 +247,8 @@ foreach ($cityTargets as $cityId => $city) {
         'is_sellable' => 'true',
         'city_id' => (int) $cityId,
     ], date_params(null))), ['performances' => []])['performances'] ?? [];
-    $tm = tm_events_for_city_deep($config, $cityName, (string) ($city['country_code'] ?? ''), [], 1, 100);
-    foreach (array_slice(city_event_pool($ht, $tm, $config), 0, 120) as $event) {
+    $tm = tm_events_for_city_deep($config, $cityName, (string) ($city['country_code'] ?? ''), [], 3, 100);
+    foreach (array_slice(city_event_pool($ht, $tm, $config), 0, 300) as $event) {
         $addEventEntities($event);
     }
 
@@ -256,7 +256,7 @@ foreach ($cityTargets as $cityId => $city) {
         $events = city_date_events($client, $config, (int) $cityId, (string) $dateKey, 1);
         if (count($events) >= $minEvents) {
             $add('city_dates', city_date_path($city, (string) $dateKey));
-            foreach (array_slice($events, 0, 80) as $event) {
+            foreach (array_slice($events, 0, 120) as $event) {
                 $addEventEntities($event);
             }
         }
@@ -269,7 +269,7 @@ foreach ($cityTargets as $cityId => $city) {
         $events = city_category_events($client, $config, (int) $cityId, $categorySlug, 1);
         if (count($events) >= 3) {
             $add('city_categories', city_category_path($city, $categorySlug), $cityCategoryLimit);
-            foreach (array_slice($events, 0, 80) as $event) {
+            foreach (array_slice($events, 0, 120) as $event) {
                 $addEventEntities($event);
             }
         }

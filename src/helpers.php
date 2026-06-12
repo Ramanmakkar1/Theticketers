@@ -154,8 +154,8 @@ function slug_map_flush(): void
             unset($disk[$type][$slug]); // re-insert at the end = most recently seen
             $disk[$type][$slug] = $id;
         }
-        if (count($disk[$type]) > 6000) {
-            $disk[$type] = array_slice($disk[$type], -6000, null, true);
+        if (count($disk[$type]) > 10000) {
+            $disk[$type] = array_slice($disk[$type], -10000, null, true);
         }
     }
     // Atomic replace (temp + rename) so readers never see a partial write and a

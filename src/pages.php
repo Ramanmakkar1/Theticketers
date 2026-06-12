@@ -240,7 +240,7 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
         return;
     }
 
-    if (preg_match('#^/sitemap-(static|events|artists|venues|cities)\.xml$#', $path, $match)) {
+    if (preg_match('#^/sitemap-(static|events|artists|artist-cities|venues|cities)\.xml$#', $path, $match)) {
         render_phase_one_sitemap($client, $config, $destinationsContent, $match[1]);
         return;
     }
@@ -383,6 +383,7 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
     <?php if (!empty($config['google_site_verification'])): ?>
     <meta name="google-site-verification" content="<?= e($config['google_site_verification']) ?>">
     <?php endif; ?>
+    <meta name="impact-site-verification" value="645f0225-2a09-4e6c-a50e-6e3e6e98a937">
     <title><?= e($title) ?></title>
     <meta name="description" content="<?= e($description) ?>">
     <meta name="robots" content="<?= e($robots) ?>">
@@ -3322,6 +3323,7 @@ function render_sitemap_index(array $config): void
         '/sitemap-static.xml',
         '/sitemap-events.xml',
         '/sitemap-artists.xml',
+        '/sitemap-artist-cities.xml',
         '/sitemap-venues.xml',
         '/sitemap-cities.xml',
     ];
@@ -3361,7 +3363,11 @@ function render_phase_one_sitemap(HelloTicketsClient $client, array $config, arr
             $add($path);
         }
     } elseif ($bucket === 'artists') {
-        foreach (array_merge(seo_index_urls('artists'), seo_index_urls('artist_cities')) as $path) {
+        foreach (seo_index_urls('artists') as $path) {
+            $add($path);
+        }
+    } elseif ($bucket === 'artist-cities') {
+        foreach (seo_index_urls('artist_cities') as $path) {
             $add($path);
         }
     } elseif ($bucket === 'venues') {
