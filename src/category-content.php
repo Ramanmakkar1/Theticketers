@@ -293,4 +293,350 @@ return [
              'a' => 'Many parks allow upgrades at guest services for the price difference, but the online multi-day rate is usually better than the gate upgrade rate. If there\'s any chance you\'ll return, the multi-day bundle bought upfront wins.'],
         ],
     ],
+
+    'festivals' => [
+        'h1' => 'Festival Tickets',
+        'meta_title' => 'Festival Tickets — Music, Cultural & Street Fairs',
+        'meta_description' => 'Tickets for music festivals, cultural celebrations and street fairs worldwide. Compare lineups, dates and live prices with secure instant booking.',
+        'intro' => [
+            'From multi-day camping festivals to single-afternoon street fairs, the festival calendar runs year-round across every continent. Whether it is a headline music festival with stadium-grade production or a neighbourhood cultural celebration built around food, art and local tradition, listings here show dates, tiers and live pricing so you can lock in your spot before the early-bird window closes.',
+            'Festival tickets almost always get more expensive as the event approaches — organisers price in waves, and the first wave can be half the final gate price. If you know the dates work, buying early is the single biggest saving; day passes versus full-weekend bundles are the next lever.',
+        ],
+        'links' => [
+            'Artists on tour' => '/artists',
+            'This weekend' => '/events?date=weekend',
+            'All events' => '/events',
+        ],
+        'faqs' => [
+            ['q' => 'When is the cheapest time to buy festival tickets?',
+             'a' => 'The first on-sale tier is almost always the cheapest — many festivals sell blind early-bird tickets before announcing the lineup. After that, prices step up with each release wave, and resale prices after sellout are typically well above face value.'],
+            ['q' => 'What is included with a festival ticket?',
+             'a' => 'A standard festival ticket covers general admission to all stages for the dates on the pass. Camping, parking, VIP areas and single-day access are usually separate add-ons — the listing here details exactly which tier you are buying.'],
+            ['q' => 'Can I get a refund if a festival headliner drops out?',
+             'a' => 'Lineup changes rarely trigger refunds because the ticket is for the event, not a specific act. If the entire event cancels, refunds are standard. Check the refund terms shown at checkout for the specific policy each organiser sets.'],
+        ],
+    ],
+
+    'family' => [
+        'h1' => 'Family Event Tickets',
+        'meta_title' => 'Family Tickets — Kids Shows, Days Out & Attractions',
+        'meta_description' => 'Family-friendly event tickets for kids shows, theme parks, zoos and interactive attractions. Compare live prices and book with instant confirmation.',
+        'intro' => [
+            'Plan the family day out: kids\' theatre, interactive science shows, zoo and aquarium entry, theme park passes, circus performances and seasonal events like holiday pantos and ice shows. Every listing states the recommended age range and what is included, so you know before you book whether a toddler goes free or needs a ticket.',
+            'Family pricing varies wildly — some attractions offer a bundled family ticket that undercuts four individual admissions, while others price children at a flat discount. Comparing those options here, where every listing shows live per-person and bundle prices side by side, takes the guesswork out of budgeting a day with the kids.',
+        ],
+        'links' => [
+            'Theme parks' => '/category/disneyland',
+            'Top venues' => '/venues',
+            'Dubai attractions' => '/dubai',
+        ],
+        'faqs' => [
+            ['q' => 'Are there discounts for children on event tickets?',
+             'a' => 'Most family-oriented events offer reduced child pricing, and many admit children under three or four for free. The age bands and any free-entry thresholds are stated on each listing so you can tally the real cost before checkout.'],
+            ['q' => 'How do I know if an event is suitable for young children?',
+             'a' => 'Listings include a recommended age range and any content advisories. Theatre and circus shows usually state a minimum age; outdoor attractions and interactive experiences tend to welcome all ages with supervised access for the smallest visitors.'],
+            ['q' => 'Can I buy a family bundle ticket online?',
+             'a' => 'Where an attraction offers a family bundle — typically two adults plus two or three children — it appears as a separate ticket type in the listing. Compare it against individual tickets for your actual group size; families of three sometimes do better buying singles.'],
+        ],
+    ],
+
+    'classical-music' => [
+        'h1' => 'Classical Music Tickets',
+        'meta_title' => 'Classical Music Tickets — Orchestra, Symphony & Recitals',
+        'meta_description' => 'Tickets for orchestras, symphonies and classical recitals at the world\'s finest concert halls. Compare programmes, seats and live prices.',
+        'intro' => [
+            'Hear the world\'s leading orchestras and soloists live: symphony cycles, chamber recitals, piano concerts and choral masterworks at concert halls from Carnegie and the Barbican to the Vienna Musikverein. Listings carry the programme, the performers and live seat-category prices so you can pick the right night and the right section.',
+            'Classical concerts reward flexible date-picking more than most genres. The same orchestra often performs the same programme across two or three evenings, and the midweek date routinely has better seat availability at the same price. Matinee and late-morning performances, common with Sunday series, are another route to premium halls at friendlier prices.',
+        ],
+        'links' => [
+            'New York concerts' => '/usa/new-york',
+            'London concerts' => '/uk/london',
+            'All artists' => '/artists',
+        ],
+        'faqs' => [
+            ['q' => 'What is the dress code for a classical concert?',
+             'a' => 'Smart casual is accepted at almost every concert hall today — jeans are fine, flip-flops are not. Opening nights and gala performances skew more formal, but there is no enforced code at standard subscription concerts.'],
+            ['q' => 'How far in advance should I book orchestra tickets?',
+             'a' => 'Subscription holders fill the best seats months ahead, but single tickets release later and good seats often remain for midweek performances. For star soloists and special programmes, two to four weeks ahead is a safe window.'],
+            ['q' => 'Are there cheaper seats at symphony concerts?',
+             'a' => 'Yes — most halls tier their pricing by section, and upper-tier or side seats are significantly cheaper than stalls centre. Acoustically, many regular concertgoers prefer the first balcony for orchestral works; the price difference makes experimenting easy.'],
+        ],
+    ],
+
+    'dance' => [
+        'h1' => 'Dance Show Tickets',
+        'meta_title' => 'Dance Tickets — Ballet, Contemporary & Dance Shows',
+        'meta_description' => 'Tickets for ballet, contemporary dance and spectacular dance shows worldwide. Compare performances, venues and live seat prices.',
+        'intro' => [
+            'From classical ballet at the Royal Opera House and Lincoln Center to contemporary dance, flamenco, Riverdance-style spectaculars and Bollywood stage shows, dance performances combine athleticism with storytelling in a way no other art form matches. Listings show the company, the programme, the venue and live seat prices across every price band.',
+            'Ballet runs in repertory seasons where the same company performs different works on alternate nights — Swan Lake on Friday, a contemporary triple bill on Saturday. Checking the specific programme date matters more here than in most theatre; the listing title names the work so you book the right night.',
+        ],
+        'links' => [
+            'London shows' => '/uk/london',
+            'New York shows' => '/usa/new-york',
+            'All events' => '/events',
+        ],
+        'faqs' => [
+            ['q' => 'What is the best seat for watching ballet?',
+             'a' => 'Centre stalls about ten rows back or the front of the first balcony give the best balance of proximity and sightlines for full-stage formations. Very front-row seats lose the overhead perspective that makes corps de ballet choreography spectacular.'],
+            ['q' => 'Are dance shows suitable for children?',
+             'a' => 'Story ballets like The Nutcracker and Sleeping Beauty are popular family outings, and most theatres admit children from around age five. Contemporary and evening-length abstract works suit older audiences; the listing notes age guidance where applicable.'],
+            ['q' => 'How long does a typical ballet performance last?',
+             'a' => 'Full-length story ballets run two and a half to three hours including intervals. Mixed bills and contemporary programmes are usually 90 minutes to two hours. The listing states the runtime so you can plan your evening.'],
+        ],
+    ],
+
+    'opera' => [
+        'h1' => 'Opera Tickets',
+        'meta_title' => 'Opera Tickets — World-Class Opera Performances',
+        'meta_description' => 'Opera tickets at the world\'s great opera houses. Compare cast, programme and live seat prices from La Scala to the Met and the Royal Opera House.',
+        'intro' => [
+            'Experience opera at the houses where it was born and where it thrives today: the Metropolitan Opera in New York, the Royal Opera House in London, La Scala in Milan, the Vienna State Opera and Sydney Opera House. Listings name the production, the principal cast and live seat prices from the gallery to the grand tier.',
+            'Opera pricing spans one of the widest ranges in live performance — the same night can cost a modest amount in the upper slips or a premium in the stalls. For newcomers, mid-priced seats in the amphitheatre or dress circle deliver strong sound and full-stage views without the front-row price tag.',
+        ],
+        'links' => [
+            'London opera' => '/uk/london',
+            'New York opera' => '/usa/new-york',
+            'Top venues' => '/venues',
+        ],
+        'faqs' => [
+            ['q' => 'Do opera performances have subtitles?',
+             'a' => 'Most major opera houses provide surtitles projected above the stage or individual seat-back screens with translations, even when the opera is sung in the local language. The listing or venue page notes the language of performance and surtitle availability.'],
+            ['q' => 'How long is a typical opera performance?',
+             'a' => 'Two and a half to four hours including intervals is the standard range — Wagner and some Verdi operas push past four hours. The runtime is stated on each listing so you can plan dinner before or after accordingly.'],
+            ['q' => 'What should I wear to the opera?',
+             'a' => 'Smart casual is the modern norm at most houses; opening nights and gala performances invite more formal attire but rarely enforce a dress code. Comfort matters — you will be seated for several hours — and there is no section-based dress expectation.'],
+        ],
+    ],
+
+    'jazz' => [
+        'h1' => 'Jazz Concert Tickets',
+        'meta_title' => 'Jazz Tickets — Concerts, Clubs & Jazz Festivals',
+        'meta_description' => 'Jazz concert tickets for club shows, festival stages and headline tours. Compare dates, venues and live prices with instant e-ticket delivery.',
+        'intro' => [
+            'Live jazz in every format: intimate club sets at legendary rooms like the Blue Note and Ronnie Scott\'s, outdoor festival stages, big-band theatre shows and touring headline acts. Listings show the artist, the venue capacity and live ticket prices, so you can weigh a 200-seat club experience against an arena date for the same artist.',
+            'Jazz clubs often run two sets per evening — an early and a late show — and the late set is frequently cheaper or easier to get into. Festival passes, meanwhile, follow the same early-bird logic as music festivals: the first release is the best price, and single-day passes let you cherry-pick the headliner night.',
+        ],
+        'links' => [
+            'Artists on tour' => '/artists',
+            'New York jazz' => '/usa/new-york',
+            'London jazz' => '/uk/london',
+        ],
+        'faqs' => [
+            ['q' => 'What is the difference between early and late jazz club sets?',
+             'a' => 'Early sets typically start around 7-8pm and late sets around 10-11pm, with the same artist often playing both. Late sets tend to be looser and more improvisational; early sets are easier to plan around dinner. Pricing and availability differ, so both appear as separate listings.'],
+            ['q' => 'Do jazz clubs have assigned seating?',
+             'a' => 'Some do, some operate on a first-come basis within a ticket tier. The listing states whether seats are assigned or general admission, and clubs with table service usually note the minimum spend per seat as well.'],
+            ['q' => 'Are jazz festival passes worth it over single-day tickets?',
+             'a' => 'If you plan to attend two or more days, a full pass almost always saves money. Single-day passes make sense when you only want one headliner night — compare the per-day cost of each option using the prices shown here.'],
+        ],
+    ],
+
+    'hip-hop' => [
+        'h1' => 'Hip-Hop & R&B Tickets',
+        'meta_title' => 'Hip-Hop & R&B Tickets — Concerts & Tours',
+        'meta_description' => 'Hip-hop and R&B concert tickets for headline tours, arena shows and festivals. Compare tour dates, venues and live prices with secure checkout.',
+        'intro' => [
+            'Tickets for hip-hop and R&B tours — from arena headliners and stadium world tours to club nights and festival slots. The genre drives some of the fastest-selling tours in music, and listings here update live so new dates appear the moment tickets drop, complete with venue, city and starting price.',
+            'Hip-hop tours often announce dates in waves, starting with major markets and adding second shows or new cities based on demand. Following an artist page here catches those additions automatically, which matters because added dates frequently price lower than the original on-sale that sold out in minutes.',
+        ],
+        'links' => [
+            'Artists on tour' => '/artists',
+            'All events' => '/events',
+            'Top venues' => '/venues',
+        ],
+        'faqs' => [
+            ['q' => 'Why do hip-hop concerts sell out so fast?',
+             'a' => 'High demand meets limited arena capacity, and presale codes absorb a large share of inventory before general on-sale. Setting up alerts on the artist page here is the best way to catch the exact on-sale moment, including any added second dates.'],
+            ['q' => 'Are floor or standing tickets available for hip-hop shows?',
+             'a' => 'Most arena hip-hop tours offer general-admission floor sections alongside seated tiers. The listing specifies whether floor is standing GA or reserved seating, and floor GA is usually the first section to sell out.'],
+            ['q' => 'Do hip-hop tours have opening acts?',
+             'a' => 'Nearly all headline tours carry support acts, often announced closer to the date. Door times are typically 90 minutes before the headliner, and the full running order appears on the event page once confirmed.'],
+        ],
+    ],
+
+    'rock' => [
+        'h1' => 'Rock & Alternative Tickets',
+        'meta_title' => 'Rock Tickets — Rock & Alternative Concerts',
+        'meta_description' => 'Rock and alternative concert tickets for arena tours, club shows and festivals. Compare dates, venues and live prices with instant e-tickets.',
+        'intro' => [
+            'From stadium rock and legacy reunion tours to indie club shows and punk all-dayers, rock and alternative music spans the widest venue range of any genre. Listings carry the tour name, support acts where announced, venue capacity and live ticket prices so you can decide between an intimate 500-cap room and a 20,000-seat arena show.',
+            'Rock tours reward early buying — first-wave general-admission and early-bird pricing undercut what the same seats cost a month later. For festivals, single-day passes let you target the headliner night, while full-weekend camping passes are where the per-day savings stack up.',
+        ],
+        'links' => [
+            'Artists on tour' => '/artists',
+            'This weekend' => '/events?date=weekend',
+            'Top venues' => '/venues',
+        ],
+        'faqs' => [
+            ['q' => 'Are standing or seated tickets better for a rock concert?',
+             'a' => 'Standing (GA floor or pit) puts you closest to the stage and in the energy of the crowd, but it means being on your feet for hours. Seated lower-bowl sections offer a good view with more comfort — the choice depends on how you like to experience a show.'],
+            ['q' => 'How early should I arrive for a general-admission rock show?',
+             'a' => 'For barrier spots, fans often queue hours before doors. For a comfortable spot in the middle of the floor, arriving at door time is usually enough. Club shows with smaller capacities fill faster than arena GA floors.'],
+            ['q' => 'Will the setlist be the same at every tour stop?',
+             'a' => 'Most rock tours run a fixed setlist with one or two rotating slots. Legacy acts and greatest-hits tours are especially consistent. Setlist-tracking sites confirm what was played at the previous few shows if you want to know in advance.'],
+        ],
+    ],
+
+    'country-music' => [
+        'h1' => 'Country Music Tickets',
+        'meta_title' => 'Country Music Tickets — Concerts & Festivals',
+        'meta_description' => 'Country music concert and festival tickets for stadium tours, honky-tonk shows and outdoor festivals. Live prices and instant booking confirmation.',
+        'intro' => [
+            'Tickets for country music in every format: stadium headliners, amphitheatre summer tours, honky-tonk club nights and multi-day outdoor festivals. Country tours lean heavily into the summer amphitheatre circuit, and those outdoor shows with lawn and pavilion seating offer a pricing spread that suits every budget.',
+            'Country festivals — CMA Fest, Stagecoach, Tortuga and their regional equivalents — pack dozens of acts across multiple days and stages. Weekend passes are the standard buy, but single-day passes target the headliner you care about most and often sell at less than half the full-weekend price.',
+        ],
+        'links' => [
+            'Artists on tour' => '/artists',
+            'Nashville events' => '/usa/nashville',
+            'All events' => '/events',
+        ],
+        'faqs' => [
+            ['q' => 'What is the difference between pavilion and lawn seats at an amphitheatre?',
+             'a' => 'Pavilion (or reserved) seats are covered, numbered and closer to the stage. Lawn is general admission on the grassy slope behind the pavilion — bring a blanket, the view is distant but the vibe is relaxed and the price is significantly lower.'],
+            ['q' => 'When do country music summer tours go on sale?',
+             'a' => 'Most summer amphitheatre tours announce in January through March with on-sale shortly after. Prices are lowest at first release; by summer, popular dates are sold out or resale-priced. Artist pages here flag the on-sale the moment tickets drop.'],
+            ['q' => 'Are country music festivals family-friendly?',
+             'a' => 'Many are — daytime stages, open-air settings and all-ages policies make large country festivals popular family outings. Check the event listing for age policies and any separate kids\' pricing or free-entry thresholds.'],
+        ],
+    ],
+
+    'electronic-music' => [
+        'h1' => 'Electronic Music Tickets',
+        'meta_title' => 'Electronic Music Tickets — EDM, Techno & House',
+        'meta_description' => 'EDM, techno and house music tickets for club nights, warehouse raves and mega-festivals. Compare lineups, live prices and book instantly.',
+        'intro' => [
+            'Tickets for electronic music across the spectrum: EDM mega-festivals, underground techno warehouse nights, Ibiza superclub residencies, house-music day parties and touring DJ arena shows. Listings name the headlining DJs, the venue type and live pricing tier by tier, from early-bird general admission to VIP table packages.',
+            'Electronic events use tiered release pricing more aggressively than any other genre — a first-release ticket can be a third of the final-release price for the same wristband. Buying the moment tickets drop is the single biggest money saver, and following the event or artist page here is the fastest way to catch that window.',
+        ],
+        'links' => [
+            'Artists on tour' => '/artists',
+            'Las Vegas events' => '/usa/las-vegas',
+            'Dubai nightlife' => '/dubai/nightlife',
+        ],
+        'faqs' => [
+            ['q' => 'What does VIP include at an electronic music event?',
+             'a' => 'VIP typically adds a dedicated viewing area, faster entry, premium bars and sometimes a raised deck or lounge. Table packages at superclubs include bottle service and reserved space. The exact inclusions vary by event and are listed on each ticket tier.'],
+            ['q' => 'How do tiered ticket releases work for EDM festivals?',
+             'a' => 'Organisers release tickets in numbered tiers — Tier 1 is cheapest, each subsequent tier costs more for the same access. Once a tier sells out, the next opens automatically. The current tier and its price are always shown live on the listing.'],
+            ['q' => 'Are electronic music events only at night?',
+             'a' => 'Not at all — day festivals, brunch parties and pool-party residencies in cities like Las Vegas and Dubai run from midday. Club events are typically late-night with doors opening at 10pm or later; the listing states the entry window clearly.'],
+        ],
+    ],
+
+    'boxing-and-mma' => [
+        'h1' => 'Boxing & MMA Tickets',
+        'meta_title' => 'Boxing & MMA Tickets — UFC, Title Fights & Cards',
+        'meta_description' => 'Boxing and MMA tickets for UFC numbered events, title fights and undercard shows. Compare seats, live prices and book with instant confirmation.',
+        'intro' => [
+            'Ringside to nosebleeds: tickets for UFC numbered events, Fight Night cards, world-title boxing bouts and regional MMA promotions. Combat sports pricing has one of the steepest gradients in live events — floor seats at a major card can run many times the upper-bowl price — so the seat map comparison on each listing is essential reading.',
+            'Fight cards are announced in stages: the main event first, then co-main and undercard bouts closer to the date. Buying on the initial on-sale secures the best seat selection at face value, while waiting means fewer options and secondary-market markups for the headline bouts.',
+        ],
+        'links' => [
+            'Las Vegas fights' => '/usa/las-vegas',
+            'All events' => '/events',
+            'Top venues' => '/venues',
+        ],
+        'faqs' => [
+            ['q' => 'When do UFC tickets go on sale?',
+             'a' => 'UFC tickets typically go on sale four to six weeks before the event, with a presale window for UFC newsletter subscribers a day or two earlier. Numbered PPV events sell fastest — setting an alert on the event page here catches the on-sale moment.'],
+            ['q' => 'What is the best section for watching a boxing match live?',
+             'a' => 'Lower-bowl sections directly facing the ring offer the best sightlines without the extreme cost of floor seats. Floor seats carry atmosphere and proximity but viewing angles can be obstructed by the ring apron from the first few rows.'],
+            ['q' => 'Do fight cards change after tickets go on sale?',
+             'a' => 'Yes — bout changes due to injury or weight-miss are common in combat sports and do not usually trigger refunds since the ticket is for the event card, not a single fight. The main event and co-main changes are announced on the event page as they happen.'],
+        ],
+    ],
+
+    'soccer' => [
+        'h1' => 'Soccer Tickets',
+        'meta_title' => 'Soccer Tickets — Premier League, La Liga & UCL',
+        'meta_description' => 'Soccer tickets for the Premier League, La Liga, Champions League and international matches. Compare fixtures, stadiums and live seat prices.',
+        'intro' => [
+            'Match tickets for the world\'s biggest football leagues and tournaments: the English Premier League, La Liga, Serie A, Bundesliga, MLS, Champions League nights and international friendlies. Each fixture shows the stadium, kick-off time and live seat-category prices so you can weigh a long-side lower tier against a corner upper for the same match.',
+            'European club football follows a September-to-May season, and Champions League knockout rounds from February onwards carry the steepest prices. Domestic league matches against mid-table opponents are where value seats live — same stadium, same atmosphere, a fraction of the derby-day price.',
+        ],
+        'links' => [
+            'London matches' => '/uk/london',
+            'Madrid matches' => '/spain/madrid',
+            'All events' => '/events',
+        ],
+        'faqs' => [
+            ['q' => 'How far ahead can I buy Premier League tickets?',
+             'a' => 'Fixtures are confirmed four to six weeks ahead, and tickets go on sale shortly after. High-demand derbies sell out within hours of release; mid-table fixtures remain available closer to match day. The fixture page here updates as soon as tickets are released.'],
+            ['q' => 'Can I buy tickets for Champions League matches as a neutral?',
+             'a' => 'Yes — neutral tickets for group-stage and knockout matches are available through our ticketing partners, separate from club member allocations. Availability is limited and drops fast for semi-finals and the final, so early booking is essential.'],
+            ['q' => 'Are away-section tickets available for league matches?',
+             'a' => 'Away allocations in most European leagues are reserved for club members and travelling supporters\' clubs. Neutral-admission tickets seat you in home sections; respect the home-fan etiquette and you will have no issues.'],
+        ],
+    ],
+
+    'tennis' => [
+        'h1' => 'Tennis Tickets',
+        'meta_title' => 'Tennis Tickets — Grand Slams & ATP/WTA Tours',
+        'meta_description' => 'Tennis tickets for Wimbledon, US Open, Roland Garros, Australian Open and ATP/WTA tour events. Compare sessions, courts and live prices.',
+        'intro' => [
+            'Tickets for the four Grand Slams — Wimbledon, the US Open, Roland Garros and the Australian Open — plus ATP Masters 1000 events, WTA finals and touring exhibition matches. Listings are split by session (day or night where applicable) and by court, with live pricing for each combination.',
+            'Grand Slam pricing hinges on two things: which court and which round. Early-round ground passes are the best-value way into a Slam — you see dozens of matches across the outer courts for a fraction of the centre-court price. Quarter-final and semi-final sessions on the show courts are where prices peak.',
+        ],
+        'links' => [
+            'London events' => '/uk/london',
+            'New York events' => '/usa/new-york',
+            'Paris events' => '/france/paris',
+        ],
+        'faqs' => [
+            ['q' => 'What is the difference between a ground pass and a show-court ticket?',
+             'a' => 'A ground pass admits you to all outer courts on unreserved seating — you can watch multiple matches by moving between courts. A show-court ticket gives you a reserved seat on Centre Court or the main stadium, usually for two or three scheduled matches.'],
+            ['q' => 'When do Grand Slam tickets go on sale?',
+             'a' => 'Timelines vary: the US Open sells from spring, Roland Garros from March, and Wimbledon runs a ballot months ahead with remaining tickets sold closer to the event. Our listings go live the moment tickets are available for each session.'],
+            ['q' => 'Are night sessions worth the premium at the US Open?',
+             'a' => 'Night sessions on Arthur Ashe feature the marquee match of the day under lights with a distinct atmosphere. They cost more than day sessions, but you are guaranteed a headline draw. Day sessions offer more total tennis across multiple courts for less.'],
+        ],
+    ],
+
+    'golf' => [
+        'h1' => 'Golf Tournament Tickets',
+        'meta_title' => 'Golf Tickets — PGA Tour, Majors & Experiences',
+        'meta_description' => 'Golf tickets for PGA Tour events, The Masters, The Open, US Open and Ryder Cup. Compare daily grounds passes and hospitality with live prices.',
+        'intro' => [
+            'Grounds passes and hospitality packages for golf\'s biggest tournaments: PGA Tour events, the four majors — The Masters, PGA Championship, US Open and The Open — plus the Ryder Cup, Presidents Cup and DP World Tour stops. Listings show the tournament day, ticket tier and live pricing from general grounds admission to clubhouse hospitality.',
+            'Golf ticketing works differently from most sports: grounds passes give you roaming access to every hole rather than a fixed seat, and the experience depends on where you choose to stand. Practice-round and early-week passes are dramatically cheaper than weekend final-round tickets for the same course.',
+        ],
+        'links' => [
+            'All events' => '/events',
+            'Top venues' => '/venues',
+            'Artists on tour' => '/artists',
+        ],
+        'faqs' => [
+            ['q' => 'What does a golf grounds pass actually include?',
+             'a' => 'General grounds admission lets you walk the course freely, follow any group and stand at any hole. You can camp behind the 18th green or roam all 18 — the pass covers the full course for the ticketed day. Food, drink and merchandise are purchased separately on-site.'],
+            ['q' => 'Are practice-round tickets worth buying?',
+             'a' => 'Practice rounds are the most relaxed way to experience a major venue — smaller crowds, players often interact with fans, and you can walk every hole easily. They cost a fraction of competition-round passes and are popular as a first-timer\'s introduction.'],
+            ['q' => 'What is the difference between grounds passes and hospitality?',
+             'a' => 'Grounds passes give course access on foot; hospitality adds a private pavilion or chalet with seating, food, drink and often an elevated viewing platform near a key hole. Hospitality is priced for corporate entertaining, while grounds passes are the standard fan ticket.'],
+        ],
+    ],
+
+    'motorsport' => [
+        'h1' => 'Motorsport Tickets',
+        'meta_title' => 'Motorsport Tickets — F1, NASCAR, IndyCar & MotoGP',
+        'meta_description' => 'Motorsport tickets for Formula 1, NASCAR, IndyCar and MotoGP. Compare grandstands, general admission and hospitality with live race-day prices.',
+        'intro' => [
+            'Race-day tickets for Formula 1 Grand Prix weekends, NASCAR Cup Series ovals, IndyCar street circuits and MotoGP rounds at tracks worldwide. Listings break out by day (practice, qualifying, race day), by grandstand or general admission zone and by hospitality tier, with live pricing for every combination.',
+            'Grandstand choice is everything in motorsport — the same race looks completely different from a hairpin grandstand versus a main-straight seat. General admission gives you roaming access to open hillsides and viewing zones at a lower price, and is the traditional way to experience a race weekend on a budget, especially for multi-day passes.',
+        ],
+        'links' => [
+            'All events' => '/events',
+            'Top venues' => '/venues',
+            'Dubai events' => '/dubai',
+        ],
+        'faqs' => [
+            ['q' => 'What is the best grandstand at a Formula 1 race?',
+             'a' => 'Grandstands at heavy braking zones and chicanes see the most overtaking — that is where the action concentrates. Main-straight stands offer start-line drama and pit-stop views. Each listing names the grandstand and its location on the circuit so you can match your priority to the seat.'],
+            ['q' => 'Is a three-day pass worth it or should I buy race day only?',
+             'a' => 'Race day carries the main event, but Friday practice and Saturday qualifying have their own appeal at much thinner crowds. A three-day pass typically costs less than double the race-day-only price, making the extra days good value if your schedule allows.'],
+            ['q' => 'What should I bring to a motorsport event?',
+             'a' => 'Ear protection is essential — race noise exceeds safe levels, especially at NASCAR ovals and MotoGP starts. Sun protection, comfortable shoes for the walk between grandstands and a portable seat cushion make a full race day far more comfortable.'],
+        ],
+    ],
+
 ];

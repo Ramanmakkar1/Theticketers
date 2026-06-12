@@ -82,6 +82,14 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
         return;
     }
 
+    // Artist INTENT pages ("{artist} ticket prices / tour dates / setlist").
+    // Matched before the artist×city route so these reserved intents never
+    // resolve as a city. Only curated artists render; others 404 in the handler.
+    if (preg_match('#^/artist/([^/]+)/(ticket-prices|tour-dates|setlist)$#', $path, $match)) {
+        render_artist_intent_page($client, $config, $match[1], $match[2]);
+        return;
+    }
+
     // Artist × city long-tail pages ("{artist} in {city}"). Matched before the
     // single-segment artist route and the country catch-all. The renderer 404s
     // unless the artist actually has an event in that city, so no thin pages.
@@ -2455,6 +2463,19 @@ function render_artist_detail_page(HelloTicketsClient $client, array $config, in
                 </div>
             </section>
         <?php endif; ?>
+        <?php $intentLinks = artist_intent_links(slugify($name), $name); ?>
+        <?php if ($intentLinks !== []): ?>
+            <section class="section-band">
+                <div class="container">
+                    <div class="section-heading"><h2><?= e($name) ?> Guides</h2></div>
+                    <ul class="more-cities-list">
+                        <?php foreach ($intentLinks as $intentSlug => $label): ?>
+                            <li><a href="<?= e(artist_path($performer) . '/' . $intentSlug) ?>"><?= e($label) ?></a></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </section>
+        <?php endif; ?>
         <?php dubai_render_faq($faqs, $name . ' Ticket FAQs'); ?>
         <?php
     }, $schemaGraph);
@@ -2618,6 +2639,255 @@ function render_artist_in_city_page(HelloTicketsClient $client, array $config, s
             </div>
         </section>
         <?php dubai_render_faq($faqs, $name . ' in ' . $cityName . ' — FAQs'); ?>
+        <?php
+    }, $schemaGraph);
+}
+
+/**
+ * An artist's full merged tour: HelloTickets first (own detail pages + higher
+ * commission), topped up from Ticketmaster for US-touring acts/teams HT covers
+ * thinly. Shared by the artist detail page and the artist-in-city pages so both
+ * see the same catalogue. $tmOnly is a pre-resolved TM attraction for artists HT
+ * doesn't know at all.
+ */
+function artist_intent_store(): array
+{
+    static $store = null;
+    if ($store === null) {
+        $store = file_exists(__DIR__ . '/artist-intent-content.php')
+            ? require __DIR__ . '/artist-intent-content.php'
+            : [];
+    }
+    return $store;
+}
+
+/** Curated intent links available for an artist slug, [intentSlug => label]. Empty
+ *  when the artist isn't curated, so the detail page only links pages that exist. */
+function artist_intent_links(string $slug, string $name): array
+{
+    $content = artist_intent_store()[$slug] ?? null;
+    if ($content === null) {
+        return [];
+    }
+    $links = [];
+    if (!empty($content['prices']))  { $links['ticket-prices'] = $name . ' Ticket Prices'; }
+    if (!empty($content['tour']))    { $links['tour-dates']    = $name . ' Tour Dates'; }
+    if (!empty($content['setlist'])) { $links['setlist']       = $name . ' Setlist'; }
+    return $links;
+}
+
+function render_artist_intent_page(HelloTicketsClient $client, array $config, string $artistSlug, string $intent): void
+{
+    $store = artist_intent_store();
+
+    $content = $store[$artistSlug] ?? null;
+    $section = $content[($intent === 'ticket-prices' ? 'prices' : ($intent === 'tour-dates' ? 'tour' : 'setlist'))] ?? null;
+    if ($content === null || $section === null) {
+        render_error_page($config, 404, 'Page not found', 'We do not have this guide for this artist yet.');
+        return;
+    }
+
+    $name = (string) ($content['name'] ?? ucwords(str_replace('-', ' ', $artistSlug)));
+    $artistHref = '/artist/' . $artistSlug;
+    $canonical = absolute_url($config, $artistHref . '/' . $intent);
+
+    // Resolve live data where we can — the page renders without it, but live cards
+    // and a live "from" price turn an informational visit into a sale.
+    $performer = null;
+    $events = [];
+    $performerId = resolve_artist_id($client, $artistSlug);
+    if ($performerId !== null) {
+        $performer = api_result(static fn() => $client->performer($performerId));
+        $events = artist_tour_events($client, $config, $performerId, $name);
+    } else {
+        $tmOnly = tm_artist_by_slug($config, $artistSlug);
+        if ($tmOnly !== null) {
+            $performer = tm_normalize_attraction($tmOnly);
+            $events = artist_tour_events($client, $config, 0, $name, $tmOnly);
+        }
+    }
+    $photo = $performer !== null ? mapped_image('performer', (int) ($performer['id'] ?? 0)) : null;
+
+    // Live minimum "from" price across the tour (drives the price page headline).
+    $liveMin = null; $liveCur = (string) $config['currency'];
+    foreach ($events as $ev) {
+        $p = (float) ($ev['price_range']['min_price'] ?? 0);
+        if ($p > 0 && ($liveMin === null || $p < $liveMin)) {
+            $liveMin = $p; $liveCur = (string) ($ev['price_range']['currency'] ?? $liveCur);
+        }
+    }
+
+    $faqs = $section['faqs'] ?? [];
+
+    // Per-intent <title>, meta description and H1.
+    if ($intent === 'ticket-prices') {
+        $low = (int) ($section['range_low'] ?? 0); $high = (int) ($section['range_high'] ?? 0);
+        $cur = (string) ($section['currency'] ?? 'USD');
+        $title = $name . ' Ticket Prices 2026 — How Much Do Tickets Cost? | ' . $config['site_name'];
+        $desc = 'How much are ' . $name . ' tickets? Prices typically run ' . money((float) $low, $cur) . '–' . money((float) $high, $cur) . ' by seat tier and city. See live "from" prices, tier breakdown and FAQs.';
+        $h1 = $name . ' Ticket Prices 2026';
+        $eyebrow = 'Price Guide · 2026';
+    } elseif ($intent === 'tour-dates') {
+        $tourName = trim((string) ($section['tour_name'] ?? ''));
+        $title = $name . ' Tour Dates 2026 — Tickets & Cities | ' . $config['site_name'];
+        $desc = $name . ' tour dates 2026' . ($tourName !== '' ? ' (' . $tourName . ')' : '') . ': every confirmed show with live ticket prices, venues and cities. New dates appear here the moment they go on sale.';
+        $h1 = $name . ' Tour Dates 2026';
+        $eyebrow = $tourName !== '' ? $tourName : 'Tour · 2026';
+    } else {
+        $title = $name . ' Setlist 2026 — Songs & What to Expect Live | ' . $config['site_name'];
+        $desc = $name . ' setlist 2026: the songs played on recent dates, how the show is structured and what to expect live, plus tickets for upcoming shows.';
+        $h1 = $name . ' Setlist 2026';
+        $eyebrow = 'Setlist · 2026';
+    }
+
+    // Schema: PerformingGroup + FAQPage + Breadcrumb (+ live Events on the tour page).
+    $artistNode = [
+        '@type' => ($content['genre'] ?? '') === 'Sports' ? 'SportsTeam' : 'PerformingGroup',
+        'name' => $name,
+        'url' => absolute_url($config, $artistHref),
+    ];
+    if ($intent === 'tour-dates' && $performer !== null && $events !== []) {
+        $full = artist_schema($config, $performer, $events);
+        unset($full['@context']);
+        $artistNode = $full;
+    }
+    $schemaGraph = [
+        '@context' => 'https://schema.org',
+        '@graph' => array_values(array_filter([
+            $artistNode,
+            $faqs !== [] ? dubai_faq_schema($faqs) : null,
+            dubai_breadcrumb_schema($config, [
+                ['name' => 'Home', 'url' => absolute_url($config, '/')],
+                ['name' => 'Artists', 'url' => absolute_url($config, '/artists')],
+                ['name' => $name, 'url' => absolute_url($config, $artistHref)],
+                ['name' => trim(str_replace($name, '', $h1)), 'url' => $canonical],
+            ]),
+        ])),
+    ];
+
+    render_layout($config, [
+        'title' => $title,
+        'description' => $desc,
+        'canonical' => $canonical,
+        'image' => $photo !== null ? absolute_image_url($config, $photo) : null,
+    ], function () use ($config, $content, $section, $intent, $name, $artistHref, $artistSlug, $h1, $eyebrow, $photo, $events, $liveMin, $liveCur, $faqs): void {
+        ?>
+        <nav class="crumbs" aria-label="Breadcrumb">
+            <div class="container">
+                <a href="/">Home</a> <span aria-hidden="true">›</span>
+                <a href="/artists">Artists</a> <span aria-hidden="true">›</span>
+                <a href="<?= e($artistHref) ?>"><?= e($name) ?></a> <span aria-hidden="true">›</span>
+                <span><?= e(trim(str_replace($name, '', $h1))) ?></span>
+            </div>
+        </nav>
+        <section class="listing-hero artist-hero">
+            <div class="container">
+                <div class="artist-hero__row">
+                    <?php if ($photo !== null): ?>
+                        <span class="artist-avatar artist-avatar--lg artist-avatar--img"><img src="<?= e($photo) ?>" alt="<?= e($name) ?>" loading="lazy"></span>
+                    <?php else: ?>
+                        <span class="artist-avatar artist-avatar--lg" aria-hidden="true"><?= e(artist_initials($name)) ?></span>
+                    <?php endif; ?>
+                    <div>
+                        <p class="eyebrow"><?= e($eyebrow) ?></p>
+                        <h1><?= e($h1) ?></h1>
+                        <?php if ($intent === 'ticket-prices'): ?>
+                            <div class="artist-hero__facts">
+                                <span>Typical range <?= e(money((float) ($section['range_low'] ?? 0), (string) ($section['currency'] ?? 'USD'))) ?>–<?= e(money((float) ($section['range_high'] ?? 0), (string) ($section['currency'] ?? 'USD'))) ?></span>
+                                <?php if ($liveMin !== null): ?><span>Live from <?= e(money($liveMin, $liveCur)) ?></span><?php endif; ?>
+                            </div>
+                        <?php elseif ($intent === 'tour-dates' && $events !== []): ?>
+                            <div class="artist-hero__facts">
+                                <span><?= e((string) count($events)) ?> show<?= count($events) === 1 ? '' : 's' ?> on sale</span>
+                                <?php if ($liveMin !== null): ?><span>From <?= e(money($liveMin, $liveCur)) ?></span><?php endif; ?>
+                            </div>
+                        <?php endif; ?>
+                        <?php if ($events !== []): ?>
+                            <a class="button-link artist-hero__cta" href="#tickets">See Tickets</a>
+                        <?php else: ?>
+                            <a class="button-link artist-hero__cta" href="<?= e($artistHref) ?>"><?= e($name) ?> Tickets</a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-band">
+            <div class="container article-body">
+                <?php foreach (($section['intro'] ?? []) as $para): ?>
+                    <p><?= e($para) ?></p>
+                <?php endforeach; ?>
+
+                <?php if ($intent === 'ticket-prices' && !empty($section['tiers'])): ?>
+                    <h2><?= e($name) ?> Ticket Tiers Explained</h2>
+                    <ul class="tier-list">
+                        <?php foreach ($section['tiers'] as $tier): ?>
+                            <li><strong><?= e($tier['name'] ?? '') ?>:</strong> <?= e($tier['desc'] ?? '') ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <?php if (!empty($section['why'])): ?>
+                        <h2>Why Do <?= e($name) ?> Ticket Prices Change?</h2>
+                        <p><?= e($section['why']) ?></p>
+                    <?php endif; ?>
+                <?php endif; ?>
+
+                <?php if ($intent === 'setlist'): ?>
+                    <?php if (!empty($section['songs'])): ?>
+                        <h2><?= e($name) ?> Setlist — Recent Shows</h2>
+                        <ol class="setlist">
+                            <?php foreach ($section['songs'] as $song): ?>
+                                <li><?= e($song) ?></li>
+                            <?php endforeach; ?>
+                        </ol>
+                    <?php endif; ?>
+                    <?php if (!empty($section['encore'])): ?>
+                        <h3>Encore</h3>
+                        <ol class="setlist setlist--encore">
+                            <?php foreach ($section['encore'] as $song): ?>
+                                <li><?= e($song) ?></li>
+                            <?php endforeach; ?>
+                        </ol>
+                    <?php endif; ?>
+                    <?php if (!empty($section['note'])): ?>
+                        <p class="muted-note"><?= e($section['note']) ?></p>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </div>
+        </section>
+
+        <?php if ($events !== []): ?>
+            <section class="section-band muted" id="tickets">
+                <div class="container">
+                    <div class="section-heading"><h2><?= e($name) ?> Tickets — On Sale Now</h2></div>
+                    <div class="card-grid">
+                        <?php foreach (array_slice($events, 0, 12) as $event): ?>
+                            <?= event_card($event, $config) ?>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </section>
+        <?php endif; ?>
+
+        <section class="section-band">
+            <div class="container">
+                <div class="section-heading"><h2>More on <?= e($name) ?></h2></div>
+                <ul class="more-cities-list">
+                    <?php
+                    $others = array_filter([
+                        'ticket-prices' => $intent !== 'ticket-prices' ? $name . ' Ticket Prices' : null,
+                        'tour-dates'    => $intent !== 'tour-dates' ? $name . ' Tour Dates' : null,
+                        'setlist'       => $intent !== 'setlist' ? $name . ' Setlist' : null,
+                    ]);
+                    foreach ($others as $slug => $label):
+                        if ($content[$slug === 'ticket-prices' ? 'prices' : ($slug === 'tour-dates' ? 'tour' : 'setlist')] ?? null): ?>
+                        <li><a href="<?= e($artistHref . '/' . $slug) ?>"><?= e($label) ?></a></li>
+                    <?php endif; endforeach; ?>
+                    <li><a href="<?= e($artistHref) ?>"><?= e($name) ?> — All Tickets &amp; Tour Dates</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <?php dubai_render_faq($faqs, $name . ' — Frequently Asked Questions'); ?>
         <?php
     }, $schemaGraph);
 }
@@ -3366,6 +3636,15 @@ function render_phase_one_sitemap(HelloTicketsClient $client, array $config, arr
     } elseif ($bucket === 'artists') {
         foreach (seo_index_urls('artists') as $path) {
             $add($path);
+        }
+        // Curated artist intent guides (ticket-prices / tour-dates / setlist) — only
+        // those that exist in the content store, so we never list a 404.
+        foreach (artist_intent_store() as $artistSlug => $entry) {
+            foreach (['prices' => 'ticket-prices', 'tour' => 'tour-dates', 'setlist' => 'setlist'] as $key => $intentSlug) {
+                if (!empty($entry[$key])) {
+                    $add('/artist/' . $artistSlug . '/' . $intentSlug);
+                }
+            }
         }
     } elseif ($bucket === 'artist-cities') {
         foreach (seo_index_urls('artist_cities') as $path) {
@@ -4253,12 +4532,19 @@ function render_league_page(array $config, string $slug): void
         'size' => 50,
     ]), []);
     $events = array_map('tm_normalize_event', $raw['_embedded']['events'] ?? []);
-    $total = (int) ($raw['page']['totalElements'] ?? count($events));
+    // INTEGRITY (REDESIGN-SPEC §5 / audit A2): the only count we may render is the
+    // number of games actually listed on the page. page.totalElements is the count
+    // across ALL Ticketmaster pages (often hundreds); we fetch & render at most 50,
+    // so using it produced a headline stat that didn't match the rendered rows.
+    $shown   = count($events);
+    $hasMore = (int) ($raw['page']['totalElements'] ?? $shown) > $shown;
 
     $direct = $events !== []
-        ? 'There ' . ($total === 1 ? 'is 1 upcoming ' : 'are ' . number_format($total) . ' upcoming ')
-            . $league['name'] . ' game' . ($total === 1 ? '' : 's')
-            . ' on sale right now. The full schedule with dates, arenas and ticket prices is below.'
+        ? 'There ' . ($shown === 1 ? 'is 1 upcoming ' : 'are ' . number_format($shown) . ' upcoming ')
+            . $league['name'] . ' game' . ($shown === 1 ? '' : 's')
+            . ($hasMore
+                ? ' listed below right now, with more dates released regularly. Each shows date, arena and live ticket prices.'
+                : ' on sale right now. The full schedule with dates, arenas and ticket prices is below.')
         : 'No on-sale ' . $league['name'] . ' games right now. New dates appear here as soon as tickets are released.';
 
     $nextGame = $events[0] ?? null;
@@ -4266,7 +4552,7 @@ function render_league_page(array $config, string $slug): void
         ? 'The next ' . $league['name'] . ' game on sale is ' . trim((string) ($nextGame['name'] ?? ''))
             . ' on ' . format_date_time($nextGame['start_date'] ?? [])
             . (!empty($nextGame['venue']['name']) ? ' at ' . $nextGame['venue']['name'] : '')
-            . '. ' . number_format($total) . ' game' . ($total === 1 ? ' is' : 's are') . ' listed on this page.'
+            . '. ' . number_format($shown) . ' game' . ($shown === 1 ? ' is' : 's are') . ' listed on this page.'
         : $direct;
 
     $faqs = [
@@ -4307,7 +4593,7 @@ function render_league_page(array $config, string $slug): void
         'title' => $league['title'] . ' | ' . $config['site_name'],
         'description' => $league['lead'] . ' Updated daily.',
         'canonical' => absolute_url($config, '/' . $league['slug']),
-    ], function () use ($league, $events, $total, $direct, $faqs, $config, $leagueTeams): void {
+    ], function () use ($league, $events, $shown, $direct, $faqs, $config, $leagueTeams): void {
         ?>
         <section class="listing-hero">
             <div class="container">
@@ -4327,7 +4613,7 @@ function render_league_page(array $config, string $slug): void
                 <?php else: ?>
                     <div class="section-heading">
                         <h2>Upcoming <?= e($league['name']) ?> Games</h2>
-                        <span class="muted"><?= e((string) $total) ?> on sale</span>
+                        <span class="muted"><?= e((string) $shown) ?> listed</span>
                     </div>
                     <div class="card-grid">
                         <?php foreach ($events as $event): ?>

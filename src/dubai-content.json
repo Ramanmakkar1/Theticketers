@@ -2570,6 +2570,846 @@
         "best_time": "Weekday mornings (10-11 AM) when the birds are most active during feeding and crowds are minimal",
         "location": "Dubai, UAE"
       }
+    },
+    {
+      "slug": "dubai-mall",
+      "category_slug": "landmarks",
+      "title": "The Dubai Mall — Shopping, Entertainment & Attractions Guide",
+      "meta_title": "Dubai Mall Guide & Tickets | TheTicketers",
+      "meta_description": "Plan your visit to The Dubai Mall — the world's largest shopping and entertainment destination with 1,200+ stores, aquarium, ice rink & more.",
+      "hero_image": "https://images.unsplash.com/photo-1614851099511-773084f6911d?auto=format&fit=crop&w=1200&q=80",
+      "intro": "The Dubai Mall is the world's largest shopping and entertainment destination by total area, spanning 13 million square feet with over 1,200 retail stores, 200 food and beverage outlets, and a constellation of world-class attractions under one roof. Located at the base of the Burj Khalifa in Downtown Dubai, it welcomed over 100 million visitors in 2023, making it the most-visited retail destination on the planet.\n\nBeyond shopping, the mall houses several standalone attractions that justify a visit even for non-shoppers. The Dubai Aquarium and Underwater Zoo occupies the ground floor with its record-breaking 10-million-litre tank. The Dubai Ice Rink offers Olympic-size skating sessions. KidZania lets children role-play 80+ professions in a miniature city. VR Park delivers virtual reality rides across two floors. The waterfront promenade opens onto Burj Khalifa Lake where the Dubai Fountain performs nightly, and direct access to the Burj Khalifa observation deck elevators is on the lower ground floor.\n\nThe mall's luxury wing, Fashion Avenue, houses 150+ high-end brands (Chanel, Dior, Louis Vuitton, Cartier) connected by a marble-and-gold corridor with its own valet entrance. The Souk section replicates a traditional Arabian market with artisan goods, perfumes, and gold jewellery. For dining, the waterfront restaurants along the Fountain promenade offer arguably the best casual dining views in the city.",
+      "highlights": [
+        "1,200+ stores across 13 million square feet — the world's largest mall",
+        "Home to Dubai Aquarium, Ice Rink, KidZania, and VR Park",
+        "Direct access to Burj Khalifa and the Dubai Fountain promenade",
+        "Fashion Avenue luxury wing with 150+ high-end designer brands"
+      ],
+      "tips": [
+        "The mall is enormous — download The Dubai Mall app for store navigation. Walking end-to-end takes 20-25 minutes without stopping.",
+        "Park at Cinema Parking or Grand Parking for the closest access to the Aquarium and Fountain promenade. Parking is free for the first 4 hours.",
+        "Visit the Fountain promenade restaurants (ground floor waterfront exit) at 7:30-8 PM to combine dinner with fountain show viewing every 30 minutes.",
+        "Tax-free shopping for tourists: spend AED 250+ at participating stores and claim a VAT refund (5%) at the airport using the Planet Tax Free kiosks in the mall."
+      ],
+      "faqs": [
+        {
+          "q": "What are The Dubai Mall opening hours?",
+          "a": "The mall is open Sunday to Wednesday 10 AM to midnight, and Thursday to Saturday 10 AM to 1 AM. Individual stores may close 30-60 minutes before the mall. Restaurants along the Fountain promenade stay open until midnight or later. The Aquarium and Ice Rink have their own operating hours within these windows."
+        },
+        {
+          "q": "How do I get to The Dubai Mall?",
+          "a": "The nearest metro station is Burj Khalifa/Dubai Mall (Red Line), connected by a 10-minute air-conditioned walkway. Taxis drop at the main entrance. The mall has 14,000 parking spaces across multiple levels — free for the first 4 hours on weekdays and weekends. Valet parking is available at Fashion Avenue and Grand Atrium entrances."
+        },
+        {
+          "q": "What attractions are inside The Dubai Mall?",
+          "a": "The mall houses Dubai Aquarium & Underwater Zoo (AED 135+), Dubai Ice Rink (AED 80+), KidZania (AED 135-185), VR Park (AED 100+), Reel Cinemas (22 screens including IMAX), Hysteria haunted attraction, and a 24-metre waterfall sculpture. The Dubai Fountain and Burj Khalifa are directly accessible from the mall's ground floor exits."
+        }
+      ],
+      "activity_ids": [],
+      "related": ["burj-khalifa", "aquarium", "fountain-show", "dubai-ice-rink"],
+      "name": "The Dubai Mall",
+      "short_name": "Dubai Mall",
+      "subtitle": "World's largest shopping destination",
+      "activity_count": "0 experiences",
+      "api_query": "Dubai Mall"
+    },
+    {
+      "slug": "palm-jumeirah",
+      "category_slug": "landmarks",
+      "title": "Palm Jumeirah — Tours, Beaches & Attractions on Dubai's Iconic Island",
+      "meta_title": "Palm Jumeirah Tours & Tickets | TheTicketers",
+      "meta_description": "Explore Palm Jumeirah with beach passes, monorail tours & Atlantis attractions. Book tours of Dubai's iconic palm-shaped island.",
+      "hero_image": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80",
+      "intro": "Palm Jumeirah is Dubai's most recognizable landmark from above — a man-made archipelago in the shape of a palm tree extending 5 km into the Arabian Gulf, visible from space and home to luxury hotels, private villas, beach clubs, and the iconic Atlantis resort at its tip. Built between 2001 and 2006 using 94 million cubic metres of sand dredged from the seabed, the Palm added 78 km of beachfront to Dubai's coastline and remains the largest artificial island in the world.\n\nThe best way to appreciate the Palm's scale is from above — helicopter tours from the Atlantis Helipad reveal the perfect palm-tree geometry, while the Palm Jumeirah Monorail (AED 30 return) runs a 5.4 km elevated track from Gateway Station on the trunk to Atlantis station at the crescent, offering continuous views of the fronds, beach villas, and the Dubai Marina skyline behind.\n\nAt the crescent's tip, Atlantis The Palm houses Aquaventure Waterpark (105 slides), the Lost Chambers Aquarium, and multiple celebrity-chef restaurants. The newer Atlantis The Royal (opened 2023) adds the world's highest infinity pool and Nobu, Dinner by Heston, and Jose Andres restaurants. Beach club day passes at venues like FIVE Palm Jumeirah, Rixos, and Club Vista Mare offer beachfront lounging, pools, and DJ sets for AED 150-400 per person.",
+      "highlights": [
+        "World's largest artificial island — a palm-tree shape visible from space",
+        "Atlantis The Palm with Aquaventure Waterpark and Lost Chambers",
+        "Palm Monorail with elevated views along the 5.4 km trunk",
+        "Premium beach clubs and celebrity-chef dining along the crescent"
+      ],
+      "tips": [
+        "The Palm Monorail (AED 30 return) connects to Nakheel Metro station via Gateway. It runs every 15 minutes and gives panoramic views — ride it even if you are not visiting Atlantis.",
+        "Beach club day passes (AED 150-400) typically include pool and beach access plus a food and drink credit. Book weekday passes for quieter pools and 20-30% lower prices.",
+        "The Pointe at Palm Jumeirah (at the trunk's base) has 80+ restaurants with Atlantis and fountain show views — a great free evening activity.",
+        "Sunset from the west-facing crescent beaches is spectacular. Time your visit for 5-6 PM in winter or 6:30-7:30 PM in summer."
+      ],
+      "faqs": [
+        {
+          "q": "How do I get to Palm Jumeirah?",
+          "a": "Take the Red Line metro to Nakheel station, then transfer to the Palm Monorail (AED 30 return) which runs along the trunk to Atlantis. Taxis and ride-shares drive along the trunk road directly. If visiting The Pointe or beach clubs on the trunk, the monorail is not needed — taxis drop directly. Free parking is available at most destinations."
+        },
+        {
+          "q": "Can I visit Palm Jumeirah beaches for free?",
+          "a": "The public beach at the end of each frond is technically accessible, but most waterfront is occupied by private residences or hotel beaches. The best free beach access is at the small public stretch near Al Ittihad Park on the trunk. For guaranteed quality beach access, book a day pass at a beach club (AED 150-400) which includes loungers, parasols, pool access, and food credit."
+        },
+        {
+          "q": "What is there to do on Palm Jumeirah besides Atlantis?",
+          "a": "The Pointe promenade has 80+ dining options and a record-breaking palm fountain show. Nakheel Mall houses a Trampo Extreme trampoline park and cinema. Beach clubs at FIVE, Rixos, W Dubai, and Club Vista Mare offer pool day-pass experiences. Water sports operators along the crescent offer jet skis, parasailing, and kayak rentals. The View at The Palm observation deck (Level 52 of The Palm Tower) offers 360-degree island views for AED 100."
+        }
+      ],
+      "activity_ids": [],
+      "related": ["aquaventure-waterpark", "helicopter-tour-dubai", "cruises", "jet-ski"],
+      "name": "Palm Jumeirah",
+      "short_name": "Palm Jumeirah",
+      "subtitle": "Dubai's iconic palm-shaped island",
+      "activity_count": "0 experiences",
+      "api_query": "Palm Jumeirah"
+    },
+    {
+      "slug": "dubai-marina",
+      "category_slug": "cruises",
+      "title": "Dubai Marina — Walk, Boat Tours & Waterfront Dining",
+      "meta_title": "Dubai Marina Tours & Cruises | TheTicketers",
+      "meta_description": "Explore Dubai Marina with boat tours, dhow cruises & waterfront dining. Walk the 7 km promenade past 200+ skyscrapers and yachts.",
+      "hero_image": "https://images.unsplash.com/photo-1512632578888-169bbfe07284?auto=format&fit=crop&w=1200&q=80",
+      "intro": "Dubai Marina is a purpose-built canal city carved from the desert, lined with over 200 skyscrapers, a 7 km waterfront promenade, and a forest of luxury yachts moored in the man-made harbour. Built along a 3 km stretch of shoreline between the Gulf coast and Sheikh Zayed Road, the Marina district is home to 150,000 residents and has become one of Dubai's most vibrant neighbourhoods for dining, nightlife, and water-based activities.\n\nMarina Walk, the pedestrian promenade encircling the harbour, connects JBR (Jumeirah Beach Residence) at one end to DMCC metro station at the other, with hundreds of cafes, restaurants, and water sport operators lining the route. Boat tours depart every 30-60 minutes from multiple jetties — options include 60-minute sightseeing cruises (AED 79-129), 2-hour dhow dinner cruises (AED 149-249), speed boat tours (AED 150-200 for 30 minutes), and luxury yacht charters. The architectural landmarks include the twisted Cayan Tower (90-degree rotation over 75 floors), the Princess Tower (once the world's tallest residential building at 414m), and the Ain Dubai observation wheel (250m tall, currently under maintenance).\n\nFor the best free experience, walk the Marina at sunset when the glass towers catch golden light and the promenade fills with joggers, buskers, and outdoor diners. The area is fully pedestrianized along the waterfront and connects to JBR's The Walk and The Beach mall via elevated walkways.",
+      "highlights": [
+        "7 km waterfront promenade lined with restaurants and yacht berths",
+        "Sightseeing cruises, dhow dinners, and speed boat tours departing hourly",
+        "Iconic twisted Cayan Tower and 200+ illuminated skyscrapers",
+        "Connected to JBR Beach and Ain Dubai via pedestrian walkways"
+      ],
+      "tips": [
+        "Walk from DMCC metro station to JBR at sunset (5:30-7 PM in winter) for the most atmospheric promenade experience — the golden light on glass towers is spectacular.",
+        "Speed boat tours (AED 150-200 for 30 min) are the best-value water activity — they cover Marina, Palm Jumeirah, and Burj Al Arab in one fast loop.",
+        "For dining, book a waterside table at Pier 7 (seven restaurants stacked over seven floors) or the Marina Walk restaurants facing the yacht harbour.",
+        "The Marina tram runs along the waterfront connecting to JBR and connects to the Red Line metro at DMCC and Sobha Realty stations — useful for longer distances."
+      ],
+      "faqs": [
+        {
+          "q": "How do I get to Dubai Marina?",
+          "a": "The easiest access is DMCC metro station (Red Line), which exits directly onto Marina Walk. Alternatively, Sobha Realty station (Red Line) serves the JBR end. The Marina Tram connects the two stations along the waterfront. Taxis from Downtown Dubai take 15-20 minutes (AED 40-60). Free parking is limited — use the paid garages at JBR or Marina Mall."
+        },
+        {
+          "q": "What boat tours are available from Dubai Marina?",
+          "a": "Options include: 60-minute sightseeing boats (AED 79-129, daytime), 2-hour dhow dinner cruises (AED 149-249, evening), 90-minute speed boat tours (AED 150-200), yacht charters (AED 500-3,000+ per hour), and RIB boat adventures (AED 200-350). Most depart from Marina Walk or Marina Mall jetties. Evening cruises should be booked in advance; daytime boats accept walk-ups."
+        },
+        {
+          "q": "Is Dubai Marina worth visiting at night?",
+          "a": "Absolutely — Dubai Marina is arguably at its best after dark. The 200+ towers illuminate with LED displays, the yacht harbour reflects city lights on the water, and the promenade fills with evening diners and performers. The walk from Marina Mall to JBR takes 30-40 minutes and passes the most photogenic section of the skyline."
+        }
+      ],
+      "activity_ids": [],
+      "related": ["cruises", "yacht-dinner-cruise-dubai-marina", "xline-dubai-marina-zipline", "jet-ski"],
+      "name": "Dubai Marina",
+      "short_name": "Dubai Marina",
+      "subtitle": "Waterfront walks & boat tours",
+      "activity_count": "0 experiences",
+      "api_query": "Dubai Marina"
+    },
+    {
+      "slug": "global-village",
+      "category_slug": "theme-parks",
+      "title": "Global Village Dubai — Seasonal Cultural Theme Park",
+      "meta_title": "Global Village Dubai Tickets | TheTicketers",
+      "meta_description": "Book Global Village Dubai tickets for Season 29. 90+ pavilions, rides, shows & street food from 80 countries. Open October to April.",
+      "hero_image": "https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=1200&q=80",
+      "intro": "Global Village is Dubai's largest open-air cultural and entertainment destination, operating seasonally from late October to late April each year. Spread across 1.6 million square metres in Dubailand, the park features over 90 pavilions representing 80+ countries, each selling authentic handicrafts, food, and products from their home nations. It is the only place in the UAE where you can buy Turkish ceramics, Indian textiles, Moroccan leather goods, and Japanese street food within a single evening stroll.\n\nBeyond shopping, Global Village packs in a carnival midway with 40+ rides (including a Ferris wheel, roller coasters, and bumper cars), nightly stage shows from international dance troupes, firework displays on weekends, and a dedicated entertainment zone with stunt shows, magic performances, and cultural presentations. The food scene is the real draw for many visitors — over 200 food kiosks sell everything from Turkish ice cream and Egyptian koshari to Filipino halo-halo and Brazilian churros, with most items priced at AED 10-30.\n\nSeason 29 (2024-2025) attracted over 10 million visitors, making it one of the highest-attendance seasonal events in the world. Entry is deliberately affordable at AED 25 per person, with the business model relying on in-park spending. The park opens at 4 PM on weekdays and stays open until midnight (1 AM on weekends), making it an excellent evening activity when Dubai's outdoor temperatures become comfortable.",
+      "highlights": [
+        "90+ country pavilions with authentic crafts, products & street food",
+        "40+ carnival rides including a Ferris wheel and roller coasters",
+        "Nightly cultural shows, stunt performances & weekend fireworks",
+        "Open October to April — 4 PM to midnight daily"
+      ],
+      "tips": [
+        "Visit on Tuesday or Wednesday evenings for the smallest crowds. Thursday and Friday nights (especially after 8 PM) are extremely crowded with 2-hour traffic jams at entry.",
+        "Entry is just AED 25, but bring AED 100-200 cash per person for food and shopping — card acceptance is inconsistent at smaller kiosks.",
+        "Start at the back of the park and work forward. Most visitors enter and crowd the front pavilions first, leaving the rear sections empty until 8-9 PM.",
+        "The park closes in late April and reopens in late October. Check exact dates each season as they shift by 1-2 weeks annually."
+      ],
+      "faqs": [
+        {
+          "q": "When is Global Village open in Dubai?",
+          "a": "Global Village operates seasonally from late October to late April each year (approximately 6 months). Opening hours are 4 PM to midnight Sunday to Wednesday, and 4 PM to 1 AM Thursday to Saturday. The park is closed during summer months (May-September). Entry tickets cost AED 25 per person; children under 3 enter free."
+        },
+        {
+          "q": "How do I get to Global Village?",
+          "a": "Global Village is in Dubailand, approximately 30-40 minutes from Downtown Dubai by car. The park operates free shuttle buses from several metro stations including Rashidiya and Creek. Taxis cost AED 60-90 from Downtown. Parking on-site is AED 25 per vehicle. Expect traffic delays of 30-60 minutes on Thursday and Friday evenings."
+        },
+        {
+          "q": "Is Global Village worth visiting?",
+          "a": "At AED 25 entry, it offers excellent value for an evening of international food, shopping, and entertainment. The food kiosks alone — 200+ options from 80 countries at AED 10-30 each — make it a must-visit for food lovers. Families with children enjoy the carnival rides and shows. It is best experienced as a 3-4 hour evening outing rather than a full-day activity."
+        }
+      ],
+      "activity_ids": [],
+      "related": ["theme-parks", "city-tours", "night-tours", "food-tours"],
+      "name": "Global Village",
+      "short_name": "Global Village",
+      "subtitle": "World cultures in one park",
+      "activity_count": "0 experiences",
+      "api_query": "Global Village Dubai"
+    },
+    {
+      "slug": "miracle-garden",
+      "category_slug": "landmarks",
+      "title": "Dubai Miracle Garden — World's Largest Natural Flower Garden",
+      "meta_title": "Dubai Miracle Garden Tickets | TheTicketers",
+      "meta_description": "Book Dubai Miracle Garden tickets for 150 million flowers in stunning displays. Open November to May. From AED 55. Includes Butterfly Garden.",
+      "hero_image": "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80",
+      "intro": "Dubai Miracle Garden is the world's largest natural flower garden, covering 72,000 square metres in the Al Barsha South district with over 150 million flowers arranged in extraordinary sculptural displays. Open seasonally from November to May (when temperatures allow flowers to thrive), the garden reinvents itself each season with new installations — past highlights have included a full-size Emirates A380 aircraft covered in 500,000 fresh flowers (a Guinness World Record), floral castles, heart-shaped arches, and a 12-metre Mickey Mouse sculpture made entirely of petunias.\n\nThe garden is laid out along winding pathways that take 90-120 minutes to walk at a leisurely pace. Major installations include Floral Street (houses wrapped in cascading flowers), the Umbrella Passage (a canopy of inverted colourful umbrellas), Butterfly Passage, and the Smurfs Village (licensed Smurf character sculptures covered in living flowers). Everything is meticulously maintained using a drip irrigation system that recycles treated wastewater — no freshwater is used.\n\nThe adjacent Dubai Butterfly Garden (included in some combo tickets) is an enclosed climate-controlled dome housing over 15,000 live butterflies from 50 species, making it the world's largest covered butterfly garden. The combination of the outdoor Miracle Garden and indoor Butterfly Garden takes 2-3 hours and is one of Dubai's most family-friendly outings.",
+      "highlights": [
+        "150 million flowers across 72,000 sqm — the world's largest flower garden",
+        "Iconic sculptures including a flower-covered Emirates A380 aircraft",
+        "New installations each season with Guinness Record displays",
+        "Adjacent Butterfly Garden with 15,000 live butterflies from 50 species"
+      ],
+      "tips": [
+        "Visit in the first 2 weeks after opening (typically mid-November) when flowers are at their freshest and displays are newly installed.",
+        "Arrive at opening time (9 AM) or after 4 PM for the best photography light and smallest crowds. Midday is harsh for photos and crowded.",
+        "The combo ticket with Butterfly Garden (AED 75-85) is worth the extra AED 20-30 — the butterfly dome is genuinely impressive and provides air-conditioned respite.",
+        "Wear comfortable shoes — the garden paths cover 2-3 km of walking. Bring water and sunscreen as most of the garden is outdoors without shade."
+      ],
+      "faqs": [
+        {
+          "q": "When is Dubai Miracle Garden open?",
+          "a": "The garden opens seasonally from mid-November to mid-May each year, when temperatures are cool enough for flowers to survive. Hours are 9 AM to 9 PM weekdays and 9 AM to 11 PM weekends. It is completely closed from June to October. Check exact opening dates each season as they vary by 1-2 weeks."
+        },
+        {
+          "q": "How much are Dubai Miracle Garden tickets?",
+          "a": "Entry tickets cost AED 55 for adults and AED 40 for children (aged 3-12). Children under 3 enter free. The combo ticket with Dubai Butterfly Garden costs AED 75-85 for adults. Online booking saves AED 5-10 versus the gate price. There is no student or senior discount."
+        },
+        {
+          "q": "How do I get to Dubai Miracle Garden?",
+          "a": "The garden is in Al Barsha South 3, about 20-25 minutes from Downtown Dubai by car. The nearest metro is Mall of the Emirates (Red Line), then a 10-minute taxi ride. Direct taxis from Downtown cost AED 50-70. Parking on-site is free with ample space. There is no metro station within walking distance."
+        }
+      ],
+      "activity_ids": [],
+      "related": ["dubai-garden-glow", "global-village", "city-tours", "kids-and-family"],
+      "name": "Miracle Garden",
+      "short_name": "Miracle Garden",
+      "subtitle": "150 million flowers in the desert",
+      "activity_count": "0 experiences",
+      "api_query": "Dubai Miracle Garden"
+    },
+    {
+      "slug": "museum-of-the-future",
+      "category_slug": "museums-and-culture",
+      "title": "Museum of the Future Dubai — Immersive Exhibits in the Iconic Torus",
+      "meta_title": "Museum of the Future Tickets | TheTicketers",
+      "meta_description": "Book Museum of the Future Dubai tickets. Explore the iconic torus building with immersive exhibits on space, ecology & AI. From AED 149.",
+      "hero_image": "https://images.unsplash.com/photo-1643228001916-c1ba35831e5f?auto=format&fit=crop&w=1200&q=80",
+      "intro": "The Museum of the Future is a 77-metre-tall torus-shaped building on Sheikh Zayed Road that National Geographic called one of the most beautiful buildings on Earth. Its stainless-steel facade is inscribed with Arabic calligraphy from Sheikh Mohammed's poetry about innovation, while the elliptical void at its centre symbolises humanity's unknowable future. Opened in February 2022 at a cost of AED 500 million, it has rapidly become one of Dubai's most visited cultural landmarks.\n\nThe museum spans seven floors of fully immersive environments set in the year 2071. Floor 5 simulates life aboard a space station orbiting Earth, complete with a shuttle launch and spacewalk sequence. Floor 4 explores a bioengineered Amazon rainforest where technology heals damaged ecosystems. Floor 3, Al Waha, is a digital detox and wellness sanctuary with meditation pods and sensory chambers. The Future Heroes floor gives children aged 4-10 the tools to design virtual creatures that come alive on-screen. Each floor is built with projection mapping, scent design, spatial audio, and theatrical set design rather than static exhibits.\n\nTickets are timed-entry and frequently sell out 3-5 days in advance, especially on weekends. The average visit takes 2.5-3 hours. Photography is allowed on all floors except Al Waha (Floor 3), where phones are placed in provided bags to maintain the meditative atmosphere.",
+      "highlights": [
+        "Iconic torus architecture with Arabic calligraphy on stainless-steel facade",
+        "Seven floors of immersive environments set in the year 2071",
+        "Simulated space station with shuttle launch on Floor 5",
+        "Children's Future Heroes interactive floor for ages 4-10"
+      ],
+      "tips": [
+        "Book timed-entry tickets 3-5 days ahead — the museum operates at reduced capacity and sells out consistently on weekends.",
+        "Start from Floor 5 (top) and descend. The narrative flow was designed to move downward through layers of the future.",
+        "Allow 2.5-3 hours minimum. Rushing defeats the purpose — each floor is designed for slow, immersive exploration.",
+        "The gift shop on the ground floor sells museum-exclusive architecture-themed merchandise that makes excellent souvenirs."
+      ],
+      "faqs": [
+        {
+          "q": "How much do Museum of the Future tickets cost?",
+          "a": "Adult tickets cost AED 149 and child tickets (ages 4-13) cost AED 99. Children under 3 enter free. There are no student or senior discounts. Tickets are timed-entry and non-transferable. The museum is open daily from 10:00 AM to 7:30 PM."
+        },
+        {
+          "q": "Is the Museum of the Future worth it with young children?",
+          "a": "Children aged 6-14 are the ideal audience and will be genuinely captivated by the immersive environments. The Future Heroes floor (for ages 4-10) features interactive digital exhibits. Children under 3 are admitted free but may find the dark, loud environments unsettling. The sweet spot for family visits is when the youngest child is at least 5-6."
+        },
+        {
+          "q": "How is the Museum of the Future different from a regular museum?",
+          "a": "There are almost no static exhibits, text panels, or artifacts. Each floor is a fully immersive environment using projection mapping, spatial audio, scent design, and theatrical set pieces. You walk through narratives rather than reading about them. It is closer to a theme park experience or art installation than a conventional museum."
+        }
+      ],
+      "activity_ids": [],
+      "related": ["dubai-frame", "al-fahidi", "city-tours", "museum-of-the-future-tickets"],
+      "name": "Museum of the Future",
+      "short_name": "Museum of the Future",
+      "subtitle": "Immersive future experiences",
+      "activity_count": "0 experiences",
+      "api_query": "Museum of the Future"
+    },
+    {
+      "slug": "la-perle",
+      "category_slug": "shows-and-entertainment",
+      "title": "La Perle by Dragone — Dubai's Spectacular Aquatic Theatre Show",
+      "meta_title": "La Perle Dubai Show Tickets | TheTicketers",
+      "meta_description": "Book La Perle show tickets at Al Habtoor City. Spectacular aquatic theatre with 65 acrobats, high dives & special effects. From AED 250.",
+      "hero_image": "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&w=1200&q=80",
+      "intro": "La Perle by Dragone is Dubai's only permanent resident show — a 90-minute aquatic theatre spectacular performed in a purpose-built 1,300-seat theatre at Al Habtoor City on Sheikh Zayed Road. Created by Franco Dragone, the artistic visionary behind multiple iconic Cirque du Soleil productions, La Perle features a cast of 65 world-class artists performing aerial acrobatics, motorcycle stunts, synchronised swimming, and 25-metre high dives around and above a stage that transforms into a 2.7-million-litre pool in seconds.\n\nThe show tells the story of Dubai's pearl-diving heritage reimagined through breathtaking visual effects — real rain curtains pour from the ceiling, holographic projections fill the theatre, aquatic fountains erupt from the stage, and live pyrotechnics fire within metres of the audience. The closest seats (Silver category, first 6 rows) are in the designated splash zone where water from pool-flooding sequences and high-dive impacts reaches the audience — an intentional design feature that adds to the immersion.\n\nLa Perle performs Tuesday through Saturday with two show times: 7:00 PM and 9:30 PM. The show is entirely non-verbal — the storytelling is purely visual and musical, making it accessible regardless of language. It has been running since 2017 and continues to rank as one of Dubai's most acclaimed entertainment experiences, frequently compared to Las Vegas-calibre productions.",
+      "highlights": [
+        "90-minute non-stop show with 65 acrobats, divers & performers",
+        "Stage floods with 2.7 million litres of water mid-performance",
+        "25-metre high dives, aerial silks, motorcycle stunts & pyrotechnics",
+        "Created by Franco Dragone of Cirque du Soleil fame"
+      ],
+      "tips": [
+        "Silver seats (first 6 rows) are in the splash zone — you will get wet. Wear accordingly or choose Gold seats for prime viewing without spray.",
+        "The show has no dialogue — it is purely visual and musical, making it perfect for non-English speakers and children who would lose interest in dialogue-heavy shows.",
+        "Tuesday-Thursday 7 PM shows are the least crowded and offer the best seat selection. Weekend shows frequently sell out.",
+        "Arrive 20 minutes early for the atmospheric pre-show effects in the theatre foyer. Doors close at showtime with no late entry permitted."
+      ],
+      "faqs": [
+        {
+          "q": "How much do La Perle tickets cost?",
+          "a": "Silver seats (splash zone): AED 250-300. Gold seats (prime viewing, dry): AED 400-500. VIP seats (best angles, lounge access, champagne): AED 700-1,000. Shows run Tuesday-Saturday at 7 PM and 9:30 PM. Children over 2 require a full ticket. Book 1-2 weeks ahead for best seat choice."
+        },
+        {
+          "q": "Is La Perle suitable for children?",
+          "a": "Children aged 5+ generally love the visual spectacle — acrobatics, water effects, and motorcycle stunts are thrilling and hold attention. Children under 5 may be frightened by the loud pyrotechnics, sudden darkness, and water flooding. No children under 2 are admitted. The recommended minimum age is 5-6 years."
+        },
+        {
+          "q": "Where is La Perle located?",
+          "a": "La Perle is at Al Habtoor City, Sheikh Zayed Road, between Business Bay and Dubai Water Canal. The nearest metro station is Business Bay (Red Line), a 10-minute walk. Taxis from Downtown Dubai take 10-15 minutes. Complimentary valet parking is available for ticket holders at Al Habtoor City."
+        }
+      ],
+      "activity_ids": [],
+      "related": ["dubai-opera", "fountain-show", "night-tours", "cruises"],
+      "name": "La Perle",
+      "short_name": "La Perle",
+      "subtitle": "Aquatic theatre spectacular",
+      "activity_count": "0 experiences",
+      "api_query": "La Perle Dragone"
+    },
+    {
+      "slug": "dubai-parks-and-resorts",
+      "category_slug": "theme-parks",
+      "title": "Dubai Parks and Resorts — Motiongate, Legoland & Bollywood Parks",
+      "meta_title": "Dubai Parks & Resorts Tickets | TheTicketers",
+      "meta_description": "Book Dubai Parks and Resorts tickets for Motiongate, Legoland & Bollywood Parks. Multi-park passes from AED 345. Located in Jebel Ali.",
+      "hero_image": "https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=1200&q=80",
+      "intro": "Dubai Parks and Resorts is the Middle East's largest multi-park entertainment destination, spanning 25 million square feet in Jebel Ali with four theme parks, a retail and dining district, and an on-site resort hotel. The complex houses Motiongate Dubai (Hollywood-themed with DreamWorks, Columbia Pictures, and Lionsgate zones), Legoland Dubai and Legoland Water Park (designed for families with children aged 2-12), and Bollywood Parks Dubai (the world's first Bollywood-themed park with live shows and rides inspired by Indian cinema).\n\nMotiongate is the headline park for thrill-seekers and movie fans, featuring the Green Hornet coaster (a suspended launched ride), the Capitol Bullet Train (a Hunger Games-themed inverted coaster), the Madagascar Mad Pursuit ride, and Shrek's Kingdom with a 4D cinema experience. The DreamWorks zone brings Kung Fu Panda, How to Train Your Dragon, and Trolls to life with immersive rides and character meets. Bollywood Parks offers a uniquely Dubai experience with Bollywood dance shows, a Mumbai-themed street, and Rajmahal Theatre hosting live 45-minute Bollywood musical performances four times daily.\n\nRiverland Dubai, the free-entry retail and dining district at the complex entrance, is themed into four sections — French Village, Boardwalk, India Gate, and The Peninsula — with 50+ restaurants and shops. The Lapita Hotel (Polynesian-themed, by Marriott) offers walkable access to all parks for overnight guests.",
+      "highlights": [
+        "Four theme parks in one destination: Motiongate, Legoland, Legoland Water Park, Bollywood Parks",
+        "Hollywood rides: Green Hornet coaster, Capitol Bullet Train, Shrek 4D",
+        "World's first Bollywood theme park with live musical performances",
+        "Free-entry Riverland Dubai dining and retail district"
+      ],
+      "tips": [
+        "The 2-day all-parks pass (AED 545) is the best value if you want to experience everything. Individual parks cost AED 225-295 each — two parks exceed the all-parks price.",
+        "Motiongate and Legoland are the two strongest parks. If limited to one day, choose Motiongate for thrill rides or Legoland for families with children under 12.",
+        "Dubai Parks is 40 minutes from Downtown Dubai in Jebel Ali. The free shuttle from Ibn Battuta Metro runs every 30 minutes. Allocate a full day.",
+        "Visit on Sunday-Wednesday for shortest queues. Weekend wait times for top Motiongate rides reach 45-60 minutes versus 5-15 minutes on weekdays."
+      ],
+      "faqs": [
+        {
+          "q": "How much do Dubai Parks and Resorts tickets cost?",
+          "a": "Individual park tickets: AED 225-295 each. 1-day 2-park pass: AED 345. 1-day all-parks pass: AED 425. 2-day all-parks pass: AED 545. The multi-park passes represent significant savings — the 2-day all-parks is roughly the price of 2 individual tickets but covers 4 parks. Online booking offers 10-15% off gate prices."
+        },
+        {
+          "q": "How do I get to Dubai Parks and Resorts?",
+          "a": "Located in Jebel Ali, approximately 40 minutes from Downtown Dubai by car. Options: free shuttle bus from Ibn Battuta Metro station (Red Line), taxi (AED 80-120 each way), or self-drive with free on-site parking. The shuttle runs every 30 minutes from 10 AM and takes 15 minutes."
+        },
+        {
+          "q": "Which park is best for young children?",
+          "a": "Legoland Dubai and Legoland Water Park are specifically designed for children aged 2-12, with low height requirements and interactive building activities. Bollywood Parks has colourful shows suitable for all ages. Motiongate's DreamWorks zone (Shrek, Madagascar, Trolls) suits children aged 5-10. The thrill coasters in Motiongate's Columbia and Lionsgate zones require heights of 1.05-1.4m."
+        }
+      ],
+      "activity_ids": [],
+      "related": ["legoland-dubai", "img-worlds-of-adventure", "theme-parks", "waterparks"],
+      "name": "Dubai Parks & Resorts",
+      "short_name": "Dubai Parks",
+      "subtitle": "Four theme parks in one destination",
+      "activity_count": "0 experiences",
+      "api_query": "Dubai Parks Resorts"
+    },
+    {
+      "slug": "img-worlds",
+      "category_slug": "theme-parks",
+      "title": "IMG Worlds of Adventure — World's Largest Indoor Theme Park",
+      "meta_title": "IMG Worlds of Adventure Tickets | TheTicketers",
+      "meta_description": "Book IMG Worlds tickets for the world's largest indoor theme park. Marvel, Cartoon Network & dinosaur zones. Air-conditioned. From AED 299.",
+      "hero_image": "https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=1200&q=80",
+      "intro": "IMG Worlds of Adventure holds the Guinness World Record as the world's largest indoor theme park, covering 1.5 million square feet (equivalent to 28 football pitches) in Dubailand, fully enclosed and air-conditioned to a comfortable 22C regardless of outdoor temperatures that can exceed 50C in summer. The park is divided into four distinct themed zones: Marvel (Spider-Man, Hulk, Thor, Iron Man), Cartoon Network (Ben 10, Powerpuff Girls, Adventure Time, The Amazing World of Gumball), Lost Valley (animatronic dinosaurs and predator rides), and IMG Boulevard (themed retail and dining).\n\nThe Marvel zone is the star attraction, featuring the Avengers Battle of Ultron (a suspended dark ride with 3D projection and sudden drops), Thor Thunder Spin (a 360-degree rotating pendulum ride), the Hulk Epsilon Base 3D (a motion simulator), and Spider-Man Doc Ock's Revenge (a spinning coaster). The Lost Valley's Predator coaster is the park's most intense thrill — a launched coaster that accelerates to 100 km/h through a dinosaur-themed dark ride section with life-size animatronic T-Rex encounters.\n\nFor younger visitors, the Cartoon Network zone offers a gentler selection including the LazyTown ride, Powerpuff Girls merry-go-round, and Adventure Time character meets. The park includes 25 retail outlets and 28 food and beverage options, from quick bites to themed restaurants. Being fully indoor makes IMG Worlds the only major Dubai theme park unaffected by summer heat, rain, or sandstorms.",
+      "highlights": [
+        "World's largest indoor theme park at 1.5 million square feet",
+        "Four zones: Marvel, Cartoon Network, Lost Valley, IMG Boulevard",
+        "Predator coaster: launched at 100 km/h through animatronic dinosaurs",
+        "Fully air-conditioned at 22C — operates comfortably year-round"
+      ],
+      "tips": [
+        "Head to the Marvel zone first thing — it draws the biggest crowds and queue times can triple by midday on weekends.",
+        "Visit on Tuesday or Wednesday for near-empty parks with 5-minute ride waits versus 30-60 minutes on Friday-Saturday.",
+        "The Fast Track add-on (AED 150-200) is worth it on weekends — it cuts major ride waits from 45 minutes to under 10.",
+        "IMG Worlds is the best summer option — while outdoor parks bake at 48C, the entire park sits at a comfortable 22C indoors."
+      ],
+      "faqs": [
+        {
+          "q": "How much do IMG Worlds of Adventure tickets cost?",
+          "a": "General admission: AED 299 for adults, AED 259 for children (height 1.05-1.2m). Children under 1.05m enter free. The Fast Track add-on costs AED 150-200 extra and significantly reduces wait times. Online booking offers 10-15% discounts. Annual passes start at AED 595."
+        },
+        {
+          "q": "What is the best ride at IMG Worlds?",
+          "a": "The Predator coaster in Lost Valley is the top thrill — launched at 100 km/h through darkness with life-size animatronic T-Rex dinosaurs. The Avengers Battle of Ultron (suspended dark ride with 3D effects) and Thor Thunder Spin (360-degree pendulum) in the Marvel zone are close seconds. Height requirements for major rides range from 1.05-1.4m."
+        },
+        {
+          "q": "How long should I spend at IMG Worlds?",
+          "a": "Plan 5-7 hours to ride everything across all four zones. With a Fast Track pass, 4-5 hours covers the major rides. Families focused on the Cartoon Network zone may finish in 3-4 hours. The park opens daily at 11 AM and closes at 9 PM (10 PM on weekends)."
+        }
+      ],
+      "activity_ids": [],
+      "related": ["img-worlds-of-adventure", "legoland-dubai", "dubai-parks-and-resorts", "theme-parks"],
+      "name": "IMG Worlds",
+      "short_name": "IMG Worlds",
+      "subtitle": "Marvel, dinosaurs & Cartoon Network",
+      "activity_count": "0 experiences",
+      "api_query": "IMG Worlds of Adventure"
+    },
+    {
+      "slug": "ski-dubai",
+      "category_slug": "sky-experiences",
+      "title": "Ski Dubai — Indoor Ski Resort at Mall of the Emirates",
+      "meta_title": "Ski Dubai Tickets & Prices | TheTicketers",
+      "meta_description": "Book Ski Dubai tickets for the indoor ski slope, snow park & penguin encounters at Mall of the Emirates. Snow Park from AED 180.",
+      "hero_image": "https://images.unsplash.com/photo-1551524559-8af4e6624178?auto=format&fit=crop&w=1200&q=80",
+      "intro": "Ski Dubai is a 22,500 square metre indoor ski resort inside Mall of the Emirates, maintained at a frosty -1C to -4C year-round while outdoor temperatures in the UAE regularly exceed 45C. It features a 400-metre ski slope with five runs of varying difficulty (including the world's first indoor black diamond run), a chairlift, toboggan runs, a zip line, a snow cavern, and the Snow Park — a dedicated play zone with snowball fights, tubing, and snow bumper cars.\n\nThe centrepiece beyond the slopes is the resident colony of King and Gentoo penguins. The Penguin Encounter experience (AED 190, 40 minutes, limited to small groups) allows you to observe the penguins at close range, learn about their behaviour from marine biologists, and take photos alongside them. The March of the Penguins show sees the colony waddle across the snow park twice daily (11 AM and 5 PM) — free to watch for all Snow Park ticket holders.\n\nSki Dubai uses 6,000 tonnes of real snow, refreshed nightly by snow machines. Full winter clothing is provided with every ticket — insulated jacket, salopettes (snow pants), disposable socks, boots, and helmet. You only need to wear normal indoor clothing underneath. For experienced skiers, the slopes are functional with genuine carving potential, though the 400-metre length and limited vertical drop mean it supplements rather than replaces a mountain resort. Ski and snowboard rental equipment is included in slope session tickets.",
+      "highlights": [
+        "22,500 sqm indoor snow park at -4C inside a shopping mall",
+        "400m ski slope with 5 runs from beginner to black diamond",
+        "King and Gentoo penguin colony with encounter experiences",
+        "Full winter clothing and equipment provided with all tickets"
+      ],
+      "tips": [
+        "Snow Park tickets (AED 180) include all snow play activities except slope access and penguin encounters. Add a Slope Session (AED 250+) if you want to ski or snowboard.",
+        "The Penguin Encounter (AED 190 extra) sells out consistently — book at least 1 week in advance. It lasts 40 minutes in small groups.",
+        "All winter gear is provided. Wear long trousers and a t-shirt underneath — that is all you need. Gloves are available for purchase (AED 25).",
+        "Weekday mornings (10 AM) are virtually empty. Summer weekends are the busiest as families seek indoor relief from the heat."
+      ],
+      "faqs": [
+        {
+          "q": "How much do Ski Dubai tickets cost?",
+          "a": "Snow Park: AED 180 for adults, AED 155 for children (includes all snow activities except skiing and penguins). Slope Session (2 hours): AED 250+ including ski or snowboard gear. Penguin Encounter: AED 190 extra. Full-day passes are available for AED 350+. All tickets include full winter clothing and equipment."
+        },
+        {
+          "q": "Do I need ski experience for Ski Dubai?",
+          "a": "No — the Snow Park requires no skill (tubing, snowball fights, toboggan). For the ski slopes, the nursery slope is suitable for absolute beginners. Private lessons cost AED 200+ per hour with certified instructors. Experienced skiers can access intermediate and black diamond runs. However, the 400m slope length is limited compared to mountain resorts."
+        },
+        {
+          "q": "How cold is it inside Ski Dubai?",
+          "a": "The temperature ranges from -1C to -4C depending on the zone. With the provided insulated jacket, snow pants, boots, and socks, most visitors are comfortable for 2-3 hours. The area near the cafe entrance is slightly warmer. Wear a long-sleeve base layer if you are sensitive to cold."
+        }
+      ],
+      "activity_ids": [],
+      "related": ["ski-dubai", "theme-parks", "dubai-ice-rink", "kids-and-family"],
+      "name": "Ski Dubai",
+      "short_name": "Ski Dubai",
+      "subtitle": "Real snow in the desert",
+      "activity_count": "0 experiences",
+      "api_query": "Ski Dubai"
+    },
+    {
+      "slug": "al-seef",
+      "category_slug": "markets-and-souks",
+      "title": "Al Seef Dubai — Heritage Waterfront District on Dubai Creek",
+      "meta_title": "Al Seef Dubai Creek District | TheTicketers",
+      "meta_description": "Visit Al Seef heritage district on Dubai Creek. Traditional architecture, artisan souks, waterfront dining & abra rides. Free entry.",
+      "hero_image": "https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=1200&q=80",
+      "intro": "Al Seef is a 1.8 km waterfront district along the southern bank of Dubai Creek in Bur Dubai, blending restored heritage architecture with modern design to create one of the city's most atmospheric promenades. The district is divided into two contrasting sections: the Heritage Zone (wind-tower houses, coral-stone walls, narrow sikkas, and artisan workshops evoking 1960s Dubai) and the Contemporary Zone (modern architecture with rooftop terraces, glass facades, and design-forward retail).\n\nThe Heritage Zone is the highlight — a meticulous recreation of old Dubai's architectural vernacular where you can browse traditional perfume shops (attars), handmade textile stores, spice merchants, and craft workshops. The buildings house over 50 restaurants and cafes, from traditional Emirati kitchens serving machboos and luqaimat to waterfront Lebanese and Iranian restaurants with Creek views. Abra (traditional water taxi) stations along Al Seef connect to Deira's Gold Souk and Spice Souk for AED 1 per ride.\n\nAl Seef is free to enter and walk — there is no admission charge. It operates as a cultural and dining destination rather than a ticketed attraction, making it an excellent complement to old Dubai walking tours, Creek dhow cruises, and visits to the nearby Al Fahidi Historic District (a 10-minute walk). The waterfront is particularly atmospheric at sunset and after dark when the heritage buildings are illuminated and the Creek reflects the city lights.",
+      "highlights": [
+        "1.8 km Creek waterfront with heritage and contemporary architecture",
+        "50+ restaurants and cafes with traditional and modern dining",
+        "Artisan shops selling perfumes, textiles, spices & crafts",
+        "Abra connections to Gold Souk and Spice Souk for AED 1"
+      ],
+      "tips": [
+        "Visit at sunset (5:30-6:30 PM) when the heritage buildings catch golden light and the Creek waterfront is most photogenic.",
+        "Combine Al Seef with Al Fahidi Historic District (10-minute walk) and a Creek abra crossing to the souks for a half-day heritage experience.",
+        "The Heritage Zone restaurants offer better value than tourist-heavy Deira souk eateries — try the Emirati restaurants for authentic machboos and harees.",
+        "Al Seef is free to enter. Parking is available in the dedicated multi-storey car park. The nearest metro is Al Fahidi (Green Line), a 10-minute walk."
+      ],
+      "faqs": [
+        {
+          "q": "Is Al Seef free to visit?",
+          "a": "Yes, Al Seef is a public waterfront district with no entry fee. You can walk the entire 1.8 km promenade, browse shops, and enjoy the architecture at no cost. Spending is only on dining, shopping, or abra rides (AED 1). It is open 24 hours, though shops and restaurants operate approximately 10 AM to midnight."
+        },
+        {
+          "q": "How do I get to Al Seef?",
+          "a": "Al Seef stretches along the Creek waterfront in Bur Dubai. The nearest metro station is Al Fahidi (Green Line), a 10-minute walk south. Taxis from Downtown Dubai cost AED 25-35. Alternatively, take an abra from Deira (Gold Souk station) across the Creek for AED 1 — a scenic approach. Parking is available in the on-site car park."
+        },
+        {
+          "q": "What is there to do at Al Seef?",
+          "a": "Browse artisan shops (perfumes, textiles, spices), dine at 50+ waterfront restaurants, walk the heritage architecture zone, take an abra ride across the Creek (AED 1), visit the Al Seef Museum (small free exhibit about Creek history), and photograph the wind-tower buildings at sunset. It pairs well with Al Fahidi Historic District and the Gold/Spice Souks across the water."
+        }
+      ],
+      "activity_ids": [],
+      "related": ["al-fahidi", "old-dubai-walking-tour", "dhow-cruise-dubai-creek", "food-tours"],
+      "name": "Al Seef",
+      "short_name": "Al Seef",
+      "subtitle": "Heritage waterfront on Dubai Creek",
+      "activity_count": "0 experiences",
+      "api_query": "Al Seef Dubai"
+    },
+    {
+      "slug": "kite-beach",
+      "category_slug": "beach-and-island",
+      "title": "Kite Beach Dubai — Watersports, Food Trucks & Beach Activities",
+      "meta_title": "Kite Beach Dubai Activities | TheTicketers",
+      "meta_description": "Visit Kite Beach Dubai for free beach access, kitesurfing, paddleboarding, beach volleyball & food trucks. Burj Al Arab views included.",
+      "hero_image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+      "intro": "Kite Beach is Dubai's most active public beach, stretching 14 km along the Jumeirah coastline between Umm Suqeim and Jumeirah 3 with free access, white sand, and a postcard view of the Burj Al Arab. Named after the kite surfers whose colourful canopies fill the sky on windy afternoons, the beach has evolved into Dubai's premier outdoor lifestyle destination with watersports, a running track, outdoor gyms, beach volleyball and football courts, a skate park, and a row of food trucks serving everything from gourmet burgers to acai bowls.\n\nWatersports are the main draw beyond sunbathing. Kitesurfing lessons and rental are available year-round (best wind conditions December-March), with certified instructors offering 2-hour beginner lessons from AED 350. Stand-up paddleboarding (SUP) rental costs AED 60-100 per hour, and kayak rentals are AED 80-120. A beach library, trampoline park (Wire World, AED 80-120), and outdoor cinema (seasonal) round out the non-water activities.\n\nThe beach is free to access with public facilities including showers, changing rooms, and lifeguard stations. The food truck corridor along the promenade is one of Dubai's best casual dining strips — Salt (the original Dubai food truck) draws queues for its wagyu sliders, and neighbouring trucks serve Thai, Mexican, and Mediterranean fare. Sunsets from Kite Beach, with the Burj Al Arab silhouetted against the sky, are among the most photographed in the city.",
+      "highlights": [
+        "Free public beach with Burj Al Arab views and 14 km of white sand",
+        "Kitesurfing, paddleboarding, kayaking & beach volleyball",
+        "Food truck corridor with gourmet casual dining on the sand",
+        "Running track, outdoor gym, skate park & trampoline zone"
+      ],
+      "tips": [
+        "The best kitesurfing conditions are December to March when consistent 15-25 knot winds blow from the northwest. Summer winds are lighter and less reliable.",
+        "Arrive before 9 AM on weekends to secure a good spot — the beach fills up by 10-11 AM on Fridays and Saturdays.",
+        "The food trucks are busiest at sunset (5-7 PM). Order from Salt's wagyu slider truck early to beat the queue that often reaches 20-30 minutes.",
+        "Kite Beach is free, but sunbed rental costs AED 30-50. Bring your own towel and shade umbrella to save money."
+      ],
+      "faqs": [
+        {
+          "q": "Is Kite Beach free to visit?",
+          "a": "Yes, Kite Beach is a public beach with free entry, free parking (limited), free showers, and lifeguard coverage from 8 AM to sunset. Paid extras include sunbed rental (AED 30-50), watersport equipment hire (AED 60-350), and the Wire World trampoline park (AED 80-120)."
+        },
+        {
+          "q": "How do I get to Kite Beach?",
+          "a": "Kite Beach is on Umm Suqeim Road near Jumeirah. The nearest metro is Mall of the Emirates (Red Line), then a 10-minute taxi ride. Direct taxis from Downtown Dubai cost AED 30-50. Limited free street parking is available along the beach road, or use the paid parking lot at AED 10-20. There is no direct metro or bus to the beach."
+        },
+        {
+          "q": "Can beginners learn kitesurfing at Kite Beach?",
+          "a": "Yes, several licensed operators offer beginner lessons. A 2-hour introductory lesson costs AED 350-500 and covers kite control, body dragging, and basic board skills. Most students need 6-10 hours of instruction to ride independently. Equipment rental for certified kiteboarders costs AED 200-300 for 2 hours. The flat, shallow water at Kite Beach is ideal for learning."
+        }
+      ],
+      "activity_ids": [],
+      "related": ["water-sports", "jet-ski", "cruises", "palm-jumeirah"],
+      "name": "Kite Beach",
+      "short_name": "Kite Beach",
+      "subtitle": "Dubai's active beach lifestyle",
+      "activity_count": "0 experiences",
+      "api_query": "Kite Beach Dubai"
+    },
+    {
+      "slug": "dubai-opera",
+      "category_slug": "shows-and-entertainment",
+      "title": "Dubai Opera — World-Class Performances in Downtown Dubai",
+      "meta_title": "Dubai Opera Shows & Tickets | TheTicketers",
+      "meta_description": "Book Dubai Opera tickets for concerts, ballet, opera & theatre in a dhow-shaped venue. Located in Downtown Dubai near Burj Khalifa.",
+      "hero_image": "https://images.unsplash.com/photo-1580809361436-42a7ec204889?auto=format&fit=crop&w=1200&q=80",
+      "intro": "Dubai Opera is a 2,000-seat multi-format performing arts venue in the heart of Downtown Dubai, designed in the shape of a traditional dhow (Arabian sailing vessel) by architect Janus Rostock. Opened in 2016 as the centrepiece of the Opera District, the glass-and-steel building transforms between three configurations — a 2,000-seat theatre, a 1,000-seat concert hall with flat floor, and a 900-capacity banquet or event space — through a mechanical floor and seating system that reconfigures in hours.\n\nThe venue hosts a year-round programme of opera, ballet, classical concerts, musicals, comedy, jazz, and contemporary performances. International touring productions regularly include West End and Broadway shows, Bolshoi and Royal Ballet companies, and headline musicians from Andrea Bocelli to Lang Lang. The annual Dubai Opera Festival (February-March) brings a concentrated season of world-class performances.\n\nDubai Opera's location is part of its appeal — the terrace overlooks Burj Khalifa Lake and the Dubai Fountain, making pre-show and interval drinks on the balcony a spectacle in themselves. The building's rooftop Sky Garden offers guided tours with panoramic views of Downtown Dubai, and the ground-floor restaurants (including Sean Connolly at Dubai Opera) provide pre-theatre dining with Fountain views. Ticket prices range from AED 150 for rear-circle seats at smaller shows to AED 2,000+ for premium stalls at headline performances.",
+      "highlights": [
+        "2,000-seat dhow-shaped venue with three configurable formats",
+        "Opera, ballet, Broadway musicals, concerts & comedy year-round",
+        "Terrace overlooking Burj Khalifa Lake and Dubai Fountain",
+        "Rooftop Sky Garden tours and pre-theatre waterfront dining"
+      ],
+      "tips": [
+        "Book popular shows (Broadway tours, Bocelli, ballet companies) 2-4 weeks in advance — premium seats sell out quickly. Less mainstream events often have availability until showtime.",
+        "Arrive 30-45 minutes early to enjoy pre-show drinks on the terrace overlooking the Dubai Fountain — shows run every 30 minutes from 6 PM.",
+        "Dress code is smart casual minimum. For opening nights and gala performances, semi-formal attire (suits, cocktail dresses) is appropriate.",
+        "The rooftop Sky Garden tour (AED 75-100) is available independently of performances and offers unique architectural and skyline views."
+      ],
+      "faqs": [
+        {
+          "q": "How much do Dubai Opera tickets cost?",
+          "a": "Prices vary enormously by performance. Smaller shows and comedy acts start at AED 150-250. Major musicals and ballet run AED 300-800. Headline concerts (Andrea Bocelli, major orchestras) reach AED 500-2,000+. The Dubai Opera website and app show all upcoming events with pricing. Early booking secures the best seats at the lowest tier."
+        },
+        {
+          "q": "Where is Dubai Opera located?",
+          "a": "Dubai Opera is in the Opera District of Downtown Dubai, on Sheikh Mohammed bin Rashid Boulevard overlooking Burj Khalifa Lake. The nearest metro is Burj Khalifa/Dubai Mall (Red Line), a 10-minute walk through Dubai Mall. Valet parking is available at the main entrance. Taxis drop directly at the plaza."
+        },
+        {
+          "q": "Is there a dress code for Dubai Opera?",
+          "a": "Smart casual is the minimum standard — no shorts, flip-flops, or beachwear. For most performances, smart casual (jeans with a blazer, dresses, or business casual) is appropriate. Opening nights and gala events call for semi-formal attire. There is no strict enforcement but the venue atmosphere is upscale."
+        }
+      ],
+      "activity_ids": [],
+      "related": ["la-perle", "fountain-show", "night-tours", "burj-khalifa"],
+      "name": "Dubai Opera",
+      "short_name": "Dubai Opera",
+      "subtitle": "World-class performing arts",
+      "activity_count": "0 experiences",
+      "api_query": "Dubai Opera"
+    },
+    {
+      "slug": "al-fahidi",
+      "category_slug": "museums-and-culture",
+      "title": "Al Fahidi Historic District — Dubai's Heritage Neighbourhood",
+      "meta_title": "Al Fahidi Historic District Tour | TheTicketers",
+      "meta_description": "Explore Al Fahidi Historic District in Dubai. Wind-tower houses, art galleries, Dubai Museum & heritage walking tours. Free entry.",
+      "hero_image": "https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=1200&q=80",
+      "intro": "Al Fahidi Historic District (formerly known as Al Bastakiya) is Dubai's oldest residential neighbourhood, a cluster of coral-stone and gypsum houses built between the 1890s and 1960s by wealthy Persian and Arab merchants who settled along the Creek. The district's defining architectural feature is its wind towers (barjeel) — tall chimney-like structures that funnel Gulf breezes into the rooms below, functioning as natural air conditioning centuries before electricity arrived.\n\nThe neighbourhood was rescued from demolition in the 1990s by a preservation campaign led by Dubai's ruler and has been meticulously restored into a cultural precinct housing the Dubai Museum (inside Al Fahidi Fort, Dubai's oldest existing building dating to 1787), the Coffee Museum, the Coins Museum, XVA Art Gallery, and a dozen small galleries and artist studios. The narrow sikkas (alleyways) between the houses create pockets of shade and quiet that feel worlds away from the glass towers of modern Dubai just 3 km north.\n\nWalking tours of Al Fahidi typically take 60-90 minutes and are offered free by the Sheikh Mohammed Centre for Cultural Understanding (SMCCU), which also runs cultural breakfasts and lunches where Emirati hosts explain local customs, religion, and traditions over traditional food. The district is free to enter and wander independently, with the Dubai Museum charging AED 3 (the cheapest attraction in the city) for its underground galleries tracing the city's history from 3000 BC to the present.",
+      "highlights": [
+        "Dubai's oldest neighbourhood with 1890s wind-tower architecture",
+        "Dubai Museum in Al Fahidi Fort (built 1787) — AED 3 entry",
+        "Art galleries, Coffee Museum, and cultural centres",
+        "Free SMCCU walking tours and Emirati cultural meals"
+      ],
+      "tips": [
+        "Join the free SMCCU walking tour (Sunday and Thursday, 10 AM) for cultural context — Emirati hosts explain wind-tower engineering, local customs, and the significance of the Creek.",
+        "Visit in the morning (8-11 AM) when the narrow sikkas are cooler and the light creates beautiful shadows through the wind towers.",
+        "The Coffee Museum (free entry) serves traditional Emirati gahwa (cardamom coffee) with dates — a genuine cultural experience rather than a tourist cafe.",
+        "Combine with Al Seef waterfront (10-minute walk) and a Creek abra crossing to the Gold and Spice Souks for a full heritage half-day."
+      ],
+      "faqs": [
+        {
+          "q": "Is Al Fahidi Historic District free to visit?",
+          "a": "Yes, the district is a public neighbourhood with no entry fee. You can walk the alleyways, photograph the architecture, and browse the galleries at no cost. The Dubai Museum costs AED 3 for adults. The Coffee Museum and Coins Museum are free. SMCCU walking tours are free but require registration."
+        },
+        {
+          "q": "How do I get to Al Fahidi Historic District?",
+          "a": "The nearest metro station is Al Fahidi (Green Line), a 5-minute walk. From Downtown Dubai, take the Red Line to BurJuman station, transfer to the Green Line, and exit at Al Fahidi. Taxis from Downtown cost AED 20-30. The district is walkable from the Bur Dubai abra station (1 km) if arriving from Deira by water taxi."
+        },
+        {
+          "q": "How long should I spend at Al Fahidi?",
+          "a": "Allow 60-90 minutes for a self-guided walk through the alleyways, galleries, and Dubai Museum. A guided SMCCU tour takes 90 minutes. Adding Al Seef waterfront and a Creek crossing to the souks extends the experience to a 3-4 hour half-day outing. The cultural breakfast or lunch at SMCCU adds 90 minutes including the meal."
+        }
+      ],
+      "activity_ids": [],
+      "related": ["al-seef", "old-dubai-walking-tour", "city-tours", "food-tours"],
+      "name": "Al Fahidi District",
+      "short_name": "Al Fahidi",
+      "subtitle": "Dubai's historic wind-tower quarter",
+      "activity_count": "0 experiences",
+      "api_query": "Al Fahidi Historic District"
+    },
+    {
+      "slug": "jebel-jais",
+      "category_slug": "day-trips",
+      "title": "Jebel Jais — UAE's Highest Peak, Zipline & Mountain Adventures",
+      "meta_title": "Jebel Jais Zipline & Tours | TheTicketers",
+      "meta_description": "Book Jebel Jais zipline — the world's longest at 2.83 km. Mountain hiking, via ferrata & scenic drives from Dubai. Day trip to RAK.",
+      "hero_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
+      "intro": "Jebel Jais is the highest peak in the United Arab Emirates at 1,934 metres, located in the Hajar Mountains of Ras Al Khaimah, approximately 1.5-2 hours' drive from Dubai. The mountain offers a dramatic contrast to Dubai's flat desert landscape — rugged limestone peaks, winding switchback roads, and temperatures 10-15C cooler than the coast. Since 2018, Jebel Jais has become an adventure tourism hotspot anchored by the Jebel Jais Flight, the world's longest zipline at 2.83 km.\n\nThe Jebel Jais Flight launches from a platform at 1,680 metres above sea level and reaches speeds of up to 150 km/h as you fly 2.83 km across the mountain valley, suspended from a steel cable with the Hajar Mountains spread below. The dual-line system allows two people to fly simultaneously. The experience takes about 2-3 minutes of flight time with a total visit of 30-45 minutes including safety briefing, harness fitting, and shuttle transfer to the launch platform.\n\nBeyond the zipline, Jebel Jais offers a via ferrata climbing course (iron rungs and cables fixed into the cliff face for guided rock climbing, AED 375-450), hiking trails ranging from gentle 2 km walks to challenging 16 km treks, the Jebel Jais Viewing Deck Park (free, a terraced platform with mountain panoramas), and the Bear Grylls Explorers Camp (overnight survival-style camping). The scenic drive up the mountain on its own is worth the trip — 30 km of switchbacks with designated viewing stops at every turn.",
+      "highlights": [
+        "World's longest zipline at 2.83 km reaching 150 km/h",
+        "UAE's highest peak at 1,934 metres with spectacular mountain scenery",
+        "Via ferrata cliff climbing, hiking trails & Bear Grylls camp",
+        "Scenic mountain drive with viewing platforms and 10-15C cooler temps"
+      ],
+      "tips": [
+        "Book the zipline at least 1 week in advance during winter season (November-March) — it sells out consistently on weekends.",
+        "Bring a jacket — Jebel Jais summit is 10-15C cooler than Dubai. Winter mornings can be 5-10C at altitude versus 20C on the coast.",
+        "The drive from Dubai takes 1.5-2 hours via Emirates Road. Start early (7-8 AM) for the clearest mountain views before afternoon haze builds.",
+        "Combine the zipline with the via ferrata for a full adventure day. The viewing deck park is free and excellent for families who want scenery without extreme activities."
+      ],
+      "faqs": [
+        {
+          "q": "How much does the Jebel Jais zipline cost?",
+          "a": "The Jebel Jais Flight (zipline) costs AED 350-450 per person depending on the season. The experience includes safety briefing, harness fitting, the 2.83 km flight, and shuttle transfer. The via ferrata climbing course costs AED 375-450. Combo packages (zipline + via ferrata) offer 15-20% savings. Minimum age for the zipline is 12, weight range 45-150 kg."
+        },
+        {
+          "q": "How do I get to Jebel Jais from Dubai?",
+          "a": "Drive north on Emirates Road (E311) to Ras Al Khaimah, then follow signs to Jebel Jais. Total drive time is 1.5-2 hours (130 km). There is no public transport to the mountain. Several tour operators run day trips from Dubai (AED 250-450 including transport and activities). The mountain road is well-maintained with guardrails."
+        },
+        {
+          "q": "Is the Jebel Jais zipline scary?",
+          "a": "The launch platform at 1,680 metres provides a genuine height sensation, and the first few seconds of flight generate adrenaline. However, the harness is extremely secure (you sit in it rather than hang), and after the initial acceleration, the sensation becomes smooth flight rather than falling. Dual lines mean you can fly with a companion for reassurance. Most participants describe it as exhilarating rather than terrifying."
+        }
+      ],
+      "activity_ids": [],
+      "related": ["hatta", "desert-safari", "skydiving", "sky-experiences"],
+      "name": "Jebel Jais",
+      "short_name": "Jebel Jais",
+      "subtitle": "World's longest zipline at 2.83 km",
+      "activity_count": "0 experiences",
+      "api_query": "Jebel Jais"
+    },
+    {
+      "slug": "hatta",
+      "category_slug": "day-trips",
+      "title": "Hatta — Mountain Kayaking, Hiking & Heritage Village Day Trip",
+      "meta_title": "Hatta Day Trip from Dubai | TheTicketers",
+      "meta_description": "Book Hatta day trips from Dubai with kayaking, hiking & heritage village tours. Mountain dam, wadis & adventure park. 90 min from Dubai.",
+      "hero_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
+      "intro": "Hatta is a mountain exclave of Dubai nestled in the Hajar Mountains, 130 km east of the city on the Oman border. With its turquoise dam lake, rugged wadis (dry riverbeds), heritage stone village, and cooler mountain temperatures, Hatta provides a dramatic escape from Dubai's urban landscape — and at just 90 minutes' drive, it is one of the most accessible day trips from the city.\n\nThe centrepiece is the Hatta Dam, where the turquoise reservoir is surrounded by ochre mountain walls. Kayaking and pedal boating on the dam (AED 60-120 per hour) are the signature activities, with the still water reflecting the mountains on calm mornings. The Hatta Wadi Hub, opened by Dubai's government as an adventure tourism centre, offers mountain biking trails (27 trails from beginner to expert, bike rental AED 50-80 per hour), zip lines, archery, axe throwing, a climbing wall, and paragliding.\n\nHatta Heritage Village is a restored mountain settlement with watchtowers, falaj irrigation channels, and traditional stone houses dating back 3,000 years — the oldest preserved settlement in the Dubai emirate. Entry is free, and Emirati guides explain the village's history as a mountain trading post. Hatta's elevation (300-400 metres) means temperatures are 5-8C cooler than Dubai, making it a particularly welcome escape during the shoulder months of October and April when the city is still hot.",
+      "highlights": [
+        "Kayaking on the turquoise Hatta Dam surrounded by Hajar Mountains",
+        "27 mountain biking trails from beginner to expert at Hatta Wadi Hub",
+        "3,000-year-old Hatta Heritage Village with free entry",
+        "Zip lines, archery, paragliding & rock climbing at the adventure hub"
+      ],
+      "tips": [
+        "Depart Dubai by 7-8 AM to arrive at the dam by 9 AM when the water is calmest and the kayaking light is best.",
+        "Bring swimwear — the dam allows swimming in designated areas, and the water is refreshingly cool compared to Gulf beaches.",
+        "The drive through the Hajar Mountains is scenic with several wadi stops. Take the Hatta road (E44) and stop at Hatta Pools (natural rock pools) en route.",
+        "Hatta is popular on weekends — book kayak and bike rentals online for Friday-Saturday visits. Weekdays are quieter with walk-up availability."
+      ],
+      "faqs": [
+        {
+          "q": "How far is Hatta from Dubai?",
+          "a": "Hatta is 130 km east of Dubai, approximately 90 minutes by car via the E44 highway. There is no public transport — you need a rental car, taxi (AED 200-300 each way), or an organized tour. Several operators run day trips from Dubai (AED 200-400 including transport and activities). The road is well-maintained with scenic mountain views."
+        },
+        {
+          "q": "What is there to do in Hatta?",
+          "a": "Top activities: kayaking and pedal boating on Hatta Dam (AED 60-120/hour), mountain biking on 27 trails (AED 50-80/hour bike rental), zip lines and climbing at the Wadi Hub, visiting the 3,000-year-old Heritage Village (free), swimming in natural rock pools, and paragliding over the mountains (AED 400-600). A full day covers the dam, one trail, and the heritage village."
+        },
+        {
+          "q": "When is the best time to visit Hatta?",
+          "a": "November to March offers the most comfortable temperatures (18-28C versus 35-45C in summer). Weekday visits avoid weekend crowds at the dam and trails. Early morning (8-10 AM) provides the calmest water for kayaking and the best mountain photography light. Hatta is a year-round destination but summer heat limits outdoor activity to early morning."
+        }
+      ],
+      "activity_ids": [],
+      "related": ["jebel-jais", "desert-safari", "city-tours", "sports-and-outdoor"],
+      "name": "Hatta",
+      "short_name": "Hatta",
+      "subtitle": "Mountain kayaking & heritage trails",
+      "activity_count": "0 experiences",
+      "api_query": "Hatta Dubai"
+    },
+    {
+      "slug": "dubai-ice-rink",
+      "category_slug": "kids-and-family",
+      "title": "Dubai Ice Rink — Olympic-Size Skating at Dubai Mall",
+      "meta_title": "Dubai Ice Rink Tickets & Prices | TheTicketers",
+      "meta_description": "Book Dubai Ice Rink tickets at The Dubai Mall. Olympic-size skating rink with public sessions, disco nights & lessons. From AED 80.",
+      "hero_image": "https://images.unsplash.com/photo-1551524559-8af4e6624178?auto=format&fit=crop&w=1200&q=80",
+      "intro": "Dubai Ice Rink is an Olympic-size (1,800 sqm) ice skating rink on the ground floor of The Dubai Mall, offering public skating sessions, figure skating lessons, ice hockey, and themed events year-round. Located beneath the mall's soaring atrium near the Aquarium, the rink provides a genuinely fun family activity and a welcome cool-down break from a day of shopping or sightseeing in the mall.\n\nPublic sessions run throughout the day in 2-hour blocks, with special themed sessions including Disco on Ice (Friday evenings with DJ, lighting effects, and music), Family Fun Time (dedicated morning sessions with skating aids for young children), and Figure Skating Showcases. Skate rental is included in the ticket price, and skating aids (penguin-shaped frames for beginners) are available for AED 20-30. No prior skating experience is needed — the rink attracts a mix of first-timers, casual skaters, and serious practitioners.\n\nFor those who want to learn, the rink offers group lessons (AED 100-150 for a 30-minute session) and private coaching. The adjacent rink-side cafe offers hot chocolate and snacks with ice-level views. The rink is maintained at a comfortable temperature — the ice surface is cold but the surrounding area is normal mall temperature, so you do not need warm clothing beyond what is comfortable indoors.",
+      "highlights": [
+        "Olympic-size (1,800 sqm) ice rink inside The Dubai Mall",
+        "Public skating sessions, Disco on Ice & family-friendly time slots",
+        "Skate rental included; penguin skating aids for beginners available",
+        "Group and private skating lessons for all levels"
+      ],
+      "tips": [
+        "Weekday morning sessions (10 AM-12 PM) are the quietest. Weekend afternoons and Disco on Ice nights are the busiest with 30-minute entry waits.",
+        "Wear long trousers and socks that cover the ankle — skate boots can rub. The rink surface is cold but the mall surroundings are normal temperature.",
+        "Penguin skating aids (AED 20-30) are worth renting for children and first-timers. They provide stability while building confidence.",
+        "Book online for a guaranteed time slot. Walk-up tickets are available but the rink reaches capacity limits during peak sessions."
+      ],
+      "faqs": [
+        {
+          "q": "How much does Dubai Ice Rink cost?",
+          "a": "Standard public session tickets cost AED 80-100 for a 2-hour slot including skate rental. Disco on Ice (Friday evenings) costs AED 100-120. Group lessons are AED 100-150 for 30 minutes. Penguin skating aids are AED 20-30 per session. Children under 2 are not permitted on the ice. Online booking offers a 10% discount."
+        },
+        {
+          "q": "Do I need to know how to skate?",
+          "a": "No experience is needed. The rink is popular with first-time skaters. Penguin skating aids and rink-side rails provide stability for beginners. Group beginner lessons (30 minutes, AED 100-150) are available before most public sessions. The ice surface is well-maintained with few rough patches. Staff assist anyone who falls."
+        },
+        {
+          "q": "What are Dubai Ice Rink opening hours?",
+          "a": "The rink operates daily from 10 AM to midnight (matching Dubai Mall hours) in 2-hour public sessions. Disco on Ice runs Friday evenings 8-10 PM. Maintenance breaks between sessions last 15-30 minutes. Check the schedule online as session times shift between weekdays and weekends. Private hire is available for events outside public hours."
+        }
+      ],
+      "activity_ids": [],
+      "related": ["dubai-mall", "aquarium", "ski-dubai", "kids-and-family"],
+      "name": "Dubai Ice Rink",
+      "short_name": "Dubai Ice Rink",
+      "subtitle": "Olympic-size skating in Dubai Mall",
+      "activity_count": "0 experiences",
+      "api_query": "Dubai Ice Rink"
+    },
+    {
+      "slug": "wild-wadi",
+      "category_slug": "waterparks",
+      "title": "Wild Wadi Waterpark — Slides & Thrills Next to Burj Al Arab",
+      "meta_title": "Wild Wadi Waterpark Tickets | TheTicketers",
+      "meta_description": "Book Wild Wadi Waterpark tickets next to Burj Al Arab. 30 rides including Jumeirah Sceirah twin slides. Open year-round. From AED 199.",
+      "hero_image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+      "intro": "Wild Wadi Waterpark is a 5-hectare outdoor waterpark located in Jumeirah, directly adjacent to the iconic Burj Al Arab hotel. Themed around the Arabian folklore character Juha, the park features 30 rides and attractions ranging from gentle family floats to extreme high-speed slides, all with the Burj Al Arab's distinctive sail silhouette as a backdrop. Operated by Jumeirah Group since 1999, Wild Wadi has been a Dubai fixture for over 25 years.\n\nThe headline attractions are the Jumeirah Sceirah twin slides — 120-metre enclosed speed slides that drop riders at near-vertical angles before shooting them uphill on a reverse incline, with the Burj Al Arab visible through transparent sections. Tantrum Alley and Burj Surj use powerful water jets to propel riders through funnel-shaped slides with zero-gravity moments. For younger children, Juha's Dhow and Lagoon is a dedicated area with 15 gentle slides, water cannons, and shallow pools.\n\nThe park also features a 360-metre lazy river (Juha's Journey), a wave pool generating 1.5-metre swells, and Master Blasters — high-speed water coasters that use jet propulsion to push riders uphill between drops. Wild Wadi's more compact size compared to Aquaventure means shorter walking distances between rides and a less overwhelming experience for families with young children. The park is open year-round with heated pools in winter months.",
+      "highlights": [
+        "30 rides including the iconic Jumeirah Sceirah twin speed slides",
+        "Located next to Burj Al Arab — the most photogenic waterpark setting in Dubai",
+        "Dedicated children's area (Juha's Dhow) with 15 gentle slides",
+        "Compact layout means less walking and shorter queues than larger parks"
+      ],
+      "tips": [
+        "Arrive at opening (10 AM) and head directly to Jumeirah Sceirah — it has the longest queues and wait times reach 30-45 minutes by noon.",
+        "Wild Wadi's compact size means you can cover all major rides in 4-5 hours. It pairs well with a morning at the park and afternoon at Jumeirah Beach next door.",
+        "Bring AED 50 for locker rental and AED 25 for towels if you do not have your own. The park provides life jackets free of charge.",
+        "Wild Wadi is less crowded than Aquaventure on most days, making it a better choice for families who want shorter queues and a more relaxed pace."
+      ],
+      "faqs": [
+        {
+          "q": "How much do Wild Wadi tickets cost?",
+          "a": "General admission costs AED 199-249 for adults and AED 169-199 for children (height 1.1m-1.5m). Children under 1.1m enter free. Online booking offers 10-15% savings. Annual passes start at AED 499. Cabana rental is AED 400-800 and includes locker, towels, and dedicated service."
+        },
+        {
+          "q": "How does Wild Wadi compare to Aquaventure?",
+          "a": "Aquaventure is larger (105 slides vs 30), has a private beach, and includes the Lost Chambers Aquarium. Wild Wadi is more compact, has shorter queues, costs less, and offers the unbeatable Burj Al Arab backdrop. Wild Wadi suits families wanting a relaxed half-day; Aquaventure demands a full day. Both are excellent — the choice depends on time and budget."
+        },
+        {
+          "q": "Is Wild Wadi open in winter?",
+          "a": "Yes, Wild Wadi operates year-round. In winter (November-March), the pools and lazy river are heated to 28C, and air temperatures of 22-28C remain comfortable for slides. Winter is actually an ideal time to visit — fewer crowds, no extreme heat, and heated water. The park may close temporarily for maintenance in January (check dates annually)."
+        }
+      ],
+      "activity_ids": [],
+      "related": ["aquaventure-waterpark", "waterparks", "kite-beach", "palm-jumeirah"],
+      "name": "Wild Wadi",
+      "short_name": "Wild Wadi",
+      "subtitle": "Waterpark next to Burj Al Arab",
+      "activity_count": "0 experiences",
+      "api_query": "Wild Wadi Waterpark"
+    },
+    {
+      "slug": "aura-skypool",
+      "category_slug": "luxury-experiences",
+      "title": "AURA Skypool — World's Highest 360-Degree Infinity Pool",
+      "meta_title": "AURA Skypool Lounge Tickets | TheTicketers",
+      "meta_description": "Book AURA Skypool at The Palm Tower. World's highest 360-degree infinity pool at 200m. Skypool, lounge & dining from AED 200.",
+      "hero_image": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80",
+      "intro": "AURA Skypool is the world's highest 360-degree infinity pool, perched on the 50th floor of The Palm Tower on Palm Jumeirah, 200 metres above the Arabian Gulf. Opened in 2021, the 750 square metre pool and lounge offer unobstructed panoramic views of the Palm Jumeirah fronds, the Dubai Marina skyline, the Burj Khalifa, and the open sea — making it simultaneously a swimming experience, an observation deck, and a luxury lounge.\n\nThe experience is divided into two sections: the Skypool (the infinity pool itself with submerged loungers and a swim-up bar) and the Lounge (a dry area with daybeds, sofas, and a full food and beverage menu). Entry tickets (AED 200-350 depending on day and time slot) include pool access for a 2-3 hour session, a welcome drink, and use of the lounge facilities. Towels, robes, and changing rooms are provided. The food and beverage menu runs from Mediterranean platters and sushi to signature cocktails and champagne, ordered poolside and charged separately.\n\nAURA operates with strict capacity limits to maintain an exclusive atmosphere — sessions are timed and limited to approximately 100 guests at a time. The sunset session (typically 4-7 PM) is the most sought-after, with views of the sun dropping into the Gulf as the city skyline transitions to its illuminated night mode. A dress code applies: swimwear poolside, smart casual in the lounge, and no children under 16 are admitted.",
+      "highlights": [
+        "World's highest 360-degree infinity pool at 200 metres on Palm Tower",
+        "Panoramic views of Palm Jumeirah, Marina skyline & Burj Khalifa",
+        "Swim-up bar, submerged loungers & luxury lounge seating",
+        "Sunset sessions with Gulf views as the city lights up"
+      ],
+      "tips": [
+        "Book the sunset session (4-7 PM) at least 1 week in advance — it is the most popular and sells out consistently, especially on weekends.",
+        "Bring a waterproof phone case for pool photos. The infinity edge overlooking the Palm fronds creates stunning photography angles.",
+        "The minimum spend on food and beverages is AED 100-200 per person depending on the session — factor this into your budget beyond the entry ticket.",
+        "AURA is adults only (16+). There is no exception to this policy. It is designed as a premium lounge experience, not a family pool."
+      ],
+      "faqs": [
+        {
+          "q": "How much does AURA Skypool cost?",
+          "a": "Entry tickets range from AED 200 (weekday morning) to AED 350 (weekend sunset). This includes pool access for 2-3 hours, a welcome drink, towels, and lounge facilities. Food and beverages are charged separately with a minimum spend requirement of AED 100-200 per person. Premium daybed and cabana upgrades start at AED 500-1,500."
+        },
+        {
+          "q": "Can children visit AURA Skypool?",
+          "a": "No, AURA Skypool is strictly adults only (16+). No exceptions are made. The venue is designed as a luxury lounge experience with an exclusive atmosphere. Families with children should consider hotel infinity pools (several Palm Jumeirah hotels offer day passes with pools) or The View at The Palm (observation deck on the same tower, all ages welcome)."
+        },
+        {
+          "q": "Where is AURA Skypool located?",
+          "a": "AURA is on the 50th floor of The Palm Tower, Palm Jumeirah. The building is at the trunk of the Palm, near Nakheel Mall. Take the Palm Monorail to Nakheel Mall station, or drive directly — valet parking is available. From Downtown Dubai, the drive takes 15-25 minutes. The entrance is through The Palm Tower lobby with a dedicated elevator to the 50th floor."
+        }
+      ],
+      "activity_ids": [],
+      "related": ["palm-jumeirah", "sky-views-observatory-dubai", "cruises", "luxury-experiences"],
+      "name": "AURA Skypool",
+      "short_name": "AURA Skypool",
+      "subtitle": "Infinity pool 200m above the Palm",
+      "activity_count": "0 experiences",
+      "api_query": "AURA Skypool"
+    },
+    {
+      "slug": "dubai-garden-glow",
+      "category_slug": "kids-and-family",
+      "title": "Dubai Garden Glow — Illuminated Art Park & Dinosaur Park",
+      "meta_title": "Dubai Garden Glow Tickets | TheTicketers",
+      "meta_description": "Book Dubai Garden Glow tickets for the illuminated art park, dinosaur park & ice park. Open October to May at Zabeel Park. From AED 65.",
+      "hero_image": "https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=1200&q=80",
+      "intro": "Dubai Garden Glow is a seasonal illuminated theme park in Zabeel Park, operating from late October to late May each year. The park transforms 18,000 square metres of Zabeel Park into a glowing wonderland using millions of energy-saving LED lights, recycled fabric, and luminous installations sculpted into animals, landmarks, gardens, and fantasy scenes. Now in its tenth season, it has become one of Dubai's most family-friendly evening attractions.\n\nThe experience is divided into three connected parks under one ticket: Glow Park (the main illuminated garden with themed installations that change each season), Dinosaur Park (over 100 life-size animatronic dinosaurs with sound and movement, plus educational exhibits about prehistoric life), and the Art Park (sculptures and installations made from recycled materials). Each season introduces new themes and installations — past highlights have included glowing replicas of the Eiffel Tower, Taj Mahal, and Burj Khalifa, underwater scenes with illuminated jellyfish and coral, and enchanted forests with animated creatures.\n\nDubai Garden Glow opens at 4 PM (when the installations are visible in fading daylight) and the full effect builds as darkness falls after 6 PM. The park is most impressive after dark when the LED lights reach full intensity. Dinosaur Park is the highlight for children — the animatronic dinosaurs move, roar, and tower overhead, and the park includes fossil-digging sandpits and interactive exhibits. The entire circuit takes 90-120 minutes at a leisurely pace.",
+      "highlights": [
+        "Millions of LED lights sculpted into landmarks, animals & fantasy scenes",
+        "100+ life-size animatronic dinosaurs in the Dinosaur Park",
+        "Art Park with sculptures made from recycled materials",
+        "Open October to May — 4 PM to 11 PM daily"
+      ],
+      "tips": [
+        "Visit after 6 PM when full darkness makes the LED installations at their most vivid. The 4-6 PM window is less impressive in partial daylight.",
+        "The Dinosaur Park is the highlight for children — allow 30-40 minutes for the animatronic walk and fossil-digging sandpit.",
+        "Tuesday and Wednesday evenings are the quietest. Friday and Saturday nights after 7 PM are extremely crowded with families.",
+        "Garden Glow is in Zabeel Park (Gate 6/7 entrance), near the Dubai Frame. Combine both for an evening outing — the Frame is spectacular after dark."
+      ],
+      "faqs": [
+        {
+          "q": "How much do Dubai Garden Glow tickets cost?",
+          "a": "Entry to all three parks (Glow Park, Dinosaur Park, Art Park) costs AED 65 for adults and AED 50 for children (aged 3-12). Children under 3 enter free. Online booking may offer a 5-10 AED discount. There are no separate tickets for individual parks — the single ticket covers all three."
+        },
+        {
+          "q": "When is Dubai Garden Glow open?",
+          "a": "The park operates seasonally from late October to late May, daily from 4 PM to 11 PM (extended to midnight on weekends in peak season). It is closed during summer months (June-September). Exact opening and closing dates vary by 1-2 weeks each season — check the official website for current season dates."
+        },
+        {
+          "q": "Is Dubai Garden Glow worth visiting for adults without children?",
+          "a": "The installations are genuinely impressive and highly photogenic for adults — the LED gardens and themed sections make excellent photography backdrops, especially for social media. However, the Dinosaur Park is clearly aimed at children. Adults without children typically enjoy the 60-90 minute visit as part of a larger evening including the Dubai Frame and Zabeel Park."
+        }
+      ],
+      "activity_ids": [],
+      "related": ["miracle-garden", "dubai-frame", "global-village", "kids-and-family"],
+      "name": "Garden Glow",
+      "short_name": "Garden Glow",
+      "subtitle": "LED wonderland & dinosaur park",
+      "activity_count": "0 experiences",
+      "api_query": "Dubai Garden Glow"
     }
   ],
   "hub_faqs": [
