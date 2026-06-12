@@ -2306,6 +2306,29 @@ body.modal-open { overflow: hidden; }
     font-style: italic;
 }
 
+/* ---- Artist Guides hub (on /artists) ---- */
+.guide-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+}
+.guide-card {
+    padding: 14px 16px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+}
+.guide-card__name {
+    display: block;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 6px;
+}
+.guide-card__name:hover { color: var(--accent); }
+.guide-card__links { display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: .85rem; }
+.guide-card__links a { color: var(--muted); text-decoration: none; }
+.guide-card__links a:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+
 @media (max-width: 640px) {
     .setlist { columns: 1; }
     .article-body > p { font-size: 1rem; }

@@ -12,8 +12,8 @@ declare(strict_types=1);
  *   php bin/build-seo-index.php
  *
  * Useful knobs:
- *   php bin/build-seo-index.php --events=3000 --artists=5000 --cities=75
- *   php bin/build-seo-index.php --venues=1500 --artist-cities=5000
+ *   php bin/build-seo-index.php --events=4000 --artists=7000 --cities=75
+ *   php bin/build-seo-index.php --venues=3000 --artist-cities=12000
  */
 
 $root = dirname(__DIR__);
@@ -33,11 +33,11 @@ $opts = getopt('', [
     'quiet',
 ]);
 
-$eventLimit = max(0, (int) ($opts['events'] ?? 3000));
-$artistLimit = max(0, (int) ($opts['artists'] ?? 5000));
+$eventLimit = max(0, (int) ($opts['events'] ?? 4000));
+$artistLimit = max(0, (int) ($opts['artists'] ?? 7000));
 $cityLimit = max(1, (int) ($opts['cities'] ?? 75));
-$venueLimit = max(0, (int) ($opts['venues'] ?? 1500));
-$artistCityLimit = max(0, (int) ($opts['artist-cities'] ?? 5000));
+$venueLimit = max(0, (int) ($opts['venues'] ?? 3000));
+$artistCityLimit = max(0, (int) ($opts['artist-cities'] ?? 12000));
 $cityCategoryLimit = max(0, (int) ($opts['city-categories'] ?? 500));
 $quiet = isset($opts['quiet']);
 
@@ -57,6 +57,9 @@ $urls = [
     'venues' => [],
     'city_dates' => [],
     'city_categories' => [],
+    'monthly_events' => [],
+    'venue_categories' => [],
+    'artist_tours' => [],
 ];
 $maps = [
     'event' => [],
@@ -144,7 +147,7 @@ $addEventEntities = static function (array $event) use (&$add, &$teamSlugs, &$kn
 // Local event detail pages: HelloTickets only. TM events currently resolve to the
 // partner URL, not a local /event/{slug} detail page.
 $say('Collecting HelloTickets event pages...');
-for ($page = 1; count($urls['events']) < $eventLimit && $page <= 150; $page++) {
+for ($page = 1; count($urls['events']) < $eventLimit && $page <= 200; $page++) {
     $data = api_result(static fn() => $client->performances(array_merge([
         'limit' => 48,
         'page' => $page,
@@ -170,7 +173,7 @@ $say('Events: ' . count($urls['events']));
 
 // Artist index from HelloTickets performer pages.
 $say('Collecting artist pages...');
-for ($page = 1; count($urls['artists']) < $artistLimit && $page <= 120; $page++) {
+for ($page = 1; count($urls['artists']) < $artistLimit && $page <= 160; $page++) {
     $data = api_result(static fn() => $client->performers([
         'limit' => 48,
         'page' => $page,
@@ -285,6 +288,32 @@ foreach ($cityTargets as $cityId => $city) {
         count($urls['city_dates']),
         count($urls['city_categories'])
     ));
+}
+
+// Monthly event pages (evergreen)
+$monthNames = ['january','february','march','april','may','june','july','august','september','october','november','december'];
+foreach ($cityTargets as $cityId => $city) {
+    $cityName = (string) ($city['name'] ?? '');
+    if ($cityName === '') continue;
+    foreach ($monthNames as $mn) {
+        $add('monthly_events', monthly_events_path($city, $mn), 900);
+    }
+}
+
+// Venue x category
+foreach (array_keys($maps['venue']) as $vSlug) {
+    foreach (['concerts','sports','theatre'] as $vCat) {
+        $add('venue_categories', '/venue/' . $vSlug . '/' . $vCat, 3000);
+    }
+}
+
+// Artist tour by country
+$tourCountries = ['usa','canada','uk','australia'];
+foreach (array_keys($knownArtistSlugs) as $aSlug) {
+    if (isset($teamSlugs[$aSlug])) continue;
+    foreach ($tourCountries as $tc) {
+        $add('artist_tours', '/artist/' . $aSlug . '/' . $tc . '-tour', 2000);
+    }
 }
 
 foreach ($urls as $bucket => $bucketUrls) {

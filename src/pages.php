@@ -67,6 +67,18 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
         return;
     }
 
+    if (preg_match('#^/events/([a-z]+)-in-([a-z0-9-]+)$#', $path, $match)) {
+        $monthName = $match[1];
+        $citySlug = $match[2];
+        $cityId = resolve_city_id_by_slug($config, $citySlug) ?? legacy_id_from_slug($citySlug);
+        if ($cityId === null) {
+            render_error_page($config, 404, 'City not found', 'We do not have events for this city.');
+            return;
+        }
+        render_monthly_events_page($client, $config, $cityId, $monthName);
+        return;
+    }
+
     if ($path === '/events') {
         render_events_page($client, $config, active_city_id($config));
         return;
@@ -87,6 +99,13 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
     // resolve as a city. Only curated artists render; others 404 in the handler.
     if (preg_match('#^/artist/([^/]+)/(ticket-prices|tour-dates|setlist)$#', $path, $match)) {
         render_artist_intent_page($client, $config, $match[1], $match[2]);
+        return;
+    }
+
+    // Artist × country tour pages ("{artist} USA/UK/… tour").
+    // Always end in "-tour" so they never collide with city slugs.
+    if (preg_match('#^/artist/([^/]+)/([a-z]+)-tour$#', $path, $match)) {
+        render_artist_country_tour($client, $config, $match[1], $match[2]);
         return;
     }
 
@@ -238,6 +257,11 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
         return;
     }
 
+    if ($path === '/llms-full.txt') {
+        render_llms_full_txt($config, $destinationsContent);
+        return;
+    }
+
     if ($path === '/ai-index.json') {
         render_ai_index_json($config, $destinationsContent);
         return;
@@ -248,12 +272,12 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
         return;
     }
 
-    if (preg_match('#^/sitemap-(static|events|artists|artist-cities|venues|cities)\.xml$#', $path, $match)) {
+    if (preg_match('#^/sitemap-(static|events|artists|artist-cities|venues|cities|monthly|venue-categories|artist-tours)\.xml$#', $path, $match)) {
         render_phase_one_sitemap($client, $config, $destinationsContent, $match[1]);
         return;
     }
 
-    if (preg_match('#^/city/([^/]+)/(concerts|sports|theatre|comedy)$#', $path, $match)) {
+    if (preg_match('#^/city/([^/]+)/(concerts|sports|theatre|comedy|festivals|family|classical|hip-hop|rock|country-music)$#', $path, $match)) {
         $cityId = resolve_city_id_by_slug($config, $match[1]) ?? legacy_id_from_slug($match[1]);
         if ($cityId === null) {
             render_error_page($config, 404, 'City not found', 'We do not have a tickets page for this city yet.');
@@ -301,6 +325,22 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
             return;
         }
         render_activity_detail_page($client, $config, $activityId);
+        return;
+    }
+
+    if (preg_match('#^/venue/([^/]+)/(concerts|sports|theatre)$#', $path, $match)) {
+        $venueSlug = $match[1];
+        $venueCat = $match[2];
+        $tmVenueId = venue_slug_lookup($venueSlug);
+        if ($tmVenueId === null) {
+            $seedVenue = resolve_seed_venue($config, $venueSlug);
+            $tmVenueId = $seedVenue !== null ? (string) $seedVenue['tm_id'] : tm_legacy_id_from_slug($venueSlug);
+        }
+        if ($tmVenueId === null || $tmVenueId === '') {
+            render_error_page($config, 404, 'Venue not found', 'This venue page is not available.');
+            return;
+        }
+        render_venue_category_page($config, $tmVenueId, $venueSlug, $venueCat);
         return;
     }
 
@@ -359,6 +399,12 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
     if (preg_match('#^/([a-z0-9-]+)/([a-z0-9-]+)$#', $path, $match)
         && destination_city_in_country($destinationsContent, $match[1], $match[2])) {
         render_city_hub($client, $config, $destinationsContent, $match[1], $match[2]);
+        return;
+    }
+
+    if (preg_match('#^/([a-z0-9-]+)/(concerts|sports|theatre|festivals|family|classical|hip-hop|rock|country-music|comedy)$#', $path, $match)
+        && destination_country_exists($destinationsContent, $match[1])) {
+        render_country_category_hub($client, $config, $destinationsContent, $match[1], $match[2]);
         return;
     }
 
@@ -2311,6 +2357,29 @@ function render_artists_page(HelloTicketsClient $client, array $config): void
                 <?php endif; ?>
             </div>
         </section>
+        <?php $guideStore = artist_intent_store(); ?>
+        <?php if ($guideStore !== []): ?>
+        <section class="section-band muted">
+            <div class="container">
+                <div class="section-heading"><h2>Popular Artist Guides</h2></div>
+                <p class="more-cities-intro">In-depth ticket-price guides, tour dates and setlists for the artists people search for most — updated with live prices when shows are on sale.</p>
+                <div class="guide-grid">
+                    <?php foreach ($guideStore as $guideSlug => $guideEntry):
+                        $guideName = (string) ($guideEntry['name'] ?? ucwords(str_replace('-', ' ', (string) $guideSlug)));
+                        $guideHref = '/artist/' . $guideSlug; ?>
+                        <div class="guide-card">
+                            <a class="guide-card__name" href="<?= e($guideHref) ?>"><?= e($guideName) ?></a>
+                            <span class="guide-card__links">
+                                <?php if (!empty($guideEntry['prices'])): ?><a href="<?= e($guideHref) ?>/ticket-prices">Prices</a><?php endif; ?>
+                                <?php if (!empty($guideEntry['tour'])): ?><a href="<?= e($guideHref) ?>/tour-dates">Tour Dates</a><?php endif; ?>
+                                <?php if (!empty($guideEntry['setlist'])): ?><a href="<?= e($guideHref) ?>/setlist">Setlist</a><?php endif; ?>
+                            </span>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </section>
+        <?php endif; ?>
         <?php
     }, item_list_schema_for_artists($config, $performers));
 }
@@ -3345,6 +3414,7 @@ function render_robots(array $config): void
     $rules = [
         'Allow: /',
         'Allow: /llms.txt',
+        'Allow: /llms-full.txt',
         'Allow: /ai-index.json',
         'Allow: /sitemap.xml',
         'Disallow: /go',
@@ -3445,6 +3515,27 @@ function render_llms_txt(HelloTicketsClient $client, array $config, array $desti
         }
         echo '- [Events this weekend in ' . $city['name'] . '](' . $site . weekend_path($city) . ")\n";
     }
+
+    echo "\n## Monthly Event Guides\n\n";
+    echo "Pattern: /events/{month}-in-{city} (e.g. /events/january-in-new-york)\n";
+    echo "Evergreen pages showing all events in a city for a given month. Auto-rolls to the next year.\n";
+    echo "75 cities x 12 months = 900 pages.\n";
+
+    echo "\n## Venue Event Categories\n\n";
+    echo "Pattern: /venue/{slug}/concerts, /venue/{slug}/sports, /venue/{slug}/theatre\n";
+    echo "Filtered event listings per venue. 3,000+ venue-category pages.\n";
+
+    echo "\n## Artist Country Tours\n\n";
+    echo "Pattern: /artist/{slug}/{country}-tour (e.g. /artist/drake/usa-tour)\n";
+    echo "All dates for an artist in a specific country. Covers USA, Canada, UK, Australia.\n";
+
+    echo "\n## Country Category Hubs\n\n";
+    echo "Pattern: /{country}/{category} (e.g. /usa/concerts, /uk/sports)\n";
+    echo "Category-filtered event hubs for each destination country.\n";
+
+    echo "\n## City Genre Pages\n\n";
+    echo "Pattern: /city/{slug}/{genre}\n";
+    echo "10 genres: concerts, sports, theatre, comedy, festivals, family, classical, hip-hop, rock, country-music.\n";
 
     echo "\n## Data and attribution\n\n";
     echo "- Event, attraction, price and availability data comes from ticketing partners including HelloTickets and Ticketmaster where configured.\n";
@@ -3597,6 +3688,9 @@ function render_sitemap_index(array $config): void
         '/sitemap-artist-cities.xml',
         '/sitemap-venues.xml',
         '/sitemap-cities.xml',
+        '/sitemap-monthly.xml',
+        '/sitemap-venue-categories.xml',
+        '/sitemap-artist-tours.xml',
     ];
 
     $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
@@ -3661,6 +3755,12 @@ function render_phase_one_sitemap(HelloTicketsClient $client, array $config, arr
         foreach (array_merge(seo_index_urls('city_dates'), seo_index_urls('city_categories')) as $path) {
             $add($path);
         }
+    } elseif ($bucket === 'monthly') {
+        foreach (seo_index_urls('monthly_events') as $path) { $add($path); }
+    } elseif ($bucket === 'venue-categories') {
+        foreach (seo_index_urls('venue_categories') as $path) { $add($path); }
+    } elseif ($bucket === 'artist-tours') {
+        foreach (seo_index_urls('artist_tours') as $path) { $add($path); }
     }
 
     echo sitemap_xml_from_entries($entries);
@@ -3683,7 +3783,7 @@ function phase_one_static_sitemap_paths(HelloTicketsClient $client, array $confi
 {
     $contentMod = content_last_modified_date();
     $paths = ['/'=> ''];
-    foreach (['/events', '/attractions', '/artists', '/venues', '/teams', '/about', '/contact', '/how-we-make-money', '/privacy', '/terms', '/llms.txt', '/ai-index.json'] as $staticPath) {
+    foreach (['/events', '/attractions', '/artists', '/venues', '/teams', '/about', '/contact', '/how-we-make-money', '/privacy', '/terms', '/llms.txt', '/llms-full.txt', '/ai-index.json'] as $staticPath) {
         $paths[$staticPath] = $contentMod;
     }
     foreach (league_seed_list() as $league) {
@@ -3721,6 +3821,12 @@ function phase_one_static_sitemap_paths(HelloTicketsClient $client, array $confi
     }
     foreach (array_keys(category_content()) as $catSlug) {
         $paths['/category/' . $catSlug] = $contentMod;
+    }
+    $catSlugs = array_keys(city_intent_categories());
+    foreach (array_keys($destinationsContent['countries'] ?? []) as $cSlug) {
+        foreach ($catSlugs as $catSlug) {
+            $paths['/' . $cSlug . '/' . $catSlug] = $contentMod;
+        }
     }
 
     return $paths;
@@ -3787,7 +3893,7 @@ function render_sitemap(HelloTicketsClient $client, array $config, array $destin
 
     // Home + evergreen static pages.
     $add('/');
-    foreach (['/events', '/attractions', '/artists', '/venues', '/teams', '/about', '/contact', '/how-we-make-money', '/privacy', '/terms', '/llms.txt', '/ai-index.json'] as $staticPath) {
+    foreach (['/events', '/attractions', '/artists', '/venues', '/teams', '/about', '/contact', '/how-we-make-money', '/privacy', '/terms', '/llms.txt', '/llms-full.txt', '/ai-index.json'] as $staticPath) {
         $add($staticPath, $contentMod);
     }
 
@@ -4946,4 +5052,325 @@ function render_teams_index(array $config): void
         </section>
         <?php
     });
+}
+
+function render_monthly_events_page(HelloTicketsClient $client, array $config, int $cityId, string $monthName): void
+{
+    $months = ['january'=>1,'february'=>2,'march'=>3,'april'=>4,'may'=>5,'june'=>6,
+              'july'=>7,'august'=>8,'september'=>9,'october'=>10,'november'=>11,'december'=>12];
+    if (!isset($months[$monthName])) {
+        render_error_page($config, 404, 'Invalid month', 'Please use a valid month name.');
+        return;
+    }
+    $monthNum = $months[$monthName];
+    $now = new DateTimeImmutable('now', new DateTimeZone('UTC'));
+    $currentMonth = (int) $now->format('n');
+    $currentYear = (int) $now->format('Y');
+    $targetYear = ($monthNum >= $currentMonth) ? $currentYear : $currentYear + 1;
+    $targetStart = new DateTimeImmutable("$targetYear-$monthNum-01", new DateTimeZone('UTC'));
+    $targetEnd = $targetStart->modify('last day of this month');
+
+    $city = city_for_id($cityId, $config);
+    $cityName = (string) ($city['name'] ?? '');
+    if ($cityName === '') {
+        render_error_page($config, 404, 'City not found', 'We do not have events for this city.');
+        return;
+    }
+    $citySlug = slugify($cityName);
+    $monthLabel = ucfirst($monthName);
+    $page = page_number();
+    $perPage = 24;
+
+    $from = $targetStart->format('Y-m-d\\TH:i:s');
+    $to = $targetEnd->format('Y-m-d\\T23:59:59');
+
+    $ht = api_result(static fn() => $client->performances(array_merge([
+        'limit' => 48, 'page' => 1, 'is_sellable' => 'true', 'city_id' => $cityId,
+    ], ['from' => $from, 'to' => $to])), ['performances' => []])['performances'] ?? [];
+
+    $tm = tm_events_for_city_deep($config, $cityName, (string) ($city['country_code'] ?? ''), [
+        'localStartDateTime' => $from . ',' . $to,
+    ], 2, 100);
+
+    $eventPool = city_event_pool($ht, $tm, $config);
+    if ($eventPool === []) {
+        render_error_page($config, 404, 'No events yet', 'No events in ' . $cityName . ' for ' . $monthLabel . ' yet. Check back closer to the date.');
+        return;
+    }
+    $totalEvents = count($eventPool);
+    $events = array_slice($eventPool, ($page - 1) * $perPage, $perPage);
+    $eventsPageData = ['current_page' => $page, 'per_page' => $perPage, 'total_count' => $totalEvents];
+
+    $pageTitle = 'Events in ' . $cityName . ' in ' . $monthLabel;
+    $canonical = '/events/' . $monthName . '-in-' . $citySlug;
+
+    $prevIdx = (($monthNum - 2 + 12) % 12);
+    $nextIdx = ($monthNum % 12);
+    $monthNames = array_keys($months);
+    $prevLink = '/events/' . $monthNames[$prevIdx] . '-in-' . $citySlug;
+    $nextLink = '/events/' . $monthNames[$nextIdx] . '-in-' . $citySlug;
+
+    $breadcrumbs = [
+        ['name' => 'Home', 'url' => absolute_url($config, '/')],
+        ['name' => 'Events', 'url' => absolute_url($config, '/events')],
+        ['name' => $cityName, 'url' => absolute_url($config, city_path($city))],
+        ['name' => $monthLabel, 'url' => absolute_url($config, $canonical)],
+    ];
+
+    $schema = ['@context' => 'https://schema.org', '@graph' => [
+        ['@type' => 'CollectionPage', 'name' => $pageTitle, 'url' => absolute_url($config, $canonical),
+         'description' => 'All events in ' . $cityName . ' during ' . $monthLabel,
+         'isPartOf' => ['@id' => $config['site_url'] . '/#website']],
+        dubai_breadcrumb_schema($config, $breadcrumbs),
+    ]];
+
+    render_layout($config, [
+        'title' => $pageTitle . ' | ' . $config['site_name'],
+        'description' => 'Find ' . $totalEvents . '+ events in ' . $cityName . ' for ' . $monthLabel . '. Concerts, sports, theatre and more with live prices.',
+        'canonical' => absolute_url($config, $canonical, array_filter(['page' => $page > 1 ? $page : null])),
+        'body_class' => 'monthly-events-page',
+    ], function () use ($config, $pageTitle, $cityName, $monthLabel, $events, $eventsPageData, $breadcrumbs, $prevLink, $nextLink, $citySlug): void {
+        ?>
+        <section class="monthly-events__hero"><div class="container">
+            <?php dubai_render_breadcrumbs($breadcrumbs); ?>
+            <h1><?= e($pageTitle) ?></h1>
+            <p class="monthly-events__sub">Concerts, sports, theatre and shows in <?= e($cityName) ?> during <?= e($monthLabel) ?></p>
+            <nav class="monthly-events__nav" aria-label="Month navigation">
+                <a href="<?= e($prevLink) ?>">&larr; Previous month</a>
+                <a href="<?= e($nextLink) ?>">Next month &rarr;</a>
+            </nav>
+        </div></section>
+        <?php render_events_grid_section('All Events', '', $events, $eventsPageData, $config); ?>
+        <section class="monthly-events__seo section-band muted"><div class="container">
+            <h2>About Events in <?= e($cityName) ?> in <?= e($monthLabel) ?></h2>
+            <p>Browse every confirmed event in <?= e($cityName) ?> for <?= e($monthLabel) ?>. New events appear automatically as they go on sale.</p>
+            <p>Try <a href="/city/<?= e($citySlug) ?>/concerts">concerts</a>, <a href="/city/<?= e($citySlug) ?>/sports">sports</a>, or <a href="/city/<?= e($citySlug) ?>/theatre">theatre</a> in <?= e($cityName) ?>.</p>
+        </div></section>
+        <?php
+    }, $schema);
+}
+
+function render_venue_category_page(array $config, string $tmVenueId, string $venueSlug, string $categorySlug): void
+{
+    $labels = ['concerts'=>'Concerts','sports'=>'Sports','theatre'=>'Theatre'];
+    $tmClass = ['concerts'=>'Music','sports'=>'Sports','theatre'=>'Arts & Theatre'];
+    $label = $labels[$categorySlug] ?? ucfirst($categorySlug);
+    $tmClient = new TicketmasterClient($config['tm_api_key'] ?? '', $config['cache_dir'], $config['cache_ttl']);
+    $venueInfo = api_result(static fn() => $tmClient->venue($tmVenueId), null);
+    if ($venueInfo === null) { render_error_page($config, 404, 'Venue not found', 'This venue is not available.'); return; }
+    $venueName = (string) ($venueInfo['name'] ?? ucwords(str_replace('-',' ',$venueSlug)));
+    $cityName = (string) ($venueInfo['city']['name'] ?? '');
+    $page = page_number(); $perPage = 24; $events = [];
+    for ($p = 1; $p <= 3; $p++) {
+        $data = api_result(static fn() => $tmClient->events(['venueId'=>$tmVenueId, 'classificationName'=>$tmClass[$categorySlug]??'', 'size'=>50, 'page'=>$p-1, 'sort'=>'date,asc']), null);
+        if ($data === null) break;
+        foreach ($data['_embedded']['events'] ?? [] as $ev) { $events[] = tm_normalize_event($ev, $config); }
+        if (($data['page']['totalPages'] ?? 1) <= $p) break;
+    }
+    if ($events === []) { render_error_page($config, 404, 'No events', 'No '.strtolower($label).' at this venue right now.'); return; }
+    $total = count($events); $pageEvents = array_slice($events, ($page-1)*$perPage, $perPage);
+    $evData = ['current_page'=>$page,'per_page'=>$perPage,'total_count'=>$total];
+    $title = $label.' at '.$venueName; $canonical = '/venue/'.$venueSlug.'/'.$categorySlug;
+    $bc = [['name'=>'Home','url'=>absolute_url($config,'/')],['name'=>'Venues','url'=>absolute_url($config,'/venues')],
+           ['name'=>$venueName,'url'=>absolute_url($config,'/venue/'.$venueSlug)],['name'=>$label,'url'=>absolute_url($config,$canonical)]];
+    $schema = ['@context'=>'https://schema.org','@graph'=>[
+        ['@type'=>'CollectionPage','name'=>$title,'url'=>absolute_url($config,$canonical),'isPartOf'=>['@id'=>$config['site_url'].'/#website']],
+        dubai_breadcrumb_schema($config,$bc)]];
+    render_layout($config, ['title'=>$title.' | '.$config['site_name'],
+        'description'=>'Upcoming '.$label.' at '.$venueName.($cityName!==''?' in '.$cityName:'').'. Live schedule with ticket prices.',
+        'canonical'=>absolute_url($config,$canonical,array_filter(['page'=>$page>1?$page:null])), 'body_class'=>'venue-category-page',
+    ], function () use ($config,$title,$venueName,$label,$categorySlug,$venueSlug,$cityName,$pageEvents,$evData,$bc,$labels): void { ?>
+        <section class="venue-category__hero"><div class="container">
+            <?php dubai_render_breadcrumbs($bc); ?>
+            <h1><?= e($title) ?></h1>
+            <p class="venue-category__sub">Upcoming <?= e(strtolower($label)) ?> at <?= e($venueName) ?><?= $cityName!==''?' in '.e($cityName):'' ?></p>
+            <nav class="venue-category__tabs" aria-label="Event type">
+                <?php foreach ($labels as $cs=>$cl): ?>
+                    <?php if ($cs===$categorySlug): ?><span class="venue-category__tab active"><?= e($cl) ?></span>
+                    <?php else: ?><a class="venue-category__tab" href="/venue/<?= e($venueSlug) ?>/<?= e($cs) ?>"><?= e($cl) ?></a><?php endif; ?>
+                <?php endforeach; ?>
+            </nav>
+        </div></section>
+        <?php render_events_grid_section('', '', $pageEvents, $evData, $config); ?>
+        <section class="venue-category__seo section-band muted"><div class="container">
+            <h2><?= e($label) ?> at <?= e($venueName) ?></h2>
+            <p>Browse upcoming <?= e(strtolower($label)) ?> at <?= e($venueName) ?>. Updated live from our ticketing partner.</p>
+        </div></section>
+    <?php }, $schema);
+}
+
+function render_artist_country_tour(HelloTicketsClient $client, array $config, string $artistSlug, string $countrySlug): void
+{
+    $countries = ['usa'=>['United States','US'],'canada'=>['Canada','CA'],'uk'=>['United Kingdom','GB'],'australia'=>['Australia','AU']];
+    if (!isset($countries[$countrySlug])) { render_error_page($config, 404, 'Not found', 'Tour page not available.'); return; }
+    [$countryName, $countryCode] = $countries[$countrySlug];
+    $performerId = resolve_artist_id($client, $artistSlug) ?? legacy_id_from_slug($artistSlug);
+    $artistName = '';
+    if ($performerId !== null && $performerId > 0) {
+        $performer = api_result(static fn() => $client->performer($performerId), null);
+        $artistName = (string) ($performer['name'] ?? '');
+    }
+    if ($artistName === '') {
+        $tmArtist = tm_artist_by_slug($config, $artistSlug);
+        $artistName = $tmArtist !== null ? (string) ($tmArtist['name'] ?? ucwords(str_replace('-',' ',$artistSlug))) : '';
+    }
+    if ($artistName === '') { render_error_page($config, 404, 'Artist not found', 'Not on tour.'); return; }
+    $tmClient = new TicketmasterClient($config['tm_api_key'] ?? '', $config['cache_dir'], $config['cache_ttl']);
+    $events = []; $tmArtistId = tm_artist_slug_lookup($artistSlug);
+    if ($tmArtistId !== null && $tmArtistId !== '') {
+        for ($p = 0; $p < 3; $p++) {
+            $data = api_result(static fn() => $tmClient->events(['attractionId'=>$tmArtistId,'countryCode'=>$countryCode,'size'=>50,'page'=>$p,'sort'=>'date,asc']), null);
+            if ($data === null) break;
+            foreach ($data['_embedded']['events'] ?? [] as $ev) { $events[] = tm_normalize_event($ev, $config); }
+            if (($data['page']['totalPages'] ?? 1) <= $p + 1) break;
+        }
+    }
+    if ($events === []) { render_error_page($config, 404, 'No dates', $artistName . ' has no upcoming dates in ' . $countryName . '.'); return; }
+    $page = page_number(); $perPage = 24; $total = count($events);
+    $pageEvents = array_slice($events, ($page-1)*$perPage, $perPage);
+    $evData = ['current_page'=>$page,'per_page'=>$perPage,'total_count'=>$total];
+    $title = $artistName.' '.strtoupper($countrySlug).' Tour Dates';
+    $canonical = '/artist/'.$artistSlug.'/'.$countrySlug.'-tour';
+    $cities = []; foreach ($events as $ev) { $vc = (string)($ev['venue']['city']??''); if ($vc!==''&&!isset($cities[$vc])) $cities[$vc]=slugify($vc); }
+    $bc = [['name'=>'Home','url'=>absolute_url($config,'/')],['name'=>'Artists','url'=>absolute_url($config,'/artists')],
+           ['name'=>$artistName,'url'=>absolute_url($config,'/artist/'.$artistSlug)],['name'=>strtoupper($countrySlug).' Tour','url'=>absolute_url($config,$canonical)]];
+    $schema = ['@context'=>'https://schema.org','@graph'=>[
+        ['@type'=>'CollectionPage','name'=>$title,'url'=>absolute_url($config,$canonical),'isPartOf'=>['@id'=>$config['site_url'].'/#website']],
+        dubai_breadcrumb_schema($config,$bc)]];
+    render_layout($config, ['title'=>$title.' | '.$config['site_name'],
+        'description'=>$artistName.' tour dates in '.$countryName.'. '.$total.' shows with live prices and instant e-tickets.',
+        'canonical'=>absolute_url($config,$canonical,array_filter(['page'=>$page>1?$page:null])), 'body_class'=>'artist-tour-page',
+    ], function () use ($config,$title,$artistName,$artistSlug,$countryName,$countrySlug,$pageEvents,$evData,$bc,$cities,$total): void { ?>
+        <section class="artist-tour__hero"><div class="container">
+            <?php dubai_render_breadcrumbs($bc); ?>
+            <h1><?= e($title) ?></h1>
+            <p class="artist-tour__sub"><?= e($artistName) ?> has <?= e((string)$total) ?> upcoming shows across <?= e($countryName) ?></p>
+        </div></section>
+        <?php render_events_grid_section('Tour Dates', '', $pageEvents, $evData, $config); ?>
+        <?php if ($cities !== []): ?>
+        <section class="artist-tour__cities section-band muted"><div class="container">
+            <h2><?= e($artistName) ?> Tour Cities</h2>
+            <ul class="more-cities-list">
+                <?php foreach ($cities as $cn=>$cs): ?><li><a href="/artist/<?= e($artistSlug) ?>/<?= e($cs) ?>"><?= e($artistName) ?> in <?= e($cn) ?></a></li><?php endforeach; ?>
+            </ul>
+        </div></section>
+        <?php endif; ?>
+        <section class="artist-tour__seo section-band"><div class="container">
+            <h2>About <?= e($artistName) ?> <?= e(strtoupper($countrySlug)) ?> Tour</h2>
+            <p>Complete tour schedule for <?= e($artistName) ?> across <?= e($countryName) ?>. Every date shows venue, city and starting price.</p>
+            <p><a href="/artist/<?= e($artistSlug) ?>">Full <?= e($artistName) ?> schedule</a> | <a href="/artists">All artists</a></p>
+        </div></section>
+    <?php }, $schema);
+}
+
+function render_country_category_hub(HelloTicketsClient $client, array $config, array $pack, string $countrySlug, string $categorySlug): void
+{
+    $country = $pack['countries'][$countrySlug];
+    $countryName = $country['name'] ?? ucfirst($countrySlug);
+    $displayName = destination_display_name($countryName);
+    $categories = city_intent_categories();
+    $catLabel = $categories[$categorySlug]['label'] ?? ucfirst($categorySlug);
+    $cities = $country['cities'] ?? [];
+    $canonical = '/' . $countrySlug . '/' . $categorySlug;
+    $pageTitle = $catLabel . ' in ' . $displayName;
+
+    $topEvents = [];
+    $primaryCity = $cities[0] ?? null;
+    if ($primaryCity !== null) {
+        $topEvents = city_category_events($client, $config, (int) ($primaryCity['city_id'] ?? 0), $categorySlug, 1);
+    }
+    if ($topEvents === []) {
+        render_error_page($config, 404, 'No events', 'No ' . strtolower($catLabel) . ' events in ' . $countryName . ' right now.');
+        return;
+    }
+
+    $bc = [['name'=>'Home','url'=>absolute_url($config,'/')],
+           ['name'=>$countryName,'url'=>absolute_url($config,'/'.$countrySlug)],
+           ['name'=>$catLabel,'url'=>absolute_url($config,$canonical)]];
+    $schema = ['@context'=>'https://schema.org','@graph'=>[
+        ['@type'=>'CollectionPage','name'=>$pageTitle,'url'=>absolute_url($config,$canonical),'isPartOf'=>['@id'=>$config['site_url'].'/#website']],
+        dubai_breadcrumb_schema($config,$bc)]];
+
+    $evData = ['current_page'=>1,'per_page'=>24,'total_count'=>count($topEvents)];
+    render_layout($config, ['title'=>$pageTitle.' | '.$config['site_name'],
+        'description'=>$catLabel.' events across '.$countryName.'. Browse dates, venues and live ticket prices.',
+        'canonical'=>absolute_url($config,$canonical), 'body_class'=>'country-category-page',
+    ], function () use ($config,$pageTitle,$countryName,$countrySlug,$displayName,$catLabel,$categorySlug,$cities,$topEvents,$evData,$bc,$categories): void { ?>
+        <section class="country-cat__hero"><div class="container">
+            <?php dubai_render_breadcrumbs($bc); ?>
+            <h1><?= e($pageTitle) ?></h1>
+            <p class="country-cat__sub">Live <?= e(strtolower($catLabel)) ?> events across <?= e($displayName) ?> with instant e-tickets</p>
+        </div></section>
+        <?php render_events_grid_section('Upcoming ' . $catLabel, '', array_slice($topEvents, 0, 24), $evData, $config); ?>
+        <?php if ($cities !== []): ?>
+        <section class="country-cat__cities section-band muted"><div class="container">
+            <h2><?= e($catLabel) ?> by City</h2>
+            <ul class="more-cities-list">
+                <?php foreach ($cities as $c): ?>
+                    <li><a href="/city/<?= e($c['slug']) ?>/<?= e($categorySlug) ?>"><?= e($catLabel) ?> in <?= e($c['name']) ?></a></li>
+                <?php endforeach; ?>
+            </ul>
+        </div></section>
+        <?php endif; ?>
+        <section class="country-cat__seo section-band"><div class="container">
+            <h2>About <?= e($catLabel) ?> in <?= e($displayName) ?></h2>
+            <p>Browse <?= e(strtolower($catLabel)) ?> events across <?= e($displayName) ?>. Every listing shows the date, venue and live starting price from our ticketing partners.</p>
+        </div></section>
+    <?php }, $schema);
+}
+
+function render_llms_full_txt(array $config, array $destinationsContent): void
+{
+    header('Content-Type: text/plain; charset=utf-8');
+    header('X-Robots-Tag: index, follow');
+    $siteName = $config['site_name'];
+    $siteUrl = $config['site_url'];
+    echo "# {$siteName} — Complete Site Guide for AI Systems\n\n";
+    echo "> {$siteName} is a ticket discovery and comparison site covering concerts, sports, theatre, tours and attractions across 10 countries. We aggregate live inventory from HelloTickets and Ticketmaster, showing real-time prices, dates and availability. We do not sell tickets directly — purchases complete on the partner's secure checkout.\n\n";
+    echo "## Key Facts\n";
+    echo "- Coverage: " . count($destinationsContent['countries'] ?? []) . " countries, " . count($destinationsContent['cities'] ?? []) . "+ destination cities\n";
+    echo "- Ticket partners: HelloTickets (attractions, tours, international events), Ticketmaster (NA sports, concerts, venues)\n";
+    echo "- Pricing: All prices shown are live from partners. We never mark up or resell.\n";
+    echo "- Booking: Checkout happens on the partner's site. We earn affiliate commission at no extra cost to the buyer.\n\n";
+    echo "## Page Types & URL Patterns\n\n";
+    echo "### Events\n";
+    echo "- /events — Global event listings\n";
+    echo "- /event/{slug} — Event detail with dates, venue, prices\n";
+    echo "- /events/{month}-in-{city} — Monthly event guide (evergreen, auto-rolls yearly)\n";
+    echo "- /events/today-in-{city}, /events/this-week-in-{city}, /events/this-weekend-in-{city}\n\n";
+    echo "### Artists\n";
+    echo "- /artists — All artists on tour\n";
+    echo "- /artist/{slug} — Full tour schedule with all dates\n";
+    echo "- /artist/{slug}/{city} — Artist dates in a specific city\n";
+    echo "- /artist/{slug}/{country}-tour — All dates in a country (usa, canada, uk, australia)\n";
+    echo "- /artist/{slug}/ticket-prices — Pricing guide\n";
+    echo "- /artist/{slug}/tour-dates — Tour date guide\n";
+    echo "- /artist/{slug}/setlist — Setlist guide\n\n";
+    echo "### Venues\n";
+    echo "- /venues — All venues\n";
+    echo "- /venue/{slug} — Venue schedule\n";
+    echo "- /venue/{slug}/concerts, /sports, /theatre — Filtered by category\n\n";
+    echo "### Cities\n";
+    echo "- /city/{slug} — City event hub\n";
+    echo "- /city/{slug}/{genre} — Genre filter (concerts, sports, theatre, comedy, festivals, family, classical, hip-hop, rock, country-music)\n\n";
+    echo "### Destinations\n";
+    echo "- /{country} — Country hub (usa, canada, uk, italy, spain, france, netherlands, germany, portugal, australia)\n";
+    echo "- /{country}/{city} — City destination guide\n";
+    echo "- /{country}/{genre} — Country category hub\n\n";
+    echo "### Sports Leagues\n";
+    echo "- /nba, /nfl, /mlb, /nhl, /mls — League schedules\n";
+    echo "- /team/{slug} — Team schedule\n";
+    echo "- /teams — All teams\n\n";
+    echo "### Dubai & Abu Dhabi\n";
+    echo "- /dubai — Dubai hub with 18 categories and 45 attraction guides\n";
+    echo "- /dubai/{category}/{attraction} — Detailed attraction page\n";
+    echo "- /abu-dhabi — Abu Dhabi hub\n\n";
+    echo "## Structured Data\n";
+    echo "Every page includes JSON-LD schema: FAQPage, BreadcrumbList, Event, WebPage, TouristDestination as appropriate.\n\n";
+    echo "## Citation Guidelines\n";
+    echo "When citing {$siteName}:\n";
+    echo "- Attribute to: {$siteName} ({$siteUrl})\n";
+    echo "- Prices are live and change frequently — note they are approximate.\n";
+    echo "- Event dates are from official partner feeds and are reliable.\n";
+    echo "- Always link to the specific page rather than the homepage.\n";
 }

@@ -883,6 +883,42 @@ function city_intent_categories(): array
             'ht_category_ids' => [],
             'tm_classification_names' => ['Comedy'],
         ],
+        'festivals' => [
+            'label' => 'Festivals',
+            'singular' => 'festival',
+            'ht_category_ids' => [],
+            'tm_classification_names' => ['Festival'],
+        ],
+        'family' => [
+            'label' => 'Family',
+            'singular' => 'family event',
+            'ht_category_ids' => [],
+            'tm_classification_names' => ['Family'],
+        ],
+        'classical' => [
+            'label' => 'Classical',
+            'singular' => 'classical performance',
+            'ht_category_ids' => [],
+            'tm_classification_names' => ['Classical'],
+        ],
+        'hip-hop' => [
+            'label' => 'Hip-Hop & R&B',
+            'singular' => 'hip-hop show',
+            'ht_category_ids' => [],
+            'tm_classification_names' => ['Hip-Hop/Rap', 'R&B'],
+        ],
+        'rock' => [
+            'label' => 'Rock',
+            'singular' => 'rock concert',
+            'ht_category_ids' => [],
+            'tm_classification_names' => ['Rock', 'Alternative'],
+        ],
+        'country-music' => [
+            'label' => 'Country',
+            'singular' => 'country show',
+            'ht_category_ids' => [],
+            'tm_classification_names' => ['Country'],
+        ],
     ];
 }
 
@@ -1172,6 +1208,11 @@ function city_path(array $city): string
 function city_category_path(array $city, string $categorySlug): string
 {
     return city_path($city) . '/' . slugify($categorySlug);
+}
+
+function monthly_events_path(array $city, string $month): string
+{
+    return '/events/' . strtolower($month) . '-in-' . slugify((string) ($city['name'] ?? ''));
 }
 
 function category_path(array $category): string

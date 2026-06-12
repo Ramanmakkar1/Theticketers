@@ -41,7 +41,26 @@
         "orlando",
         "los-angeles",
         "san-francisco",
-        "miami"
+        "miami",
+        "chicago",
+        "boston",
+        "philadelphia",
+        "seattle",
+        "denver",
+        "nashville",
+        "austin",
+        "atlanta",
+        "houston",
+        "dallas",
+        "phoenix",
+        "portland",
+        "san-diego",
+        "minneapolis",
+        "detroit",
+        "new-orleans",
+        "tampa",
+        "charlotte",
+        "san-antonio"
       ]
     },
     "canada": {
@@ -82,7 +101,12 @@
       "city_slugs": [
         "toronto",
         "vancouver",
-        "montreal"
+        "montreal",
+        "calgary",
+        "edmonton",
+        "ottawa",
+        "winnipeg",
+        "quebec"
       ]
     },
     "uk": {
@@ -122,7 +146,13 @@
       },
       "city_slugs": [
         "london",
-        "edinburgh"
+        "edinburgh",
+        "manchester",
+        "glasgow",
+        "birmingham",
+        "liverpool",
+        "cardiff",
+        "belfast"
       ]
     },
     "italy": {
@@ -164,7 +194,11 @@
         "rome",
         "venice",
         "florence",
-        "milan"
+        "milan",
+        "naples",
+        "turin",
+        "bologna",
+        "verona"
       ]
     },
     "spain": {
@@ -205,7 +239,11 @@
       "city_slugs": [
         "barcelona",
         "madrid",
-        "seville"
+        "seville",
+        "valencia",
+        "malaga",
+        "granada",
+        "bilbao"
       ]
     },
     "france": {
@@ -245,7 +283,10 @@
       },
       "city_slugs": [
         "paris",
-        "nice"
+        "nice",
+        "lyon",
+        "marseille",
+        "bordeaux"
       ]
     },
     "netherlands": {
@@ -1497,6 +1538,1686 @@
         {
           "q": "Is the Great Ocean Road doable as a day trip from Melbourne?",
           "a": "Yes, it is Melbourne's most popular excursion. Coach tours run 10 to 12 hours, covering Torquay, Apollo Bay, the rainforest at Maits Rest and the Twelve Apostles, typically from around AUD 100 to 150. In summer, book several days ahead and choose a sunset tour for the best light."
+        }
+      ]
+    },
+    "chicago": {
+      "slug": "chicago",
+      "country_slug": "usa",
+      "city_id": 22,
+      "name": "Chicago",
+      "state": "IL",
+      "country": "United States",
+      "country_code": "USA",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1494522855154-9297ac14b55f?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Chicago Tickets - Concerts, Sports & Events",
+      "meta_description": "Find tickets for Chicago events including Cubs, Bears, Bulls and Blackhawks games, Broadway shows at the Theatre District, and concerts at United Center.",
+      "intro": "Chicago is one of America's most dynamic live entertainment cities, offering a staggering variety of events throughout the year. The United Center hosts everything from Bulls and Blackhawks games to major concert tours, while Wrigley Field and Guaranteed Rate Field bring baseball fans out from April through October. Soldier Field is home to the Bears and regularly stages massive stadium concerts in summer. The Theatre District along Randolph Street features touring Broadway productions at venues like the Cadillac Palace Theatre, CIBC Theatre, and the James M. Nederlander Theatre. For live music, Chicago's legacy runs deep with legendary clubs like the Chicago Theatre, Riviera Theatre, and Metro anchoring a scene that spans blues, jazz, hip-hop, and rock. Lollapalooza takes over Grant Park each August, drawing hundreds of thousands of fans for one of the country's premier music festivals. The Auditorium Theatre and Lyric Opera of Chicago serve the classical and performing arts community. Navy Pier hosts family-friendly entertainment year-round. Spring and fall bring comfortable weather for outdoor events, while winter is prime time for indoor concerts and Bulls and Blackhawks action. Whether you want courtside seats, a standing-room spot at a dive bar blues show, or orchestra seats for Hamilton, Chicago delivers an event calendar that rivals any city in the world.",
+      "highlights": [
+        "United Center hosts over 200 events annually for sports and concerts",
+        "Wrigley Field offers iconic rooftop seating and summer concert series",
+        "Lollapalooza brings 400,000 fans to Grant Park every August",
+        "The Theatre District features more than a dozen major performance venues"
+      ],
+      "tips": [
+        "Book Cubs and Bears tickets early as both venues sell out regularly during the season",
+        "Use the CTA L train to reach most major venues and avoid expensive downtown parking",
+        "Summer is peak season for outdoor festivals so plan accommodations well in advance",
+        "Check for weeknight events at smaller venues like Metro and Thalia Hall for better prices"
+      ],
+      "faqs": [
+        {
+          "q": "What are the biggest event venues in Chicago?",
+          "a": "The United Center seats around 23,500 for concerts and 20,917 for basketball. Soldier Field holds 61,500 for football and concerts. Wrigley Field seats 41,649 and hosts a popular summer concert series. The Cadillac Palace Theatre and CIBC Theatre are the main Broadway touring houses."
+        },
+        {
+          "q": "When is the best time to attend events in Chicago?",
+          "a": "Summer from June through September is peak season with outdoor festivals including Lollapalooza, Pitchfork Music Festival, and the Chicago Blues Festival. The NBA and NHL seasons from October through April fill the United Center regularly. Broadway touring shows run year-round in the Theatre District."
+        },
+        {
+          "q": "How do I get to venues using public transit?",
+          "a": "Most major venues are accessible via the CTA. The Red Line serves Wrigley Field at Addison station. The United Center is reachable via the Blue Line at Illinois Medical District station. Soldier Field is a short walk from Museum Campus station on the Roosevelt branch. The Theatre District is centrally located near several L stations."
+        }
+      ]
+    },
+    "boston": {
+      "slug": "boston",
+      "country_slug": "usa",
+      "city_id": 30,
+      "name": "Boston",
+      "state": "MA",
+      "country": "United States",
+      "country_code": "USA",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1501979376754-2ff867a4f659?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Boston Tickets - Sports, Concerts & Live Events",
+      "meta_description": "Get tickets for Boston events including Red Sox at Fenway Park, Celtics and Bruins at TD Garden, concerts, theater at the Boch Center, and more.",
+      "intro": "Boston is a passionate sports and entertainment city where legendary venues create unforgettable live experiences. Fenway Park, the oldest ballpark in Major League Baseball, has hosted Red Sox games since 1912 and its intimate atmosphere and the iconic Green Monster make every game special. TD Garden is the home of the Celtics and Bruins, providing a rocking arena environment for basketball, hockey, and major concert tours throughout the year. Gillette Stadium in nearby Foxborough hosts the Patriots and Revolution along with massive stadium concerts and international soccer matches. The Boch Center Wang Theatre and Shubert Theatre anchor the Theatre District with Broadway touring productions, ballet, and comedy shows. The historic Orpheum Theatre and Roadrunner present mid-size concerts, while House of Blues in the Fenway neighborhood and Brighton Music Hall serve the club scene. The Boston Symphony Orchestra performs at Symphony Hall, one of the finest acoustic venues in the world. The Boston Calling Music Festival takes over the Harvard Athletic Complex each Memorial Day weekend. Summer is the prime season for Fenway concerts and outdoor events along the Esplanade, but the fall foliage season and winter sports make Boston a year-round destination. College sports also thrive here with Harvard, Boston College, and Boston University all fielding competitive programs across multiple sports.",
+      "highlights": [
+        "Fenway Park is America's oldest ballpark and hosts summer concerts on its diamond",
+        "TD Garden averages over 200 events per year for sports and entertainment",
+        "The Boch Center presents major Broadway tours in a stunning 3,500-seat theater",
+        "Boston Calling draws top musical acts to the Harvard Athletic Complex each May"
+      ],
+      "tips": [
+        "Fenway Park tickets for rivalry games against the Yankees sell out fast so buy early",
+        "The T Green Line stops right at Fenway and TD Garden is above North Station on multiple lines",
+        "Check for same-day rush tickets at the Boch Center box office for Broadway shows",
+        "Winter Bruins and Celtics games offer great atmosphere and are easier to get into than Red Sox games"
+      ],
+      "faqs": [
+        {
+          "q": "What are Boston's main event venues?",
+          "a": "Fenway Park seats 37,755 for baseball and around 40,000 for concerts. TD Garden holds 19,580 for basketball and 17,850 for hockey, plus hosts major tours. The Boch Center Wang Theatre seats 3,500 for Broadway and performances. Gillette Stadium in Foxborough seats 65,878 for football and large concerts."
+        },
+        {
+          "q": "How do I reach Boston venues by public transit?",
+          "a": "The MBTA subway system connects to most major venues. TD Garden sits directly above North Station served by the Green and Orange Lines. Fenway Park is a short walk from Kenmore station on the Green Line. The Theatre District is near Boylston and Chinatown stations. Commuter rail runs to Foxborough for select Gillette Stadium events."
+        },
+        {
+          "q": "What is the best season for events in Boston?",
+          "a": "Baseball season from April through October is the heart of the Fenway experience, with summer concerts adding to the schedule. The Celtics and Bruins run from October to spring. Boston Calling happens Memorial Day weekend. The July 4th Boston Pops concert on the Esplanade is a beloved annual tradition drawing hundreds of thousands of people."
+        }
+      ]
+    },
+    "philadelphia": {
+      "slug": "philadelphia",
+      "country_slug": "usa",
+      "city_id": 29,
+      "name": "Philadelphia",
+      "state": "PA",
+      "country": "United States",
+      "country_code": "USA",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1569761316261-9a8696fa2ca3?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Philadelphia Tickets - Sports, Shows & Events",
+      "meta_description": "Buy tickets for Philadelphia events including Eagles, Phillies, 76ers, and Flyers games, concerts at Wells Fargo Center, and shows in the Avenue of the Arts.",
+      "intro": "Philadelphia is a fiercely loyal sports town and a thriving cultural hub with world-class venues for every type of live event. The South Philadelphia Sports Complex houses Lincoln Financial Field for the Eagles, Citizens Bank Park for the Phillies, and Wells Fargo Center for the 76ers, Flyers, and major concert tours all within walking distance of each other. Wells Fargo Center alone hosts over 250 events annually, making it one of the busiest arenas in the country. The Avenue of the Arts along South Broad Street is the cultural spine of the city, featuring the Kimmel Center for the Performing Arts, home to the Philadelphia Orchestra, and the Academy of Music, the oldest opera house in the United States still in use. The Merriam Theater presents Broadway touring shows, while The Met Philadelphia, a beautifully restored 1908 opera house, hosts concerts and special events. For rock and indie shows, The Fillmore Philadelphia, Union Transfer, and Theatre of Living Arts are fan favorites. The Mann Center for the Performing Arts provides outdoor summer concerts in Fairmount Park. The Made in America Festival on the Benjamin Franklin Parkway each Labor Day weekend draws major headliners. Philadelphia's event calendar stays packed year-round, with football season igniting the city in fall, Phillies baseball carrying the summer, and Sixers and Flyers keeping winter energetic.",
+      "highlights": [
+        "The South Philly Sports Complex puts three major venues within a short walk of each other",
+        "Wells Fargo Center hosts over 250 events per year across sports and concerts",
+        "The Avenue of the Arts features the Kimmel Center and the historic Academy of Music",
+        "The Met Philadelphia is a stunning restored 1908 opera house for live music"
+      ],
+      "tips": [
+        "Eagles tickets are among the hardest to get in the NFL so monitor availability early",
+        "Take the Broad Street Line subway directly to the sports complex at NRG station",
+        "The Made in America Festival on Labor Day weekend offers great value with top-tier lineups",
+        "Explore smaller venues like Union Transfer and Johnny Brenda's for excellent live music at lower prices"
+      ],
+      "faqs": [
+        {
+          "q": "What venues are in the South Philadelphia Sports Complex?",
+          "a": "The complex includes Lincoln Financial Field (69,796 seats) for the Eagles, Citizens Bank Park (42,792 seats) for the Phillies, and Wells Fargo Center (20,318 seats) for the 76ers and Flyers. All three are served by the same Broad Street Line subway station and surrounded by tailgating lots."
+        },
+        {
+          "q": "Where can I see Broadway shows in Philadelphia?",
+          "a": "The Merriam Theater on the Avenue of the Arts is the primary Broadway touring venue with about 1,870 seats. The Academy of Music also hosts select performances. The Forrest Theatre presents additional touring productions. Philadelphia often gets shows during their pre-Broadway tryout runs before they open in New York."
+        },
+        {
+          "q": "When is the best time to visit Philadelphia for events?",
+          "a": "Summer brings Phillies baseball and outdoor concerts at the Mann Center and Citizens Bank Park. Fall is Eagles season and the energy is electric. Winter features 76ers and Flyers games plus holiday performances. The Made in America Festival over Labor Day weekend and the Roots Picnic in June are major annual draws."
+        }
+      ]
+    },
+    "seattle": {
+      "slug": "seattle",
+      "country_slug": "usa",
+      "city_id": 31,
+      "name": "Seattle",
+      "state": "WA",
+      "country": "United States",
+      "country_code": "USA",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1502175353174-a7a70e73b4c3?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Seattle Tickets - Concerts, Sports & Live Events",
+      "meta_description": "Find tickets for Seattle events including Seahawks, Mariners, and Kraken games, concerts at Climate Pledge Arena, and shows at Paramount Theatre.",
+      "intro": "Seattle's live event scene blends big-league sports with one of the richest music cultures in the country. Lumen Field is home to the Seahawks and the Sounders FC, delivering some of the loudest stadium atmospheres in professional sports thanks to its distinctive cantilevered roof design. T-Mobile Park hosts the Mariners from spring through fall, offering views of the downtown skyline through its retractable roof. Climate Pledge Arena at Seattle Center, a dramatically renovated venue, is home to the Kraken NHL team and hosts major concert tours in a state-of-the-art, carbon-neutral facility seating around 17,100. The Paramount Theatre, a beautifully ornate 1928 movie palace, presents Broadway touring productions, comedy shows, and concerts. The Moore Theatre and Neptune Theatre add to the mid-size concert options. For club shows, The Showbox and The Crocodile are legendary rooms that helped launch grunge and continue to break new artists. Bumbershoot at Seattle Center has been a beloved end-of-summer arts and music festival for decades. The city's musical heritage runs from Jimi Hendrix and Nirvana to Macklemore, and that legacy keeps the live music scene vibrant every night of the week. Summer is the peak season with long daylight hours and outdoor events, but Seattle's indoor venues ensure the calendar stays full through the rainy months from October through April.",
+      "highlights": [
+        "Climate Pledge Arena is a carbon-neutral venue hosting the Kraken and top concert tours",
+        "Lumen Field generates some of the loudest crowd noise in professional sports",
+        "The Showbox and The Crocodile are iconic clubs central to Seattle's music history",
+        "T-Mobile Park's retractable roof allows baseball in any weather with skyline views"
+      ],
+      "tips": [
+        "Climate Pledge Arena has no dedicated parking so plan to use the Seattle Monorail or light rail",
+        "Summer months from June through September offer the best weather for outdoor events and festivals",
+        "Check The Crocodile and The Showbox schedules for rising artists at affordable ticket prices",
+        "Seahawks tickets sell out quickly so look for availability as soon as schedules are released"
+      ],
+      "faqs": [
+        {
+          "q": "What are Seattle's biggest event venues?",
+          "a": "Lumen Field holds 68,740 for football and up to 72,000 for concerts. T-Mobile Park seats 47,929 for baseball. Climate Pledge Arena seats around 17,100 for hockey and concerts. The Paramount Theatre holds 2,807 for Broadway and live performances."
+        },
+        {
+          "q": "How do I get to Seattle venues without a car?",
+          "a": "Link Light Rail connects the airport, downtown, and the University District. The Seattle Monorail runs from Westlake Center to Seattle Center near Climate Pledge Arena. Lumen Field and T-Mobile Park are both near the Stadium station on Link Light Rail. Most downtown venues are walkable from major transit hubs."
+        },
+        {
+          "q": "What is the music scene like in Seattle?",
+          "a": "Seattle has a legendary music heritage rooted in grunge, with venues like The Crocodile and The Showbox still anchoring the scene. The city supports a thriving indie, hip-hop, and electronic music community. Climate Pledge Arena brings arena-level tours, while dozens of clubs host live music every night. The Museum of Pop Culture near Seattle Center celebrates this history."
+        }
+      ]
+    },
+    "denver": {
+      "slug": "denver",
+      "country_slug": "usa",
+      "city_id": 14,
+      "name": "Denver",
+      "state": "CO",
+      "country": "United States",
+      "country_code": "USA",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1619856699906-09e1f4ef34b9?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Denver Tickets - Concerts, Sports & Events",
+      "meta_description": "Buy tickets for Denver events including Broncos, Nuggets, Avalanche, and Rockies games, Red Rocks concerts, and shows at the Denver Performing Arts Complex.",
+      "intro": "Denver combines big-league sports with one of the most iconic concert venues on the planet. Red Rocks Amphitheatre in nearby Morrison is a 9,525-seat natural amphitheater carved into red sandstone formations, consistently ranked as the best outdoor music venue in the world. From spring through fall, it hosts concerts nearly every night spanning every genre from electronic to bluegrass to rock. In the city, Empower Field at Mile High is home to the Broncos and stages major stadium concerts and international soccer matches. Ball Arena hosts the Nuggets, Avalanche, and Colorado Mammoth along with touring concerts and family shows. Coors Field brings Rockies baseball to the heart of downtown in the lively LoDo neighborhood, and its rooftop offers views of the Rocky Mountains. The Denver Performing Arts Complex is one of the largest in the nation, with ten venues including the Buell Theatre for Broadway touring shows and Boettcher Concert Hall for the Colorado Symphony. The Ogden Theatre, Gothic Theatre, and Bluebird Theater form a beloved trio of mid-size concert venues run by AEG. The Mission Ballroom, opened in 2019, quickly became one of the top-rated new venues in the country. Denver's mile-high altitude, over 300 days of sunshine, and passionate fan base make it an exceptional events city year-round.",
+      "highlights": [
+        "Red Rocks Amphitheatre is widely regarded as the world's best outdoor concert venue",
+        "Ball Arena hosts Nuggets, Avalanche, and major concert tours year-round",
+        "The Denver Performing Arts Complex spans ten venues for theater and symphony",
+        "The Mission Ballroom has become one of America's highest-rated new concert venues"
+      ],
+      "tips": [
+        "Red Rocks shows often sell out quickly so buy tickets as soon as lineups are announced",
+        "Bring layers to Red Rocks as temperatures drop significantly after sunset at altitude",
+        "Coors Field's rooftop section offers affordable tickets with mountain views",
+        "Stay hydrated at events as Denver's mile-high altitude affects visitors not used to the elevation"
+      ],
+      "faqs": [
+        {
+          "q": "How do I get to Red Rocks Amphitheatre?",
+          "a": "Red Rocks is about 15 miles west of downtown Denver in Morrison. Most visitors drive and park on-site, though lots fill up early for popular shows. Some shows offer shuttle services from downtown. Rideshare is an option but expect surge pricing and long waits after shows. There is no public transit to the venue."
+        },
+        {
+          "q": "What sports teams play in Denver?",
+          "a": "Denver is home to the Broncos (NFL) at Empower Field at Mile High, the Nuggets (NBA) and Avalanche (NHL) at Ball Arena, the Rockies (MLB) at Coors Field, and the Rapids (MLS) at Dick's Sporting Goods Park. Colorado also has the Mammoth (NLL) at Ball Arena."
+        },
+        {
+          "q": "What is the Denver Performing Arts Complex?",
+          "a": "It is a four-block, ten-venue complex in downtown Denver and one of the largest performing arts centers in the nation. It includes the Buell Theatre for Broadway tours, Boettcher Concert Hall for the Colorado Symphony, the Ellie Caulkins Opera House, and several smaller theaters. It hosts over 10,000 performances annually."
+        }
+      ]
+    },
+    "nashville": {
+      "slug": "nashville",
+      "country_slug": "usa",
+      "city_id": 49,
+      "name": "Nashville",
+      "state": "TN",
+      "country": "United States",
+      "country_code": "USA",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1545419913-775e2e148f73?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Nashville Tickets - Concerts, Sports & Live Music",
+      "meta_description": "Get tickets for Nashville events including Predators hockey, Titans football, Grand Ole Opry shows, concerts at Ryman Auditorium, and Broadway honky-tonks.",
+      "intro": "Nashville is Music City, and its live entertainment scene is unmatched for depth and authenticity. The Grand Ole Opry has hosted country music legends since 1925 and continues to present shows year-round at the Grand Ole Opry House, a 4,400-seat venue that is hallowed ground for country music fans. The Ryman Auditorium, the Mother Church of Country Music, is a 2,362-seat former tabernacle with extraordinary acoustics that hosts concerts across all genres. Lower Broadway is the heart of the honky-tonk scene, with venues like Tootsie's Orchid Lounge, Robert's Western World, and Nudie's Honky Tonk offering free live music day and night. Beyond country, Nashville has a thriving rock, indie, Americana, and hip-hop scene with venues like the Basement East, Exit/In, and Marathon Music Works. Nissan Stadium on the east bank of the Cumberland River is home to the Titans and hosts stadium concerts and events including the NFL Draft in 2019. Bridgestone Arena downtown is home to the Predators and one of the top-rated arenas in the country for concerts. Geodis Park, one of the largest soccer-specific stadiums in the world, is home to Nashville SC. The CMA Fest each June draws tens of thousands of country music fans for four days of performances. Nashville's warm climate allows for outdoor events from April through October, and the indoor venues keep the music playing year-round.",
+      "highlights": [
+        "The Grand Ole Opry is the longest-running radio broadcast show in history",
+        "Ryman Auditorium offers legendary acoustics in a National Historic Landmark",
+        "Lower Broadway's honky-tonks provide free live music every day and night",
+        "Bridgestone Arena is consistently ranked among the top concert venues in America"
+      ],
+      "tips": [
+        "Grand Ole Opry tickets can be purchased for specific seat sections or backstage tour packages",
+        "Lower Broadway honky-tonks are free to enter but tipping the musicians is expected and appreciated",
+        "CMA Fest in June offers incredible value with dozens of performances on one ticket",
+        "Book Ryman Auditorium shows early as the intimate 2,362-seat venue sells out fast for popular acts"
+      ],
+      "faqs": [
+        {
+          "q": "What is the difference between the Grand Ole Opry and the Ryman Auditorium?",
+          "a": "The Grand Ole Opry is a show, not a venue. It performs year-round at the Grand Ole Opry House, a 4,400-seat venue east of downtown. The Ryman Auditorium downtown was the Opry's home from 1943 to 1974 and is now an independent concert venue. The Opry occasionally returns to the Ryman for special winter residencies."
+        },
+        {
+          "q": "Where can I see live music for free in Nashville?",
+          "a": "Lower Broadway is lined with honky-tonks that feature live bands all day with no cover charge. Robert's Western World, Tootsie's Orchid Lounge, and Layla's Honky Tonk are among the most popular. The Gulch and East Nashville neighborhoods also have bars with free live music on select nights."
+        },
+        {
+          "q": "What major sports events are in Nashville?",
+          "a": "The Predators play NHL hockey at Bridgestone Arena from October through spring. The Titans play NFL football at Nissan Stadium from September through January. Nashville SC plays MLS soccer at Geodis Park, which seats 30,000 and is one of the largest soccer-specific stadiums in North America."
+        }
+      ]
+    },
+    "austin": {
+      "slug": "austin",
+      "country_slug": "usa",
+      "city_id": 58,
+      "name": "Austin",
+      "state": "TX",
+      "country": "United States",
+      "country_code": "USA",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1531218150217-54595bc2b934?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Austin Tickets - Live Music, Festivals & Events",
+      "meta_description": "Find tickets for Austin events including SXSW, ACL Festival, F1 at COTA, UT Longhorns football, live music on Sixth Street, and concerts at Moody Center.",
+      "intro": "Austin proudly wears its title as the Live Music Capital of the World, and the city's event calendar backs up the claim with an extraordinary concentration of festivals, concerts, and sporting events. South by Southwest in March is a massive convergence of music, film, and technology that takes over the entire city for nearly two weeks. The Austin City Limits Music Festival fills Zilker Park across two weekends in October with over 100 acts on multiple stages. The Moody Center, opened in 2022, is a 15,000-seat arena that hosts major concert tours, UFC events, and University of Texas basketball. Circuit of the Americas brings Formula 1 to Austin each fall for the United States Grand Prix, along with MotoGP and other motorsport events on its 3.4-mile track. Darrell K Royal-Texas Memorial Stadium seats over 100,000 for UT Longhorns football, one of the most intense college football atmospheres in the country. Austin FC plays MLS soccer at Q2 Stadium in North Austin. The Sixth Street entertainment district and Red River Cultural District are packed with live music venues including Stubb's BBQ, Mohawk, Emo's, and the historic Continental Club on South Congress. The Long Center for the Performing Arts overlooks Lady Bird Lake and presents ballet, symphony, and theater. With warm weather most of the year and a culture that celebrates live performance, Austin delivers events nearly every night.",
+      "highlights": [
+        "South by Southwest transforms the city each March with music, film, and tech events",
+        "Austin City Limits Music Festival draws 450,000 fans across two October weekends",
+        "Circuit of the Americas hosts Formula 1 and MotoGP on a world-class racing circuit",
+        "The Moody Center opened in 2022 as Austin's premier arena for concerts and sports"
+      ],
+      "tips": [
+        "SXSW badges sell out and hotels book fast so plan months in advance for March",
+        "Sixth Street and Red River venues often have no cover on weeknights for discovering new music",
+        "ACL Festival tickets go on sale well before the lineup is announced and sell out quickly",
+        "Bring sunscreen and water to outdoor events as Austin temperatures regularly exceed 100F in summer"
+      ],
+      "faqs": [
+        {
+          "q": "When is SXSW and how does it work?",
+          "a": "SXSW takes place in March and spans roughly ten days. It includes a music festival, film festival, and interactive technology conference. Badges and wristbands provide access to different tiers of events. Hundreds of unofficial showcases happen simultaneously across the city, many of which are free."
+        },
+        {
+          "q": "What sports events can I attend in Austin?",
+          "a": "UT Longhorns football at DKR-Texas Memorial Stadium seats over 100,000 and games sell out regularly. The Moody Center hosts UT basketball and major events. Austin FC plays MLS soccer at Q2 Stadium. Circuit of the Americas hosts the F1 US Grand Prix, MotoGP, and NASCAR. The Round Rock Express play minor league baseball nearby."
+        },
+        {
+          "q": "What is the live music scene like beyond festivals?",
+          "a": "Austin has over 250 live music venues. The Red River Cultural District features Mohawk, Stubb's, and Cheer Up Charlies. South Congress has the Continental Club and C-Boy's Heart and Soul. Antone's is legendary for blues. The Paramount Theatre and Bass Concert Hall host larger touring acts. Free live music can be found almost any night of the week."
+        }
+      ]
+    },
+    "atlanta": {
+      "slug": "atlanta",
+      "country_slug": "usa",
+      "city_id": 24,
+      "name": "Atlanta",
+      "state": "GA",
+      "country": "United States",
+      "country_code": "USA",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1575917649835-23105a05f4cf?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Atlanta Tickets - Sports, Concerts & Live Events",
+      "meta_description": "Buy tickets for Atlanta events including Braves, Falcons, Hawks, and United games, concerts at State Farm Arena, and shows at the Fox Theatre.",
+      "intro": "Atlanta is a major entertainment capital of the American South, home to professional teams in every major sport and a world-class performing arts scene. Mercedes-Benz Stadium is an architectural marvel with its retractable roof, serving as home to the Falcons and Atlanta United FC while hosting mega-events like Super Bowls, College Football Playoff games, and massive concert tours. State Farm Arena, home to the Hawks, is one of the most active arenas in the country with a packed schedule of concerts, family shows, and sporting events. Truist Park in the Battery Atlanta development is home to the Braves and surrounded by restaurants, shops, and entertainment options that make it a destination beyond just baseball. The Fox Theatre is a stunning 1929 Moorish-Egyptian architectural gem that presents Broadway touring shows, concerts, and the Atlanta Ballet. The Tabernacle, a converted Baptist church downtown, is one of the most beloved mid-size music venues in the Southeast. Variety Playhouse in Little Five Points and Center Stage round out the concert venue options. The city's hip-hop legacy is unrivaled, with Atlanta serving as the creative center for trap music and a launching pad for countless artists. Music Midtown in Piedmont Park has been a major fall festival. The warm climate allows outdoor events nearly year-round, with spring and fall offering the most comfortable temperatures for stadium and park events.",
+      "highlights": [
+        "Mercedes-Benz Stadium hosts Falcons football, Atlanta United, and major national events",
+        "The Fox Theatre is a breathtaking 1929 landmark for Broadway shows and concerts",
+        "State Farm Arena books over 150 events per year for the Hawks and touring acts",
+        "Truist Park and the Battery Atlanta create an all-day entertainment destination"
+      ],
+      "tips": [
+        "MARTA rail connects directly to State Farm Arena and Mercedes-Benz Stadium at downtown stations",
+        "Truist Park is in Cobb County outside the city so plan for traffic or use the Braves shuttle",
+        "Check the Fox Theatre schedule for classic film screenings and holiday events at lower prices",
+        "Atlanta's hip-hop scene thrives in clubs along Edgewood Avenue and in East Atlanta Village"
+      ],
+      "faqs": [
+        {
+          "q": "What major venues are in Atlanta?",
+          "a": "Mercedes-Benz Stadium seats 71,000 for football and up to 80,000 for concerts. State Farm Arena holds around 21,000. Truist Park seats 41,084 for baseball. The Fox Theatre seats 4,665 for Broadway and performances. The Tabernacle holds about 2,600 for concerts."
+        },
+        {
+          "q": "How do I use MARTA to get to events?",
+          "a": "MARTA's rail system has stations near most major venues. The Dome/GWCC/Philips Arena/CNN Center station serves both Mercedes-Benz Stadium and State Farm Arena. Five Points station is the central transfer hub. Note that Truist Park does not have a MARTA rail station, though bus connections are available."
+        },
+        {
+          "q": "What is the best season for events in Atlanta?",
+          "a": "Atlanta hosts events year-round thanks to its mild climate. Football season from September through January fills Mercedes-Benz Stadium. Baseball runs April through October. Spring brings the Masters in nearby Augusta and outdoor festival season. Fall is ideal with cooler temperatures and college football. The Peach Bowl and Chick-fil-A Kickoff Game are major annual football events."
+        }
+      ]
+    },
+    "houston": {
+      "slug": "houston",
+      "country_slug": "usa",
+      "city_id": 9,
+      "name": "Houston",
+      "state": "TX",
+      "country": "United States",
+      "country_code": "USA",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1530089711124-9ca31fb9e863?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Houston Tickets - Sports, Concerts & Events",
+      "meta_description": "Get tickets for Houston events including Texans, Astros, and Rockets games, concerts at Toyota Center, rodeo at NRG Stadium, and shows at the Theater District.",
+      "intro": "Houston is one of America's largest cities and its event scene matches that scale with major sports franchises, a world-renowned rodeo, and a Theater District that ranks among the finest in the country. NRG Stadium is home to the Texans and hosts the Houston Livestock Show and Rodeo each spring, a massive three-week event that combines rodeo competition with nightly concerts by top-tier artists drawing over 2.5 million total visitors. Minute Maid Park downtown is home to the Astros, and the retractable-roof stadium keeps fans comfortable through the hot Houston summers. Toyota Center hosts the Rockets along with major concert tours and events year-round. The Houston Theater District downtown spans 17 blocks and includes the Hobby Center for the Performing Arts, Jones Hall for the Houston Symphony, and the Wortham Theater Center for Houston Ballet and Houston Grand Opera. The 713 Music Hall, opened in 2022, adds a modern 5,000-capacity concert venue to the downtown entertainment options. For a more intimate live music experience, the White Oak Music Hall offers indoor and outdoor stages, and the Heights neighborhood features numerous bars with live acts. The Houston Open golf tournament at Memorial Park and major boxing and MMA events regularly come to the city. Houston's diverse cultural makeup creates demand for international music acts and events that many other cities cannot support, making the event calendar uniquely varied.",
+      "highlights": [
+        "The Houston Livestock Show and Rodeo draws over 2.5 million visitors across three weeks each spring",
+        "Minute Maid Park's retractable roof provides comfortable baseball viewing year-round",
+        "The Theater District spans 17 blocks with venues for symphony, opera, ballet, and Broadway",
+        "713 Music Hall opened in 2022 as a state-of-the-art 5,000-capacity concert venue"
+      ],
+      "tips": [
+        "Houston Rodeo concert tickets sell out fast so purchase as soon as the performer lineup drops",
+        "METRORail's Red Line connects NRG Stadium to downtown venues along a convenient route",
+        "Summers are extremely hot and humid so indoor venues are preferable from June through September",
+        "The Theater District offers discounted same-day tickets through the TUTS rush program"
+      ],
+      "faqs": [
+        {
+          "q": "When is the Houston Livestock Show and Rodeo?",
+          "a": "The rodeo typically runs for about three weeks from late February through mid-March at NRG Stadium. It features professional rodeo competition, livestock shows, a carnival, and nightly concerts with major artists. It is one of the largest events of its kind in the world, drawing over 2.5 million total attendees."
+        },
+        {
+          "q": "What professional sports teams play in Houston?",
+          "a": "Houston is home to the Texans (NFL) at NRG Stadium, the Astros (MLB) at Minute Maid Park, the Rockets (NBA) at Toyota Center, the Dynamo (MLS) at Shell Energy Stadium, and the Dash (NWSL). The city frequently hosts major boxing events, NCAA tournament games, and international soccer matches."
+        },
+        {
+          "q": "How do I get around to Houston venues?",
+          "a": "Houston is a car-centric city, but METRORail's Red Line connects NRG Stadium to downtown including stops near Minute Maid Park and the Theater District. Most venues have parking garages though prices can be high on event nights. Rideshare services are widely used. Allow extra time for traffic especially on weekday evenings."
+        }
+      ]
+    },
+    "dallas": {
+      "slug": "dallas",
+      "country_slug": "usa",
+      "city_id": 16,
+      "name": "Dallas",
+      "state": "TX",
+      "country": "United States",
+      "country_code": "USA",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1545194445-dddb8f4487c6?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Dallas Tickets - Sports, Concerts & Live Events",
+      "meta_description": "Find tickets for Dallas events including Cowboys at AT&T Stadium, Mavericks and Stars at AAC, concerts, State Fair of Texas, and Broadway at the Winspear.",
+      "intro": "The Dallas-Fort Worth metroplex is a powerhouse for live events, anchored by some of the most impressive sports and entertainment venues in the country. AT&T Stadium in Arlington is home to the Cowboys and a regular host of mega-events including Super Bowls, College Football Playoff games, WrestleMania, and massive concert tours in its 80,000-seat retractable-roof facility. The American Airlines Center in downtown Dallas is home to the Mavericks and Stars and hosts over 200 events annually. Globe Life Field in Arlington, another retractable-roof venue, is home to the Rangers and features a modern design that keeps fans comfortable during the brutal Texas summer. The Winspear Opera House in the Arts District is a stunning venue presenting the Dallas Opera, Broadway touring shows, and special performances. The AT&T Performing Arts Center campus also includes the Wyly Theatre and Strauss Square for outdoor performances. The historic Majestic Theatre downtown hosts concerts and comedy. Deep Ellum is the live music and nightlife heart of Dallas, with venues like Trees, The Bomb Factory (now called The Factory in Deep Ellum), and Club Dada showcasing local and touring acts nightly. The State Fair of Texas at Fair Park each fall is a beloved tradition running for three weeks with concerts, food, and the iconic Red River Showdown college football game between Texas and Oklahoma at the Cotton Bowl.",
+      "highlights": [
+        "AT&T Stadium hosts Cowboys games and national mega-events for up to 105,000 fans",
+        "The Arts District features the Winspear Opera House and AT&T Performing Arts Center",
+        "Deep Ellum offers live music every night in one of the most vibrant nightlife districts in Texas",
+        "The State Fair of Texas draws over 2 million visitors each fall at Fair Park"
+      ],
+      "tips": [
+        "AT&T Stadium and Globe Life Field are in Arlington between Dallas and Fort Worth so plan transportation",
+        "DART light rail serves American Airlines Center and many downtown venues directly",
+        "Deep Ellum venues often have low cover charges on weeknights for great live music",
+        "The State Fair of Texas runs for three weeks in September and October with discounted admission days"
+      ],
+      "faqs": [
+        {
+          "q": "How do I get to AT&T Stadium from Dallas?",
+          "a": "AT&T Stadium is in Arlington, about 20 miles west of downtown Dallas. There is no rail service to Arlington, so most visitors drive, use rideshare, or take organized shuttles. Parking lots surround the stadium. The TRE commuter rail runs between Dallas and Fort Worth but does not stop in Arlington near the stadium."
+        },
+        {
+          "q": "What is the Dallas Arts District?",
+          "a": "The Dallas Arts District is a 68-acre cultural hub in downtown Dallas, one of the largest in the country. It includes the Winspear Opera House, Wyly Theatre, Meyerson Symphony Center for the Dallas Symphony Orchestra, Dallas Museum of Art, and the Nasher Sculpture Center. It is walkable and served by DART rail."
+        },
+        {
+          "q": "What events happen at Fair Park?",
+          "a": "Fair Park is home to the State Fair of Texas each fall, the Cotton Bowl stadium, and several museums. The State Fair features concerts at the Dos Equis Pavilion, the Red River Showdown college football game, livestock shows, and hundreds of food vendors. The Dos Equis Pavilion also hosts major concerts year-round outside fair season."
+        }
+      ]
+    },
+    "phoenix": {
+      "slug": "phoenix",
+      "country_slug": "usa",
+      "city_id": 12,
+      "name": "Phoenix",
+      "state": "AZ",
+      "country": "United States",
+      "country_code": "USA",
+      "featured": false,
+      "events_first": false,
+      "hero_image": "https://images.unsplash.com/photo-1558645836-e44122a743ee?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Phoenix Tickets - Sports, Concerts & Events",
+      "meta_description": "Buy tickets for Phoenix events including Suns, Cardinals, and Diamondbacks games, concerts at Footprint Center, and spring training baseball across the Valley.",
+      "intro": "The Phoenix metropolitan area is a major sports and entertainment market blessed with year-round warm weather that supports an extensive calendar of outdoor and indoor events. Footprint Center in downtown Phoenix is home to the Suns and Mercury and hosts major concert tours and events throughout the year. Chase Field, with its retractable roof, keeps Diamondbacks fans cool during the searing Arizona summers and also stages concerts. State Farm Stadium in Glendale is home to the Cardinals and regularly hosts Super Bowls, the Fiesta Bowl, and large-scale concerts. The Valley is the Cactus League capital of spring training baseball, with 15 MLB teams playing across ten stadiums in the metro area each February and March, making it one of the best times to visit for sports fans. Mullett Arena at Arizona State University hosts the Coyotes and ASU hockey. The Orpheum Theatre in downtown Phoenix is a beautifully restored 1929 venue presenting concerts and cultural events. Comerica Theatre and Arizona Federal Theatre add mid-size concert options. The Scottsdale and Tempe entertainment districts offer nightlife and live music, with Tempe's Mill Avenue hosting bars and clubs near ASU. The Phoenix Open golf tournament at TPC Scottsdale each February is famous for its raucous 16th hole stadium and draws nearly 750,000 fans across the week, making it the best-attended event on the PGA Tour. October through April is the prime season for outdoor events given the comfortable temperatures.",
+      "highlights": [
+        "The Cactus League brings 15 MLB teams to the Valley for spring training each February and March",
+        "State Farm Stadium hosts the Cardinals, Super Bowls, and the Fiesta Bowl",
+        "The Waste Management Phoenix Open is the most-attended golf tournament in the world",
+        "Footprint Center anchors downtown Phoenix with Suns basketball and major concerts"
+      ],
+      "tips": [
+        "Visit between October and April for comfortable outdoor event temperatures",
+        "Spring training tickets are far more affordable than regular season MLB games and offer intimate settings",
+        "Valley Metro light rail connects downtown Phoenix to Tempe and Mesa for several venue areas",
+        "Summer events are almost exclusively indoors due to extreme heat regularly exceeding 110F"
+      ],
+      "faqs": [
+        {
+          "q": "What is Cactus League spring training?",
+          "a": "Each February and March, 15 MLB teams hold spring training across ten stadiums in the Phoenix metro area including Scottsdale, Tempe, Mesa, Goodyear, and Surprise. Games are played in intimate settings with 7,000 to 12,000 seat stadiums, offering affordable tickets and close access to players."
+        },
+        {
+          "q": "What are the major venues in the Phoenix area?",
+          "a": "Footprint Center seats about 18,422 for basketball and concerts downtown. Chase Field holds 48,519 for baseball. State Farm Stadium in Glendale seats 63,400 for football and up to 78,600 for events. Desert Diamond Arena in Glendale hosts concerts and events. Comerica Theatre and Arizona Federal Theatre serve the mid-size market."
+        },
+        {
+          "q": "When is the best time for events in Phoenix?",
+          "a": "October through April is ideal with daytime temperatures between 60F and 85F. Spring training runs February through March. The Phoenix Open is in early February. Summer from June through September sees temperatures above 100F regularly, so indoor events at Footprint Center and Chase Field dominate. Football season starts in September."
+        }
+      ]
+    },
+    "portland": {
+      "slug": "portland",
+      "country_slug": "usa",
+      "city_id": 10,
+      "name": "Portland",
+      "state": "OR",
+      "country": "United States",
+      "country_code": "USA",
+      "featured": false,
+      "events_first": false,
+      "hero_image": "https://images.unsplash.com/photo-1546507318-a9e247abc45f?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Portland Tickets - Concerts, Sports & Live Events",
+      "meta_description": "Get tickets for Portland events including Trail Blazers games, concerts at Moda Center and Revolution Hall, and live music across the city's vibrant venues.",
+      "intro": "Portland is a city where live music and independent culture thrive in an intimate, accessible setting. The Moda Center is the largest venue in the city, home to the Trail Blazers and a stop for major concert tours, seating around 19,400 for basketball and up to 20,000 for events. Providence Park hosts the Timbers and Thorns in one of the most passionate soccer atmospheres in MLS, with the Timbers Army supporters section creating an electric environment. Portland's real strength is the density and quality of its mid-size and small concert venues. The Crystal Ballroom, with its mechanically sprung dance floor, has been hosting shows since 1914. Revolution Hall, a converted high school auditorium in inner Southeast, offers excellent acoustics and sightlines. McMenamins venues including the Crystal Ballroom, Edgefield, and the Wonder Ballroom provide unique settings in restored historic buildings. The Roseland Theater, Doug Fir Lounge, and Mississippi Studios round out a scene that supports live music every night of the week. The Arlene Schnitzer Concert Hall, known as The Schnitz, presents the Oregon Symphony, touring speakers, and special events in a gorgeous 1928 movie palace. Portland's food and drink culture intertwines with its music scene, as many venues double as restaurants and bars. Summers are dry and warm, making June through September the best time for outdoor events, while the rainy fall and winter months keep the indoor venues buzzing.",
+      "highlights": [
+        "Providence Park creates one of the loudest and most passionate soccer atmospheres in MLS",
+        "The Crystal Ballroom features a mechanically sprung dance floor in a historic 1914 building",
+        "Revolution Hall offers intimate 850-seat shows in a beautifully converted school auditorium",
+        "Portland supports live music at over 100 venues across every genre and size"
+      ],
+      "tips": [
+        "MAX Light Rail stops at the Rose Quarter for Moda Center and Providence Park events",
+        "Summer months offer the best weather and the most outdoor events and festivals",
+        "Check the Doug Fir Lounge and Mississippi Studios calendars for affordable emerging artist shows",
+        "Portland's venues are spread across close-in neighborhoods so biking between shows is practical"
+      ],
+      "faqs": [
+        {
+          "q": "What sports teams play in Portland?",
+          "a": "The Trail Blazers play NBA basketball at Moda Center. The Timbers play MLS soccer and the Thorns play NWSL soccer, both at Providence Park. Portland does not have NFL, MLB, or NHL teams, though it has been mentioned in expansion discussions for MLB and the NHL. College sports at Portland State and the University of Portland also draw fans."
+        },
+        {
+          "q": "What are the best concert venues in Portland?",
+          "a": "The Crystal Ballroom holds about 1,500 and has a legendary sprung dance floor. Revolution Hall seats 850 with great acoustics. McMenamins Edgefield hosts outdoor summer concerts in Troutdale. The Doug Fir Lounge is a 300-capacity room known for its sound quality. Mississippi Studios seats about 200 for intimate shows. Moda Center handles arena-level tours."
+        },
+        {
+          "q": "When is the best time to visit Portland for events?",
+          "a": "Summer from June through September is peak season with warm dry weather, outdoor concerts at Edgefield and the waterfront, and festivals. The Trail Blazers season runs October through April. Timbers and Thorns play March through October. Winter is rainy but the indoor music scene is at its most active with shows every night across the city."
+        }
+      ]
+    },
+    "san-diego": {
+      "slug": "san-diego",
+      "country_slug": "usa",
+      "city_id": 168,
+      "name": "San Diego",
+      "state": "CA",
+      "country": "United States",
+      "country_code": "USA",
+      "featured": false,
+      "events_first": false,
+      "hero_image": "https://images.unsplash.com/photo-1538097304804-2a1b932466a9?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "San Diego Tickets - Concerts, Sports & Events",
+      "meta_description": "Find tickets for San Diego events including Padres games at Petco Park, concerts at Pechanga Arena and The Rady Shell, and Comic-Con International.",
+      "intro": "San Diego offers a laid-back but surprisingly deep entertainment scene fueled by perfect weather, passionate sports fans, and unique cultural events. Petco Park is the crown jewel of the downtown Gaslamp Quarter, home to the Padres and widely regarded as one of the best ballparks in the country with its open-air design, craft beer options, and views of the downtown skyline. The park also hosts concerts, soccer matches, and holiday events. Snapdragon Stadium at San Diego State University hosts the Aztecs and major concerts. Pechanga Arena in the Midway District presents touring concerts, family shows, and sporting events in its 14,500-seat arena. The Rady Shell at Jacobs Park on the bayfront is a striking outdoor venue that is home to the San Diego Symphony's outdoor season and hosts a variety of concerts from spring through fall with stunning harbor views. The Balboa Theatre downtown and the Civic Theatre present Broadway touring shows and performing arts. For live music, the Casbah, Belly Up Tavern in nearby Solana Beach, the Music Box, and the Observatory North Park keep the scene vibrant. San Diego Comic-Con International each July is one of the largest pop culture conventions in the world, taking over the Convention Center and surrounding neighborhoods. The near-perfect climate with over 260 sunny days per year makes outdoor events comfortable almost any time, with summer and early fall being the peak season.",
+      "highlights": [
+        "Petco Park is consistently ranked among the best ballparks in America",
+        "The Rady Shell at Jacobs Park offers symphony and concerts on the waterfront",
+        "San Diego Comic-Con is one of the world's largest pop culture conventions",
+        "Belly Up Tavern in Solana Beach is a legendary 600-capacity live music room"
+      ],
+      "tips": [
+        "Comic-Con badges sell out almost instantly so register for the badge lottery well in advance",
+        "The San Diego Trolley Green Line stops near Petco Park and the Convention Center",
+        "Petco Park's Park at the Park section behind center field offers affordable lawn seating",
+        "Check the Rady Shell calendar for free community events alongside ticketed performances"
+      ],
+      "faqs": [
+        {
+          "q": "What major sports teams are in San Diego?",
+          "a": "The Padres play MLB baseball at Petco Park downtown. San Diego State plays college football at Snapdragon Stadium. San Diego Wave FC plays NWSL soccer at Snapdragon Stadium. The Gulls play AHL hockey at Pechanga Arena. The city lost the Chargers to Los Angeles in 2017 and does not currently have NFL or NBA teams."
+        },
+        {
+          "q": "When is San Diego Comic-Con?",
+          "a": "Comic-Con International typically takes place over four days in late July at the San Diego Convention Center. It draws over 130,000 attendees and features panels, exhibits, screenings, and appearances by major entertainment franchises. Badges are extremely limited and sold through a lottery system months in advance."
+        },
+        {
+          "q": "What is the weather like for outdoor events?",
+          "a": "San Diego has one of the best climates in the country with average highs between 65F and 78F year-round. Rain is rare, especially from May through October. Coastal areas can have morning fog that burns off by midday. Evening outdoor events may require a light jacket as temperatures drop into the 60s. The weather supports outdoor events comfortably in every season."
+        }
+      ]
+    },
+    "minneapolis": {
+      "slug": "minneapolis",
+      "country_slug": "usa",
+      "city_id": 18,
+      "name": "Minneapolis",
+      "state": "MN",
+      "country": "United States",
+      "country_code": "USA",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1558376476-67e1699c6897?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Minneapolis Tickets - Sports, Concerts & Events",
+      "meta_description": "Buy tickets for Minneapolis events including Vikings, Twins, and Timberwolves games, concerts at Target Center, and shows at the Orpheum Theatre.",
+      "intro": "Minneapolis is a culturally rich city with passionate sports fans and a thriving performing arts scene that punches well above its weight. U.S. Bank Stadium is a striking glass-enclosed venue that hosts the Vikings and has welcomed the Super Bowl, the Final Four, and the X Games along with major concert tours. Target Field is home to the Twins in a beautiful open-air ballpark in the North Loop neighborhood. Target Center hosts the Timberwolves and Lynx along with touring concerts and events year-round. The Minneapolis music legacy is extraordinary, shaped by Prince, whose home and studio Paisley Park in nearby Chanhassen is now a museum and concert venue. First Avenue, the club made famous in Purple Rain, remains one of the most important independent music venues in the country. The Orpheum Theatre and State Theatre on Hennepin Avenue present Broadway touring shows and special events in gorgeously restored historic theaters. The Guthrie Theater on the Mississippi riverfront is one of the premier regional theaters in America. Orchestra Hall is home to the Minnesota Orchestra. For outdoor events, Surly Brewing Festival Field and the Minnesota State Fair, which runs for twelve days ending Labor Day, are major draws. The State Fair attracts nearly 2 million visitors annually, making it one of the largest in the nation. Winter is cold but the indoor venue calendar stays packed, and the summer festival season from June through September is magical with long daylight hours.",
+      "highlights": [
+        "U.S. Bank Stadium hosts Vikings football, Super Bowls, and Final Four tournaments",
+        "First Avenue is a legendary music venue immortalized in Prince's Purple Rain",
+        "The Minnesota State Fair draws nearly 2 million visitors over twelve days each summer",
+        "The Guthrie Theater is one of the most acclaimed regional theaters in America"
+      ],
+      "tips": [
+        "The Skyway system connects many downtown venues so you can walk indoors during winter",
+        "First Avenue shows sell out frequently so check the calendar and buy tickets early",
+        "The Minnesota State Fair runs twelve days through Labor Day and is best visited on weekdays to avoid crowds",
+        "Light rail connects the airport to Target Field, Target Center, and U.S. Bank Stadium"
+      ],
+      "faqs": [
+        {
+          "q": "What professional sports teams are in Minneapolis?",
+          "a": "Minneapolis is home to the Vikings (NFL) at U.S. Bank Stadium, the Twins (MLB) at Target Field, the Timberwolves (NBA) and Lynx (WNBA) at Target Center, and Minnesota United (MLS) at Allianz Field in nearby St. Paul. The Wild (NHL) play at Xcel Energy Center in St. Paul."
+        },
+        {
+          "q": "How do I get to venues in Minneapolis?",
+          "a": "Metro Transit's Blue and Green light rail lines serve major venues. The Blue Line connects MSP Airport to Target Field and stops near U.S. Bank Stadium. Target Center is adjacent to Target Field station. The Skyway system connects many downtown buildings allowing indoor walking between venues in winter."
+        },
+        {
+          "q": "What is the music scene like in Minneapolis?",
+          "a": "Minneapolis has a storied music history shaped by Prince, The Replacements, Husker Du, and Atmosphere. First Avenue and its attached 7th St Entry are the anchor venues. Turf Club in St. Paul, Fine Line, and Icehouse add quality options. Paisley Park in Chanhassen hosts concerts and tours. The scene spans rock, hip-hop, indie, and electronic with shows every night."
+        }
+      ]
+    },
+    "detroit": {
+      "slug": "detroit",
+      "country_slug": "usa",
+      "city_id": 25,
+      "name": "Detroit",
+      "state": "MI",
+      "country": "United States",
+      "country_code": "USA",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1564900299938-940e2e41faa5?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Detroit Tickets - Sports, Concerts & Live Events",
+      "meta_description": "Get tickets for Detroit events including Lions, Tigers, Red Wings, and Pistons games, concerts at Little Caesars Arena, and shows at the Fox Theatre.",
+      "intro": "Detroit is a proud sports town with a deep musical heritage and a downtown that has experienced a remarkable entertainment revival. Little Caesars Arena, known as The District Detroit, is the centerpiece of the city's sports and entertainment scene, hosting the Red Wings and Pistons along with major concert tours in a modern 20,000-seat arena. Ford Field is home to the Lions and hosts major events including NCAA tournament games and Monster Jam. Comerica Park, with its iconic tiger statues and fountain displays, is home to the Tigers right in the heart of downtown. The Fox Theatre is one of the most spectacular movie palaces in America, a 5,000-seat venue that presents Broadway touring shows, major concerts, and comedy events in jaw-dropping Siamese-Byzantine architecture. The Fillmore Detroit, the Royal Oak Music Theatre, and Saint Andrew's Hall are beloved mid-size concert venues. The Majestic Theatre Complex includes three stages for varied programming. Detroit's musical DNA runs through Motown, techno, rock, and hip-hop. The city is the birthplace of Motown Records and the techno genre, and that legacy fuels a club and concert scene that is still influential worldwide. The Movement Electronic Music Festival at Hart Plaza each May celebrates techno's Detroit roots. Michigan football at the Big House in nearby Ann Arbor draws over 107,000 fans on fall Saturdays. Detroit's event calendar is strongest from April through November, with the indoor arena and theater scene carrying the long winters.",
+      "highlights": [
+        "Little Caesars Arena hosts Red Wings, Pistons, and major tours in a state-of-the-art facility",
+        "The Fox Theatre is one of the most ornate and spectacular performance venues in America",
+        "Detroit is the birthplace of both Motown and techno music",
+        "The Movement Electronic Music Festival celebrates Detroit techno at Hart Plaza each May"
+      ],
+      "tips": [
+        "The QLine streetcar runs along Woodward Avenue connecting several downtown venues",
+        "Michigan football at the Big House in Ann Arbor is a 45-minute drive and tickets are highly sought after",
+        "Check the Majestic Theatre Complex for three venues under one roof with varied programming",
+        "The People Mover loops downtown with stops near Comerica Park, Ford Field, and the theater district"
+      ],
+      "faqs": [
+        {
+          "q": "What sports teams play in downtown Detroit?",
+          "a": "The Red Wings (NHL) and Pistons (NBA) play at Little Caesars Arena. The Tigers (MLB) play at Comerica Park. The Lions (NFL) play at Ford Field. All four venues are within walking distance of each other in downtown Detroit, making it one of the most compact sports districts in the country."
+        },
+        {
+          "q": "What is the Fox Theatre like?",
+          "a": "The Fox Theatre is a 5,048-seat venue opened in 1928 with extravagant Siamese-Byzantine architecture. It was restored in the 1980s and is now a National Historic Landmark. It hosts Broadway touring productions, major concerts, comedy shows, and special events. The interior is visually stunning and the acoustics are excellent."
+        },
+        {
+          "q": "How has the Detroit music scene influenced culture?",
+          "a": "Detroit gave the world Motown Records in the 1960s, launching artists like Stevie Wonder, The Supremes, and Marvin Gaye. In the 1980s, Detroit pioneered techno music through artists like Juan Atkins, Derrick May, and Kevin Saunderson. The city also has strong rock, punk, and hip-hop traditions. Eminem, Jack White, and Iggy Pop all have Detroit roots."
+        }
+      ]
+    },
+    "new-orleans": {
+      "slug": "new-orleans",
+      "country_slug": "usa",
+      "city_id": 19,
+      "name": "New Orleans",
+      "state": "LA",
+      "country": "United States",
+      "country_code": "USA",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1568402102990-bc541580b59f?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "New Orleans Tickets - Festivals, Music & Events",
+      "meta_description": "Find tickets for New Orleans events including Saints games, Jazz Fest, Essence Festival, concerts on Frenchmen Street, and shows at the Saenger Theatre.",
+      "intro": "New Orleans is unlike any other American city when it comes to live entertainment, with music woven into the fabric of daily life and a festival calendar that is unmatched in its richness. The Caesars Superdome is home to the Saints and hosts the Sugar Bowl, College Football Playoff games, Super Bowls, and Mardi Gras concerts. The Smoothie King Center next door is home to the Pelicans and hosts major concert tours. But the soul of New Orleans entertainment lives in its streets and clubs. Frenchmen Street in the Marigny neighborhood is the local music epicenter, with clubs like the Spotted Cat Music Club, d.b.a., and the Maison offering live jazz, brass band, funk, and blues every night. The New Orleans Jazz and Heritage Festival each spring is a two-weekend celebration of music, food, and culture featuring hundreds of artists across multiple stages at the Fair Grounds Race Course. The Essence Festival of Culture on Fourth of July weekend is one of the largest African American cultural events in the country. Preservation Hall in the French Quarter has been presenting traditional New Orleans jazz since 1961 in an intimate, standing-room setting. The Saenger Theatre is a beautifully restored 1927 movie palace that hosts Broadway touring shows and concerts. Tipitina's Uptown is a beloved music club that has hosted legends from Professor Longhair to the Neville Brothers. Mardi Gras season from Epiphany through Fat Tuesday transforms the entire city into a celebration. The warm subtropical climate supports outdoor events most of the year, with spring and fall offering the most comfortable conditions.",
+      "highlights": [
+        "Jazz Fest brings hundreds of artists to the Fair Grounds over two weekends each spring",
+        "Frenchmen Street offers world-class live music every night without cover charges at many clubs",
+        "Preservation Hall has presented traditional New Orleans jazz since 1961",
+        "The Essence Festival draws over 500,000 visitors for Fourth of July weekend"
+      ],
+      "tips": [
+        "Jazz Fest tickets for individual days are more affordable than full weekend passes",
+        "Frenchmen Street is where locals go for music rather than the more touristy Bourbon Street",
+        "Mardi Gras season events start weeks before Fat Tuesday with parades and balls throughout the city",
+        "Visit Preservation Hall early or buy advance tickets as the small venue fills up quickly each night"
+      ],
+      "faqs": [
+        {
+          "q": "When is Jazz Fest and what does it include?",
+          "a": "The New Orleans Jazz and Heritage Festival typically spans two weekends in late April and early May at the Fair Grounds Race Course. It features over 500 artists on 14 stages spanning jazz, blues, gospel, R&B, rock, bounce, and international music. The festival also showcases Louisiana cuisine and crafts. Single-day and multi-day passes are available."
+        },
+        {
+          "q": "Where is the best live music in New Orleans?",
+          "a": "Frenchmen Street in the Marigny neighborhood is the main live music strip with clubs like the Spotted Cat, d.b.a., and the Maison. Preservation Hall in the French Quarter presents traditional jazz nightly. Tipitina's Uptown is a legendary music club. The Maple Leaf Bar and Chickie Wah Wah in Mid-City are local favorites. Live music happens every night across hundreds of venues."
+        },
+        {
+          "q": "What is the Mardi Gras experience like?",
+          "a": "Mardi Gras is a season, not just a day. Parades by krewes like Endymion, Bacchus, and Zulu roll through the city for weeks leading up to Fat Tuesday. Catching throws from floats, enjoying street food, and hearing live brass bands are all part of the experience. Fat Tuesday itself is the culmination. Many events are free to attend from the street."
+        }
+      ]
+    },
+    "tampa": {
+      "slug": "tampa",
+      "country_slug": "usa",
+      "city_id": 265,
+      "name": "Tampa",
+      "state": "FL",
+      "country": "United States",
+      "country_code": "USA",
+      "featured": false,
+      "events_first": false,
+      "hero_image": "https://images.unsplash.com/photo-1612355200711-518c79d88b9a?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Tampa Tickets - Sports, Concerts & Live Events",
+      "meta_description": "Buy tickets for Tampa Bay events including Buccaneers, Lightning, and Rays games, concerts at Amalie Arena, and shows at the Straz Center for the Arts.",
+      "intro": "The Tampa Bay area is a thriving entertainment market with championship-caliber sports teams and a growing live events scene supported by the warm Florida climate. Raymond James Stadium is home to the Buccaneers and hosted Super Bowl LV, along with major concerts and college football bowl games. Amalie Arena is home to the Lightning and one of the top-ranked arenas in the Southeast for concerts and touring events, hosting well over 150 events per year. Tropicana Field in St. Petersburg hosts the Rays, though the team is planning a new stadium in the area. The Straz Center for the Performing Arts on the Tampa Riverwalk is the largest performing arts center in the Southeast, with five theaters presenting Broadway touring shows, opera, ballet, and concerts. The MidFlorida Credit Union Amphitheatre in the State Fairgrounds area is a popular outdoor concert venue seating around 20,000. Ybor City, Tampa's historic Latin Quarter, is the nightlife and live music hub with clubs and bars along Seventh Avenue. The Ritz Ybor and Crowbar host concerts and events. The Florida State Fair each February and Gasparilla, Tampa's pirate-themed festival and parade each January, are major annual events. Spring training baseball brings the Yankees to George M. Steinbrenner Field each February and March. The subtropical climate makes outdoor events comfortable from October through May, while air-conditioned indoor venues handle the hot, humid summers.",
+      "highlights": [
+        "Amalie Arena is home to the Lightning and one of the busiest arenas in the Southeast",
+        "The Straz Center is the largest performing arts complex in the Southeast with five theaters",
+        "Gasparilla is Tampa's unique pirate invasion festival and parade each January",
+        "Spring training brings Yankees baseball to Steinbrenner Field each February and March"
+      ],
+      "tips": [
+        "The TECO Line Streetcar connects downtown Tampa to Ybor City for nightlife and events",
+        "Summer events are almost exclusively indoors due to heat, humidity, and afternoon thunderstorms",
+        "Spring training tickets are affordable and offer a relaxed way to watch MLB teams prepare",
+        "Check MidFlorida Credit Union Amphitheatre for lawn tickets as an affordable concert option"
+      ],
+      "faqs": [
+        {
+          "q": "What sports teams are in the Tampa Bay area?",
+          "a": "Tampa Bay is home to the Buccaneers (NFL) at Raymond James Stadium, the Lightning (NHL) at Amalie Arena, the Rays (MLB) at Tropicana Field in St. Petersburg, and the Rowdies (USL) at Al Lang Stadium in St. Petersburg. The area also hosts Yankees spring training and multiple college sports programs."
+        },
+        {
+          "q": "What is Gasparilla?",
+          "a": "Gasparilla is Tampa's signature festival held each January, centered around a mock pirate invasion of the city by boat. The Gasparilla Pirate Fest parade is the main event, with elaborate floats and bead throwing along Bayshore Boulevard. The festival season extends weeks with a music festival, film festival, and other events. It draws hundreds of thousands of visitors."
+        },
+        {
+          "q": "When is the best time for outdoor events in Tampa?",
+          "a": "October through May offers the most comfortable weather with lower humidity and temperatures in the 60s to 80s. Spring training runs February through March. Summer from June through September is hot, humid, and prone to afternoon thunderstorms, making indoor venues preferable. Hurricane season runs June through November but rarely impacts events directly."
+        }
+      ]
+    },
+    "charlotte": {
+      "slug": "charlotte",
+      "country_slug": "usa",
+      "city_id": 27,
+      "name": "Charlotte",
+      "state": "NC",
+      "country": "United States",
+      "country_code": "USA",
+      "featured": false,
+      "events_first": false,
+      "hero_image": "https://images.unsplash.com/photo-1578587018452-892bacefd3f2?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Charlotte Tickets - Sports, Concerts & Events",
+      "meta_description": "Get tickets for Charlotte events including Panthers and Hornets games, NASCAR at Charlotte Motor Speedway, concerts, and shows at Blumenthal Arts.",
+      "intro": "Charlotte is the largest city in the Carolinas and a growing entertainment hub with a strong mix of professional sports, motorsports, and performing arts. Bank of America Stadium in Uptown is home to the Panthers and Charlotte FC, hosting NFL football, MLS soccer, and major concerts. The Spectrum Center is home to the Hornets and a busy concert and events arena seating around 19,000. Charlotte Motor Speedway in nearby Concord is one of the cathedrals of NASCAR, hosting the Coca-Cola 600 on Memorial Day weekend and the Bank of America ROVAL 400, drawing hundreds of thousands of motorsport fans. The Blumenthal Performing Arts Center is the cultural anchor of Uptown, with the Belk Theater presenting Broadway touring shows, the Booth Playhouse for smaller productions, and Stage Door Theater for cabaret and comedy. The Ovens Auditorium and Bojangles Coliseum host mid-size concerts and events. For live music, the Neighborhood Theatre in NoDa, The Fillmore Charlotte, and The Underground are popular venues. The NoDa neighborhood, Charlotte's arts district, is lined with breweries, galleries, and live music spots. The PNC Music Pavilion is a major outdoor amphitheater hosting summer concert tours. Charlotte's moderate four-season climate supports outdoor events from spring through fall, with mild winters that keep the indoor calendar active. The city's rapid growth has expanded its entertainment options significantly in recent years.",
+      "highlights": [
+        "Charlotte Motor Speedway hosts NASCAR's prestigious Coca-Cola 600 on Memorial Day weekend",
+        "Bank of America Stadium hosts Panthers football, Charlotte FC soccer, and stadium concerts",
+        "The Blumenthal Performing Arts Center presents Broadway tours in the heart of Uptown",
+        "NoDa is Charlotte's vibrant arts district with live music, breweries, and galleries"
+      ],
+      "tips": [
+        "LYNX Blue Line light rail connects South End, Uptown, and UNC Charlotte with stops near major venues",
+        "NASCAR race weekends fill hotels across the region so book accommodations early",
+        "PNC Music Pavilion lawn seats are an affordable way to see major summer concert tours",
+        "The NoDa neighborhood offers walkable nightlife with live music at venues like The Neighborhood Theatre"
+      ],
+      "faqs": [
+        {
+          "q": "What sports teams play in Charlotte?",
+          "a": "Charlotte is home to the Panthers (NFL) and Charlotte FC (MLS) at Bank of America Stadium, the Hornets (NBA) at Spectrum Center, and the Knights (minor league baseball) at Truist Field. Charlotte Motor Speedway in Concord hosts major NASCAR events. The city also hosts ACC Tournament basketball games and international soccer matches."
+        },
+        {
+          "q": "What is the NASCAR experience like at Charlotte Motor Speedway?",
+          "a": "Charlotte Motor Speedway seats over 89,000 for racing and is considered the home track of NASCAR, with most teams headquartered in the Charlotte area. The Coca-Cola 600 on Memorial Day weekend is the crown jewel event. The speedway also hosts the NASCAR All-Star Race and the Bank of America ROVAL 400. Camping and tailgating are major parts of the race weekend experience."
+        },
+        {
+          "q": "Where can I see Broadway shows in Charlotte?",
+          "a": "The Belk Theater at the Blumenthal Performing Arts Center is the main Broadway touring venue in Uptown Charlotte, seating about 2,100. It presents major touring productions throughout the season. The Booth Playhouse in the same complex hosts smaller shows. Charlotte typically gets recent Broadway touring productions within a year or two of their New York runs."
+        }
+      ]
+    },
+    "san-antonio": {
+      "slug": "san-antonio",
+      "country_slug": "usa",
+      "city_id": 17,
+      "name": "San Antonio",
+      "state": "TX",
+      "country": "United States",
+      "country_code": "USA",
+      "featured": false,
+      "events_first": false,
+      "hero_image": "https://images.unsplash.com/photo-1531218150217-54595bc2b934?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "San Antonio Tickets - Sports, Shows & Events",
+      "meta_description": "Find tickets for San Antonio events including Spurs games at Frost Bank Center, rodeo at the AT&T Center, Fiesta celebrations, and River Walk entertainment.",
+      "intro": "San Antonio is a city rich in culture and tradition, with a live entertainment scene that blends Texan heritage, world-class sports, and vibrant festivals. The Frost Bank Center is home to the Spurs and hosts major concert tours, family shows, and the San Antonio Stock Show and Rodeo each February, one of the largest in the country drawing over 1.5 million visitors. The Alamodome, a 64,000-seat domed stadium, hosts college football games including the Valero Alamo Bowl, international soccer matches, and major concerts. The Majestic Theatre on Houston Street is a breathtaking 1929 atmospheric theater that presents Broadway touring shows, concerts, and comedy events, with a ceiling designed to resemble a night sky over a Spanish courtyard. The Tobin Center for the Performing Arts on the River Walk is a modern venue hosting the San Antonio Symphony, ballet, and touring performances. The Aztec Theatre downtown adds another historic concert venue. The River Walk itself is a entertainment destination with restaurants, bars, and seasonal events including holiday river parades. Fiesta San Antonio each April is an eleven-day citywide celebration with over 100 events including parades, music, food, and cultural festivities honoring the city's diverse heritage. The mild winter climate and long warm seasons support outdoor events from October through May, while the hot summers from June through September push events indoors to air-conditioned venues.",
+      "highlights": [
+        "The San Antonio Stock Show and Rodeo draws over 1.5 million visitors each February",
+        "The Majestic Theatre features stunning atmospheric architecture for Broadway and concerts",
+        "Fiesta San Antonio is an eleven-day citywide celebration with over 100 events each April",
+        "The River Walk provides a unique setting for dining, entertainment, and seasonal events"
+      ],
+      "tips": [
+        "The River Walk is walkable to the Tobin Center, Majestic Theatre, and Alamodome from most downtown hotels",
+        "Fiesta San Antonio in April is a must-experience event but book hotels well in advance",
+        "Rodeo tickets include both the rodeo competition and the evening concert performance",
+        "VIA bus routes connect major venues though most visitors find driving or rideshare more convenient"
+      ],
+      "faqs": [
+        {
+          "q": "What is the San Antonio Rodeo like?",
+          "a": "The San Antonio Stock Show and Rodeo runs for about eighteen days each February at the Frost Bank Center and surrounding grounds. It features professional rodeo competition, a livestock show, carnival, and nightly concerts with major country and pop artists. A single ticket includes both the rodeo and the concert. It is one of the largest such events in the country."
+        },
+        {
+          "q": "What is Fiesta San Antonio?",
+          "a": "Fiesta is an eleven-day celebration held each April honoring the diverse cultures and heritage of San Antonio. It includes over 100 events such as the Battle of Flowers Parade, Fiesta Flambeau night parade, NIOSA (A Night in Old San Antonio), live music, food festivals, and art events. Many events are free or low-cost. It draws over 3.5 million participants."
+        },
+        {
+          "q": "Where are the best venues in San Antonio?",
+          "a": "The Frost Bank Center seats about 18,418 for basketball and concerts. The Alamodome holds up to 64,000 for football and events. The Majestic Theatre seats 2,311 in a gorgeous 1929 building. The Tobin Center for the Performing Arts seats 1,738 in a modern facility on the River Walk. The Aztec Theatre holds about 1,800 for concerts in a restored 1926 venue."
+        }
+      ]
+    },
+    "calgary": {
+      "slug": "calgary",
+      "country_slug": "canada",
+      "city_id": 103,
+      "name": "Calgary",
+      "state": "AB",
+      "country": "Canada",
+      "country_code": "CAN",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1565250082722-46197f6ea5a5?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Calgary Tickets - Concerts, Sports & Events",
+      "meta_description": "Find tickets for Calgary events including Flames hockey, Stampeders football, concerts at the Saddledome, and the world-famous Calgary Stampede.",
+      "intro": "Calgary is a city that thrives on big events, world-class sports, and a deeply rooted western heritage that fuels one of the most electric live entertainment scenes in Canada. The Scotiabank Saddledome, nestled in Stampede Park, serves as the home arena for the Calgary Flames of the NHL and hosts major concert tours, comedy shows, and family entertainment throughout the year. Football fans pack McMahon Stadium to cheer on the Calgary Stampeders of the CFL, while the city's growing soccer culture is anchored by Cavalry FC at ATCO Field in Spruce Meadows. Every July, the Calgary Stampede transforms the entire city into a ten-day celebration of rodeo, live music, midway rides, and outdoor concerts that draw over a million visitors annually. The Arts Commons complex downtown presents theatre, classical music, and spoken word performances across five distinct venues. For larger touring acts, the WinSport Event Centre at Canada Olympic Park and various outdoor festival grounds provide additional capacity during the warmer months. Calgary's event calendar peaks from May through September when warm Chinook-influenced weather allows for patios, outdoor festivals, and block parties, but winter months bring an energetic hockey season and a thriving indoor concert circuit. Whether you are drawn to country music legends performing at the Stampede Grandstand, a heated Battle of Alberta between the Flames and Oilers, or touring Broadway productions at the Jubilee Auditorium, Calgary delivers a year-round slate of memorable live experiences.",
+      "highlights": [
+        "Calgary Flames NHL games at the Scotiabank Saddledome with one of the most passionate fan bases in Canadian hockey",
+        "The Calgary Stampede every July featuring rodeo championships, grandstand concerts, and the Greatest Outdoor Show on Earth",
+        "Calgary Stampeders CFL football at McMahon Stadium with a strong tailgate culture",
+        "Arts Commons downtown offering theatre, dance, and live music across five performance spaces"
+      ],
+      "tips": [
+        "Book Calgary Stampede tickets months in advance as grandstand concerts and rodeo finals sell out quickly",
+        "Transit is free on CTrain within the downtown core, making it easy to reach the Saddledome and Arts Commons",
+        "Layer clothing for evening events as Calgary temperatures can drop significantly after sunset even in summer",
+        "Check for combined ticket packages during Stampede that bundle rodeo, concert, and midway access"
+      ],
+      "faqs": [
+        {
+          "q": "Where do the Calgary Flames play home games?",
+          "a": "The Calgary Flames play at the Scotiabank Saddledome located in Stampede Park, just southeast of downtown. The arena seats approximately 19,289 fans and is accessible by CTrain on the Red Line to Victoria Park/Stampede station."
+        },
+        {
+          "q": "When is the Calgary Stampede and how do I get tickets?",
+          "a": "The Calgary Stampede runs for ten days every July, typically starting the first Friday after Canada Day. Tickets for individual rodeo sessions, evening grandstand concerts, and general admission to the park grounds go on sale in the spring."
+        },
+        {
+          "q": "What is the best time of year for events in Calgary?",
+          "a": "Summer from June through August offers the most events including the Stampede, outdoor music festivals, and extended daylight hours. However, the NHL season from October through April keeps the Saddledome busy, and winter festivals like Glow and New Year's Eve celebrations add to the cold-weather calendar."
+        }
+      ]
+    },
+    "edmonton": {
+      "slug": "edmonton",
+      "country_slug": "canada",
+      "city_id": 101,
+      "name": "Edmonton",
+      "state": "AB",
+      "country": "Canada",
+      "country_code": "CAN",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1608559620004-dd5a36e0a56e?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Edmonton Tickets - Concerts, Sports & Events",
+      "meta_description": "Buy tickets for Edmonton events including Oilers hockey at Rogers Place, Elks football, Fringe Festival, and concerts in Alberta's capital city.",
+      "intro": "Edmonton has earned its reputation as Canada's Festival City, hosting over thirty major festivals each year alongside a passionate professional sports culture anchored by the NHL's Edmonton Oilers. Rogers Place, a state-of-the-art arena that opened in 2016 in the heart of the Ice District, is the crown jewel of Edmonton's live event scene, drawing major concert tours, UFC fights, and sold-out Oilers games to its 18,347 seats. The Edmonton Elks compete in the CFL at Commonwealth Stadium, one of the largest outdoor stadiums in Canada with a capacity exceeding 56,000. Every August, the Edmonton International Fringe Festival takes over Old Strathcona with over 1,600 performances across dozens of indoor and outdoor stages, making it the largest fringe theatre festival in North America. The Edmonton Folk Music Festival in Gallagher Park, K-Days at the Expo Centre, and the Heritage Festival celebrating over ninety cultures in Hawrelak Park round out a summer calendar that is unmatched in Western Canada. The Winspear Centre is home to the Edmonton Symphony Orchestra and hosts touring jazz, classical, and world music acts in a concert hall widely praised for its acoustics. Winter is far from quiet, with Oilers games creating an electric downtown atmosphere and Ice on Whyte carving festival drawing visitors to the Old Strathcona neighbourhood. From the energy of a playoff hockey game to an intimate theatre production on the Fringe circuit, Edmonton offers a depth and diversity of live events that consistently surprises first-time visitors.",
+      "highlights": [
+        "Edmonton Oilers NHL hockey at Rogers Place in the vibrant Ice District downtown",
+        "The Edmonton International Fringe Festival every August with over 1,600 performances across Old Strathcona",
+        "K-Days summer exhibition featuring midway rides, concerts, and agricultural showcases at the Expo Centre",
+        "Edmonton Folk Music Festival in Gallagher Park drawing top folk and roots artists from around the world"
+      ],
+      "tips": [
+        "The Ice District surrounding Rogers Place has numerous restaurants and bars within walking distance for pre-game dining",
+        "Edmonton's river valley trail system connects many festival venues so consider cycling between summer events",
+        "Purchase Fringe Festival tickets at the door for most shows but arrive early for popular productions",
+        "Dress warmly for winter events as Edmonton temperatures regularly drop below minus twenty Celsius from December through February"
+      ],
+      "faqs": [
+        {
+          "q": "Where is Rogers Place and how do I get there?",
+          "a": "Rogers Place is located in the Ice District at 10220 104 Avenue NW in downtown Edmonton. It is accessible by Edmonton Transit bus routes and the LRT Capital Line to Churchill station, which is a short walk from the arena."
+        },
+        {
+          "q": "What is the Edmonton Fringe Festival?",
+          "a": "The Edmonton International Fringe Festival is the largest fringe theatre festival in North America, held annually in August across the Old Strathcona neighbourhood. It features over 1,600 performances of theatre, comedy, music, and dance, with most shows priced affordably and no jury selection process for performers."
+        },
+        {
+          "q": "When is the best time to visit Edmonton for events?",
+          "a": "July and August offer the densest event calendar with K-Days, the Fringe Festival, the Folk Music Festival, and Heritage Festival all taking place. The NHL season from October through April provides consistent entertainment, and December brings holiday markets and winter festival programming."
+        }
+      ]
+    },
+    "ottawa": {
+      "slug": "ottawa",
+      "country_slug": "canada",
+      "city_id": 102,
+      "name": "Ottawa",
+      "state": "ON",
+      "country": "Canada",
+      "country_code": "CAN",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1569071290792-1d42a47f4bba?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Ottawa Tickets - Concerts, Sports & Events",
+      "meta_description": "Get tickets for Ottawa events including Senators hockey, Bluesfest, Winterlude, and performances at the National Arts Centre in Canada's capital.",
+      "intro": "As Canada's capital, Ottawa blends national cultural institutions with a surprisingly vibrant live entertainment scene that draws on both its English and French heritage. The Canadian Tire Centre in Kanata is home to the Ottawa Senators of the NHL and doubles as the city's largest concert venue, welcoming touring arena acts to its 18,652 seats throughout the year. Downtown, the National Arts Centre sits along the Rideau Canal and presents a year-round program of orchestra, theatre, dance, and popular music across four performance spaces including the recently renovated Kipnes Lantern. The RBC Bluesfest is Ottawa's flagship music festival, taking place every July at LeBreton Flats with over 300,000 attendees enjoying headliners spanning rock, hip-hop, blues, electronic, and folk genres. TD Place Stadium in the Glebe neighbourhood hosts the Ottawa Redblacks of the CFL and Atletico Ottawa of the Canadian Premier League, creating a lively game-day atmosphere in one of the city's most walkable districts. Winter transforms Ottawa into a celebration of ice and snow, with Winterlude each February featuring outdoor concerts, ice sculptures, and skating on the Rideau Canal Skateway. The Ottawa Jazz Festival, CityFolk festival, and Canada Day celebrations on Parliament Hill add further depth to a calendar that peaks in the warmer months but never truly goes quiet. Whether attending a Senators game, catching a world premiere at the NAC, or joining hundreds of thousands on the Hill for Canada Day fireworks, Ottawa offers live experiences steeped in both national pride and genuine local passion.",
+      "highlights": [
+        "Ottawa Senators NHL hockey at the Canadian Tire Centre with a devoted fanbase in the nation's capital",
+        "RBC Bluesfest every July at LeBreton Flats with world-class headliners across multiple stages",
+        "Canada Day celebrations on Parliament Hill featuring concerts and fireworks attended by hundreds of thousands",
+        "National Arts Centre performances spanning orchestra, theatre, dance, and contemporary music year-round"
+      ],
+      "tips": [
+        "The Canadian Tire Centre is located in Kanata about twenty minutes west of downtown so plan extra travel time for Senators games",
+        "Bluesfest general admission allows re-entry so you can explore nearby attractions between sets",
+        "The Rideau Canal Skateway opens in January or February depending on conditions and pairs well with Winterlude events",
+        "Ottawa straddles the Ontario-Quebec border so check whether events in nearby Gatineau require crossing the bridge"
+      ],
+      "faqs": [
+        {
+          "q": "Where do the Ottawa Senators play?",
+          "a": "The Ottawa Senators play at the Canadian Tire Centre located at 1000 Palladium Drive in Kanata, west of downtown Ottawa. The arena is accessible by OC Transpo bus routes with express service on game days. There are plans for a future downtown arena at LeBreton Flats."
+        },
+        {
+          "q": "What is RBC Bluesfest and when does it happen?",
+          "a": "RBC Bluesfest is Ottawa's largest annual music festival, held over approximately ten days in July at LeBreton Flats near downtown. It features a diverse lineup of international and Canadian artists across multiple stages, with single-day passes and full festival passes available."
+        },
+        {
+          "q": "What major events happen in Ottawa during winter?",
+          "a": "Winterlude takes place over three weekends in February and features ice sculptures, outdoor concerts, and skating on the Rideau Canal. The Senators NHL season runs from October through April, and the National Arts Centre programs a full winter season of theatre, orchestra, and dance performances."
+        }
+      ]
+    },
+    "winnipeg": {
+      "slug": "winnipeg",
+      "country_slug": "canada",
+      "city_id": 105,
+      "name": "Winnipeg",
+      "state": "MB",
+      "country": "Canada",
+      "country_code": "CAN",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1569428445892-8004dc04a1b4?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Winnipeg Tickets - Concerts, Sports & Events",
+      "meta_description": "Score tickets for Winnipeg events including Jets hockey, Blue Bombers football, folk festival performances, and shows at the Exchange District.",
+      "intro": "Winnipeg is a city with an outsized passion for live events, driven by devoted sports fans, a thriving arts community, and a festival culture that makes the most of Manitoba's dramatic seasons. Canada Life Centre downtown is the home of the Winnipeg Jets of the NHL, and the atmosphere inside on game nights ranks among the loudest and most intense in all of Canadian hockey. IG Field at the University of Manitoba hosts the Winnipeg Blue Bombers of the CFL, a franchise with a fiercely loyal following and multiple Grey Cup championships to its name. The Winnipeg Folk Festival, held every July in Birds Hill Provincial Park just north of the city, is one of North America's most respected folk music gatherings, drawing tens of thousands of campers and music lovers for a weekend of performances across multiple stages. The Exchange District, a National Historic Site filled with early twentieth-century warehouses, is the heart of Winnipeg's arts scene and home to the Royal Manitoba Theatre Centre, the Centennial Concert Hall, and numerous independent galleries and performance spaces. The Royal Winnipeg Ballet, one of the oldest ballet companies in North America, performs its acclaimed season at the Centennial Concert Hall alongside the Winnipeg Symphony Orchestra. Summer brings Festival du Voyageur celebrating Franco-Manitoban heritage, the Winnipeg Fringe Theatre Festival in the Exchange District, and Jazz Winnipeg. Despite winters that test even the hardiest residents, Winnipeggers embrace the cold with packed hockey arenas and winter festivals that keep the city's social calendar full from October through March.",
+      "highlights": [
+        "Winnipeg Jets NHL hockey at Canada Life Centre with one of the loudest arenas in the league",
+        "Winnipeg Blue Bombers CFL football at IG Field with a proud Grey Cup championship tradition",
+        "Winnipeg Folk Festival every July at Birds Hill Provincial Park attracting top folk artists from around the world",
+        "Exchange District arts scene featuring the Royal Manitoba Theatre Centre and Centennial Concert Hall"
+      ],
+      "tips": [
+        "Canada Life Centre is in the heart of downtown Winnipeg within walking distance of hotels and restaurants along Portage Avenue",
+        "Bring layers and blankets for Blue Bombers games in October and November as temperatures drop quickly in the open stadium",
+        "The Winnipeg Folk Festival is a camping event so book your campsite early or arrange day passes for individual sessions",
+        "Winnipeg Transit offers express routes on Jets game days but parking is also readily available in downtown lots"
+      ],
+      "faqs": [
+        {
+          "q": "Where do the Winnipeg Jets play home games?",
+          "a": "The Winnipeg Jets play at Canada Life Centre located at 345 Portage Avenue in downtown Winnipeg. The arena holds approximately 15,321 fans and is easily accessible by Winnipeg Transit bus routes and within walking distance of most downtown hotels."
+        },
+        {
+          "q": "What is the Winnipeg Folk Festival?",
+          "a": "The Winnipeg Folk Festival is a major annual music event held over four days in July at Birds Hill Provincial Park, about thirty minutes north of downtown. It features folk, roots, and world music performers on multiple stages, with both day passes and full festival camping passes available."
+        },
+        {
+          "q": "What events happen in Winnipeg during winter?",
+          "a": "Winter in Winnipeg revolves around Jets hockey at Canada Life Centre, Festival du Voyageur in February celebrating French-Canadian and Metis heritage with outdoor concerts and snow sculptures, and a full season of ballet, symphony, and theatre performances at the Centennial Concert Hall and Royal Manitoba Theatre Centre."
+        }
+      ]
+    },
+    "quebec": {
+      "slug": "quebec",
+      "country_slug": "canada",
+      "city_id": 285,
+      "name": "Quebec City",
+      "state": "QC",
+      "country": "Canada",
+      "country_code": "CAN",
+      "featured": false,
+      "events_first": false,
+      "hero_image": "https://images.unsplash.com/photo-1558068379-38a14b72d332?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Quebec City Tickets - Concerts, Shows & Events",
+      "meta_description": "Find tickets for Quebec City events including Festival d'ete, concerts at Videotron Centre, Carnaval de Quebec, and shows in Old Quebec.",
+      "intro": "Quebec City is one of the most historically rich and visually stunning cities in North America, and its live event scene draws deeply from the French-speaking culture that defines this UNESCO World Heritage capital. The Videotron Centre, opened in 2015 in the Expocite district, is the city's premier indoor arena with a capacity of over 18,000, hosting major concert tours, family shows, and sporting events throughout the year. The Festival d'ete de Quebec, held every July, is one of the largest music festivals in Canada, transforming the Plains of Abraham and surrounding streets into a massive open-air concert venue with headliners spanning rock, pop, electronic, hip-hop, and francophone music across multiple stages over eleven days. The Grand Theatre de Quebec on Boulevard Rene-Levesque is home to the Quebec Symphony Orchestra and Opera de Quebec, offering a distinguished season of classical performances in an acoustically celebrated hall. The Palais Montcalm, a beautifully restored concert hall in the heart of Old Quebec, presents jazz, chamber music, and world music in an intimate setting. Every winter, the Carnaval de Quebec lights up the city with two weeks of parades, outdoor concerts, ice canoe races across the St. Lawrence River, and the iconic Bonhomme mascot presiding over festivities that have run since 1894. The cobblestone streets of Old Quebec host buskers, theatre troupes, and pop-up performances during summer months, while the Petit Champlain district and Place Royale serve as atmospheric backdrops for cultural events. From arena-scale concerts at the Videotron Centre to a candlelit classical performance in a four-hundred-year-old chapel, Quebec City pairs world-class entertainment with a setting unlike anything else on the continent.",
+      "highlights": [
+        "Festival d'ete de Quebec every July with eleven days of music on the Plains of Abraham and throughout the city",
+        "Videotron Centre hosting major concert tours, family entertainment, and sporting events year-round",
+        "Carnaval de Quebec each February with parades, ice canoe races, outdoor concerts, and winter celebrations",
+        "Grand Theatre de Quebec and Palais Montcalm offering classical, opera, and jazz in the heart of the city"
+      ],
+      "tips": [
+        "Festival d'ete passes offer exceptional value with access to hundreds of shows across eleven days in July",
+        "Old Quebec streets are cobblestone and hilly so wear comfortable walking shoes when attending events in the historic centre",
+        "Many events and venues operate primarily in French so check whether English services are available if needed",
+        "Quebec City is compact and walkable but parking in Old Quebec is very limited during major festivals and events"
+      ],
+      "faqs": [
+        {
+          "q": "What is the Festival d'ete de Quebec?",
+          "a": "The Festival d'ete de Quebec is one of Canada's largest music festivals, held over eleven days every July. It features hundreds of performances across multiple outdoor stages, with the main stage on the Plains of Abraham hosting international headliners. Festival passes and single-show tickets are available."
+        },
+        {
+          "q": "Where is the Videotron Centre?",
+          "a": "The Videotron Centre is located at 250 Boulevard Wilfrid-Hamel in the Expocite district, about ten minutes from Old Quebec by car or city bus. The arena opened in 2015 and seats over 18,000 for concerts and events, with ample parking and transit connections."
+        },
+        {
+          "q": "When is Carnaval de Quebec?",
+          "a": "Carnaval de Quebec takes place over approximately two weeks in late January and February. It features outdoor concerts, night parades, ice sculpture competitions, ice canoe races on the St. Lawrence River, and snow activities across multiple sites in the city, centered around the Plains of Abraham."
+        }
+      ]
+    },
+    "manchester": {
+      "slug": "manchester",
+      "country_slug": "uk",
+      "city_id": 556,
+      "name": "Manchester",
+      "state": "England",
+      "country": "United Kingdom",
+      "country_code": "GBR",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1515586838455-8f8f940d6853?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Manchester Tickets - Concerts, Football & Events",
+      "meta_description": "Buy tickets for Manchester events including Premier League football at Old Trafford and the Etihad, concerts at AO Arena, and shows across the city.",
+      "intro": "Manchester is one of the United Kingdom's most dynamic live entertainment destinations, with a year-round calendar packed with Premier League football, world-class concerts, and acclaimed theatre. The city is home to two of England's biggest football clubs, Manchester United at Old Trafford and Manchester City at the Etihad Stadium, drawing passionate crowds throughout the season from August to May. The AO Arena, one of Europe's busiest indoor venues with a capacity of over 21,000, hosts major touring artists, comedy acts, and family shows. For mid-size concerts and emerging talent, the O2 Ritz, Albert Hall, and the historic Band on the Wall offer more intimate settings rooted in the city's legendary music heritage. The Palace Theatre and Opera House anchor the theatrical scene, regularly staging West End touring productions and original musicals. Manchester's cultural calendar peaks during summer with events like Parklife Festival in Heaton Park and the Manchester International Festival, a biennial arts event featuring world premieres. The cricket season brings international test matches to Emirates Old Trafford, while the National Cycling Centre at the Etihad Campus hosts track cycling events. Winter brings a packed Christmas market season and a full schedule of indoor entertainment. With excellent transport links including a major international airport and extensive Metrolink tram network, Manchester is easily accessible for visitors attending events from across the region.",
+      "highlights": [
+        "Two Premier League stadiums hosting matches from August through May",
+        "AO Arena ranks among Europe's top venues for concerts and live shows",
+        "Vibrant indie music scene with historic venues like Band on the Wall",
+        "Summer festivals including Parklife and Manchester International Festival"
+      ],
+      "tips": [
+        "Book Manchester United and Manchester City tickets well in advance as matches sell out quickly",
+        "The Metrolink tram connects key venues including the Etihad Campus and MediaCityUK",
+        "Hotel rates spike on concert nights at AO Arena so consider booking accommodation early",
+        "The Northern Quarter area offers excellent pre-show dining and drinks near several music venues"
+      ],
+      "faqs": [
+        {
+          "q": "What are the major event venues in Manchester?",
+          "a": "Manchester's largest venues include the AO Arena for concerts and major events, Old Trafford for Manchester United football, the Etihad Stadium for Manchester City, and the Palace Theatre and Opera House for touring stage productions."
+        },
+        {
+          "q": "When is the best time to visit Manchester for events?",
+          "a": "The football season runs from August to May, while summer brings outdoor festivals like Parklife in June. The Christmas market season from November to December is also popular. The AO Arena and theatres host events year-round."
+        },
+        {
+          "q": "How do I get around Manchester to reach event venues?",
+          "a": "The Metrolink tram network connects most major venues and runs until late evening. Manchester Piccadilly and Victoria stations serve national rail connections, and ride-hailing services are widely available after events."
+        }
+      ]
+    },
+    "glasgow": {
+      "slug": "glasgow",
+      "country_slug": "uk",
+      "city_id": 422,
+      "name": "Glasgow",
+      "state": "Scotland",
+      "country": "United Kingdom",
+      "country_code": "GBR",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1583855282680-4dbdc69b0932?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Glasgow Tickets - Concerts, Football & Live Events",
+      "meta_description": "Find tickets for Glasgow events including football at Celtic Park and Ibrox, concerts at OVO Hydro, and performances at the Theatre Royal and King's.",
+      "intro": "Glasgow is Scotland's largest city and its undisputed capital of live entertainment, offering a remarkable concentration of world-class venues and passionate sports culture. The OVO Hydro on the banks of the River Clyde is the third busiest concert arena in the world by ticket sales, hosting major international touring artists, comedy specials, and large-scale productions with a capacity exceeding 14,300. Adjacent to it, the SEC Armadillo and the Scottish Event Campus provide additional spaces for conferences, exhibitions, and mid-size performances. Glasgow's football heritage runs deep with the Old Firm rivalry between Celtic at Celtic Park and Rangers at Ibrox Stadium, two of the most atmospheric grounds in European football. The city's theatre scene is anchored by the Theatre Royal, home to Scottish Opera and Scottish Ballet, and the King's Theatre, which hosts West End touring musicals and pantomimes. For live music, Glasgow rivals any city in the UK with legendary venues including Barrowland Ballroom, known for its sprung dance floor and electric atmosphere, the SWG3 arts complex in Finnieston, and King Tut's Wah Wah Hut, where Oasis were famously discovered. The summer months bring TRNSMT Festival to Glasgow Green, one of Scotland's largest music festivals. Hampden Park, the national football stadium, hosts Scotland internationals and occasional major concerts. The city's cultural calendar also features Celtic Connections in January, one of the world's premier folk and roots music festivals.",
+      "highlights": [
+        "OVO Hydro ranks among the world's busiest concert arenas by attendance",
+        "Barrowland Ballroom is regularly voted one of the best live music venues in the UK",
+        "Old Firm derby between Celtic and Rangers is one of football's fiercest rivalries",
+        "TRNSMT Festival and Celtic Connections bookend the annual music calendar"
+      ],
+      "tips": [
+        "Barrowland Ballroom shows sell out fast so set alerts for your favourite artists",
+        "Glasgow's Subway connects the city centre to venues on the south side including Ibrox",
+        "Many venues cluster along the Clyde so consider staying in Finnieston or the city centre",
+        "Scottish football matches often take place on weekends with Sunday fixtures common in the Premiership"
+      ],
+      "faqs": [
+        {
+          "q": "What is the biggest concert venue in Glasgow?",
+          "a": "The OVO Hydro is Glasgow's largest indoor venue with a capacity of over 14,300. It sits on the Scottish Event Campus alongside the SEC Armadillo and hosts major touring artists, comedy acts, and sporting events throughout the year."
+        },
+        {
+          "q": "How do I get tickets for Celtic or Rangers matches?",
+          "a": "Both clubs sell tickets through their official websites, with priority given to members and season ticket holders. Old Firm derbies are the hardest to obtain. General sale tickets for other matches are more readily available, particularly for midweek fixtures."
+        },
+        {
+          "q": "What is the best time of year for events in Glasgow?",
+          "a": "Glasgow has strong year-round programming. Celtic Connections runs in January, the football season spans August to May, summer brings TRNSMT Festival and outdoor events, and the Christmas and pantomime season fills theatres from November through January."
+        }
+      ]
+    },
+    "birmingham": {
+      "slug": "birmingham",
+      "country_slug": "uk",
+      "city_id": 740,
+      "name": "Birmingham",
+      "state": "England",
+      "country": "United Kingdom",
+      "country_code": "GBR",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1597843786411-a7fa8ad44a95?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Birmingham Tickets - Concerts, Sports & Theatre",
+      "meta_description": "Get tickets for Birmingham events including concerts at Utilita Arena and Resorts World Arena, Aston Villa matches, and shows at the Hippodrome.",
+      "intro": "Birmingham, England's second largest city, has undergone a major transformation into one of the country's premier live event destinations, particularly following the investment surrounding the 2022 Commonwealth Games. The city boasts two major arenas: the Utilita Arena Birmingham in the city centre with a capacity of around 15,800, and Resorts World Arena at the NEC complex, which seats over 16,000 and hosts major touring concerts, family shows, and indoor sporting events. The Birmingham Hippodrome is the most popular single-auditorium theatre in the United Kingdom, welcoming over 600,000 visitors annually with West End touring productions, the famous Birmingham Royal Ballet, and one of the country's biggest pantomimes each Christmas. Football fans can watch Aston Villa at Villa Park in Aston, one of the most historic grounds in English football, while Warwickshire County Cricket Club plays at Edgbaston, which regularly hosts international test matches and limited-overs internationals. The Edgbaston area also includes the Priory Tennis Club, home to the Rothesay Classic WTA event each June. For music lovers, smaller venues like the O2 Institute, O2 Academy Birmingham, and the Symphony Hall provide options ranging from indie gigs to world-class classical performances by the City of Birmingham Symphony Orchestra. Summer events include concerts at the Sandwell Valley country park and various festivals across the West Midlands region. The city's central location and connectivity via New Street Station make it easily reachable from almost anywhere in England.",
+      "highlights": [
+        "Birmingham Hippodrome is the UK's most-visited single-auditorium theatre",
+        "Edgbaston hosts international cricket including Ashes test matches",
+        "Two major arenas bring top-tier concerts and touring shows year-round",
+        "Aston Villa at Villa Park offers Premier League football in a historic setting"
+      ],
+      "tips": [
+        "New Street Station is a short walk from the Utilita Arena and Hippodrome so train travel is convenient",
+        "Resorts World Arena is at the NEC, about 20 minutes by train from the city centre",
+        "Book Hippodrome pantomime tickets by autumn as the Christmas run sells out months ahead",
+        "Edgbaston cricket tickets for international matches go on general sale in spring"
+      ],
+      "faqs": [
+        {
+          "q": "What are the main event venues in Birmingham?",
+          "a": "Birmingham's key venues include the Utilita Arena and Resorts World Arena for large concerts, the Birmingham Hippodrome for theatre, Symphony Hall for classical music, Villa Park for football, and Edgbaston for international cricket."
+        },
+        {
+          "q": "Is Birmingham easy to reach for events?",
+          "a": "Birmingham is centrally located with excellent rail links. Birmingham New Street is served by trains from London in under 90 minutes, and the city is at the hub of the UK motorway network. Birmingham Airport also offers domestic and international flights."
+        },
+        {
+          "q": "When do major cricket events take place at Edgbaston?",
+          "a": "The international cricket season runs from May to September. Edgbaston typically hosts at least one test match and several limited-overs internationals each summer, with tickets going on sale earlier in the year through Warwickshire CCC."
+        }
+      ]
+    },
+    "liverpool": {
+      "slug": "liverpool",
+      "country_slug": "uk",
+      "city_id": 498,
+      "name": "Liverpool",
+      "state": "England",
+      "country": "United Kingdom",
+      "country_code": "GBR",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1568482096592-a2a1b2129e72?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Liverpool Tickets - Football, Concerts & Live Events",
+      "meta_description": "Buy tickets for Liverpool events including matches at Anfield, concerts at M&S Bank Arena, and performances at the Empire Theatre and Philharmonic Hall.",
+      "intro": "Liverpool is a city where live events are woven into the cultural fabric, from the thunderous atmosphere of Premier League football at Anfield to the echoes of its world-famous musical heritage. Liverpool FC at Anfield is one of the most successful and passionately supported clubs in European football, and matchday at Anfield with the Kop singing You'll Never Walk Alone is one of sport's great experiences. Everton, Liverpool's other Premier League club, are building a new stadium at Bramley-Moore Dock on the city's waterfront. The M&S Bank Arena on the Kings Dock waterfront is the city's largest indoor entertainment venue with a capacity of around 11,000, hosting major touring artists, comedy tours, and sporting events. The Liverpool Empire Theatre is the largest two-tier auditorium in the UK, staging West End touring musicals, ballet, and opera. The Royal Liverpool Philharmonic Orchestra performs at the Philharmonic Hall on Hope Street, one of the country's finest concert halls. Smaller music venues including the Cavern Club, where The Beatles famously played in the early 1960s, the O2 Academy on Hotham Street, and Arts Club on Seel Street keep the city's live music tradition thriving across all genres. The Liverpool waterfront UNESCO World Heritage Site provides a stunning backdrop for outdoor events, and summer brings festivals like Africa Oye in Sefton Park, one of the UK's largest free African music festivals. The Grand National at Aintree Racecourse each April is one of the most famous horse races in the world, drawing visitors from across the globe.",
+      "highlights": [
+        "Anfield matchdays offer one of football's most iconic atmospheres",
+        "M&S Bank Arena hosts major concerts and events on the waterfront",
+        "The Grand National at Aintree is one of the world's most famous horse races",
+        "Rich live music heritage from the Cavern Club to the Philharmonic Hall"
+      ],
+      "tips": [
+        "Liverpool FC tickets are extremely difficult to obtain so register as a member and book early",
+        "The Grand National meeting at Aintree takes place over three days in April with the main race on Saturday",
+        "Most city centre venues are walkable from Lime Street Station",
+        "Check the Echo Arena and Empire Theatre websites regularly for presale access to major shows"
+      ],
+      "faqs": [
+        {
+          "q": "How do I get Liverpool FC tickets?",
+          "a": "Liverpool FC sells tickets through its official website with priority for members and season ticket holders. Hospitality packages are also available for most matches. Standard tickets for high-demand matches like Merseyside derbies and Champions League nights are very difficult to obtain without membership."
+        },
+        {
+          "q": "What is there to do in Liverpool besides football?",
+          "a": "Liverpool has a packed events calendar including concerts at the M&S Bank Arena, West End shows at the Empire Theatre, classical performances at the Philharmonic Hall, the Grand National at Aintree in April, and summer festivals like Africa Oye and the Liverpool International Music Festival."
+        },
+        {
+          "q": "When is the best time to visit Liverpool for events?",
+          "a": "The football season runs August to May, the Grand National is held in April, and summer festivals take place from June through August. The Empire Theatre and M&S Bank Arena host events year-round, and the Christmas pantomime season is a major draw from November."
+        }
+      ]
+    },
+    "cardiff": {
+      "slug": "cardiff",
+      "country_slug": "uk",
+      "city_id": 814,
+      "name": "Cardiff",
+      "state": "Wales",
+      "country": "United Kingdom",
+      "country_code": "GBR",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1559025509-7e73e58ebd6e?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Cardiff Tickets - Rugby, Concerts & Events in Wales",
+      "meta_description": "Find tickets for Cardiff events including Six Nations rugby at Principality Stadium, concerts at Utilita Arena, and shows at Wales Millennium Centre.",
+      "intro": "Cardiff, the capital of Wales, punches well above its weight as a live events destination thanks to a compact city centre anchored by the magnificent Principality Stadium. With its retractable roof and 74,500 capacity, the Principality Stadium sits right in the heart of the city and hosts Welsh rugby internationals including the Six Nations Championship, major concerts from global headliners, and occasionally motorsport events like speedway and Monster Jam. Six Nations weekends in February and March transform the entire city into a celebration, with the stadium just steps from Cardiff Central Station and the main shopping streets. The Utilita Arena Cardiff, located in Cardiff Bay, is the city's primary indoor arena with a capacity of approximately 7,500, hosting touring concerts, comedy shows, and family entertainment. The Wales Millennium Centre in Cardiff Bay is the national arts centre, presenting opera, ballet, musicals, and contemporary performances from the Welsh National Opera and visiting companies. The New Theatre on Park Place offers a more intimate setting for touring drama, comedy, and dance. Cardiff City Stadium is home to Cardiff City FC, competing in English football's league system, while Sophia Gardens hosts Glamorgan Cricket and international cricket matches during the summer. The Cardiff Bay area has been revitalised into a vibrant waterfront entertainment district, and summer events include concerts at Bute Park and various festivals across the city. Cardiff's relatively small size means most venues are within walking distance of each other, making it one of the most convenient event cities in the UK.",
+      "highlights": [
+        "Principality Stadium hosts Six Nations rugby and major concerts in the city centre",
+        "Wales Millennium Centre is the national home for opera, ballet, and touring musicals",
+        "Cardiff Bay waterfront offers dining and entertainment around the Utilita Arena",
+        "Compact city layout puts all major venues within walking distance"
+      ],
+      "tips": [
+        "Six Nations weekends are extremely busy so book hotels and travel months in advance",
+        "Cardiff Central Station is a five-minute walk from the Principality Stadium",
+        "The Principality Stadium roof closes for concerts creating an intense indoor atmosphere",
+        "Cardiff Bay is a short bus or train ride from the city centre for arena and Millennium Centre events"
+      ],
+      "faqs": [
+        {
+          "q": "When is the Six Nations rugby in Cardiff?",
+          "a": "The Six Nations Championship runs from late January through mid-March each year. Wales play three home matches at the Principality Stadium during the tournament. Tickets are allocated primarily through the Welsh Rugby Union and affiliated clubs, with limited general sale availability."
+        },
+        {
+          "q": "What is the Principality Stadium used for besides rugby?",
+          "a": "Beyond international rugby, the Principality Stadium hosts major concerts from global touring artists, boxing events, speedway, and has previously hosted FA Cup semi-finals and NFL games. Its retractable roof makes it a year-round venue regardless of weather."
+        },
+        {
+          "q": "How do I get to Cardiff for events?",
+          "a": "Cardiff Central Station has direct rail connections from London Paddington in around two hours, and services from Bristol, Birmingham, and other major cities. Cardiff Airport offers some domestic and European flights, and the M4 motorway provides road access from London and the west of England."
+        }
+      ]
+    },
+    "belfast": {
+      "slug": "belfast",
+      "country_slug": "uk",
+      "city_id": 321,
+      "name": "Belfast",
+      "state": "Northern Ireland",
+      "country": "United Kingdom",
+      "country_code": "GBR",
+      "featured": false,
+      "events_first": false,
+      "hero_image": "https://images.unsplash.com/photo-1573155993874-d5d48af862ba?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Belfast Tickets - Concerts, Events & Live Shows",
+      "meta_description": "Get tickets for Belfast events including concerts at SSE Arena, performances at Grand Opera House, and shows at the Waterfront and Ulster Halls.",
+      "intro": "Belfast has emerged as one of the most exciting cultural destinations in the United Kingdom, with a thriving live events scene that reflects the city's remarkable regeneration over the past two decades. The SSE Arena Belfast, located in the Titanic Quarter with a capacity of around 11,000, is Northern Ireland's largest indoor venue and hosts major touring concerts, comedy acts, sporting events including ice hockey and basketball, and large-scale family shows. The Belfast Waterfront is the city's premier conference and entertainment venue, featuring a 2,000-seat auditorium that stages concerts, comedy, and theatrical performances in an elegant setting on the River Lagan. The Grand Opera House on Great Victoria Street, a beautifully restored Victorian theatre, presents touring West End musicals, drama, ballet, and the city's beloved annual pantomime. The Ulster Hall, one of Belfast's most historic buildings dating to 1862, is a mid-size venue known for its exceptional acoustics and hosts rock concerts, classical performances by the Ulster Orchestra, and traditional music events. For smaller gigs, the Limelight and its adjoining Katy's Bar on Ormeau Avenue, the Oh Yeah Music Centre, and the Empire Music Hall offer intimate settings for emerging and established artists. Belfast's cultural calendar includes the Belfast International Arts Festival in autumn, the Cathedral Quarter Arts Festival in spring, and Feile an Phobail, one of the largest community festivals in Europe, each August. The Belfast Giants ice hockey team at the SSE Arena provides exciting sporting entertainment throughout the winter season.",
+      "highlights": [
+        "SSE Arena in the Titanic Quarter hosts Northern Ireland's biggest concerts and events",
+        "Grand Opera House is a beautifully restored Victorian theatre with a full annual programme",
+        "Belfast International Arts Festival brings world-class performances each autumn",
+        "Compact city centre makes all major venues accessible on foot"
+      ],
+      "tips": [
+        "The SSE Arena is in the Titanic Quarter, about a 15-minute walk from the city centre",
+        "Belfast has two airports so check which one your flight uses when planning event travel",
+        "The Cathedral Quarter has excellent restaurants and bars for pre-show dining",
+        "Book Grand Opera House pantomime tickets early as the Christmas run is extremely popular"
+      ],
+      "faqs": [
+        {
+          "q": "What is the biggest event venue in Belfast?",
+          "a": "The SSE Arena in the Titanic Quarter is Belfast's largest venue with a capacity of around 11,000. It hosts major touring concerts, comedy shows, Belfast Giants ice hockey, and large-scale family entertainment throughout the year."
+        },
+        {
+          "q": "How do I get to Belfast for events?",
+          "a": "Belfast is served by two airports: Belfast International Airport and George Best Belfast City Airport, with flights from across the UK and Europe. Belfast also has ferry connections from Liverpool and Cairnryan in Scotland. The city centre is compact and most venues are within walking distance."
+        },
+        {
+          "q": "What are the best local events unique to Belfast?",
+          "a": "Belfast's distinctive events include the Belfast International Arts Festival in October and November, the Cathedral Quarter Arts Festival in spring, Feile an Phobail community festival in August, and regular Belfast Giants ice hockey matches at the SSE Arena from September through March."
+        }
+      ]
+    },
+    "naples": {
+      "slug": "naples",
+      "country_slug": "italy",
+      "city_id": 160,
+      "name": "Naples",
+      "state": "Campania",
+      "country": "Italy",
+      "country_code": "ITA",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Naples Tickets - Events, Concerts & Football",
+      "meta_description": "Find tickets for Naples events including SSC Napoli matches at Stadio Diego Armando Maradona, concerts at Teatro San Carlo, and live shows across Campania.",
+      "intro": "Naples is one of southern Italy's most passionate cities for live events, anchored by the fervent support for SSC Napoli. Matchdays at the Stadio Diego Armando Maradona, the 54,000-seat arena in the Fuorigrotta district, are electric experiences where Neapolitan culture and football devotion merge into something unforgettable. The stadium hosts Serie A fixtures, Coppa Italia rounds, and UEFA Champions League nights that draw fans from across the region. Beyond football, Naples boasts Teatro San Carlo, the oldest continuously active opera house in the world, founded in 1737. Its opera and ballet seasons run from October through June, featuring world-class productions in a stunning Baroque interior. The Teatro Augusteo and Arena Flegrea are key venues for pop and rock concerts, particularly during the summer festival season when national and international touring acts pass through. Piazza del Plebiscito regularly transforms into an open-air concert venue for major events, hosting crowds of up to 100,000. Jazz enthusiasts gather at venues like the Bourbon Street Jazz Club, while the Napoli Teatro Festival in June brings weeks of theatre and performance art to locations across the city. The best months for events are May through October, when outdoor festivals, sagre, and waterfront concerts take full advantage of the Mediterranean climate. Winter brings the opera season into full swing and the beloved Christmas concert traditions at city churches.",
+      "highlights": [
+        "SSC Napoli Serie A and Champions League matches at Stadio Diego Armando Maradona",
+        "Opera and ballet at Teatro San Carlo, the world's oldest active opera house",
+        "Summer concerts at Arena Flegrea and open-air shows in Piazza del Plebiscito",
+        "Napoli Teatro Festival bringing international theatre performances each June"
+      ],
+      "tips": [
+        "Book SSC Napoli tickets early for derby matches against Juventus and Roma, as the Maradona stadium sells out quickly for these fixtures.",
+        "Teatro San Carlo offers guided tours on non-performance days if you want to see the interior without attending a full opera.",
+        "Summer outdoor concerts at Piazza del Plebiscito and Arena Flegrea often sell out weeks in advance, so plan ahead for popular acts.",
+        "Public transport to the Maradona stadium is straightforward via the Cumana rail line to Mostra station or Metro Line 6 to the Fuorigrotta area."
+      ],
+      "faqs": [
+        {
+          "q": "Where does SSC Napoli play home matches?",
+          "a": "SSC Napoli plays at the Stadio Diego Armando Maradona in the Fuorigrotta district. The stadium holds approximately 54,000 spectators and hosts Serie A, Coppa Italia, and European competition matches throughout the season from August to May."
+        },
+        {
+          "q": "What is the opera season at Teatro San Carlo?",
+          "a": "The opera and ballet season at Teatro San Carlo typically runs from October through June, with a program featuring classic Italian operas, contemporary works, and ballet productions. The theatre also hosts special concerts and gala events throughout the year."
+        },
+        {
+          "q": "When is the best time of year for events in Naples?",
+          "a": "The peak events season runs from May through October when outdoor festivals, open-air concerts, and summer programming are in full swing. Winter months are ideal for opera at Teatro San Carlo and holiday concert traditions. Football season spans August through May."
+        }
+      ]
+    },
+    "turin": {
+      "slug": "turin",
+      "country_slug": "italy",
+      "city_id": 271,
+      "name": "Turin",
+      "state": "Piedmont",
+      "country": "Italy",
+      "country_code": "ITA",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1564865878688-9a244444042a?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Turin Tickets - Football, Concerts & Live Events",
+      "meta_description": "Get tickets for Turin events including Juventus and Torino FC matches, concerts at Pala Alpitour, and performances at Teatro Regio across Piedmont.",
+      "intro": "Turin is a powerhouse of Italian live entertainment, driven by two fierce football clubs and a world-class venue infrastructure built for the 2006 Winter Olympics. Juventus, one of Europe's most successful clubs, plays at the 41,507-seat Allianz Stadium in the Continassa area, delivering intense Serie A, Coppa Italia, and Champions League atmospheres. Across the city, Torino FC commands devoted support at the Stadio Olimpico Grande Torino, a 27,958-capacity ground steeped in the emotional legacy of the Grande Torino era. The Derby della Mole between these two rivals is among the most anticipated fixtures in Italian football. For concerts, the Pala Alpitour is Italy's largest indoor arena with a capacity of 12,300 for seated events and up to 18,500 for standing configurations, hosting major international touring artists year-round. The Inalpi Arena, formerly known as PalaVela, supplements the concert calendar with mid-sized shows. Teatro Regio di Torino anchors the classical performing arts scene with an opera and ballet season running from October through June in a modernist auditorium renowned for its acoustics. During summer, the Collisioni Festival in nearby Barolo and the Kappa FuturFestival, one of Europe's premier electronic music events held at Parco Dora, draw tens of thousands. The Torino Jazz Festival each spring and the MITO SettembreMusica festival in September round out a cultural calendar that keeps the city buzzing across all seasons.",
+      "highlights": [
+        "Juventus matches at Allianz Stadium and the fierce Derby della Mole against Torino FC",
+        "Major concerts at Pala Alpitour, Italy's largest indoor arena",
+        "Opera and ballet at Teatro Regio di Torino with acclaimed acoustics",
+        "Kappa FuturFestival at Parco Dora, one of Europe's top electronic music events"
+      ],
+      "tips": [
+        "Derby della Mole tickets between Juventus and Torino FC are extremely difficult to obtain and typically require club membership or early booking through official channels.",
+        "Pala Alpitour is located near Lingotto and is easily reached via Metro Line 1 to the Lingotto station, making concert nights straightforward.",
+        "Teatro Regio offers a young audience program with discounted tickets for attendees under 30, making opera accessible to younger visitors.",
+        "Summer festivals like Kappa FuturFestival sell multi-day passes that offer better value than single-day tickets if you plan to attend the full weekend."
+      ],
+      "faqs": [
+        {
+          "q": "Where do Juventus and Torino FC play?",
+          "a": "Juventus plays at the Allianz Stadium, a 41,507-seat modern arena in the Continassa district. Torino FC plays at the Stadio Olimpico Grande Torino, which holds 27,958 and was the main venue for the 2006 Winter Olympics opening ceremony. Both are accessible by public transport."
+        },
+        {
+          "q": "What is the biggest concert venue in Turin?",
+          "a": "The Pala Alpitour is the largest indoor arena in Italy, with a capacity ranging from 12,300 for seated concerts to approximately 18,500 for standing events. It hosts major international touring artists, sporting events, and award shows throughout the year."
+        },
+        {
+          "q": "What music festivals take place in Turin?",
+          "a": "The Kappa FuturFestival at Parco Dora is a major electronic music festival held each July. The Torino Jazz Festival takes place in spring, and the MITO SettembreMusica festival in September features classical and contemporary music. The nearby Collisioni Festival in Barolo combines music with food and wine culture."
+        }
+      ]
+    },
+    "bologna": {
+      "slug": "bologna",
+      "country_slug": "italy",
+      "city_id": 302,
+      "name": "Bologna",
+      "state": "Emilia-Romagna",
+      "country": "Italy",
+      "country_code": "ITA",
+      "featured": false,
+      "events_first": false,
+      "hero_image": "https://images.unsplash.com/photo-1598950523096-e5305a704b70?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Bologna Tickets - Concerts, Football & Events",
+      "meta_description": "Browse tickets for Bologna events including Serie A football at Stadio Dall'Ara, concerts at Unipol Arena, and opera at Teatro Comunale di Bologna.",
+      "intro": "Bologna sits at the cultural crossroads of northern Italy, offering a rich calendar of live events fueled by its large university population and deep artistic heritage. Bologna FC 1909 plays Serie A football at the Stadio Renato Dall'Ara, a 36,462-seat stadium with a distinctive marathon tower that has hosted matches since 1927, including games during the 1990 FIFA World Cup. Virtus Bologna, one of Italy's most decorated basketball clubs, competes at the Virtus Segafredo Arena, bringing European-level basketball to the city. For large-scale concerts, the Unipol Arena in nearby Casalecchio di Reno is the primary venue with a capacity of approximately 16,000, regularly welcoming international touring artists. Within the city center, the Estragon Club and the Bologna Jazz Festival keep the live music scene vibrant year-round. Teatro Comunale di Bologna, designed by Antonio Galli Bibiena and opened in 1763, hosts a distinguished opera and symphonic season from November through June, with productions that draw audiences from across Emilia-Romagna. The Bologna Festival brings chamber music and orchestral performances to historic venues each spring. Summer transforms Piazza Maggiore into an open-air cinema during the Il Cinema Ritrovato festival, while the Biografilm Festival and the Bologna Children's Book Fair add cultural depth. The best months for outdoor events are June through September, while the performing arts and football seasons keep autumn and winter equally engaging.",
+      "highlights": [
+        "Bologna FC Serie A matches at the historic Stadio Renato Dall'Ara",
+        "International concerts at Unipol Arena in Casalecchio di Reno",
+        "Opera and symphonic performances at the 18th-century Teatro Comunale di Bologna",
+        "Virtus Bologna basketball competing at the highest level of Italian and European competition"
+      ],
+      "tips": [
+        "The Stadio Dall'Ara is a 20-minute walk from the city center or reachable by bus lines 14 and 21, so allow extra time on matchdays when traffic increases.",
+        "Unipol Arena is located just outside Bologna in Casalecchio di Reno and is best reached by car or the dedicated shuttle services that run for major concert events.",
+        "Bologna's university student population means smaller venue shows at Estragon Club and Locomotiv Club can sell out quickly, especially for indie and electronic acts.",
+        "Teatro Comunale offers last-minute ticket availability for some performances, particularly midweek shows, so check their box office if your preferred date appears sold out online."
+      ],
+      "faqs": [
+        {
+          "q": "Where does Bologna FC play home matches?",
+          "a": "Bologna FC plays at the Stadio Renato Dall'Ara, a 36,462-seat stadium located southwest of the city center near the Portico di San Luca. The stadium has been the club's home since 1927 and features the distinctive Torre di Maratona as an architectural landmark."
+        },
+        {
+          "q": "What is the main concert venue in Bologna?",
+          "a": "The Unipol Arena in Casalecchio di Reno, just outside Bologna, is the primary large-scale concert venue with a capacity of approximately 16,000. For mid-sized shows, the Estragon Club and Teatro EuropAuditorium host a wide range of national and international artists."
+        },
+        {
+          "q": "Does Bologna have an opera season?",
+          "a": "Yes, Teatro Comunale di Bologna hosts a full opera and symphonic season from November through June. The theatre dates to 1763 and is one of Italy's most important opera houses. The Bologna Festival also presents classical and chamber music concerts in historic venues across the city each spring."
+        }
+      ]
+    },
+    "verona": {
+      "slug": "verona",
+      "country_slug": "italy",
+      "city_id": 303,
+      "name": "Verona",
+      "state": "Veneto",
+      "country": "Italy",
+      "country_code": "ITA",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1580196969418-acf51dfc53da?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Verona Tickets - Arena Opera, Concerts & Events",
+      "meta_description": "Find tickets for Verona events including opera at the Arena di Verona, concerts at the Roman amphitheatre, and Hellas Verona football matches in Veneto.",
+      "intro": "Verona is defined by one of the most spectacular event venues on earth: the Arena di Verona, a first-century Roman amphitheatre that seats approximately 15,000 spectators under the open sky. Every summer since 1913, the Arena Opera Festival has staged grand productions of Aida, Carmen, Nabucco, Turandot, and other masterworks against a backdrop that no modern theatre can rival. The festival runs from mid-June through early September, drawing opera lovers from around the world to performances illuminated by thousands of candles held by the audience at dusk. Beyond opera, the Arena hosts major rock and pop concerts throughout the warmer months, with artists ranging from legacy acts to contemporary stars performing in this UNESCO-worthy setting. The Teatro Filarmonico, located adjacent to the Arena on Via dei Mutilati, serves as Verona's year-round performing arts venue for opera, ballet, and orchestral concerts during the autumn and winter months when the Arena season is closed. Hellas Verona FC competes in Serie A at the Stadio Marc'Antonio Bentegodi, a 39,211-capacity stadium in the Borgo Venezia district that also hosts Chievo Verona and occasional international football fixtures. The city's events calendar extends to the Verona Jazz Festival, the Tocati festival of traditional street games in September, and the renowned Christmas markets in Piazza dei Signori. The peak season for events runs from June through September, but Verona's compact historic center and the Teatro Filarmonico ensure cultural offerings continue through winter.",
+      "highlights": [
+        "Summer opera at the Arena di Verona, a 2,000-year-old Roman amphitheatre seating 15,000",
+        "Major rock and pop concerts staged inside the Arena during the warm months",
+        "Hellas Verona Serie A football at the Stadio Bentegodi",
+        "Year-round opera and ballet at Teatro Filarmonico during the off-season"
+      ],
+      "tips": [
+        "Arena di Verona opera tickets range from affordable unreserved stone steps to premium numbered seats, and the stone steps offer an authentic atmosphere but bring a cushion as the ancient stone is hard.",
+        "Performances at the Arena begin at sunset, typically around 9 PM in summer, and can run past midnight, so dress in layers as temperatures drop after dark.",
+        "Book Arena opera tickets well in advance for Aida and opening night performances, as these sell out months before the festival begins.",
+        "The Stadio Bentegodi is a 15-minute walk from the historic center across the Adige River, making it convenient to combine a matchday with sightseeing."
+      ],
+      "faqs": [
+        {
+          "q": "When is the Arena di Verona opera season?",
+          "a": "The Arena Opera Festival runs annually from mid-June through early September. Productions typically include four to six operas performed on a rotating schedule, with shows beginning at sunset. The 2024 season marked over a century of continuous summer opera at the amphitheatre."
+        },
+        {
+          "q": "Can you see concerts at the Arena di Verona outside opera season?",
+          "a": "Yes, the Arena hosts major pop, rock, and contemporary music concerts from late spring through early autumn, separate from the opera festival schedule. These concerts take advantage of the amphitheatre's remarkable acoustics and atmosphere, with capacities up to 15,000 depending on stage configuration."
+        },
+        {
+          "q": "Where does Hellas Verona play football?",
+          "a": "Hellas Verona plays at the Stadio Marc'Antonio Bentegodi, a 39,211-seat stadium in the Borgo Venezia neighborhood east of the city center. The stadium hosts Serie A matches from August through May and is accessible on foot from the Arena di Verona in about 15 minutes."
+        }
+      ]
+    },
+    "valencia": {
+      "slug": "valencia",
+      "country_slug": "spain",
+      "city_id": 314,
+      "name": "Valencia",
+      "state": "Valencia",
+      "country": "Spain",
+      "country_code": "ESP",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1599302592205-d7d683846e44?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Valencia Tickets - Concerts, Sports & Events",
+      "meta_description": "Find tickets for concerts, football matches, festivals and live events in Valencia. Discover top shows at Mestalla Stadium, Ciudad de las Artes and more.",
+      "intro": "Valencia delivers one of the most dynamic live event calendars in Spain, blending world-class football, international music festivals, and cultural spectacles against a stunning Mediterranean backdrop. Mestalla Stadium, home to Valencia CF, is one of the oldest and most atmospheric grounds in European football, packing nearly 49,000 passionate fans on matchdays. The city's concert scene thrives at venues like the Palau de la Musica, a purpose-built riverside complex that hosts symphony orchestras, jazz ensembles, and touring pop acts, while the Ciudad de las Artes y las Ciencias provides a futuristic setting for special one-off performances and galas. Every March, the Fallas festival transforms the entire city into an open-air celebration of fireworks, street music, and towering sculptural monuments that draw over a million visitors. Summer brings Arenal Sound to nearby Burriana and the Festival de les Arts to the city itself, both attracting major international headliners. The Marina de Valencia area has become a growing hub for electronic music events and waterfront concerts. For motorsport fans, the city hosted the European Grand Prix at its former street circuit and continues to attract major sporting events including tennis at the Valencia Open. Spring and autumn offer the most comfortable weather for outdoor events, though the mild winters make Valencia a year-round destination for live entertainment.",
+      "highlights": [
+        "Catch a Valencia CF match at the historic Mestalla Stadium with its steep stands and electric atmosphere",
+        "Experience the Fallas festival in March with its spectacular fireworks displays and monumental sculptures",
+        "Enjoy concerts at the Palau de la Musica, set along the Turia Gardens riverbed park",
+        "Explore summer music festivals including Festival de les Arts at the Ciudad de las Artes y las Ciencias"
+      ],
+      "tips": [
+        "Book Fallas accommodation and event tickets months in advance as the city fills completely during March",
+        "Valencia CF matches are most affordable for league games against smaller clubs, with tickets available through the official club site",
+        "The metro connects the airport to the city center and major venue areas in under 30 minutes",
+        "Many outdoor events run late into the evening since Valencia follows a typical Spanish schedule with dining and shows starting after 9 PM"
+      ],
+      "faqs": [
+        {
+          "q": "When is the best time to visit Valencia for live events?",
+          "a": "March is peak season thanks to the Fallas festival, while June through September brings outdoor music festivals and open-air concerts. Football season runs from August to May, and spring offers the best balance of pleasant weather and a packed cultural calendar."
+        },
+        {
+          "q": "How do I get to Mestalla Stadium?",
+          "a": "Mestalla is centrally located in the Mestalla neighborhood and easily reached by metro lines 5 and 7 to Aragon station, or by tram. It is walkable from the city center in about 20 minutes. The club plans to eventually move to the new Nou Mestalla, but matches continue at the current ground."
+        },
+        {
+          "q": "Are there major music festivals held in Valencia?",
+          "a": "Yes. Festival de les Arts takes place in spring at the Ciudad de las Artes y las Ciencias, featuring indie and electronic acts. Berklee Valencia hosts jazz events year-round. Nearby Benicassim holds the famous FIB festival each July, easily accessible as a day trip or overnight from the city."
+        }
+      ]
+    },
+    "malaga": {
+      "slug": "malaga",
+      "country_slug": "spain",
+      "city_id": 214,
+      "name": "Malaga",
+      "state": "Andalusia",
+      "country": "Spain",
+      "country_code": "ESP",
+      "featured": false,
+      "events_first": false,
+      "hero_image": "https://images.unsplash.com/photo-1564221710304-0b37c8b9d729?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Malaga Tickets - Concerts, Sports & Live Events",
+      "meta_description": "Get tickets for live events in Malaga including concerts, football, flamenco and festivals. Explore top venues like La Rosaleda Stadium and Teatro Cervantes.",
+      "intro": "Malaga has evolved from a quiet coastal gateway into one of southern Spain's most vibrant cultural capitals, offering a year-round calendar of live entertainment fueled by over 300 days of sunshine. Football fans flock to La Rosaleda Stadium, the 30,000-seat home of Malaga CF, where the atmosphere is passionate and the Andalusian crowd brings constant energy. The Teatro Cervantes, a beautifully restored 19th-century theater, serves as the city's premier performing arts venue and hosts the annual Malaga Film Festival every March, which has grown into one of the most important Spanish-language cinema events in the world. For music lovers, the Malaga Concert Hall (Auditorio Municipal) and the open-air Botanical Gardens venue present everything from classical recitals to flamenco and contemporary pop tours. The Terral festival each summer brings international music acts to intimate outdoor settings around the historic center. Weekends in the Soho arts district regularly feature live jazz, indie performances, and street art events. The Feria de Malaga in August is the city's largest annual celebration, filling the streets with live casetas, flamenco dancing, and concerts that run until dawn for an entire week. The Costa del Sol's mild climate means outdoor events run comfortably from April through November, making Malaga an ideal destination for catching shows under open skies.",
+      "highlights": [
+        "Watch Malaga CF play at La Rosaleda Stadium surrounded by devoted Andalusian football fans",
+        "Attend the prestigious Malaga Film Festival at the historic Teatro Cervantes each March",
+        "Experience the Feria de Malaga in August with a full week of free street concerts and flamenco",
+        "Catch intimate live music performances in the Soho arts district and along the revitalized waterfront"
+      ],
+      "tips": [
+        "The Feria de Malaga in mid-August is free to attend on the streets but book accommodation early as hotels fill fast",
+        "Teatro Cervantes offers discounted tickets for midweek performances and matinee shows",
+        "Most outdoor venues and festivals run late, with headliners often not starting until 10 PM or later",
+        "The Cercanias commuter train connects Malaga airport to the city center in 12 minutes for under two euros"
+      ],
+      "faqs": [
+        {
+          "q": "What is the biggest annual event in Malaga?",
+          "a": "The Feria de Malaga in mid-August is the city's largest celebration, lasting a full week with daytime street events in the historic center and nightly fairground festivities in the Cortijo de Torres area. It features free live music, flamenco, and traditional food stalls throughout the city."
+        },
+        {
+          "q": "Where are the main concert venues in Malaga?",
+          "a": "The Teatro Cervantes is the primary indoor venue for theater, film, and touring artists. The Auditorio Municipal hosts classical and contemporary concerts. For larger shows, events are held at La Rosaleda Stadium or the Martin Carpena sports arena, which seats up to 11,000 for concerts."
+        },
+        {
+          "q": "Is Malaga a good destination for events outside of summer?",
+          "a": "Absolutely. The Malaga Film Festival runs in March, the Semana Santa processions in spring draw huge crowds, and the Teatro Cervantes has performances year-round. Mild winters with average temperatures around 17 degrees Celsius mean outdoor cultural events are comfortable even in December and January."
+        }
+      ]
+    },
+    "granada": {
+      "slug": "granada",
+      "country_slug": "spain",
+      "city_id": 212,
+      "name": "Granada",
+      "state": "Andalusia",
+      "country": "Spain",
+      "country_code": "ESP",
+      "featured": false,
+      "events_first": false,
+      "hero_image": "https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Granada Tickets - Flamenco, Concerts & Events",
+      "meta_description": "Buy tickets for flamenco shows, concerts, football and cultural events in Granada. Discover live entertainment at venues set against the Sierra Nevada backdrop.",
+      "intro": "Granada is one of Spain's most culturally rich cities, where centuries of Moorish, Jewish, and Christian heritage create an unforgettable setting for live events and performances. The city is synonymous with authentic flamenco, and the cave venues of the Sacromonte neighborhood offer some of the most intimate and powerful zambra performances in all of Andalusia, with nightly shows that have been running for generations. The Festival Internacional de Musica y Danza de Granada, held each June and July, is one of Europe's most prestigious classical music and dance festivals, staging performances inside the Alhambra's Palace of Charles V and the Generalife Gardens. Football fans can catch Granada CF at the Nuevo Los Carmenes Stadium, a 23,000-capacity ground that has hosted La Liga matches and delivers a compact, loud atmosphere. The Isabel la Catolica Theater and the Palacio de Congresos anchor the city's year-round performing arts calendar with opera, ballet, and touring musical acts. The university population of over 60,000 students keeps the live music scene energetic, with indie, rock, and electronic shows filling venues in the Realejo and Centro neighborhoods throughout the academic year. Sierra Nevada, just 30 minutes from the city, hosts winter sports events and summer concerts at altitude. Spring and early autumn are the ideal seasons for outdoor cultural events in Granada's pleasantly warm climate.",
+      "highlights": [
+        "Experience authentic flamenco zambra in the historic cave venues of the Sacromonte quarter",
+        "Attend the International Festival of Music and Dance with performances inside the Alhambra complex",
+        "Watch Granada CF at Nuevo Los Carmenes Stadium during the Spanish football season",
+        "Explore the student-driven live music scene across intimate bars and venues in the city center"
+      ],
+      "tips": [
+        "Book Sacromonte flamenco cave shows at least a few days ahead as the best venues seat only 30 to 50 people",
+        "The International Festival of Music and Dance tickets go on sale in spring and Alhambra performances sell out fastest",
+        "Granada's free tapas tradition means you can eat well before evening shows simply by ordering drinks at local bars",
+        "Sierra Nevada is reachable by bus in under 45 minutes for winter ski events or summer altitude concerts"
+      ],
+      "faqs": [
+        {
+          "q": "Where can I see authentic flamenco in Granada?",
+          "a": "The Sacromonte neighborhood is the traditional home of Granada's flamenco scene, with cave venues like Venta El Gallo, Cueva de la Rocio, and Cueva Los Tarantos offering nightly zambra shows. These intimate spaces seat small audiences just meters from the performers, creating an intense and memorable experience."
+        },
+        {
+          "q": "What is the Granada International Festival of Music and Dance?",
+          "a": "Founded in 1952, this festival runs from late June through mid-July and features world-class classical music, ballet, and flamenco performances. Highlight venues include the open-air theater in the Generalife Gardens and the Palace of Charles V within the Alhambra. It attracts top international orchestras, soloists, and dance companies each year."
+        },
+        {
+          "q": "When is the best time to visit Granada for events?",
+          "a": "Late June and July are peak festival season with the International Music and Dance Festival. Spring brings Semana Santa processions and the Corpus Christi celebrations with their popular fairground. Autumn offers comfortable temperatures and a busy university events calendar. Winter is quieter in the city but brings skiing events to nearby Sierra Nevada."
+        }
+      ]
+    },
+    "bilbao": {
+      "slug": "bilbao",
+      "country_slug": "spain",
+      "city_id": 315,
+      "name": "Bilbao",
+      "state": "Basque Country",
+      "country": "Spain",
+      "country_code": "ESP",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Bilbao Tickets - Concerts, Football & Live Events",
+      "meta_description": "Find tickets for Athletic Club matches, Bilbao BBK Live festival, concerts and cultural events in Bilbao. Explore top venues in the Basque Country capital.",
+      "intro": "Bilbao is the cultural powerhouse of the Basque Country, a city that reinvented itself around world-class architecture, passionate football, and a thriving live events scene. San Mames Stadium, known as The Cathedral of Football, is the iconic 53,000-seat home of Athletic Club, one of the oldest and most fiercely supported clubs in Spain, where the tradition of fielding only Basque players gives every match an intense local identity. The Bilbao BBK Live festival, held each July on Kobetamendi hill overlooking the city, has become one of southern Europe's premier multi-day music events, regularly booking headliners of global stature across rock, electronic, and indie genres. The Euskalduna Palace, a striking ship-shaped concert hall on the riverfront, hosts the Bilbao Orkestra Sinfonikoa along with opera, ballet, and major touring productions throughout the year. The Arriaga Theatre, a neo-baroque gem in the old town, presents drama, dance, and smaller musical performances. Bilbao's Aste Nagusia festival in August transforms the city for nine days with free outdoor concerts, traditional Basque sports exhibitions, fireworks competitions, and street performances that fill the Casco Viejo and riverside areas. The Guggenheim Museum regularly stages special evening events, film screenings, and performance art. Bilbao's green and temperate climate means indoor venues stay busy year-round, while summer brings the best conditions for the city's major outdoor festivals and sporting events.",
+      "highlights": [
+        "Witness Athletic Club at San Mames Stadium, one of the most passionate football grounds in Europe",
+        "Attend Bilbao BBK Live each July for three days of major international music acts on Kobetamendi hill",
+        "Enjoy world-class performances at the Euskalduna Palace, home to the Bilbao Symphony Orchestra",
+        "Experience Aste Nagusia in August with nine days of free concerts, fireworks, and Basque cultural events"
+      ],
+      "tips": [
+        "Athletic Club matches sell out regularly so purchase tickets through the official club website as soon as they are released",
+        "Bilbao BBK Live offers early-bird passes starting in winter at significant discounts over gate prices",
+        "Carry a light rain jacket to outdoor events year-round as Bilbao's weather can shift quickly even in summer",
+        "The metro system connects all major venue areas efficiently and runs extended hours during festival periods"
+      ],
+      "faqs": [
+        {
+          "q": "How do I get tickets for Athletic Club at San Mames?",
+          "a": "Tickets are sold through Athletic Club's official website and at the San Mames box office. Matches against Barcelona and Real Madrid sell out almost immediately, so act early for those fixtures. Games against mid-table opponents are easier to secure and still offer a tremendous atmosphere given the club's devoted fanbase."
+        },
+        {
+          "q": "What is Bilbao BBK Live and when does it take place?",
+          "a": "Bilbao BBK Live is a three-day music festival held in early to mid-July on Kobetamendi hill, about 15 minutes from the city center by shuttle bus. It features multiple stages with international rock, pop, indie, and electronic acts. Camping is available on site, and day tickets as well as full festival passes are offered."
+        },
+        {
+          "q": "What other major events happen in Bilbao throughout the year?",
+          "a": "Aste Nagusia in August is the city's biggest street festival with nine days of free events. The BIME music industry conference and festival takes place in autumn at the BEC convention center. The Bilbao Night Marathon draws thousands of runners in October. The Euskalduna Palace and Arriaga Theatre maintain full performance schedules from September through June."
+        }
+      ]
+    },
+    "lyon": {
+      "slug": "lyon",
+      "country_slug": "france",
+      "city_id": 293,
+      "name": "Lyon",
+      "state": "Auvergne-Rhone-Alpes",
+      "country": "France",
+      "country_code": "FRA",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1524396309943-e03f5249f002?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Lyon Tickets, Events & Attractions | TheTicketers",
+      "meta_description": "Book Lyon tickets and events: Groupama Stadium matches, Basilica of Fourviere tours, Fete des Lumieres and river cruises. Instant mobile confirmation.",
+      "intro": "Lyon sits at the confluence of the Rhone and Saone rivers in southeastern France and has built a reputation as the country's gastronomic capital, a major footballing city and a cultural powerhouse with a UNESCO-listed old town. Groupama Stadium, the 59,000-seat home of Olympique Lyonnais, hosts Ligue 1 matches from August through May and regularly draws international football fixtures, rugby test matches and large-scale concerts by touring artists. The LDLC Arena, which opened in 2023 with a 16,000 capacity, has quickly become the premier indoor venue for arena tours, basketball and esports events in the region. The city's crown jewel cultural event is the Fete des Lumieres each December, when millions of visitors watch spectacular light installations transform buildings across the Presqu'ile and Vieux Lyon districts over four nights. Beyond sport and festivals, the Basilica of Notre-Dame de Fourviere offers panoramic hilltop views, the Musee des Confluences presents science and anthropology in a striking deconstructivist building, and the traboules, Renaissance-era covered passageways threading through the old town, are unlike anything else in France. Spring and autumn deliver mild weather ideal for walking the riverbanks, while summer brings open-air cinema, the Nuits de Fourviere performing-arts festival in a Roman amphitheatre, and long evenings on cafe terraces in the Croix-Rousse quarter.",
+      "highlights": [
+        "Olympique Lyonnais Ligue 1 matches at Groupama Stadium",
+        "Fete des Lumieres light festival every December",
+        "UNESCO-listed Vieux Lyon and its Renaissance traboules",
+        "Nuits de Fourviere summer concerts in a 2,000-year-old Roman theatre"
+      ],
+      "tips": [
+        "Book Groupama Stadium tickets early for Lyon derbies and European nights, as the 59,000 seats sell out fast for marquee fixtures.",
+        "Visit the Basilica of Fourviere in the morning for the clearest views over both rivers and the Alps on the horizon.",
+        "The Lyon City Card bundles public transport with free museum entry and river cruises, making it good value for a two- or three-day stay.",
+        "Eat in a traditional bouchon in Vieux Lyon for authentic Lyonnaise cuisine, but reserve for dinner as the best ones fill up by 7:30 PM."
+      ],
+      "faqs": [
+        {
+          "q": "How do I get tickets for Olympique Lyonnais matches at Groupama Stadium?",
+          "a": "Ligue 1 and European competition tickets go on sale through the club and authorized resellers several weeks before each match. High-demand fixtures like the Derby Rhone-Alpes against Saint-Etienne and Champions League nights sell out quickly, so booking early is recommended. The stadium is accessible via the T3 tramline from Part-Dieu station."
+        },
+        {
+          "q": "When is the Fete des Lumieres and do I need tickets?",
+          "a": "The festival runs over four evenings around December 8 each year. The outdoor light installations across the city centre are free to view and no ticket is required. However, Lyon hotels fill up months ahead, so book accommodation as early as possible. Dress warmly as December evenings average around 3 to 5 degrees Celsius."
+        },
+        {
+          "q": "What is the best time of year to visit Lyon for events?",
+          "a": "Football season runs from August to May, with the biggest atmosphere at autumn and spring home matches. Summer brings the Nuits de Fourviere festival from June through July. December is dominated by the Fete des Lumieres. Spring and early autumn offer the most pleasant weather for combining outdoor sightseeing with live events."
+        }
+      ]
+    },
+    "marseille": {
+      "slug": "marseille",
+      "country_slug": "france",
+      "city_id": 217,
+      "name": "Marseille",
+      "state": "PACA",
+      "country": "France",
+      "country_code": "FRA",
+      "featured": false,
+      "events_first": true,
+      "hero_image": "https://images.unsplash.com/photo-1535913989690-f90e1c2d4cfa?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Marseille Tickets, Events & Attractions | TheTicketers",
+      "meta_description": "Book Marseille tickets: Olympique de Marseille at Stade Velodrome, Calanques boat tours, MuCEM entry and Chateau d'If. Skip the line, instant e-tickets.",
+      "intro": "Marseille is France's oldest city and its second largest, a Mediterranean port where 2,600 years of history collide with a fiercely proud sporting culture centred on Olympique de Marseille. The Stade Velodrome, with its 67,394-seat capacity, produces one of the most intense matchday atmospheres in European football. OM's Ligue 1 home fixtures and European nights under the lights are bucket-list experiences, with the Virage Sud ultras creating a wall of noise that rivals any stadium on the continent. Beyond football, the Orange Velodrome hosts major rugby union internationals and concerts from global headliners throughout the year. The cultural scene is anchored by MuCEM, the Museum of European and Mediterranean Civilisations, which occupies a striking latticed cube on the waterfront at the entrance to the Vieux-Port. From the old harbour, boat excursions run to the Chateau d'If, the island fortress made famous by Alexandre Dumas, and to the turquoise coves of the Calanques National Park, a dramatic limestone coastline stretching southeast toward Cassis. Notre-Dame de la Garde, the hilltop basilica visible from almost anywhere in the city, rewards the climb with sweeping views over terracotta rooftops to the Mediterranean. Late spring through early autumn is the prime season, when outdoor concerts fill the Frioul archipelago and the Fiesta des Suds music festival brings world and electronic acts to the docks each October.",
+      "highlights": [
+        "Olympique de Marseille matches at the 67,394-seat Stade Velodrome",
+        "Boat trips to Chateau d'If and the Calanques National Park",
+        "MuCEM waterfront museum with rooftop terrace over the Vieux-Port",
+        "Panoramic views from Notre-Dame de la Garde basilica"
+      ],
+      "tips": [
+        "Book Stade Velodrome tickets as soon as fixtures are announced; Le Classique against Paris Saint-Germain and European group-stage nights sell out within hours.",
+        "Take the morning boat to Chateau d'If and combine it with an afternoon Calanques cruise to make the most of a day on the water.",
+        "The Vieux-Port fish market runs every morning until about 1 PM and is the best place to pick up fresh seafood for a bouillabaisse lunch.",
+        "Use the RTM metro and tram network to move between the port, Velodrome and main attractions; a day pass is cheaper than individual rides if you make three or more trips."
+      ],
+      "faqs": [
+        {
+          "q": "How do I get to the Stade Velodrome for a match?",
+          "a": "The stadium is served by Metro Line 2, stop Rond-Point du Prado, about a 10-minute walk from the ground. On matchdays, extra metro services run before and after kickoff. Arrive at least 45 minutes early for security checks and to soak up the pre-match atmosphere around the concourse."
+        },
+        {
+          "q": "Are Calanques boat tours worth it or should I hike?",
+          "a": "Both are rewarding but different. Boat tours from the Vieux-Port take two to three hours and let you see multiple calanques including En-Vau and Sugiton without the steep trails. Hiking into Calanque de Sugiton from the Luminy campus takes about 90 minutes each way and gives you beach access. In summer, road access to the trailheads is restricted, making the boat a more convenient option."
+        },
+        {
+          "q": "What is the best time of year to visit Marseille?",
+          "a": "May, June and September offer warm Mediterranean weather, comfortable temperatures in the low to mid-twenties Celsius, and fewer crowds than July and August. The football season runs from August to May. October brings the Fiesta des Suds music festival. Winter is mild but some boat excursions run reduced schedules."
+        }
+      ]
+    },
+    "bordeaux": {
+      "slug": "bordeaux",
+      "country_slug": "france",
+      "city_id": 288,
+      "name": "Bordeaux",
+      "state": "Nouvelle-Aquitaine",
+      "country": "France",
+      "country_code": "FRA",
+      "featured": false,
+      "events_first": false,
+      "hero_image": "https://images.unsplash.com/photo-1593194312410-8804f6a4f1de?auto=format&fit=crop&w=1600&q=80",
+      "meta_title": "Bordeaux Tickets, Wine Tours & Events | TheTicketers",
+      "meta_description": "Book Bordeaux tickets: Cite du Vin, Saint-Emilion wine tours, Girondins de Bordeaux matches and river cruises. Instant mobile entry from EUR 10.",
+      "intro": "Bordeaux is synonymous with wine, but this UNESCO-listed port city on the Garonne River offers far more than vineyards. The neoclassical facades along the waterfront quays, the shimmering Miroir d'Eau reflecting pool opposite Place de la Bourse and the pedestrianised Rue Sainte-Catherine, the longest shopping street in Europe, make the city centre a destination in its own right. The Cite du Vin, a landmark museum shaped like a swirling wine decanter, is the headline cultural attraction. Its permanent exhibition traces the global story of wine through interactive displays across ten themed zones, and the belvedere tasting room on the eighth floor pairs a complimentary glass with panoramic views over the Garonne. Beyond the museum, half-day and full-day tours fan out to the legendary appellations of Saint-Emilion, Medoc, Graves and Pomerol, where visitors taste Grand Cru wines in centuries-old chateaux. The Matmut Atlantique stadium, built for Euro 2016 with a capacity of 42,115, hosts Girondins de Bordeaux football matches and major concerts, while the Arkea Arena, a 11,300-seat indoor venue in nearby Floirac, programmes touring arena shows, basketball and family entertainment year-round. The city is at its best from April through October, when long evenings invite strolls along the quays and the Bordeaux Wine Festival transforms the riverfront every other June with tastings from dozens of appellations.",
+      "highlights": [
+        "Cite du Vin museum with panoramic belvedere wine tasting",
+        "Half-day wine tours to Saint-Emilion and Medoc chateaux",
+        "UNESCO-listed waterfront and the Miroir d'Eau reflecting pool",
+        "Matmut Atlantique stadium for football and concerts"
+      ],
+      "tips": [
+        "Book Cite du Vin tickets online to skip the queue; the belvedere tasting is included in the standard ticket and is best enjoyed near sunset.",
+        "For Saint-Emilion day trips, choose a small-group tour that includes two or three chateau visits with tastings rather than a large coach excursion.",
+        "Walk or cycle along the Garonne quays in the evening when the Miroir d'Eau is illuminated and the limestone facades glow in the golden hour light."
+      ],
+      "faqs": [
+        {
+          "q": "Do I need to book wine tour tickets in advance?",
+          "a": "Yes. Popular Saint-Emilion and Medoc tours with small group sizes sell out days ahead in peak season from May to October. Booking online secures your spot and often includes hotel pickup, transport and tastings at two to four chateaux. Larger bus tours are easier to get last minute but offer a less intimate experience."
+        },
+        {
+          "q": "How long should I spend at the Cite du Vin?",
+          "a": "Plan two to three hours for the permanent exhibition, which includes audioguide stations across ten themed areas. Add 30 minutes for the belvedere tasting on the top floor. Temporary exhibitions and the wine bar can extend a visit to half a day if you want to explore at a relaxed pace."
+        },
+        {
+          "q": "What is the best time of year to visit Bordeaux?",
+          "a": "Late spring through early autumn, roughly May to October, offers the warmest weather and the fullest events calendar. The Bordeaux Wine Festival runs every other year in June along the quays. September is harvest season in the surrounding vineyards, adding atmosphere to chateau visits. Winter is mild but quieter, with some tour operators running reduced schedules."
         }
       ]
     }
