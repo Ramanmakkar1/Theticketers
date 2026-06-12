@@ -384,6 +384,7 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
     <meta name="google-site-verification" content="<?= e($config['google_site_verification']) ?>">
     <?php endif; ?>
     <meta name="impact-site-verification" value="645f0225-2a09-4e6c-a50e-6e3e6e98a937">
+    <meta name="impact-site-verification" value="b60bdc54-0e8a-4cb8-819d-b63e0f726953">
     <title><?= e($title) ?></title>
     <meta name="description" content="<?= e($description) ?>">
     <meta name="robots" content="<?= e($robots) ?>">
