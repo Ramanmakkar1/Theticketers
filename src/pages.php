@@ -384,6 +384,7 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
     <meta name="google-site-verification" content="<?= e($config['google_site_verification']) ?>">
     <?php endif; ?>
     <meta name="impact-site-verification" value="b60bdc54-0e8a-4cb8-819d-b63e0f726953">
+    <script type="text/javascript">(function(i,m,p,a,c,t){c.ire_o=p;c[p]=c[p]||function(){(c[p].a=c[p].a||[]).push(arguments)};t=a.createElement(m);var z=a.getElementsByTagName(m)[0];t.async=1;t.src=i;z.parentNode.insertBefore(t,z)})('https://utt.impactcdn.com/P-A7402647-42c2-4124-a95c-6909f769ba4d1.js','script','impactStat',document,window);impactStat('transformLinks');impactStat('trackImpression');</script>
     <title><?= e($title) ?></title>
     <meta name="description" content="<?= e($description) ?>">
     <meta name="robots" content="<?= e($robots) ?>">
