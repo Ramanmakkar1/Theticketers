@@ -1787,13 +1787,35 @@ function render_activity_detail_page(HelloTicketsClient $client, array $config, 
         ['name' => (string) ($activity['title'] ?? 'Experience'), 'url' => absolute_url($config, activity_path($activity))],
     ];
 
+    $activityTitle = (string) ($activity['title'] ?? 'this experience');
+    $activityCity = (string) ($activity['city']['name'] ?? '');
+    $activityPriceVal = (float) ($activity['from_price'] ?? 0);
+    $activityCurrency = (string) ($activity['currency'] ?? $config['currency']);
+    $cancellation = trim(strip_tags((string) ($activity['cancellation_policy'] ?? '')));
+    $faqs = [
+        ['q' => 'How do I book ' . $activityTitle . '?',
+         'a' => 'Pick an available date on this page and continue to secure checkout on our official ticketing partner. Tickets are issued instantly by email after payment, so you can show them on your phone at the entrance.'],
+        ['q' => 'How much does ' . $activityTitle . ' cost?',
+         'a' => $activityPriceVal > 0
+            ? 'Tickets start from ' . money($activityPriceVal, $activityCurrency) . '. Final pricing depends on the date, time slot and ticket type you select and is shown live at checkout.'
+            : 'Prices are shown live at checkout and vary by date, time slot and ticket type. Select an available date above to see current pricing.'],
+        ['q' => 'Can I cancel or change my booking?',
+         'a' => $cancellation !== ''
+            ? 'Cancellation policy for this experience: ' . $cancellation . ' Full terms are confirmed on the partner checkout before payment.'
+            : 'Cancellation terms are set by the ticket partner and are confirmed on the checkout page before you pay. Many experiences offer free cancellation up to 24 hours before the start time.'],
+        ['q' => 'How will I receive my tickets?',
+         'a' => 'Tickets are delivered as e-tickets by email immediately after booking. Show the QR code on your phone at the entrance — no printing needed for most experiences.'],
+        ['q' => 'What is included with ' . $activityTitle . '?',
+         'a' => 'Inclusions vary by ticket type and are listed on the partner checkout page before you confirm. Read the experience details above for the headline inclusions and any optional add-ons.'],
+    ];
+
     render_layout($config, [
         'title' => $activity['title'] . ' | ' . $config['site_name'],
         'description' => 'Book ' . $activity['title'] . ' with current prices, reviews and available dates.',
         'canonical' => absolute_url($config, activity_path($activity)),
         'image' => image_from_item($activity, 'activity', $config),
         'preload_image' => image_from_item($activity, 'activity', $config),
-    ], function () use ($activity, $dates, $related, $config, $breadcrumbs): void {
+    ], function () use ($activity, $dates, $related, $config, $breadcrumbs, $faqs, $activityTitle, $activityCity, $activityPriceVal, $activityCurrency): void {
         $image = image_from_item($activity, 'activity', $config);
         $price = $activity['from_price'] ?? 0;
         $currency = $activity['currency'] ?? $config['currency'];
@@ -1850,11 +1872,32 @@ function render_activity_detail_page(HelloTicketsClient $client, array $config, 
             </div>
         </section>
         <?php render_card_section('More Attractions in ' . ($activity['city']['name'] ?? 'Dubai'), '/attractions', array_filter($related, static fn($item): bool => (int) ($item['id'] ?? 0) !== (int) $activity['id']), 'activity', $config); ?>
+        <section class="section-band muted">
+            <div class="container artist-about">
+                <h2>About <?= e($activityTitle) ?></h2>
+                <p><?= e($activityTitle) ?><?= $activityCity !== '' ? ' in ' . e($activityCity) : '' ?> is bookable on this page with live availability and instant e-ticket delivery. Pick an available date above to check current pricing and reserve your spot in a few clicks.</p>
+                <p>Every booking is processed by our official ticketing partner's secure checkout. Tickets are issued by email the moment payment clears — there is no waiting list, no printing required, and no hidden booking fee beyond the price shown.</p>
+            </div>
+        </section>
+        <?php dubai_render_faq($faqs, $activityTitle . ' — FAQs'); ?>
+        <section class="section-band">
+            <div class="container artist-seo-content">
+                <h2>Buy <?= e($activityTitle) ?> Tickets</h2>
+                <p>Booking <?= e($activityTitle) ?> takes a couple of minutes: choose your date, choose your ticket type, and complete payment on our partner's secure checkout. Your e-ticket arrives by email instantly and shows the QR code you scan at the entrance.</p>
+                <?php if ($activityPriceVal > 0): ?>
+                    <p>Tickets currently start from <strong><?= e(money($activityPriceVal, $activityCurrency)) ?></strong>. Pricing is live from the partner and may shift slightly based on the date and time slot — book early for the best selection of slots.</p>
+                <?php else: ?>
+                    <p>Pricing is shown live at checkout once you pick a date and ticket type. Availability and price are pulled from the partner in real time, so this page always reflects what is on sale right now.</p>
+                <?php endif; ?>
+                <p>Looking for more in <?= e($activityCity !== '' ? $activityCity : 'the city') ?>? Browse <a href="/attractions">all attractions</a> for related tours and experiences.</p>
+            </div>
+        </section>
         <?php
     }, [
         '@context' => 'https://schema.org',
         '@graph' => [
             activity_schema($config, $activity),
+            dubai_faq_schema($faqs),
             dubai_breadcrumb_schema($config, $breadcrumbs),
         ],
     ]);
@@ -2440,12 +2483,36 @@ function render_artists_page(HelloTicketsClient $client, array $config): void
         'page' => $page,
     ]), ['performers' => [], 'total_count' => 0]);
     $performers = $data['performers'] ?? [];
+    $artistCount = (int) ($data['total_count'] ?? count($performers));
+
+    $faqs = [
+        ['q' => 'How do I find an artist on tour?',
+         'a' => 'Browse the trending artists above or use the search bar to look up any artist by name. Every artist listed here has confirmed upcoming shows on sale — open an artist page to see the full tour with dates, cities, venues and live prices.'],
+        ['q' => 'Which artists are most popular right now?',
+         'a' => 'The list above is roughly ordered by how much each artist is touring right now and how many of their shows are on sale. Top of the page is where the biggest tours and the most active touring artists sit.'],
+        ['q' => 'How do I know if an artist is on tour?',
+         'a' => 'If an artist appears on this page, they have at least one confirmed upcoming show on sale. The artist page itself shows the full tour count, cities and the next date — empty pages are not listed here.'],
+        ['q' => 'How are artist ticket prices set?',
+         'a' => 'Prices are set by the ticket partner and pulled live for every show. They vary by city, venue, seat tier and how close to the show date you book — earlier bookings usually have the widest selection of tiers.'],
+        ['q' => 'How quickly are new artist tours added?',
+         'a' => 'New tours and dates appear here automatically the moment tickets go on sale at our official ticketing partner. The list refreshes throughout the day so it always reflects what is currently bookable.'],
+    ];
+
+    $artistListSchema = item_list_schema_for_artists($config, $performers);
+    unset($artistListSchema['@context']);
+    $schemaGraph = [
+        '@context' => 'https://schema.org',
+        '@graph' => [
+            $artistListSchema,
+            dubai_faq_schema($faqs),
+        ],
+    ];
 
     render_layout($config, [
         'title' => 'Artists On Tour — Concert & Show Tickets | ' . $config['site_name'],
         'description' => 'Browse artists currently on tour. See upcoming dates, venues and live ticket prices for every show.',
         'canonical' => absolute_url($config, '/artists'),
-    ], function () use ($performers, $data): void {
+    ], function () use ($performers, $data, $faqs, $artistCount): void {
         ?>
         <section class="listing-hero">
             <div class="container">
@@ -2495,8 +2562,16 @@ function render_artists_page(HelloTicketsClient $client, array $config): void
             </div>
         </section>
         <?php endif; ?>
+        <section class="section-band muted">
+            <div class="container artist-about">
+                <h2>About Artists On Tour</h2>
+                <p>This page is a live index of artists currently on tour — every entry has at least one confirmed upcoming show on sale via our official ticketing partner. Open any artist to see the full tour in one place: every date, city, venue and live starting price, with new shows added automatically the moment tickets go on sale.</p>
+                <p>Concerts, festivals, stage productions and live sports acts are all represented. The list is roughly ordered by how active each artist's touring is right now, so the biggest tours and most-bookable acts sit at the top.</p>
+            </div>
+        </section>
+        <?php dubai_render_faq($faqs, 'Artists On Tour — FAQs'); ?>
         <?php
-    }, item_list_schema_for_artists($config, $performers));
+    }, $schemaGraph);
 }
 
 function render_artist_detail_page(HelloTicketsClient $client, array $config, int $performerId, ?array $tmOnly = null): void
@@ -2855,6 +2930,12 @@ function render_artist_in_city_page(HelloTicketsClient $client, array $config, s
          'a' => 'Tickets currently start from ' . money($minPrice, $currency) . ', varying by seat and date. Prices are live from our official ticketing partner.'] : null,
         $venueName !== '' ? ['q' => 'Where does ' . $name . ' play in ' . $cityName . '?',
          'a' => 'The ' . ($count === 1 ? 'show is' : 'next show is') . ' at ' . $venueName . ' in ' . $cityName . '.'] : null,
+        ['q' => 'How do I buy ' . $name . ' tickets for ' . $cityName . '?',
+         'a' => 'Pick any date above and continue to secure checkout on our official ticketing partner. Tickets are issued instantly by email after payment — show the QR code on your phone at the entrance.'],
+        ['q' => 'When should I book ' . $name . ' tickets in ' . $cityName . '?',
+         'a' => 'Earlier bookings usually have the widest selection of seat tiers and the best vantage points. Popular ' . $name . ' shows can sell out, so booking sooner than later is the safer bet.'],
+        ['q' => 'How are ' . $name . ' tickets delivered?',
+         'a' => 'Tickets are delivered as e-tickets by email immediately after booking. There is no printing required for most venues — your phone is the ticket.'],
     ], static fn($f) => $f !== null));
 
     $listSchema = item_list_schema($config, $events, 'event');
@@ -2885,7 +2966,7 @@ function render_artist_in_city_page(HelloTicketsClient $client, array $config, s
             . ' with live availability — secure checkout via official partner.',
         'canonical' => absolute_url($config, $canonicalPath),
         'image' => ($img = mapped_image('performer', (int) ($performer['id'] ?? 0))) !== null ? absolute_image_url($config, $img) : null,
-    ], function () use ($config, $name, $cityName, $events, $summary, $faqs, $performer, $count): void {
+    ], function () use ($config, $name, $cityName, $events, $summary, $faqs, $performer, $count, $venueName, $minPrice, $currency): void {
         ?>
         <section class="listing-hero">
             <div class="container">
@@ -2908,7 +2989,26 @@ function render_artist_in_city_page(HelloTicketsClient $client, array $config, s
                 <p class="more-link"><a href="<?= e(artist_path($performer)) ?>">See all <?= e($name) ?> tour dates &rarr;</a></p>
             </div>
         </section>
+        <section class="section-band muted">
+            <div class="container artist-about">
+                <h2>About <?= e($name) ?> in <?= e($cityName) ?></h2>
+                <p><?= e($name) ?> has <?= e((string) $count) ?> confirmed show<?= $count === 1 ? '' : 's' ?> in <?= e($cityName) ?><?= $venueName !== '' ? ' at ' . e($venueName) : '' ?>, with live ticket pricing direct from our official ticketing partner. The schedule on this page refreshes automatically as new dates are added or as availability changes.</p>
+                <p>Pick any date above to see seat availability and tier pricing in real time. Checkout completes on the partner's secure site and e-tickets are emailed instantly.</p>
+            </div>
+        </section>
         <?php dubai_render_faq($faqs, $name . ' in ' . $cityName . ' — FAQs'); ?>
+        <section class="section-band">
+            <div class="container artist-seo-content">
+                <h2>Buy <?= e($name) ?> Tickets in <?= e($cityName) ?></h2>
+                <p>Booking is quick: pick a date above, choose your seat tier on the partner checkout, and pay with the card of your choice. Your e-ticket arrives by email seconds later and shows the QR code you scan at the entrance — no printing needed for most venues.</p>
+                <?php if ($minPrice !== null): ?>
+                    <p><?= e($name) ?> tickets in <?= e($cityName) ?> currently start from <strong><?= e(money($minPrice, $currency)) ?></strong>. Premium seats sell out first — booking earlier usually gives you the widest selection of tiers and the best vantage points.</p>
+                <?php else: ?>
+                    <p>Live pricing is shown on the partner checkout once you pick a date. Booking earlier usually gives you the widest selection of seat tiers and the best vantage points.</p>
+                <?php endif; ?>
+                <p>Looking elsewhere? See <a href="<?= e(artist_path($performer)) ?>">all <?= e($name) ?> tour dates</a> or browse <a href="/artists">other artists currently on tour</a>.</p>
+            </div>
+        </section>
         <?php
     }, $schemaGraph);
 }
@@ -4767,12 +4867,26 @@ function render_venues_index(array $config): void
             $venues[] = $venue;
         }
     }
+    $venueCount = count($venues);
+
+    $faqs = [
+        ['q' => 'What types of venues are listed here?',
+         'a' => 'This page covers the biggest music arenas, sports stadiums and theatres on the live calendar — including landmark venues like Madison Square Garden, Sphere, Red Rocks and Wembley. Every venue listed has confirmed upcoming events with tickets on sale.'],
+        ['q' => 'What are the biggest live music and sports venues?',
+         'a' => 'Headline arenas include Madison Square Garden in New York, the Sphere in Las Vegas, Wembley Stadium in London and Red Rocks Amphitheatre in Colorado. Open any venue tile above to see its full upcoming schedule with dates, headliners and live ticket prices.'],
+        ['q' => 'How do I find upcoming shows at a specific venue?',
+         'a' => 'Pick a venue from the grid above to jump to its dedicated page. Each venue page shows every confirmed upcoming event — concerts, sports fixtures and theatre productions — with dates, the headline act and live starting prices.'],
+        ['q' => 'How are venue ticket prices set?',
+         'a' => 'Prices are set by the ticket partner and pulled live for every event. They vary by venue, event type, seat tier and how close to the show date you book — earlier bookings usually have the widest selection of tiers and the best vantage points.'],
+        ['q' => 'How quickly are new venue events added?',
+         'a' => 'New events and dates appear on each venue page automatically the moment tickets go on sale at our official ticketing partner. The index refreshes throughout the day so it always reflects what is currently bookable.'],
+    ];
 
     render_layout($config, [
         'title' => 'Top Venues — Tickets & Upcoming Events | ' . $config['site_name'],
         'description' => 'Browse upcoming events at top music, sports and theatre venues — Madison Square Garden, Sphere, Red Rocks, Wembley and more. Live prices, on-sale dates and seat maps.',
         'canonical' => absolute_url($config, '/venues'),
-    ], function () use ($venues): void {
+    ], function () use ($venues, $faqs, $venueCount): void {
         ?>
         <section class="listing-hero">
             <div class="container">
@@ -4810,8 +4924,21 @@ function render_venues_index(array $config): void
                 <?php endif; ?>
             </div>
         </section>
+        <section class="section-band muted">
+            <div class="container artist-about">
+                <h2>About Top Venues</h2>
+                <p>This index covers <?= e((string) $venueCount) ?> of the world's most iconic music arenas, sports stadiums and theatres — from Madison Square Garden and the Sphere to Wembley, Red Rocks and beyond. Every venue listed has confirmed upcoming events with tickets on sale via our official ticketing partner.</p>
+                <p>Open any venue tile to see its full upcoming schedule — concerts, sports fixtures, theatre and more — with date, headline act and live starting price. The schedule refreshes automatically as new shows are announced and as availability changes.</p>
+            </div>
+        </section>
+        <?php dubai_render_faq($faqs, 'Top Venues — FAQs'); ?>
         <?php
-    });
+    }, [
+        '@context' => 'https://schema.org',
+        '@graph' => [
+            dubai_faq_schema($faqs),
+        ],
+    ]);
 }
 
 /* ============================================================================
@@ -4904,6 +5031,12 @@ function render_league_page(array $config, string $slug): void
          'a' => 'Pick any game on this page — checkout completes securely on our official ticketing partner. Prices and seat availability are live.'],
         ['q' => 'How often is this ' . $league['name'] . ' schedule updated?',
          'a' => 'Listings, dates and prices are pulled live from our partner so this page always reflects what is currently on sale.'],
+        ['q' => 'When is the ' . $league['name'] . ' regular season and playoffs?',
+         'a' => 'The ' . $league['name'] . ' regular season runs through the bulk of the calendar, with playoffs at the end of the season and the championship finals capping the year. Every confirmed regular-season, playoff and finals game with tickets on sale is listed above.'],
+        ['q' => 'How much do ' . $league['name'] . ' tickets cost?',
+         'a' => 'Ticket prices vary widely by game, opponent, arena and seat tier. Live pricing for every listed game is shown on the partner checkout — popular matchups and playoff games typically command higher prices than mid-season regular-season games.'],
+        ['q' => 'What ticket types are available for ' . $league['name'] . ' games?',
+         'a' => 'Tickets range from upper-tier general admission and budget single-game seats through lower-bowl and courtside or sideline seating, plus premium club and suite options at most arenas. Specific tiers and availability are shown live on the partner checkout for each game.'],
     ];
 
     $schemaGraph = [
@@ -4981,7 +5114,22 @@ function render_league_page(array $config, string $slug): void
                 </div>
             </section>
         <?php endif; ?>
+        <section class="section-band muted">
+            <div class="container artist-about">
+                <h2>About <?= e($league['name']) ?> Tickets</h2>
+                <p>This page is a live feed of every <?= e($league['name']) ?> game currently on sale from our official ticketing partner. <?= e((string) $shown) ?> game<?= $shown === 1 ? '' : 's' ?> <?= $shown === 1 ? 'is' : 'are' ?> listed above with date, arena and live starting price — new games appear automatically as tickets are released and the schedule advances.</p>
+                <p>The <?= e($league['name']) ?> covers regular-season action, postseason playoffs and the championship finals. Pick any game to see seat availability and tier pricing in real time, then complete checkout on the partner's secure site.</p>
+            </div>
+        </section>
         <?php dubai_render_faq($faqs, $league['name'] . ' — Ticket FAQs'); ?>
+        <section class="section-band">
+            <div class="container artist-seo-content">
+                <h2>Buy <?= e($league['name']) ?> Tickets</h2>
+                <p>Booking is fast: pick a game above, choose your seat tier on the partner checkout, and pay with the card of your choice. Your e-ticket arrives by email seconds later and shows the QR code you scan at the arena entrance — no printing needed.</p>
+                <p>Pricing is live from the partner and may change as the game date approaches — earlier bookings usually have the widest selection of seat tiers and the best vantage points. Marquee matchups and playoff games sell out fastest.</p>
+                <p>Looking for a specific team? Use the team list above to jump straight to a club's full schedule, or browse <a href="/teams">all sports teams</a>.</p>
+            </div>
+        </section>
         <?php
     }, $schemaGraph);
 }
@@ -5147,12 +5295,21 @@ function render_team_page(array $config, array $team): void
             . '. ' . number_format($total) . ' game' . ($total === 1 ? ' is' : 's are') . ' listed on this page.'
         : $direct;
 
+    $homeCity = $cities[0] ?? '';
     $faqs = [
         ['q' => 'What ' . $name . ' games are coming up?', 'a' => $nextAnswer],
         ['q' => 'How much are ' . $name . ' tickets?',
          'a' => 'Prices vary by date, opponent and seat — pick any game on this page to see live prices and seat availability on our partner.'],
         ['q' => 'How often is this ' . $name . ' schedule updated?',
          'a' => 'Listings, dates and prices are pulled live so this page always reflects what is currently on sale.'],
+        ['q' => 'How can I find ' . $name . ' home games?',
+         'a' => $homeCity !== ''
+            ? 'Home games are the dates played in ' . $homeCity . '. The schedule above lists every game with city and venue, so home dates are easy to spot at a glance.'
+            : 'Home games are played at the team\'s home arena. The schedule above shows every game with city and venue, so home dates are easy to identify at a glance.'],
+        ['q' => 'How do I buy ' . $name . ' away game tickets?',
+         'a' => 'Pick any game above where the city is not the team\'s home city — that is an away fixture. Tickets are sold by the home venue\'s ticketer; checkout completes on our partner\'s secure site with instant e-ticket delivery.'],
+        ['q' => 'Are season tickets available for ' . $name . '?',
+         'a' => 'Season tickets are sold directly by the team, not through this listing. This page lists single-game tickets currently on resale and primary inventory — pick any individual game to see live prices and seat availability.'],
     ];
 
     // SportsTeam.sport wants the sport, not the league ("Basketball", not "NBA").
@@ -5217,7 +5374,26 @@ function render_team_page(array $config, array $team): void
                 <?php endif; ?>
             </div>
         </section>
+        <section class="section-band muted">
+            <div class="container artist-about">
+                <h2>About <?= e($name) ?> Tickets</h2>
+                <p><?= e($name) ?> has <?= e((string) $total) ?> upcoming game<?= $total === 1 ? '' : 's' ?> on sale with live ticket pricing direct from our official ticketing partner<?= $sport !== '' ? ', covering the ' . e($sport) . ' calendar' : '' ?>. The schedule on this page refreshes automatically as new games are confirmed or as availability changes.</p>
+                <p>Every listing shows the date, opponent, venue and live starting price. Pick any game to see seat availability and tier pricing in real time, then complete checkout on the partner's secure site — e-tickets arrive by email instantly.</p>
+            </div>
+        </section>
         <?php dubai_render_faq($faqs, $name . ' — Ticket FAQs'); ?>
+        <section class="section-band">
+            <div class="container artist-seo-content">
+                <h2>Buy <?= e($name) ?> Tickets</h2>
+                <p>Booking is fast: pick a game above, choose your seat tier on the partner checkout, and pay with the card of your choice. Your e-ticket arrives by email seconds later and shows the QR code you scan at the arena entrance.</p>
+                <p>Pricing is live from the partner and may shift as the game date approaches — earlier bookings usually have the widest selection of seat tiers and the best vantage points. Marquee opponents and playoff games sell out fastest.</p>
+                <?php if ($leagueSlug !== null): ?>
+                    <p>Looking for other matchups? Browse the full <a href="/<?= e($leagueSlug) ?>"><?= e(strtoupper($leagueSlug)) ?> schedule</a> or jump to <a href="/teams">other teams</a>.</p>
+                <?php else: ?>
+                    <p>Looking for other matchups? Browse <a href="/teams">other top sports teams</a>.</p>
+                <?php endif; ?>
+            </div>
+        </section>
         <?php
     }, $schemaGraph);
 }
@@ -5354,10 +5530,24 @@ function render_monthly_events_page(HelloTicketsClient $client, array $config, i
         ['name' => $monthLabel, 'url' => absolute_url($config, $canonical)],
     ];
 
+    $faqs = [
+        ['q' => 'What events are happening in ' . $cityName . ' in ' . $monthLabel . '?',
+         'a' => 'There are ' . $totalEvents . ' confirmed event' . ($totalEvents === 1 ? '' : 's') . ' in ' . $cityName . ' for ' . $monthLabel . ', covering concerts, sports, theatre and shows. Every listing below shows the date, venue and live starting price from our official ticketing partner.'],
+        ['q' => 'How do I find ' . $monthLabel . ' tickets in ' . $cityName . '?',
+         'a' => 'Browse the full list above and click any event to see live seat availability and pricing. Checkout completes securely on our partner site and tickets are delivered by email instantly.'],
+        ['q' => 'Why is ' . $monthLabel . ' a good time to visit ' . $cityName . '?',
+         'a' => $cityName . ' typically programmes a mix of touring concerts, league sports fixtures and stage productions in ' . $monthLabel . '. The listings on this page are pulled live, so the schedule reflects what is actually on sale right now.'],
+        ['q' => 'Are tickets refundable if a ' . $monthLabel . ' event is cancelled?',
+         'a' => 'If an event is cancelled, refunds are handled by the ticket partner per its policy — usually returned to the original payment method automatically. Rescheduled events are typically honoured on the new date.'],
+        ['q' => 'How often is this ' . $monthLabel . ' schedule updated?',
+         'a' => 'Listings, dates and prices are pulled live from our partner, so this page always reflects what is currently on sale for ' . $cityName . ' in ' . $monthLabel . '.'],
+    ];
+
     $schema = ['@context' => 'https://schema.org', '@graph' => [
         ['@type' => 'CollectionPage', 'name' => $pageTitle, 'url' => absolute_url($config, $canonical),
          'description' => 'All events in ' . $cityName . ' during ' . $monthLabel,
          'isPartOf' => ['@id' => $config['site_url'] . '/#website']],
+        dubai_faq_schema($faqs),
         dubai_breadcrumb_schema($config, $breadcrumbs),
     ]];
 
@@ -5366,7 +5556,7 @@ function render_monthly_events_page(HelloTicketsClient $client, array $config, i
         'description' => 'Find ' . $totalEvents . '+ events in ' . $cityName . ' for ' . $monthLabel . '. Concerts, sports, theatre and more with live prices.',
         'canonical' => absolute_url($config, $canonical, array_filter(['page' => $page > 1 ? $page : null])),
         'body_class' => 'monthly-events-page',
-    ], function () use ($config, $pageTitle, $cityName, $monthLabel, $events, $eventsPageData, $breadcrumbs, $prevLink, $nextLink, $citySlug): void {
+    ], function () use ($config, $pageTitle, $cityName, $monthLabel, $events, $eventsPageData, $breadcrumbs, $prevLink, $nextLink, $citySlug, $faqs, $totalEvents): void {
         ?>
         <section class="monthly-events__hero"><div class="container">
             <?php dubai_render_breadcrumbs($breadcrumbs); ?>
@@ -5380,9 +5570,18 @@ function render_monthly_events_page(HelloTicketsClient $client, array $config, i
         <?php render_events_grid_section('All Events', '', $events, $eventsPageData, $config); ?>
         <section class="monthly-events__seo section-band muted"><div class="container">
             <h2>About Events in <?= e($cityName) ?> in <?= e($monthLabel) ?></h2>
-            <p>Browse every confirmed event in <?= e($cityName) ?> for <?= e($monthLabel) ?>. New events appear automatically as they go on sale.</p>
+            <p>This page lists <?= e((string) $totalEvents) ?> confirmed event<?= $totalEvents === 1 ? '' : 's' ?> in <?= e($cityName) ?> for <?= e($monthLabel) ?> — concerts, sports fixtures, theatre and live shows. Each listing shows the date, venue and live starting price, and new events appear here automatically the moment they go on sale.</p>
             <p>Try <a href="/city/<?= e($citySlug) ?>/concerts">concerts</a>, <a href="/city/<?= e($citySlug) ?>/sports">sports</a>, or <a href="/city/<?= e($citySlug) ?>/theatre">theatre</a> in <?= e($cityName) ?>.</p>
         </div></section>
+        <?php dubai_render_faq($faqs, 'Events in ' . $cityName . ' in ' . $monthLabel . ' — FAQs'); ?>
+        <section class="section-band">
+            <div class="container artist-seo-content">
+                <h2>Buy <?= e($cityName) ?> Tickets for <?= e($monthLabel) ?></h2>
+                <p>Booking is straightforward: click any event above to see live seat availability and pricing, then complete checkout on our official ticket partner. Tickets are issued instantly by email — show the QR code on your phone at the entrance.</p>
+                <p>Prices update in real time, so the figure you see is what you pay. Book early for the best selection of seats and price tiers across <?= e($cityName) ?>'s <?= e($monthLabel) ?> schedule.</p>
+                <p>Looking ahead? Browse <a href="<?= e($nextLink) ?>">next month</a> or jump back to <a href="<?= e($prevLink) ?>">last month</a> for more events in <?= e($cityName) ?>.</p>
+            </div>
+        </section>
         <?php
     }, $schema);
 }
@@ -5410,13 +5609,26 @@ function render_venue_category_page(array $config, string $tmVenueId, string $ve
     $title = $label.' at '.$venueName; $canonical = '/venue/'.$venueSlug.'/'.$categorySlug;
     $bc = [['name'=>'Home','url'=>absolute_url($config,'/')],['name'=>'Venues','url'=>absolute_url($config,'/venues')],
            ['name'=>$venueName,'url'=>absolute_url($config,'/venue/'.$venueSlug)],['name'=>$label,'url'=>absolute_url($config,$canonical)]];
+    $faqs = [
+        ['q' => 'What ' . strtolower($label) . ' are coming up at ' . $venueName . '?',
+         'a' => 'There ' . ($total === 1 ? 'is 1 upcoming ' . strtolower(rtrim($label, 's')) : 'are ' . $total . ' upcoming ' . strtolower($label)) . ' at ' . $venueName . ($cityName !== '' ? ' in ' . $cityName : '') . '. The full list with dates and live ticket prices is on this page.'],
+        ['q' => 'How do I buy ' . strtolower($label) . ' tickets at ' . $venueName . '?',
+         'a' => 'Pick any event above and continue to secure checkout on our official ticketing partner. Tickets are delivered instantly by email so you can show them on your phone at the door.'],
+        ['q' => 'Is there a dress code at ' . $venueName . '?',
+         'a' => $venueName . ' does not enforce a strict dress code for most ' . strtolower($label) . ' — smart casual is the safe choice. Premium hospitality areas may require smart attire; specific requirements are confirmed on the partner checkout page.'],
+        ['q' => 'How much are tickets for ' . strtolower($label) . ' at ' . $venueName . '?',
+         'a' => 'Prices vary by event, date and seat tier. Live pricing for every listed event is shown on the partner checkout — click any date above to see current availability and seat-level prices.'],
+        ['q' => 'How often is this ' . $venueName . ' schedule updated?',
+         'a' => 'Listings, dates and prices are pulled live from our ticketing partner, so this page always reflects the ' . strtolower($label) . ' currently on sale at ' . $venueName . '.'],
+    ];
     $schema = ['@context'=>'https://schema.org','@graph'=>[
         ['@type'=>'CollectionPage','name'=>$title,'url'=>absolute_url($config,$canonical),'isPartOf'=>['@id'=>$config['site_url'].'/#website']],
+        dubai_faq_schema($faqs),
         dubai_breadcrumb_schema($config,$bc)]];
     render_layout($config, ['title'=>$title.' | '.$config['site_name'],
         'description'=>'Upcoming '.$label.' at '.$venueName.($cityName!==''?' in '.$cityName:'').'. Live schedule with ticket prices.',
         'canonical'=>absolute_url($config,$canonical,array_filter(['page'=>$page>1?$page:null])), 'body_class'=>'venue-category-page',
-    ], function () use ($config,$title,$venueName,$label,$categorySlug,$venueSlug,$cityName,$pageEvents,$evData,$bc,$labels): void { ?>
+    ], function () use ($config,$title,$venueName,$label,$categorySlug,$venueSlug,$cityName,$pageEvents,$evData,$bc,$labels,$faqs,$total): void { ?>
         <section class="venue-category__hero"><div class="container">
             <?php dubai_render_breadcrumbs($bc); ?>
             <h1><?= e($title) ?></h1>
@@ -5430,9 +5642,19 @@ function render_venue_category_page(array $config, string $tmVenueId, string $ve
         </div></section>
         <?php render_events_grid_section('', '', $pageEvents, $evData, $config); ?>
         <section class="venue-category__seo section-band muted"><div class="container">
-            <h2><?= e($label) ?> at <?= e($venueName) ?></h2>
-            <p>Browse upcoming <?= e(strtolower($label)) ?> at <?= e($venueName) ?>. Updated live from our ticketing partner.</p>
+            <h2>About <?= e($label) ?> at <?= e($venueName) ?></h2>
+            <p><?= e($venueName) ?><?= $cityName !== '' ? ' in ' . e($cityName) : '' ?> currently has <?= e((string) $total) ?> upcoming <?= e(strtolower($label)) ?> on sale. Every listing on this page shows the date, headline act and live ticket prices direct from our official ticketing partner — the schedule refreshes automatically as new shows are announced.</p>
+            <p>Pick any date to see seat availability and tier pricing in real time, then complete checkout on the partner site. Tickets are emailed instantly as e-tickets.</p>
         </div></section>
+        <?php dubai_render_faq($faqs, $label . ' at ' . $venueName . ' — FAQs'); ?>
+        <section class="section-band">
+            <div class="container artist-seo-content">
+                <h2>Buy <?= e($label) ?> Tickets at <?= e($venueName) ?></h2>
+                <p><?= e($venueName) ?> hosts some of the biggest <?= e(strtolower($label)) ?> on the calendar<?= $cityName !== '' ? ' in ' . e($cityName) : '' ?>. To book, pick a date above, choose your seat tier on the partner checkout, and pay with the card of your choice. Your e-ticket arrives by email seconds later.</p>
+                <p>Prices are live and may change as the show date approaches — earlier bookings usually get the widest selection of seat tiers and the best vantage points.</p>
+                <p>Looking for other categories at this venue? Browse <a href="/venue/<?= e($venueSlug) ?>">all events at <?= e($venueName) ?></a> or jump to <a href="/venues">other top venues</a>.</p>
+            </div>
+        </section>
     <?php }, $schema);
 }
 
@@ -5471,13 +5693,43 @@ function render_artist_country_tour(HelloTicketsClient $client, array $config, s
     $cities = []; foreach ($events as $ev) { $vc = (string)($ev['venue']['city']??''); if ($vc!==''&&!isset($cities[$vc])) $cities[$vc]=slugify($vc); }
     $bc = [['name'=>'Home','url'=>absolute_url($config,'/')],['name'=>'Artists','url'=>absolute_url($config,'/artists')],
            ['name'=>$artistName,'url'=>absolute_url($config,'/artist/'.$artistSlug)],['name'=>strtoupper($countrySlug).' Tour','url'=>absolute_url($config,$canonical)]];
+    // Cheapest price + next date for FAQ answers
+    $tourMinPrice = null; $tourCurrency = (string) $config['currency'];
+    foreach ($events as $ev) {
+        $p = (float) ($ev['price_range']['min_price'] ?? 0);
+        if ($p > 0 && ($tourMinPrice === null || $p < $tourMinPrice)) {
+            $tourMinPrice = $p;
+            $tourCurrency = (string) ($ev['price_range']['currency'] ?? $tourCurrency);
+        }
+    }
+    $nextTourEvent = $events[0] ?? null;
+    $nextTourLabel = $nextTourEvent !== null ? format_date_time($nextTourEvent['start_date'] ?? []) : '';
+    $faqs = [
+        ['q' => 'Is ' . $artistName . ' touring in ' . $countryName . '?',
+         'a' => 'Yes — ' . $artistName . ' has ' . $total . ' upcoming show' . ($total === 1 ? '' : 's') . ' across ' . count($cities) . ' ' . (count($cities) === 1 ? 'city' : 'cities') . ' in ' . $countryName . '. The full schedule with dates and live ticket prices is on this page.'],
+        ['q' => 'How much are ' . $artistName . ' tickets in ' . $countryName . '?',
+         'a' => $tourMinPrice !== null
+            ? 'Tickets currently start from ' . money($tourMinPrice, $tourCurrency) . '. Prices vary by city, venue and seat tier — full live pricing is shown on the partner checkout for each date.'
+            : 'Pricing is set by the ticket partner and shown live at checkout. Prices vary by city, venue and seat tier — click any date above to see what is currently on sale.'],
+        ['q' => 'When is the next ' . $artistName . ' show in ' . $countryName . '?',
+         'a' => $nextTourLabel !== '' && $nextTourLabel !== 'Upcoming'
+            ? 'The next ' . $artistName . ' show in ' . $countryName . ' is on ' . $nextTourLabel . '. See the full list of upcoming dates above.'
+            : 'See the schedule above for the next ' . $artistName . ' show in ' . $countryName . '. Dates are listed in chronological order with the closest date first.'],
+        ['q' => 'Which cities is ' . $artistName . ' visiting in ' . $countryName . '?',
+         'a' => $cities !== []
+            ? $artistName . ' is playing in ' . implode(', ', array_slice(array_keys($cities), 0, 6)) . (count($cities) > 6 ? ' and ' . (count($cities) - 6) . ' more cities' : '') . ' on this tour leg. Click any city link below to jump straight to those dates.'
+            : 'Cities for this tour leg are listed alongside each date above.'],
+        ['q' => 'How are ' . $artistName . ' tickets delivered?',
+         'a' => 'Tickets are delivered as e-tickets by email immediately after booking. Show the QR code on your phone at the entrance — no printing required for most venues.'],
+    ];
     $schema = ['@context'=>'https://schema.org','@graph'=>[
         ['@type'=>'CollectionPage','name'=>$title,'url'=>absolute_url($config,$canonical),'isPartOf'=>['@id'=>$config['site_url'].'/#website']],
+        dubai_faq_schema($faqs),
         dubai_breadcrumb_schema($config,$bc)]];
     render_layout($config, ['title'=>$title.' | '.$config['site_name'],
         'description'=>$artistName.' tour dates in '.$countryName.'. '.$total.' shows with live prices and instant e-tickets.',
         'canonical'=>absolute_url($config,$canonical,array_filter(['page'=>$page>1?$page:null])), 'body_class'=>'artist-tour-page',
-    ], function () use ($config,$title,$artistName,$artistSlug,$countryName,$countrySlug,$pageEvents,$evData,$bc,$cities,$total): void { ?>
+    ], function () use ($config,$title,$artistName,$artistSlug,$countryName,$countrySlug,$pageEvents,$evData,$bc,$cities,$total,$faqs,$tourMinPrice,$tourCurrency): void { ?>
         <section class="artist-tour__hero"><div class="container">
             <?php dubai_render_breadcrumbs($bc); ?>
             <h1><?= e($title) ?></h1>
@@ -5492,10 +5744,21 @@ function render_artist_country_tour(HelloTicketsClient $client, array $config, s
             </ul>
         </div></section>
         <?php endif; ?>
-        <section class="artist-tour__seo section-band"><div class="container">
+        <section class="artist-tour__seo section-band muted"><div class="container artist-about">
             <h2>About <?= e($artistName) ?> <?= e(strtoupper($countrySlug)) ?> Tour</h2>
-            <p>Complete tour schedule for <?= e($artistName) ?> across <?= e($countryName) ?>. Every date shows venue, city and starting price.</p>
-            <p><a href="/artist/<?= e($artistSlug) ?>">Full <?= e($artistName) ?> schedule</a> | <a href="/artists">All artists</a></p>
+            <p>This page shows every confirmed <?= e($artistName) ?> date in <?= e($countryName) ?> — <?= e((string) $total) ?> show<?= $total === 1 ? '' : 's' ?> across <?= e((string) count($cities)) ?> <?= count($cities) === 1 ? 'city' : 'cities' ?> — with venue, date and live starting price. The schedule refreshes automatically as new dates are announced or added by the promoter.</p>
+            <p>Pick any date to see seat availability and tier pricing in real time. Checkout completes on our official ticketing partner's secure site, and tickets are emailed instantly as e-tickets.</p>
+        </div></section>
+        <?php dubai_render_faq($faqs, $artistName . ' ' . strtoupper($countrySlug) . ' Tour — FAQs'); ?>
+        <section class="artist-tour__buy section-band"><div class="container artist-seo-content">
+            <h2>Buy <?= e($artistName) ?> Tickets in <?= e($countryName) ?></h2>
+            <p>Booking is fast: pick a date above, choose your seat tier on the partner checkout, and pay with the card of your choice. Your e-ticket arrives by email seconds later and shows the QR code you scan at the entrance.</p>
+            <?php if ($tourMinPrice !== null): ?>
+                <p><?= e($artistName) ?> tickets in <?= e($countryName) ?> currently start from <strong><?= e(money($tourMinPrice, $tourCurrency)) ?></strong>. Earlier bookings usually have the widest selection of seat tiers and the best vantage points — premium seats sell out first.</p>
+            <?php else: ?>
+                <p>Live pricing is shown on the partner checkout once you pick a date. Earlier bookings usually have the widest selection of seats and the best vantage points.</p>
+            <?php endif; ?>
+            <p><a href="/artist/<?= e($artistSlug) ?>">Full <?= e($artistName) ?> schedule</a> | <a href="/artists">All artists on tour</a></p>
         </div></section>
     <?php }, $schema);
 }
@@ -5524,15 +5787,40 @@ function render_country_category_hub(HelloTicketsClient $client, array $config, 
     $bc = [['name'=>'Home','url'=>absolute_url($config,'/')],
            ['name'=>$countryName,'url'=>absolute_url($config,'/'.$countrySlug)],
            ['name'=>$catLabel,'url'=>absolute_url($config,$canonical)]];
+    // Minimum price for FAQ answers
+    $countryMinPrice = null; $countryCurrency = (string) $config['currency'];
+    foreach ($topEvents as $ev) {
+        $p = (float) ($ev['price_range']['min_price'] ?? 0);
+        if ($p > 0 && ($countryMinPrice === null || $p < $countryMinPrice)) {
+            $countryMinPrice = $p;
+            $countryCurrency = (string) ($ev['price_range']['currency'] ?? $countryCurrency);
+        }
+    }
+    $cityCount = count($cities);
+    $faqs = [
+        ['q' => 'What ' . strtolower($catLabel) . ' events are on across ' . $displayName . '?',
+         'a' => 'There are ' . count($topEvents) . '+ upcoming ' . strtolower($catLabel) . ' events listed across ' . $displayName . ', covering ' . $cityCount . ' ' . ($cityCount === 1 ? 'city' : 'cities') . '. The schedule is pulled live so this page always reflects what is currently on sale.'],
+        ['q' => 'How much do ' . strtolower($catLabel) . ' tickets cost in ' . $displayName . '?',
+         'a' => $countryMinPrice !== null
+            ? 'Tickets currently start from ' . money($countryMinPrice, $countryCurrency) . '. Prices vary by city, venue and seat tier — live prices for every listed event are shown on the partner checkout.'
+            : 'Prices vary by city, venue and seat tier and are shown live on the partner checkout. Click any event above to see what is currently on sale.'],
+        ['q' => 'Which are the most popular ' . strtolower($catLabel) . ' acts in ' . $displayName . '?',
+         'a' => 'The events listed above are sorted by what is on sale and trending. Major touring acts, league fixtures and headline productions usually feature near the top — open any listing to see the full bill, venue and live pricing.'],
+        ['q' => 'How do I find ' . strtolower($catLabel) . ' tickets near me in ' . $displayName . '?',
+         'a' => 'Browse the city links below to jump straight to ' . strtolower($catLabel) . ' in your nearest city. Each city page shows the full local schedule with venue, date and live prices.'],
+        ['q' => 'Are ' . $displayName . ' ticket prices live on this page?',
+         'a' => 'Yes — every price you see is pulled live from our official ticketing partner. The schedule refreshes automatically as new events go on sale or as prices change.'],
+    ];
     $schema = ['@context'=>'https://schema.org','@graph'=>[
         ['@type'=>'CollectionPage','name'=>$pageTitle,'url'=>absolute_url($config,$canonical),'isPartOf'=>['@id'=>$config['site_url'].'/#website']],
+        dubai_faq_schema($faqs),
         dubai_breadcrumb_schema($config,$bc)]];
 
     $evData = ['current_page'=>1,'per_page'=>24,'total_count'=>count($topEvents)];
     render_layout($config, ['title'=>$pageTitle.' | '.$config['site_name'],
         'description'=>$catLabel.' events across '.$countryName.'. Browse dates, venues and live ticket prices.',
         'canonical'=>absolute_url($config,$canonical), 'body_class'=>'country-category-page',
-    ], function () use ($config,$pageTitle,$countryName,$countrySlug,$displayName,$catLabel,$categorySlug,$cities,$topEvents,$evData,$bc,$categories): void { ?>
+    ], function () use ($config,$pageTitle,$countryName,$countrySlug,$displayName,$catLabel,$categorySlug,$cities,$topEvents,$evData,$bc,$categories,$faqs,$countryMinPrice,$countryCurrency): void { ?>
         <section class="country-cat__hero"><div class="container">
             <?php dubai_render_breadcrumbs($bc); ?>
             <h1><?= e($pageTitle) ?></h1>
@@ -5549,9 +5837,21 @@ function render_country_category_hub(HelloTicketsClient $client, array $config, 
             </ul>
         </div></section>
         <?php endif; ?>
-        <section class="country-cat__seo section-band"><div class="container">
+        <section class="country-cat__seo section-band muted"><div class="container artist-about">
             <h2>About <?= e($catLabel) ?> in <?= e($displayName) ?></h2>
-            <p>Browse <?= e(strtolower($catLabel)) ?> events across <?= e($displayName) ?>. Every listing shows the date, venue and live starting price from our ticketing partners.</p>
+            <p>This page is a live feed of <?= e(strtolower($catLabel)) ?> events across <?= e($displayName) ?>, covering <?= e((string) count($cities)) ?> <?= count($cities) === 1 ? 'city' : 'cities' ?>. Every listing shows the date, venue and live starting price direct from our official ticketing partners — new events appear here automatically as soon as tickets go on sale.</p>
+            <p>Pick any event to see seat availability and tier pricing in real time. Checkout completes on the partner site and e-tickets are delivered by email instantly.</p>
+        </div></section>
+        <?php dubai_render_faq($faqs, $catLabel . ' in ' . $displayName . ' — FAQs'); ?>
+        <section class="section-band"><div class="container artist-seo-content">
+            <h2>Buy <?= e($catLabel) ?> Tickets in <?= e($displayName) ?></h2>
+            <p>Booking is straightforward: choose your city below or pick any event above, then continue to our partner's secure checkout. Your e-ticket arrives by email seconds later and shows the QR code you scan at the entrance.</p>
+            <?php if ($countryMinPrice !== null): ?>
+                <p><?= e($catLabel) ?> tickets in <?= e($displayName) ?> currently start from <strong><?= e(money($countryMinPrice, $countryCurrency)) ?></strong>. Prices are live and may move as the event date approaches — earlier bookings usually have the widest selection of tiers.</p>
+            <?php else: ?>
+                <p>Pricing is set by the ticket partner and shown live on the checkout. Earlier bookings usually have the widest selection of seat tiers and the best vantage points.</p>
+            <?php endif; ?>
+            <p>Looking for something specific? Browse <a href="/<?= e($countrySlug) ?>"><?= e($displayName) ?> events</a> or jump to <a href="/events">all upcoming events</a>.</p>
         </div></section>
     <?php }, $schema);
 }
