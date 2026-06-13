@@ -1449,6 +1449,66 @@ function render_city_page(HelloTicketsClient $client, array $config, int $cityId
             <?php render_card_section('Attractions in ' . $city['name'], '/attractions', $activities, 'activity', $config, 'muted'); ?>
         <?php endif; ?>
         <?php
+        // --- AI-citeable content sections ---
+        $cityName = (string) $city['name'];
+        $countryName = (string) ($city['country'] ?? '');
+        $categories = city_intent_categories();
+        $months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        ?>
+        <section class="section-band muted">
+            <div class="container">
+                <h2>About Events in <?= e($cityName) ?></h2>
+                <p><?= e($cityName) ?> currently has <?= e(number_format($totalEvents)) ?> events on sale across concerts, sports, theatre and attractions. Every listing on this page shows real-time pricing from our official ticketing partners with instant e-ticket delivery. Prices are live and may change based on demand and availability.</p>
+                <?php if ($activities !== []): ?>
+                    <p>Beyond live events, <?= e($cityName) ?> offers <?= e((string) count($activities)) ?> bookable attractions and experiences — from guided tours to landmark visits — all available with mobile tickets.</p>
+                <?php endif; ?>
+            </div>
+        </section>
+        <section class="section-band">
+            <div class="container">
+                <h2>Browse <?= e($cityName) ?> by Category</h2>
+                <p>Find exactly the type of event you are looking for in <?= e($cityName) ?>:</p>
+                <ul class="more-cities-list">
+                    <?php foreach ($categories as $catSlug => $catMeta): ?>
+                        <li><a href="<?= e(city_category_path($city, $catSlug)) ?>"><?= e($catMeta['label']) ?> in <?= e($cityName) ?></a></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        </section>
+        <section class="section-band muted">
+            <div class="container">
+                <h2><?= e($cityName) ?> Events by Month</h2>
+                <p>Planning ahead? Browse events in <?= e($cityName) ?> for a specific month:</p>
+                <ul class="more-cities-list">
+                    <?php foreach ($months as $m): ?>
+                        <li><a href="<?= e(monthly_events_path($city, $m)) ?>"><?= e($m) ?> in <?= e($cityName) ?></a></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        </section>
+        <?php
+        $cityFaqs = [
+            ['q' => 'What events are happening in ' . $cityName . ' right now?',
+             'a' => 'There are currently ' . number_format($totalEvents) . ' events on sale in ' . $cityName . ' including concerts, sports, theatre and attractions. Every listing shows live pricing from our official ticketing partner.'],
+            ['q' => 'How do I buy event tickets in ' . $cityName . '?',
+             'a' => 'Browse the events on this page, select a show, and complete checkout on our ticketing partner\'s secure site. Tickets are delivered instantly by email or mobile.'],
+            ['q' => 'Are ticket prices on this page accurate?',
+             'a' => 'Yes. All prices shown are pulled live from our official ticketing partner\'s inventory. They reflect current availability and may change based on demand.'],
+            ['q' => 'What types of events can I find in ' . $cityName . '?',
+             'a' => 'This page covers concerts, sports, theatre, comedy, festivals, family events, classical performances and more. Use the category filters above to narrow your search.'],
+            ['q' => 'Can I find last-minute tickets in ' . $cityName . '?',
+             'a' => 'Yes. Check the "Today" and "This Weekend" filters at the top of this page for events with tickets still available. Our partner inventory updates in real time.'],
+        ];
+        dubai_render_faq($cityFaqs, $cityName . ' — Event FAQs');
+        ?>
+        <section class="section-band">
+            <div class="container artist-seo-content">
+                <h2>Tickets in <?= e($cityName) ?></h2>
+                <p>Looking for tickets in <?= e($cityName) ?>? This page is your complete guide to live events, concerts, sports and attractions in the city. Every listing shows real-time availability and pricing from our official ticketing partners. When you find an event, click through to purchase on the partner's secure checkout — tickets are delivered instantly.</p>
+                <p>We cover everything from major arena tours and stadium sports to intimate theatre and comedy shows. New events appear automatically as they go on sale, so bookmark this page and check back regularly for the latest <?= e($cityName) ?> events.</p>
+            </div>
+        </section>
+        <?php
     }, $citySchema);
 }
 
@@ -1595,6 +1655,14 @@ function render_event_detail_page(HelloTicketsClient $client, array $config, int
          'a' => 'The venue is ' . $venueName . (!empty($performance['venue']['address']) ? ', ' . trim((string) $performance['venue']['address']) : '') . ', ' . $cityName . '.'] : null,
     ], static fn($f) => $f !== null && $f['a'] !== null));
 
+    $eventName = (string) $performance['name'];
+    $eventFaqs[] = ['q' => 'Are ' . $eventName . ' tickets refundable?',
+        'a' => 'Refund policies are set by the ticketing partner and vary by event. Check the terms on the checkout page before completing your purchase. Most events allow ticket transfers if you cannot attend.'];
+    $eventFaqs[] = ['q' => 'How are tickets delivered for ' . $eventName . '?',
+        'a' => 'Tickets are delivered instantly by email after purchase. Most venues accept mobile tickets — simply show the ticket on your phone at the entrance.'];
+    $eventFaqs[] = ['q' => 'Is it safe to buy ' . $eventName . ' tickets on this site?',
+        'a' => 'Yes. We link directly to our official ticketing partner\'s secure checkout. Your payment and personal information are handled entirely by the partner, and tickets are guaranteed authentic.'];
+
     render_layout($config, [
         'title' => $performance['name'] . ' Tickets — ' . $cityName . ($dateLabel !== '' ? ', ' . $dateLabel : '') . ' | ' . $config['site_name'],
         'description' => $performance['name'] . ($venueName !== '' ? ' at ' . $venueName : '') . ', ' . $cityName
@@ -1605,7 +1673,7 @@ function render_event_detail_page(HelloTicketsClient $client, array $config, int
         'image' => image_from_item($performance, 'event', $config),
         'preload_image' => image_from_item($performance, 'event', $config),
         'robots' => $isPast ? 'noindex, follow' : null,
-    ], function () use ($performance, $related, $config, $breadcrumbs, $summary, $eventFaqs): void {
+    ], function () use ($performance, $related, $config, $breadcrumbs, $summary, $eventFaqs, $eventName, $venueName, $cityName, $whenLabel): void {
         $image = image_from_item($performance, 'event', $config);
         $price = $performance['price_range']['min_price'] ?? 0;
         $currency = $performance['price_range']['currency'] ?? $config['currency'];
@@ -1655,6 +1723,13 @@ function render_event_detail_page(HelloTicketsClient $client, array $config, int
             </div>
         </section>
         <?php if ($eventFaqs !== []) { dubai_render_faq($eventFaqs, $performance['name'] . ' — Ticket FAQs'); } ?>
+        <section class="section-band muted">
+            <div class="container artist-seo-content">
+                <h2>About <?= e($eventName) ?></h2>
+                <p><?= e($eventName) ?> <?php if ($venueName !== ''): ?>takes place at <?= e($venueName) ?><?php endif; ?><?php if ($cityName !== ''): ?> in <?= e($cityName) ?><?php endif; ?>. <?php if ($whenLabel !== ''): ?>The event is scheduled for <?= e($whenLabel) ?>.<?php endif; ?> Tickets are available now from our official ticketing partner with instant e-ticket delivery.</p>
+                <p>All prices shown are live from the partner's inventory and may change based on demand and seat availability. We recommend booking early for the best selection.</p>
+            </div>
+        </section>
         <?php render_card_section('More Events in ' . ($performance['venue']['city'] ?? 'your city'), '/events', $related, 'event', $config); ?>
         <?php
     }, [
@@ -2277,6 +2352,10 @@ function render_city_category_page(HelloTicketsClient $client, array $config, in
         $faqs[] = ['q' => 'Where are ' . strtolower($label) . ' events held in ' . $city['name'] . '?',
             'a' => 'Current listings include ' . natural_join($venues) . '.'];
     }
+    $faqs[] = ['q' => 'When is the best time to buy ' . strtolower($label) . ' tickets in ' . $city['name'] . '?',
+        'a' => 'Buying early typically offers the best selection and pricing. However, last-minute tickets are sometimes available — check this page for current availability. Prices are live and update automatically.'];
+    $faqs[] = ['q' => 'Can I get ' . strtolower($label) . ' tickets at face value in ' . $city['name'] . '?',
+        'a' => 'All tickets on this page are priced by our official ticketing partner. Prices vary by event, date, seat and demand. The prices shown are live from the partner\'s inventory.'];
     $faqs[] = ['q' => 'Are these official ticket listings?',
         'a' => 'Every listing links to checkout with an official ticketing partner. ' . $config['site_name'] . ' may earn a commission at no extra cost to you.'];
 
@@ -2303,7 +2382,7 @@ function render_city_category_page(HelloTicketsClient $client, array $config, in
         'title' => $headline . ' Tickets | ' . $config['site_name'],
         'description' => $headline . ': ' . number_format($total) . ' upcoming events with dates, venues and live ticket prices' . ($minPrice !== null ? ' from ' . money($minPrice, $currency) : '') . '.',
         'canonical' => absolute_url($config, $canonicalPath, array_filter(['page' => $page > 1 ? $page : null])),
-    ], function () use ($config, $city, $headline, $summary, $events, $pageData, $faqs): void {
+    ], function () use ($config, $city, $headline, $label, $total, $venues, $summary, $events, $pageData, $faqs): void {
         $cityCategories = city_intent_categories();
         ?>
         <section class="listing-hero">
@@ -2321,6 +2400,34 @@ function render_city_category_page(HelloTicketsClient $client, array $config, in
         </section>
         <?php render_events_grid_section($headline, (string) $city['name'], $events, $pageData, $config); ?>
         <?php dubai_render_faq($faqs, $headline . ' — FAQs'); ?>
+        <section class="section-band muted">
+            <div class="container">
+                <h2>About <?= e($headline) ?></h2>
+                <p><?= e($city['name']) ?> has <?= e(number_format($total)) ?> upcoming <?= e(strtolower($label)) ?> event<?= $total === 1 ? '' : 's' ?> on sale right now. Every listing on this page includes the date, venue and live starting price from our official ticketing partner. Prices update in real time and may change based on demand and availability.</p>
+                <?php if ($venues !== []): ?>
+                    <p>Popular venues for <?= e(strtolower($label)) ?> in <?= e($city['name']) ?> include <?= e(natural_join(array_slice($venues, 0, 4))) ?>.</p>
+                <?php endif; ?>
+            </div>
+        </section>
+        <section class="section-band">
+            <div class="container">
+                <h2>More Event Types in <?= e($city['name']) ?></h2>
+                <p>Explore other categories in <?= e($city['name']) ?>:</p>
+                <ul class="more-cities-list">
+                    <li><a href="<?= e(city_path($city)) ?>">All Events in <?= e($city['name']) ?></a></li>
+                    <?php foreach ($cityCategories as $slug => $meta): ?>
+                        <li><a href="<?= e(city_category_path($city, $slug)) ?>"><?= e($meta['label']) ?> in <?= e($city['name']) ?></a></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        </section>
+        <section class="section-band muted">
+            <div class="container artist-seo-content">
+                <h2>Buy <?= e($headline) ?> Tickets</h2>
+                <p>This page is your complete guide to <?= e(strtolower($label)) ?> events in <?= e($city['name']) ?>. Browse every confirmed date with live ticket availability and real-time pricing. When you find a show, click through to complete your purchase securely on our partner's checkout. Tickets are delivered instantly by email.</p>
+                <p>New <?= e(strtolower($label)) ?> events in <?= e($city['name']) ?> appear automatically as they go on sale. Bookmark this page for the latest schedule.</p>
+            </div>
+        </section>
         <?php
     }, $schemaGraph);
 }
@@ -4548,6 +4655,12 @@ function render_venue_page(array $config, string $tmVenueId): void
          'a' => trim($venue['address'] . ', ' . $venue['city'] . ' ' . $venue['state'] . ', ' . $venue['country'], ', ')],
         ['q' => 'How often is this schedule updated?',
          'a' => 'Listings, dates and ticket prices are pulled live from our ticketing partner, so this page always reflects what is currently on sale at ' . $venue['name'] . '.'],
+        ['q' => 'How do I buy tickets for events at ' . $venue['name'] . '?',
+         'a' => 'Select any event on this page and complete your purchase on our ticketing partner\'s secure checkout. Tickets are delivered instantly by email with no need to print.'],
+        ['q' => 'Does ' . $venue['name'] . ' host concerts?',
+         'a' => $venue['name'] . ' hosts concerts, sports, theatre and other live events throughout the year. Browse the full schedule above or filter by category using the links on this page.'],
+        ['q' => 'Are ticket prices at ' . $venue['name'] . ' accurate?',
+         'a' => 'All prices on this page come live from our official ticketing partner and reflect current availability. Prices may change based on demand and seat location.'],
     ];
 
     $schemaGraph = [
@@ -4614,6 +4727,33 @@ function render_venue_page(array $config, string $tmVenueId): void
             </div>
         </section>
         <?php dubai_render_faq($faqs, $venue['name'] . ' — Visitor FAQs'); ?>
+        <section class="section-band muted">
+            <div class="container">
+                <h2>About <?= e($venue['name']) ?></h2>
+                <p><?= e($venue['name']) ?> is a live entertainment venue<?= $venue['city'] !== '' ? ' located in ' . e($venue['city']) : '' ?><?= $venue['state'] !== '' ? ', ' . e($venue['state']) : '' ?>. <?php if ($events !== []): ?>It currently has <?= e(number_format($totalUpcoming)) ?> upcoming event<?= $totalUpcoming === 1 ? '' : 's' ?> on sale with live ticket pricing.<?php else: ?>Check back soon for upcoming events — new dates appear here automatically as tickets go on sale.<?php endif; ?></p>
+                <?php if ($venue['address'] !== ''): ?>
+                    <p><strong>Address:</strong> <?= e(trim($venue['address'] . ', ' . $venue['city'] . ' ' . $venue['state'] . ', ' . $venue['country'], ', ')) ?></p>
+                <?php endif; ?>
+            </div>
+        </section>
+        <section class="section-band">
+            <div class="container">
+                <h2>Browse <?= e($venue['name']) ?> by Event Type</h2>
+                <p>Filter upcoming events at <?= e($venue['name']) ?> by category:</p>
+                <ul class="more-cities-list">
+                    <li><a href="/venue/<?= e(slugify($venue['name'])) ?>/concerts">Concerts at <?= e($venue['name']) ?></a></li>
+                    <li><a href="/venue/<?= e(slugify($venue['name'])) ?>/sports">Sports at <?= e($venue['name']) ?></a></li>
+                    <li><a href="/venue/<?= e(slugify($venue['name'])) ?>/theatre">Theatre at <?= e($venue['name']) ?></a></li>
+                </ul>
+            </div>
+        </section>
+        <section class="section-band muted">
+            <div class="container artist-seo-content">
+                <h2>Buy Tickets at <?= e($venue['name']) ?></h2>
+                <p>This page shows every confirmed event at <?= e($venue['name']) ?> with live ticket availability and real-time pricing from our official ticketing partner. When you find a show, click through to complete your purchase on the partner's secure checkout. Tickets are delivered instantly by email.</p>
+                <p>New events are added automatically as they go on sale. Bookmark this page for the most up-to-date schedule at <?= e($venue['name']) ?>.</p>
+            </div>
+        </section>
         <?php
     }, $schemaGraph);
 }
