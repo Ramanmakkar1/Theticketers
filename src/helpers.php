@@ -1864,3 +1864,59 @@ function api_result(callable $callback, array $fallback = []): array
         return $fallback;
     }
 }
+
+/**
+ * Pick a deterministic-unique slice of FAQs for an entity page from the
+ * shared pool in faq-pool.php.
+ *
+ * Same slug → same FAQs every time (cache-safe). Across 25-30 templates and
+ * a count of 6-8, two arbitrary slugs almost never line up — so every
+ * artist/city/venue page renders a different mix.
+ *
+ * Entries whose answers still contain unfilled {placeholders} after strtr()
+ * are skipped, so an artist with no live price won't ship a half-rendered
+ * "starting from {min_price}" answer.
+ *
+ * @param string $type One of the buckets in faq-pool.php (artist, city, ...).
+ * @param string $slug Stable per-entity identifier — drives the shuffle seed.
+ * @param array  $data Map of "{placeholder}" => "live value".
+ * @param int    $count Target number of FAQs to return.
+ * @return array<int, array{q:string,a:string}>
+ */
+function unique_faqs(string $type, string $slug, array $data, int $count = 8): array
+{
+    static $pool = null;
+    if ($pool === null) {
+        $file = __DIR__ . '/faq-pool.php';
+        $pool = is_file($file) ? require $file : [];
+    }
+    $bucket = $pool[$type] ?? [];
+    if ($bucket === []) {
+        return [];
+    }
+
+    // Deterministic Fisher–Yates shuffle seeded by the slug hash. Same slug
+    // → same order on every render → identical FAQs every visit (cache-safe).
+    $seed = crc32($slug);
+    $indexed = $bucket;
+    $n = count($indexed);
+    for ($i = $n - 1; $i > 0; $i--) {
+        $seed = ($seed * 1103515245 + 12345) & 0x7FFFFFFF;
+        $j = $seed % ($i + 1);
+        [$indexed[$i], $indexed[$j]] = [$indexed[$j], $indexed[$i]];
+    }
+
+    $picked = array_slice($indexed, 0, min($count, $n));
+    $result = [];
+    foreach ($picked as $entry) {
+        $q = strtr($entry['q'], $data);
+        $a = strtr($entry['a'], $data);
+        // Skip entries with placeholders we couldn't fill — better to ship
+        // fewer clean FAQs than a question with a literal "{min_price}" in it.
+        if (preg_match('/\{[a-z_]+\}/', $a) || preg_match('/\{[a-z_]+\}/', $q)) {
+            continue;
+        }
+        $result[] = ['q' => $q, 'a' => $a];
+    }
+    return $result;
+}

@@ -1499,6 +1499,31 @@ function render_city_page(HelloTicketsClient $client, array $config, int $cityId
             ['q' => 'Can I find last-minute tickets in ' . $cityName . '?',
              'a' => 'Yes. Check the "Today" and "This Weekend" filters at the top of this page for events with tickets still available. Our partner inventory updates in real time.'],
         ];
+        // Augment with a deterministic-unique slice from the shared pool — see
+        // helpers.php::unique_faqs() — so every city page renders a different FAQ mix.
+        $cityMinPrice = null;
+        $cityCurrencyForFaq = (string) $config['currency'];
+        $cityVenues = [];
+        foreach ($events as $cityEv) {
+            $cp = (float) ($cityEv['price_range']['min_price'] ?? 0);
+            if ($cp > 0 && ($cityMinPrice === null || $cp < $cityMinPrice)) {
+                $cityMinPrice = $cp;
+                $cityCurrencyForFaq = (string) ($cityEv['price_range']['currency'] ?? $cityCurrencyForFaq);
+            }
+            $cvn = trim((string) ($cityEv['venue']['name'] ?? ''));
+            if ($cvn !== '' && !in_array($cvn, $cityVenues, true) && count($cityVenues) < 4) {
+                $cityVenues[] = $cvn;
+            }
+        }
+        $cityFaqData = [
+            '{city}' => $cityName,
+            '{country}' => (string) ($city['country'] ?? ''),
+            '{count}' => (string) $totalEvents,
+            '{min_price}' => $cityMinPrice !== null ? money($cityMinPrice, $cityCurrencyForFaq) : '',
+            '{top_venues}' => implode(', ', array_slice($cityVenues, 0, 3)),
+            '{site_name}' => (string) $config['site_name'],
+        ];
+        $cityFaqs = array_merge($cityFaqs, unique_faqs('city', slugify($cityName), $cityFaqData, 6));
         dubai_render_faq($cityFaqs, $cityName . ' — Event FAQs');
         ?>
         <section class="section-band">
@@ -1662,6 +1687,16 @@ function render_event_detail_page(HelloTicketsClient $client, array $config, int
         'a' => 'Tickets are delivered instantly by email after purchase. Most venues accept mobile tickets — simply show the ticket on your phone at the entrance.'];
     $eventFaqs[] = ['q' => 'Is it safe to buy ' . $eventName . ' tickets on this site?',
         'a' => 'Yes. We link directly to our official ticketing partner\'s secure checkout. Your payment and personal information are handled entirely by the partner, and tickets are guaranteed authentic.'];
+
+    // Deterministic-unique slice from the shared pool.
+    $eventFaqData = [
+        '{name}' => $eventName,
+        '{city}' => (string) $cityName,
+        '{next_venue}' => $venueName !== '' ? $venueName : 'the venue',
+        '{min_price}' => (float) $price > 0 ? money($price, $currency) : '',
+        '{site_name}' => (string) $config['site_name'],
+    ];
+    $eventFaqs = array_merge($eventFaqs, unique_faqs('event', slugify($eventName), $eventFaqData, 5));
 
     render_layout($config, [
         'title' => $performance['name'] . ' Tickets — ' . $cityName . ($dateLabel !== '' ? ', ' . $dateLabel : '') . ' | ' . $config['site_name'],
@@ -2402,6 +2437,17 @@ function render_city_category_page(HelloTicketsClient $client, array $config, in
     $faqs[] = ['q' => 'Are these official ticket listings?',
         'a' => 'Every listing links to checkout with an official ticketing partner. ' . $config['site_name'] . ' may earn a commission at no extra cost to you.'];
 
+    // Deterministic-unique slice — each {city}/{category} combo gets its own mix.
+    $catFaqData = [
+        '{city}' => (string) $city['name'],
+        '{category}' => strtolower($label),
+        '{count}' => (string) $total,
+        '{min_price}' => $minPrice !== null ? money($minPrice, $currency) : '',
+        '{top_venues}' => implode(', ', array_slice($venues, 0, 3)),
+        '{site_name}' => (string) $config['site_name'],
+    ];
+    $faqs = array_merge($faqs, unique_faqs('city_category', slugify((string) $city['name']) . '-' . $categorySlug, $catFaqData, 6));
+
     $listSchema = item_list_schema($config, $events, 'event');
     $schemaGraph = [
         '@context' => 'https://schema.org',
@@ -2626,6 +2672,37 @@ function render_artist_detail_page(HelloTicketsClient $client, array $config, in
     // a city page that would 404).
     $linkableCities = artist_linkable_cities($config, $events);
     $faqs = artist_faqs($performer, $events, $config);
+
+    // Augment the live-data FAQs with a deterministic-unique slice from the
+    // shared pool so every artist page gets a different long-tail FAQ mix —
+    // see faq-pool.php for the questions and helpers.php::unique_faqs() for
+    // the slug-seeded shuffle.
+    $artistMinPrice = null;
+    $artistCurrency = (string) $config['currency'];
+    $artistVenues = [];
+    foreach ($events as $ev) {
+        $p = (float) ($ev['price_range']['min_price'] ?? 0);
+        if ($p > 0 && ($artistMinPrice === null || $p < $artistMinPrice)) {
+            $artistMinPrice = $p;
+            $artistCurrency = (string) ($ev['price_range']['currency'] ?? $artistCurrency);
+        }
+        $vn = trim((string) ($ev['venue']['name'] ?? ''));
+        if ($vn !== '' && !in_array($vn, $artistVenues, true)) {
+            $artistVenues[] = $vn;
+        }
+    }
+    $artistData = [
+        '{name}' => $name,
+        '{count}' => (string) count($events),
+        '{city_count}' => (string) count($tourCities),
+        '{venue_count}' => (string) count($artistVenues),
+        '{min_price}' => $artistMinPrice !== null ? money($artistMinPrice, $artistCurrency) : '',
+        '{next_date}' => $nextDate,
+        '{top_cities}' => implode(', ', array_slice($tourCities, 0, 3)),
+        '{site_name}' => (string) $config['site_name'],
+    ];
+    $uniqueFaqs = unique_faqs('artist', slugify($name), $artistData, 6);
+    $faqs = array_merge($faqs, $uniqueFaqs);
 
     $description = $tourCities !== []
         ? 'See ' . count($events) . ' upcoming ' . $name . ' shows in ' . implode(', ', array_slice($tourCities, 0, 4)) . (count($tourCities) > 4 ? ' and more cities' : '') . ' with dates, venues and live ticket prices.'
@@ -2937,6 +3014,17 @@ function render_artist_in_city_page(HelloTicketsClient $client, array $config, s
         ['q' => 'How are ' . $name . ' tickets delivered?',
          'a' => 'Tickets are delivered as e-tickets by email immediately after booking. There is no printing required for most venues — your phone is the ticket.'],
     ], static fn($f) => $f !== null));
+
+    // Deterministic-unique slice — each {artist}/{city} pair gets its own mix.
+    $aicData = [
+        '{name}' => $name,
+        '{city}' => $cityName,
+        '{count}' => (string) $count,
+        '{min_price}' => $minPrice !== null ? money($minPrice, $currency) : '',
+        '{next_venue}' => $venueName !== '' ? $venueName : 'the venue',
+        '{site_name}' => (string) $config['site_name'],
+    ];
+    $faqs = array_merge($faqs, unique_faqs('artist_in_city', slugify($name) . '-' . slugify($cityName), $aicData, 5));
 
     $listSchema = item_list_schema($config, $events, 'event');
     $schemaGraph = [
@@ -4763,6 +4851,26 @@ function render_venue_page(array $config, string $tmVenueId): void
          'a' => 'All prices on this page come live from our official ticketing partner and reflect current availability. Prices may change based on demand and seat location.'],
     ];
 
+    // Deterministic-unique FAQ slice — every venue gets a different mix.
+    $venueArtists = [];
+    foreach ($events as $vEv) {
+        $vn = trim((string) ($vEv['name'] ?? ''));
+        if ($vn !== '' && !in_array($vn, $venueArtists, true) && count($venueArtists) < 4) {
+            $venueArtists[] = $vn;
+        }
+    }
+    $venueNextDate = $nextEvent !== null ? format_date_time($nextEvent['start_date'] ?? []) : '';
+    $venueData = [
+        '{name}' => (string) $venue['name'],
+        '{city}' => (string) ($venue['city'] ?: ($venue['country'] ?: 'this city')),
+        '{country}' => (string) $venue['country'],
+        '{count}' => (string) $totalUpcoming,
+        '{next_date}' => $venueNextDate,
+        '{top_artists}' => implode(', ', array_slice($venueArtists, 0, 3)),
+        '{site_name}' => (string) $config['site_name'],
+    ];
+    $faqs = array_merge($faqs, unique_faqs('venue', slugify((string) $venue['name']), $venueData, 6));
+
     $schemaGraph = [
         '@context' => 'https://schema.org',
         '@graph' => array_values(array_filter([
@@ -5039,6 +5147,15 @@ function render_league_page(array $config, string $slug): void
          'a' => 'Tickets range from upper-tier general admission and budget single-game seats through lower-bowl and courtside or sideline seating, plus premium club and suite options at most arenas. Specific tiers and availability are shown live on the partner checkout for each game.'],
     ];
 
+    // Deterministic-unique slice from the shared pool.
+    $leagueData = [
+        '{name}' => (string) $league['name'],
+        '{league_name}' => (string) $league['name'],
+        '{count}' => (string) $shown,
+        '{site_name}' => (string) $config['site_name'],
+    ];
+    $faqs = array_merge($faqs, unique_faqs('league', $slug, $leagueData, 5));
+
     $schemaGraph = [
         '@context' => 'https://schema.org',
         '@graph' => array_values(array_filter([
@@ -5312,6 +5429,17 @@ function render_team_page(array $config, array $team): void
          'a' => 'Season tickets are sold directly by the team, not through this listing. This page lists single-game tickets currently on resale and primary inventory — pick any individual game to see live prices and seat availability.'],
     ];
 
+    // Deterministic-unique slice from the shared pool.
+    $teamNextDate = $nextEvent !== null ? format_date_time($nextEvent['start_date'] ?? []) : '';
+    $teamData = [
+        '{name}' => $name,
+        '{count}' => (string) $total,
+        '{next_date}' => $teamNextDate,
+        '{league_name}' => $leagueSlug !== null ? strtoupper($leagueSlug) : ($sport !== '' ? $sport : 'the league'),
+        '{site_name}' => (string) $config['site_name'],
+    ];
+    $faqs = array_merge($faqs, unique_faqs('team', slugify($name), $teamData, 5));
+
     // SportsTeam.sport wants the sport, not the league ("Basketball", not "NBA").
     $league = $leagueSlug !== null ? league_from_slug($leagueSlug) : null;
     $schemaGraph = [
@@ -5543,6 +5671,25 @@ function render_monthly_events_page(HelloTicketsClient $client, array $config, i
          'a' => 'Listings, dates and prices are pulled live from our partner, so this page always reflects what is currently on sale for ' . $cityName . ' in ' . $monthLabel . '.'],
     ];
 
+    // Deterministic-unique slice — each {month}/{city} combo gets its own mix.
+    $monthMinPrice = null;
+    $monthCurrencyForFaq = (string) $config['currency'];
+    foreach ($eventPool as $mEv) {
+        $mp = (float) ($mEv['price_range']['min_price'] ?? 0);
+        if ($mp > 0 && ($monthMinPrice === null || $mp < $monthMinPrice)) {
+            $monthMinPrice = $mp;
+            $monthCurrencyForFaq = (string) ($mEv['price_range']['currency'] ?? $monthCurrencyForFaq);
+        }
+    }
+    $monthlyData = [
+        '{city}' => $cityName,
+        '{month}' => $monthLabel,
+        '{count}' => (string) $totalEvents,
+        '{min_price}' => $monthMinPrice !== null ? money($monthMinPrice, $monthCurrencyForFaq) : '',
+        '{site_name}' => (string) $config['site_name'],
+    ];
+    $faqs = array_merge($faqs, unique_faqs('monthly_events', $monthName . '-' . $citySlug, $monthlyData, 5));
+
     $schema = ['@context' => 'https://schema.org', '@graph' => [
         ['@type' => 'CollectionPage', 'name' => $pageTitle, 'url' => absolute_url($config, $canonical),
          'description' => 'All events in ' . $cityName . ' during ' . $monthLabel,
@@ -5621,6 +5768,15 @@ function render_venue_category_page(array $config, string $tmVenueId, string $ve
         ['q' => 'How often is this ' . $venueName . ' schedule updated?',
          'a' => 'Listings, dates and prices are pulled live from our ticketing partner, so this page always reflects the ' . strtolower($label) . ' currently on sale at ' . $venueName . '.'],
     ];
+    // Deterministic-unique slice — each {venue}/{category} pair gets its own mix.
+    $vcData = [
+        '{name}' => $venueName,
+        '{city}' => $cityName !== '' ? $cityName : 'this city',
+        '{category}' => strtolower($label),
+        '{count}' => (string) $total,
+        '{site_name}' => (string) $config['site_name'],
+    ];
+    $faqs = array_merge($faqs, unique_faqs('venue_category', $venueSlug . '-' . $categorySlug, $vcData, 5));
     $schema = ['@context'=>'https://schema.org','@graph'=>[
         ['@type'=>'CollectionPage','name'=>$title,'url'=>absolute_url($config,$canonical),'isPartOf'=>['@id'=>$config['site_url'].'/#website']],
         dubai_faq_schema($faqs),
