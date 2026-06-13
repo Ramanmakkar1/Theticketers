@@ -1289,22 +1289,6 @@ function resolve_artist_id(HelloTicketsClient $client, string $slug): ?int
         }
     }
 
-    // Last resort: scan the popularity-ordered list (cached hourly). Catches
-    // one-word accented names the name filter can't see — "rosalia" never
-    // matches "Rosalía" via name= because the filter is accent-sensitive.
-    for ($page = 1; $page <= 2; $page++) {
-        $performers = api_result(static fn() => $client->performers([
-            'page' => $page,
-            'limit' => 48,
-        ]), ['performers' => []])['performers'] ?? [];
-        foreach ($performers as $performer) {
-            if (slugify((string) ($performer['name'] ?? '')) === $slug) {
-                $id = (int) ($performer['id'] ?? 0);
-                slug_remember('artist', $slug, $id);
-                return $id > 0 ? $id : null;
-            }
-        }
-    }
     return null;
 }
 

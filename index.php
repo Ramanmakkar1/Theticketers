@@ -39,10 +39,30 @@ $client = new HelloTicketsClient(
     $config['cache_ttl']
 );
 
+// Output caching: serve cached HTML for 10 minutes, skipping all API calls.
+$ocPath = (string) parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+$ocQuery = (string) ($_SERVER['QUERY_STRING'] ?? '');
+$ocSkip = isset($_GET['nocache']) || $_SERVER['REQUEST_METHOD'] !== 'GET';
+$ocDir = $config['cache_dir'] . '/html';
+$ocFile = $ocDir . '/' . md5($ocPath . '?' . $ocQuery) . '.html';
+$ocTtl = 600;
+
+if (!$ocSkip && is_file($ocFile) && (time() - filemtime($ocFile)) < $ocTtl) {
+    readfile($ocFile);
+    exit;
+}
+
+ob_start();
 try {
     dispatch($client, $config, $dubaiContent, $destinationsContent);
 } catch (Throwable $exception) {
     error_log('[app] ' . $exception->getMessage());
     render_error_page($config, 500, 'Something went wrong', 'We could not load the ticket data right now. Please try again in a moment.');
+}
+$ocHtml = ob_get_flush();
+
+if (!$ocSkip && $ocHtml !== false && http_response_code() === 200 && strlen($ocHtml) > 200) {
+    if (!is_dir($ocDir)) { @mkdir($ocDir, 0775, true); }
+    @file_put_contents($ocFile, $ocHtml);
 }
 

@@ -126,12 +126,19 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
                 return;
             }
         }
-        // Clean-name resolution first so artists like "maroon-5" never get mistaken
-        // for a legacy "{slug}-{id}" URL; numeric tails are only tried after it fails.
+        // Fast path: if the TM slug map already knows this artist, go straight to
+        // TM data — skips all slow HT API name searches.
+        $knownTmId = tm_artist_slug_lookup($match[1]);
+        if ($knownTmId !== null) {
+            $tmClient = tm_client($config);
+            $tmData = $tmClient !== null ? api_result(static fn() => $tmClient->attraction($knownTmId), []) : [];
+            if (!empty($tmData['id'])) {
+                render_artist_detail_page($client, $config, 0, $tmData);
+                return;
+            }
+        }
         $performerId = resolve_artist_id($client, $match[1]) ?? legacy_id_from_slug($match[1]);
         if ($performerId === null) {
-            // HelloTickets doesn't know this artist — Ticketmaster often does (NHL
-            // teams, US tours). TM-only artists get the same page, fed by TM data.
             $tmOnly = tm_artist_by_slug($config, $match[1]);
             if ($tmOnly !== null) {
                 render_artist_detail_page($client, $config, 0, $tmOnly);
