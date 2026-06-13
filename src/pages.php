@@ -127,12 +127,13 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
             }
         }
         // Fast path: if the TM slug map already knows this artist, go straight to
-        // TM data — skips all slow HT API name searches.
+        // TM data — skips all slow HT API name searches. Verify the slug matches
+        // to avoid showing wrong artists from stale/bad index mappings.
         $knownTmId = tm_artist_slug_lookup($match[1]);
         if ($knownTmId !== null) {
             $tmClient = tm_client($config);
             $tmData = $tmClient !== null ? api_result(static fn() => $tmClient->attraction($knownTmId), []) : [];
-            if (!empty($tmData['id'])) {
+            if (!empty($tmData['id']) && slugify((string) ($tmData['name'] ?? '')) === $match[1]) {
                 render_artist_detail_page($client, $config, 0, $tmData);
                 return;
             }
@@ -2552,7 +2553,93 @@ function render_artist_detail_page(HelloTicketsClient $client, array $config, in
                 </div>
             </section>
         <?php endif; ?>
+        <?php
+        // --- Rich content block: genre, about, tour overview ---
+        $genre = (string) ($performer['category']['name'] ?? $performer['classifications'][0]['genre']['name'] ?? '');
+        $subGenre = (string) ($performer['classifications'][0]['subGenre']['name'] ?? '');
+        $segment = (string) ($performer['classifications'][0]['segment']['name'] ?? '');
+        $venueNames = [];
+        foreach ($events as $ev) {
+            $vn = trim((string) ($ev['venue']['name'] ?? ''));
+            if ($vn !== '' && !in_array($vn, $venueNames, true)) { $venueNames[] = $vn; }
+        }
+        ?>
+        <section class="section-band muted">
+            <div class="container artist-about">
+                <h2>About <?= e($name) ?></h2>
+                <?php if ($events !== []): ?>
+                    <p><?= e($name) ?> has <?= e((string) count($events)) ?> upcoming show<?= count($events) === 1 ? '' : 's' ?> across <?= e((string) count($tourCities)) ?> <?= count($tourCities) === 1 ? 'city' : 'cities' ?>.
+                    <?php if ($genre !== '' && $genre !== 'Undefined'): ?>
+                        Known for <?= e(strtolower($genre)) ?><?= $subGenre !== '' && $subGenre !== 'Undefined' ? ' / ' . e(strtolower($subGenre)) : '' ?> performances,
+                    <?php endif; ?>
+                    <?= e($name) ?> is currently touring with dates on sale now. Every listing on this page shows real-time pricing direct from our official ticketing partners.</p>
+                    <?php if (count($venueNames) > 1): ?>
+                        <p>This tour includes stops at <?= e(implode(', ', array_slice($venueNames, 0, 6))) ?><?= count($venueNames) > 6 ? ' and ' . e((string) (count($venueNames) - 6)) . ' more venues' : '' ?>. Select any date below to see live seat availability and instant e-ticket delivery.</p>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <p><?= e($name) ?> does not have any upcoming shows on sale right now. This page updates automatically — when new <?= e($name) ?> tour dates are announced and tickets go on sale, they will appear here with live pricing from our official ticketing partners.</p>
+                    <p>In the meantime, you can browse <a href="/artists">all artists currently on tour</a> or check back soon for updates.</p>
+                <?php endif; ?>
+            </div>
+        </section>
+        <?php if ($events !== []): ?>
+        <section class="section-band">
+            <div class="container">
+                <h2><?= e($name) ?> Tour Overview</h2>
+                <div class="artist-tour-overview">
+                    <div class="tour-stat"><strong><?= e((string) count($events)) ?></strong><span>Total Shows</span></div>
+                    <div class="tour-stat"><strong><?= e((string) count($tourCities)) ?></strong><span>Cities</span></div>
+                    <div class="tour-stat"><strong><?= e((string) count($venueNames)) ?></strong><span>Venues</span></div>
+                    <?php
+                    $minP = null; $minC = '';
+                    foreach ($events as $ev) {
+                        $p = (float) ($ev['price_range']['min_price'] ?? 0);
+                        if ($p > 0 && ($minP === null || $p < $minP)) { $minP = $p; $minC = (string) ($ev['price_range']['currency'] ?? $config['currency']); }
+                    }
+                    if ($minP !== null): ?>
+                        <div class="tour-stat"><strong><?= e(money($minP, $minC)) ?></strong><span>From</span></div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </section>
+        <?php endif; ?>
+        <?php
+        // Tour country links
+        $tourCountryCodes = [];
+        foreach ($events as $ev) {
+            $cc = (string) ($ev['venue']['country_code'] ?? '');
+            if ($cc !== '' && !isset($tourCountryCodes[$cc])) { $tourCountryCodes[$cc] = true; }
+        }
+        $countryMap = ['US' => 'usa', 'CA' => 'canada', 'GB' => 'uk', 'AU' => 'australia'];
+        $countryLabels = ['usa' => 'USA', 'canada' => 'Canada', 'uk' => 'UK', 'australia' => 'Australia'];
+        $tourCountryLinks = [];
+        foreach ($countryMap as $cc => $cs) {
+            if (isset($tourCountryCodes[$cc])) { $tourCountryLinks[$cs] = $countryLabels[$cs]; }
+        }
+        if (count($tourCountryLinks) > 0): ?>
+        <section class="section-band muted">
+            <div class="container">
+                <h2><?= e($name) ?> by Country</h2>
+                <p>See <?= e($name) ?> tour dates filtered by country:</p>
+                <ul class="more-cities-list">
+                    <?php foreach ($tourCountryLinks as $cs => $cl): ?>
+                        <li><a href="<?= e(artist_path($performer) . '/' . $cs . '-tour') ?>"><?= e($name) ?> <?= e($cl) ?> Tour</a></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        </section>
+        <?php endif; ?>
         <?php dubai_render_faq($faqs, $name . ' Ticket FAQs'); ?>
+        <section class="section-band">
+            <div class="container artist-seo-content">
+                <h2>Buy <?= e($name) ?> Tickets</h2>
+                <p>Looking for <?= e($name) ?> tickets? You are in the right place. This page shows every confirmed <?= e($name) ?> date with live ticket availability and real-time pricing from our official ticketing partners. When you find a show, click through to complete your purchase on the partner's secure checkout — tickets are delivered instantly by email.</p>
+                <p>Prices shown are set by the ticketing partner and may change as the show date approaches. We recommend booking early for the best selection of seats and pricing. All dates update automatically, so you will always see the most current schedule.</p>
+                <?php if ($tourCities !== []): ?>
+                    <p><?= e($name) ?> is currently performing in <?= e(implode(', ', array_slice($tourCities, 0, 10))) ?><?= count($tourCities) > 10 ? ' and more' : '' ?>. Select a city above or pick any date to view available seats and prices.</p>
+                <?php endif; ?>
+            </div>
+        </section>
         <?php
     }, $schemaGraph);
 }
@@ -3074,6 +3161,9 @@ function artist_faqs(array $performer, array $events, array $config): array
     }
 
     $faqs[] = ['q' => 'How do I buy official ' . $name . ' tickets?', 'a' => 'Pick a date on this page and complete checkout on our official ticketing partner\'s secure site. Tickets are delivered instantly by email, and prices shown are live.'];
+    $faqs[] = ['q' => 'Are ' . $name . ' tickets refundable?', 'a' => 'Refund policies depend on the ticketing partner and the specific event. Check the terms on the checkout page before completing your purchase. Most events allow transfers if you cannot attend.'];
+    $faqs[] = ['q' => 'When do new ' . $name . ' tour dates go on sale?', 'a' => 'New dates appear on this page automatically as soon as tickets are released by the artist\'s management. Bookmark this page and check back regularly for updates.'];
+    $faqs[] = ['q' => 'Can I get ' . $name . ' tickets at face value?', 'a' => 'All prices on this page come directly from our official ticketing partner\'s live inventory. Prices vary by venue, seat location and demand. Buying early typically offers the best selection and pricing.'];
 
     return $faqs;
 }
