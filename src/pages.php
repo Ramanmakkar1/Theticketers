@@ -4148,6 +4148,9 @@ function render_phase_one_sitemap(HelloTicketsClient $client, array $config, arr
             $add($path);
         }
         foreach (array_merge(seo_index_urls('city_dates'), seo_index_urls('city_categories')) as $path) {
+            if (!phase_one_city_sitemap_path_is_stable($path)) {
+                continue;
+            }
             $add($path);
         }
     } elseif ($bucket === 'monthly') {
@@ -4168,6 +4171,11 @@ function phase_one_event_sitemap_path_is_fresh(string $path): bool
     }
     $minEventDate = (new DateTimeImmutable('today'))->modify('+3 days')->format('Y-m-d');
     return $match[1] >= $minEventDate;
+}
+
+function phase_one_city_sitemap_path_is_stable(string $path): bool
+{
+    return !str_starts_with($path, '/events/today-in-');
 }
 
 function sitemap_xml_from_entries(array $entries): string
@@ -5634,12 +5642,14 @@ function render_monthly_events_page(HelloTicketsClient $client, array $config, i
     $page = page_number();
     $perPage = 24;
 
-    $from = $targetStart->format('Y-m-d\\TH:i:s');
+    $from = $targetStart->format('Y-m-d\\T00:00:00');
     $to = $targetEnd->format('Y-m-d\\T23:59:59');
+    $htFrom = $from . 'Z';
+    $htTo = $to . 'Z';
 
     $ht = api_result(static fn() => $client->performances(array_merge([
         'limit' => 48, 'page' => 1, 'is_sellable' => 'true', 'city_id' => $cityId,
-    ], ['from' => $from, 'to' => $to])), ['performances' => []])['performances'] ?? [];
+    ], ['from' => $htFrom, 'to' => $htTo])), ['performances' => []])['performances'] ?? [];
 
     $tm = tm_events_for_city_deep($config, $cityName, (string) ($city['country_code'] ?? ''), [
         'localStartDateTime' => $from . ',' . $to,
@@ -5751,14 +5761,14 @@ function render_venue_category_page(array $config, string $tmVenueId, string $ve
     $tmClass = ['concerts'=>'Music','sports'=>'Sports','theatre'=>'Arts & Theatre'];
     $label = $labels[$categorySlug] ?? ucfirst($categorySlug);
     $tmClient = new TicketmasterClient($config['tm_api_key'] ?? '', $config['cache_dir'], $config['cache_ttl']);
-    $venueInfo = api_result(static fn() => $tmClient->venue($tmVenueId), null);
-    if ($venueInfo === null) { render_error_page($config, 404, 'Venue not found', 'This venue is not available.'); return; }
+    $venueInfo = api_result(static fn() => $tmClient->venue($tmVenueId), []);
+    if ($venueInfo === []) { render_error_page($config, 404, 'Venue not found', 'This venue is not available.'); return; }
     $venueName = (string) ($venueInfo['name'] ?? ucwords(str_replace('-',' ',$venueSlug)));
     $cityName = (string) ($venueInfo['city']['name'] ?? '');
     $page = page_number(); $perPage = 24; $events = [];
     for ($p = 1; $p <= 3; $p++) {
-        $data = api_result(static fn() => $tmClient->events(['venueId'=>$tmVenueId, 'classificationName'=>$tmClass[$categorySlug]??'', 'size'=>50, 'page'=>$p-1, 'sort'=>'date,asc']), null);
-        if ($data === null) break;
+        $data = api_result(static fn() => $tmClient->events(['venueId'=>$tmVenueId, 'classificationName'=>$tmClass[$categorySlug]??'', 'size'=>50, 'page'=>$p-1, 'sort'=>'date,asc']), []);
+        if ($data === []) break;
         foreach ($data['_embedded']['events'] ?? [] as $ev) { $events[] = tm_normalize_event($ev, $config); }
         if (($data['page']['totalPages'] ?? 1) <= $p) break;
     }
@@ -5834,7 +5844,7 @@ function render_artist_country_tour(HelloTicketsClient $client, array $config, s
     $performerId = resolve_artist_id($client, $artistSlug) ?? legacy_id_from_slug($artistSlug);
     $artistName = '';
     if ($performerId !== null && $performerId > 0) {
-        $performer = api_result(static fn() => $client->performer($performerId), null);
+        $performer = api_result(static fn() => $client->performer($performerId), []);
         $artistName = (string) ($performer['name'] ?? '');
     }
     if ($artistName === '') {
@@ -5846,8 +5856,8 @@ function render_artist_country_tour(HelloTicketsClient $client, array $config, s
     $events = []; $tmArtistId = tm_artist_slug_lookup($artistSlug);
     if ($tmArtistId !== null && $tmArtistId !== '') {
         for ($p = 0; $p < 3; $p++) {
-            $data = api_result(static fn() => $tmClient->events(['attractionId'=>$tmArtistId,'countryCode'=>$countryCode,'size'=>50,'page'=>$p,'sort'=>'date,asc']), null);
-            if ($data === null) break;
+            $data = api_result(static fn() => $tmClient->events(['attractionId'=>$tmArtistId,'countryCode'=>$countryCode,'size'=>50,'page'=>$p,'sort'=>'date,asc']), []);
+            if ($data === []) break;
             foreach ($data['_embedded']['events'] ?? [] as $ev) { $events[] = tm_normalize_event($ev, $config); }
             if (($data['page']['totalPages'] ?? 1) <= $p + 1) break;
         }

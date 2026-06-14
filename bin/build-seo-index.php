@@ -74,6 +74,9 @@ $maps = [
 
 $seen = [];
 $knownArtistSlugs = [];
+$cityMonthlyMonths = [];
+$venueCategorySlugs = [];
+$artistTourCountries = [];
 $add = static function (string $bucket, string $path, int $limit = PHP_INT_MAX) use (&$urls, &$seen): void {
     if ($path === '' || count($urls[$bucket]) >= $limit) {
         return;
@@ -107,14 +110,31 @@ if (function_exists('team_seed_list')) {
     }
 }
 
-$addEventEntities = static function (array $event) use (&$add, &$teamSlugs, &$knownArtistSlugs, &$maps, $config, $artistLimit, $artistCityLimit, $venueLimit): void {
+$addEventEntities = static function (array $event) use (&$add, &$teamSlugs, &$knownArtistSlugs, &$maps, &$venueCategorySlugs, &$artistTourCountries, $config, $artistLimit, $artistCityLimit, $venueLimit): void {
     $cityName = trim((string) ($event['venue']['city'] ?? ''));
     $citySlug = slugify($cityName);
+    $countryCode = strtoupper((string) ($event['venue']['country_code'] ?? ''));
+    if ($countryCode === '' && !empty($event['venue']['country'])) {
+        $countryCode = iso_country_code((string) $event['venue']['country']);
+    }
+    $tourCountry = ['US' => 'usa', 'CA' => 'canada', 'GB' => 'uk', 'AU' => 'australia'][$countryCode] ?? '';
+    $categoryName = strtolower((string) ($event['category']['name'] ?? ''));
+    $venueCategory = '';
+    if (str_contains($categoryName, 'sport')) {
+        $venueCategory = 'sports';
+    } elseif (str_contains($categoryName, 'theatre') || str_contains($categoryName, 'theater') || str_contains($categoryName, 'arts')) {
+        $venueCategory = 'theatre';
+    } elseif (str_contains($categoryName, 'music') || str_contains($categoryName, 'concert')) {
+        $venueCategory = 'concerts';
+    }
 
     if (!empty($event['venue']['tm_id'])) {
         $venueSlug = slugify((string) ($event['venue']['name'] ?? ''));
         if ($venueSlug !== 'tickets') {
             $maps['venue'][$venueSlug] = (string) $event['venue']['tm_id'];
+            if ($venueCategory !== '') {
+                $venueCategorySlugs[$venueSlug][$venueCategory] = true;
+            }
         }
         $venuePath = tm_venue_path([
             'tm_id' => (string) $event['venue']['tm_id'],
@@ -149,6 +169,9 @@ $addEventEntities = static function (array $event) use (&$add, &$teamSlugs, &$kn
 
         if (!isset($teamSlugs[$artistSlug])) {
             $add('artists', $artistPath, $artistLimit);
+            if ($tourCountry !== '') {
+                $artistTourCountries[$artistSlug][$tourCountry] = true;
+            }
         }
         if ($citySlug !== '' && resolve_city_id_by_slug($config, $citySlug) !== null) {
             $add('artist_cities', $artistPath . '/' . $citySlug, $artistCityLimit);
@@ -286,14 +309,25 @@ foreach ($cityTargets as $cityId => $city) {
         'city_id' => (int) $cityId,
     ], date_params(null))), ['performances' => []])['performances'] ?? [];
     $tm = tm_events_for_city_deep($config, $cityName, (string) ($city['country_code'] ?? ''), [], 3, 100);
-    foreach (array_slice(city_event_pool($ht, $tm, $config), 0, 300) as $event) {
+    $cityPool = city_event_pool($ht, $tm, $config);
+    foreach ($cityPool as $event) {
+        $eventDate = (string) ($event['start_date']['local_date'] ?? '');
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $eventDate) !== 1) {
+            continue;
+        }
+        $eventMonth = strtolower((new DateTimeImmutable($eventDate))->format('F'));
+        $cityMonthlyMonths[(int) $cityId][$eventMonth] = true;
+    }
+    foreach (array_slice($cityPool, 0, 300) as $event) {
         $addEventEntities($event);
     }
 
     foreach (['today' => 1, 'week' => 3] as $dateKey => $minEvents) {
         $events = city_date_events($client, $config, (int) $cityId, (string) $dateKey, 1);
         if (count($events) >= $minEvents) {
-            $add('city_dates', city_date_path($city, (string) $dateKey));
+            if ($dateKey !== 'today') {
+                $add('city_dates', city_date_path($city, (string) $dateKey));
+            }
             foreach (array_slice($events, 0, 120) as $event) {
                 $addEventEntities($event);
             }
@@ -326,27 +360,25 @@ foreach ($cityTargets as $cityId => $city) {
 }
 
 // Monthly event pages (evergreen)
-$monthNames = ['january','february','march','april','may','june','july','august','september','october','november','december'];
 foreach ($cityTargets as $cityId => $city) {
     $cityName = (string) ($city['name'] ?? '');
     if ($cityName === '') continue;
-    foreach ($monthNames as $mn) {
+    foreach (array_keys($cityMonthlyMonths[(int) $cityId] ?? []) as $mn) {
         $add('monthly_events', monthly_events_path($city, $mn), 900);
     }
 }
 
 // Venue x category
-foreach (array_keys($maps['venue']) as $vSlug) {
-    foreach (['concerts','sports','theatre'] as $vCat) {
+foreach ($venueCategorySlugs as $vSlug => $categories) {
+    foreach (array_keys($categories) as $vCat) {
         $add('venue_categories', '/venue/' . $vSlug . '/' . $vCat, 3000);
     }
 }
 
 // Artist tour by country
-$tourCountries = ['usa','canada','uk','australia'];
-foreach (array_keys($knownArtistSlugs) as $aSlug) {
+foreach ($artistTourCountries as $aSlug => $tourCountries) {
     if (isset($teamSlugs[$aSlug])) continue;
-    foreach ($tourCountries as $tc) {
+    foreach (array_keys($tourCountries) as $tc) {
         $add('artist_tours', '/artist/' . $aSlug . '/' . $tc . '-tour', 2000);
     }
 }
