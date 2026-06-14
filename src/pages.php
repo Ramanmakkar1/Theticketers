@@ -276,7 +276,7 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
     }
 
     if ($path === '/sitemap.xml' || $path === '/sitemap-index.xml') {
-        render_sitemap_index($config);
+        render_sitemap_index($config, $destinationsContent);
         return;
     }
 
@@ -4069,21 +4069,27 @@ function render_ai_index_json(array $config, array $destinationsContent): void
     echo json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 }
 
-function render_sitemap_index(array $config): void
+function render_sitemap_index(array $config, array $destinationsContent = []): void
 {
     header('Content-Type: application/xml; charset=utf-8');
     $lastmod = content_last_modified_date();
-    $sitemaps = [
-        '/sitemap-static.xml',
-        '/sitemap-events.xml',
-        '/sitemap-artists.xml',
-        '/sitemap-artist-cities.xml',
-        '/sitemap-venues.xml',
-        '/sitemap-cities.xml',
-        '/sitemap-monthly.xml',
-        '/sitemap-venue-categories.xml',
-        '/sitemap-artist-tours.xml',
+    $sitemaps = [];
+    $bucketPaths = [
+        'static' => '/sitemap-static.xml',
+        'events' => '/sitemap-events.xml',
+        'artists' => '/sitemap-artists.xml',
+        'artist-cities' => '/sitemap-artist-cities.xml',
+        'venues' => '/sitemap-venues.xml',
+        'cities' => '/sitemap-cities.xml',
+        'monthly' => '/sitemap-monthly.xml',
+        'venue-categories' => '/sitemap-venue-categories.xml',
+        'artist-tours' => '/sitemap-artist-tours.xml',
     ];
+    foreach ($bucketPaths as $bucket => $path) {
+        if (phase_one_sitemap_bucket_has_urls($bucket, $config, $destinationsContent)) {
+            $sitemaps[] = $path;
+        }
+    }
 
     $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
     $xml .= "<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
@@ -4092,6 +4098,36 @@ function render_sitemap_index(array $config): void
     }
     $xml .= "</sitemapindex>\n";
     echo $xml;
+}
+
+function phase_one_sitemap_bucket_has_urls(string $bucket, array $config, array $destinationsContent): bool
+{
+    return match ($bucket) {
+        'static' => true,
+        'events' => sitemap_any(seo_index_urls('events'), static fn(string $path): bool => phase_one_event_sitemap_path_is_fresh($path)),
+        'artists' => seo_index_urls('artists') !== [] || artist_intent_store() !== [],
+        'artist-cities' => seo_index_urls('artist_cities') !== [],
+        'venues' => seo_index_urls('venues') !== [],
+        'cities' => phase_one_city_sitemap_paths($config, $destinationsContent) !== []
+            || sitemap_any(
+                array_merge(seo_index_urls('city_dates'), seo_index_urls('city_categories')),
+                static fn(string $path): bool => phase_one_city_sitemap_path_is_stable($path)
+            ),
+        'monthly' => seo_index_urls('monthly_events') !== [],
+        'venue-categories' => seo_index_urls('venue_categories') !== [],
+        'artist-tours' => seo_index_urls('artist_tours') !== [],
+        default => false,
+    };
+}
+
+function sitemap_any(array $items, callable $predicate): bool
+{
+    foreach ($items as $item) {
+        if ($predicate((string) $item)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function render_phase_one_sitemap(HelloTicketsClient $client, array $config, array $destinationsContent, string $bucket): void
@@ -4185,10 +4221,24 @@ function sitemap_xml_from_entries(array $entries): string
     foreach ($entries as $loc => $lastmod) {
         $xml .= "  <url><loc>" . e($loc) . "</loc>"
             . ($lastmod !== '' ? "<lastmod>" . e($lastmod) . "</lastmod>" : '')
+            . "<changefreq>" . e(sitemap_changefreq_for_url((string) $loc)) . "</changefreq>"
+            . "<priority>1.0</priority>"
             . "</url>\n";
     }
     $xml .= "</urlset>\n";
     return $xml;
+}
+
+function sitemap_changefreq_for_url(string $loc): string
+{
+    $path = (string) (parse_url($loc, PHP_URL_PATH) ?: '/');
+    if (str_starts_with($path, '/event/') || str_starts_with($path, '/events/this-week')) {
+        return 'daily';
+    }
+    if (str_starts_with($path, '/artist/') || str_starts_with($path, '/venue/') || str_starts_with($path, '/city/')) {
+        return 'weekly';
+    }
+    return 'monthly';
 }
 
 function phase_one_static_sitemap_paths(HelloTicketsClient $client, array $config, array $destinationsContent): array
