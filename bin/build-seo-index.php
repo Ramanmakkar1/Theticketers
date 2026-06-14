@@ -14,6 +14,7 @@ declare(strict_types=1);
  * Useful knobs:
  *   php bin/build-seo-index.php --events=4000 --artists=7000 --cities=75
  *   php bin/build-seo-index.php --venues=3000 --artist-cities=12000
+ *   php bin/build-seo-index.php --event-min-days=3
  */
 
 $root = dirname(__DIR__);
@@ -30,6 +31,7 @@ $opts = getopt('', [
     'venues::',
     'artist-cities::',
     'city-categories::',
+    'event-min-days::',
     'quiet',
 ]);
 
@@ -39,6 +41,8 @@ $cityLimit = max(1, (int) ($opts['cities'] ?? 75));
 $venueLimit = max(0, (int) ($opts['venues'] ?? 3000));
 $artistCityLimit = max(0, (int) ($opts['artist-cities'] ?? 12000));
 $cityCategoryLimit = max(0, (int) ($opts['city-categories'] ?? 500));
+$eventMinDays = max(0, (int) ($opts['event-min-days'] ?? 3));
+$minEventDate = (new DateTimeImmutable('today'))->modify('+' . $eventMinDays . ' days')->format('Y-m-d');
 $quiet = isset($opts['quiet']);
 
 $client = new HelloTicketsClient(
@@ -86,6 +90,14 @@ $say = static function (string $line) use ($quiet): void {
     if (!$quiet) {
         fwrite(STDERR, $line . "\n");
     }
+};
+
+$eventSitemapDate = static function (array $event) use ($minEventDate): ?string {
+    $eventDate = (string) ($event['start_date']['local_date'] ?? '');
+    if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $eventDate) !== 1) {
+        return null;
+    }
+    return $eventDate >= $minEventDate ? $eventDate : null;
 };
 
 $teamSlugs = [];
@@ -146,8 +158,10 @@ $addEventEntities = static function (array $event) use (&$add, &$teamSlugs, &$kn
 
 // Local event detail pages: HelloTickets only. TM events currently resolve to the
 // partner URL, not a local /event/{slug} detail page.
-$say('Collecting HelloTickets event pages...');
-for ($page = 1; count($urls['events']) < $eventLimit && $page <= 200; $page++) {
+$say('Collecting HelloTickets event pages starting ' . $minEventDate . ' or later...');
+$eventCandidates = [];
+$eventCandidateDates = [];
+for ($page = 1; count($eventCandidates) < $eventLimit && $page <= 200; $page++) {
     $data = api_result(static fn() => $client->performances(array_merge([
         'limit' => 48,
         'page' => $page,
@@ -161,13 +175,34 @@ for ($page = 1; count($urls['events']) < $eventLimit && $page <= 200; $page++) {
         if ((int) ($event['id'] ?? 0) <= 0) {
             continue;
         }
-        $maps['event'][event_slug($event)] = (int) $event['id'];
-        $add('events', event_path($event), $eventLimit);
         $addEventEntities($event);
-        if (count($urls['events']) >= $eventLimit) {
+
+        $eventDate = $eventSitemapDate($event);
+        if ($eventDate === null) {
+            continue;
+        }
+
+        $eventSlug = event_slug($event);
+        if ($eventSlug === '' || $eventSlug === 'tickets') {
+            continue;
+        }
+
+        // Evergreen event URLs collapse repeat nights in the same city. Keep the
+        // earliest qualifying future date behind that URL so the page renders the
+        // next sellable show instead of a later duplicate.
+        if (!isset($eventCandidates[$eventSlug]) || $eventDate < $eventCandidateDates[$eventSlug]) {
+            $eventCandidates[$eventSlug] = $event;
+            $eventCandidateDates[$eventSlug] = $eventDate;
+        }
+
+        if (count($eventCandidates) >= $eventLimit) {
             break;
         }
     }
+}
+foreach ($eventCandidates as $eventSlug => $event) {
+    $maps['event'][$eventSlug] = (int) $event['id'];
+    $add('events', event_path($event), $eventLimit);
 }
 $say('Events: ' . count($urls['events']));
 
@@ -336,6 +371,8 @@ $payload = [
         'venues' => $venueLimit,
         'artist_cities' => $artistCityLimit,
         'city_categories' => $cityCategoryLimit,
+        'event_min_days' => $eventMinDays,
+        'event_min_date' => $minEventDate,
     ],
     'counts' => array_map('count', $urls),
     'maps' => $maps,

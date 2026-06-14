@@ -1009,9 +1009,16 @@ function seo_index_urls(string $bucket): array
 }
 
 /**
- * Clean descriptive event slug: name + city + date ("bad-bunny-san-juan-2026-07-18").
- * City and date make same-name shows (tours, repeat nights) unique without exposing
- * database ids, and read like a real search query.
+ * Clean, EVERGREEN event slug: name + city ("bad-bunny-san-juan"). Deliberately
+ * carries NO date — the URL must outlive any single show date so the page keeps
+ * accruing ranking signal across repeat tours instead of going stale the day after
+ * the event. City disambiguates same-name shows across different cities without
+ * exposing database ids, and reads like a real search query. Same-name shows in the
+ * SAME city (residencies, repeat tour nights) intentionally collapse onto one
+ * evergreen page rather than splitting signal across thin per-date duplicates.
+ *
+ * Legacy dated slugs ("...-2026-07-18") still resolve (see resolve_event_id) and
+ * 301 to this clean form via the self-canonical redirect in render_event_detail_page.
  */
 function event_slug(array $performance): string
 {
@@ -1022,10 +1029,6 @@ function event_slug(array $performance): string
         if ($city !== 'tickets' && !slug_contains_word($slug, $city)) {
             $slug .= '-' . $city;
         }
-    }
-    $date = (string) ($performance['start_date']['local_date'] ?? '');
-    if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $date) === 1) {
-        $slug .= '-' . $date;
     }
     return $slug;
 }
@@ -1308,6 +1311,10 @@ function resolve_event_id(HelloTicketsClient $client, string $slug): ?int
         return null; // generated slugs are clipped at 70 — longer can't be real
     }
 
+    // Clean slugs are dateless; legacy indexed URLs may still carry a "-YYYY-MM-DD"
+    // tail. Strip it to recover the evergreen base and use the date to narrow the
+    // API search — but match against the dateless base, since event_slug() no longer
+    // emits the date. The matched event then 301s to the clean URL upstream.
     $base = $slug;
     $dateParams = [];
     if (preg_match('/-(\d{4}-\d{2}-\d{2})$/', $slug, $match) === 1) {
@@ -1316,9 +1323,8 @@ function resolve_event_id(HelloTicketsClient $client, string $slug): ?int
     }
 
     // Shorten the needle word by word (the tail carries city words the API name
-    // doesn't contain), down to a single word, capped at 6 probes. The slug's own
-    // date keeps result sets tiny, and every candidate is verified by rebuilding
-    // its clean slug, so short needles can't mismatch.
+    // doesn't contain), down to a single word, capped at 6 probes. Every candidate
+    // is verified by rebuilding its clean slug, so short needles can't mismatch.
     $words = explode('-', $base);
     $probes = 0;
     for ($take = count($words); $take >= 1 && $probes < 6; $take--, $probes++) {
@@ -1332,7 +1338,7 @@ function resolve_event_id(HelloTicketsClient $client, string $slug): ?int
             'limit' => 48,
         ], $dateParams)), ['performances' => []])['performances'] ?? [];
         foreach ($performances as $performance) {
-            if (event_slug($performance) === $slug) {
+            if (event_slug($performance) === $base) {
                 $id = (int) ($performance['id'] ?? 0);
                 slug_remember('event', $slug, $id);
                 return $id > 0 ? $id : null;

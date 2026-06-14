@@ -4117,6 +4117,9 @@ function render_phase_one_sitemap(HelloTicketsClient $client, array $config, arr
         }
     } elseif ($bucket === 'events') {
         foreach (seo_index_urls('events') as $path) {
+            if (!phase_one_event_sitemap_path_is_fresh($path)) {
+                continue;
+            }
             $add($path);
         }
     } elseif ($bucket === 'artists') {
@@ -4156,6 +4159,15 @@ function render_phase_one_sitemap(HelloTicketsClient $client, array $config, arr
     }
 
     echo sitemap_xml_from_entries($entries);
+}
+
+function phase_one_event_sitemap_path_is_fresh(string $path): bool
+{
+    if (preg_match('/-(\d{4}-\d{2}-\d{2})$/', $path, $match) !== 1) {
+        return true;
+    }
+    $minEventDate = (new DateTimeImmutable('today'))->modify('+3 days')->format('Y-m-d');
+    return $match[1] >= $minEventDate;
 }
 
 function sitemap_xml_from_entries(array $entries): string
