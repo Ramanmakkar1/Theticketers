@@ -1122,7 +1122,12 @@ function event_path(array $performance): string
     $slug = event_slug($performance);
     $tmId = (string) ($performance['tm_id'] ?? '');
     if ($tmId !== '') {
-        return '/event/' . $slug . '-tm-' . bin2hex($tmId);
+        // Ticketmaster ids are already URL-safe ([A-Za-z0-9_]); emit the raw id so
+        // the URL stays short and keyword-led. bin2hex() doubled the id length for
+        // no SEO gain. Anything outside that set (or implausibly short) falls back to
+        // hex so the decoder's hyphen-free tail extraction can't misread it.
+        $token = preg_match('/^[A-Za-z0-9_]{10,}$/', $tmId) === 1 ? $tmId : bin2hex($tmId);
+        return '/event/' . $slug . '-tm-' . $token;
     }
 
     slug_remember('event', $slug, (int) ($performance['id'] ?? 0));
@@ -1131,11 +1136,30 @@ function event_path(array $performance): string
 
 function tm_event_id_from_slug(string $slug): ?string
 {
-    if (preg_match('/-tm-([a-f0-9]{8,})$/', strtolower($slug), $match) !== 1) {
+    // The id is the final hyphen-free segment after the last "-tm-". slugify() only
+    // ever emits lowercase [a-z0-9-], so a real TM id (mixed case / underscores, 10+
+    // chars) can't collide with a keyword slug word.
+    $pos = strrpos(strtolower($slug), '-tm-');
+    if ($pos === false) {
         return null;
     }
-    $decoded = @hex2bin($match[1]);
-    return is_string($decoded) && $decoded !== '' ? $decoded : null;
+    $token = substr($slug, $pos + 4); // original case preserved (lengths match)
+
+    // Legacy form: lowercase hex of even length that decodes to a valid id. These
+    // 301 to the new short form via the self-canonical redirect on the detail page.
+    if (preg_match('/^[a-f0-9]+$/', $token) === 1 && strlen($token) % 2 === 0) {
+        $decoded = @hex2bin($token);
+        if (is_string($decoded) && preg_match('/^[A-Za-z0-9_]{6,}$/', $decoded) === 1) {
+            return $decoded;
+        }
+    }
+
+    // New form: the raw, URL-safe Ticketmaster id.
+    if (preg_match('/^[A-Za-z0-9_]{10,}$/', $token) === 1) {
+        return $token;
+    }
+
+    return null;
 }
 
 /** ISO 3166-1 alpha-2 code for the country names our two APIs return; Google
