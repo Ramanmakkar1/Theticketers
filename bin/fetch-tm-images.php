@@ -66,8 +66,8 @@ function say(bool $quiet, string $line): void
     }
 }
 
-/** GET a Ticketmaster Discovery endpoint; backs off once on 429. */
-function tm_get(string $path, array $params): ?array
+/** GET a Ticketmaster Discovery endpoint; backs off on 429 with bounded exponential retry. */
+function tm_get(string $path, array $params, int $attempt = 0): ?array
 {
     global $TM_KEY;
     $params['apikey'] = $TM_KEY;
@@ -83,36 +83,17 @@ function tm_get(string $path, array $params): ?array
     $code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
     if ($code === 429) {
-        sleep(1);
-        $params2 = $params;
-        unset($params2['apikey']);
-        return tm_get($path, $params2);
+        if ($attempt >= 4) {
+            return null;
+        }
+        sleep(1 << $attempt);
+        return tm_get($path, $params, $attempt + 1);
     }
     if ($code !== 200 || !is_string($body)) {
         return null;
     }
     $json = json_decode($body, true);
     return is_array($json) ? $json : null;
-}
-
-/** Best content image URL from a TM images[] array: non-fallback + widest, 16:9 preferred. */
-function tm_best_image(array $images): ?string
-{
-    $best = null;
-    $bestScore = PHP_INT_MIN;
-    foreach ($images as $img) {
-        if (empty($img['url'])) {
-            continue;
-        }
-        $score = (int) ($img['width'] ?? 0)
-            + (empty($img['fallback']) ? 100000 : 0)
-            + (($img['ratio'] ?? '') === '16_9' ? 5000 : 0);
-        if ($score > $bestScore) {
-            $bestScore = $score;
-            $best = (string) $img['url'];
-        }
-    }
-    return $best;
 }
 
 /** Search TM attractions by name; cache by normalized name (events reuse artist art). */
@@ -184,8 +165,11 @@ function tm_download(string $url, string $key, string $mediaDir): ?string
 
 $writeMap = static function () use (&$map, $mapFile): void {
     ksort($map);
-    $tmp = $mapFile . '.tmp';
-    file_put_contents($tmp, json_encode($map, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+    $tmp = $mapFile . '.tmp' . getmypid();
+    if (file_put_contents($tmp, json_encode($map, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)) === false) {
+        @unlink($tmp);
+        return;
+    }
     rename($tmp, $mapFile);
 };
 

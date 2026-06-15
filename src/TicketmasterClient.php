@@ -37,7 +37,7 @@ final class TicketmasterClient
         $this->defaultTtl = $defaultTtl;
 
         if (!is_dir($this->cacheDir)) {
-            mkdir($this->cacheDir, 0775, true);
+            @mkdir($this->cacheDir, 0775, true);
         }
     }
 
@@ -114,7 +114,16 @@ final class TicketmasterClient
             return [];
         }
 
-        file_put_contents($cacheFile, json_encode($decoded, JSON_UNESCAPED_SLASHES));
+        // Atomic write: a bare file_put_contents() can leave a truncated JSON file when
+        // concurrent FPM workers write the same cache key. Write to a temp file then
+        // rename() (atomic on the same filesystem) so readers never see a partial file.
+        $json = json_encode($decoded, JSON_UNESCAPED_SLASHES);
+        $tmp = $cacheFile . '.tmp' . getmypid();
+        if ($json !== false && @file_put_contents($tmp, $json) === strlen($json)) {
+            @rename($tmp, $cacheFile);
+        } else {
+            @unlink($tmp);
+        }
         return $decoded;
     }
 
@@ -137,6 +146,9 @@ final class TicketmasterClient
                 continue; // this key is rate-limited — try the next one
             }
             if ($status >= 400 || $body === null) {
+                // Log the hard failure (key INDEX only, never the key value) so a
+                // silent null doesn't hide an outage or a bad request.
+                error_log('[tm] request failed: status=' . $status . ' keyIndex=' . (($this->keyCursor + $i) % $n) . ' body=' . substr((string) $body, 0, 200));
                 return null;
             }
             if (PHP_SAPI === 'cli') {
@@ -150,6 +162,7 @@ final class TicketmasterClient
             usleep(900000);
             return $this->request($url, 1);
         }
+        error_log('[tm] all ' . $n . ' keys rate-limited (429) after backoff');
         return null;
     }
 

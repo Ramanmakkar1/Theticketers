@@ -6,12 +6,18 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
     $rawPath = (string) parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
 
     // Normalize trailing slash AND case in a single 301 (chained redirects leak
-    // crawl budget). All our slugs are lowercase (e.g. /artist/MAROON-5 →
-    // /artist/maroon-5); skip /venue — legacy Ticketmaster ids in old venue URLs
-    // are case-sensitive — and /go, whose ids are case-sensitive too.
+    // crawl budget). All our keyword slugs are lowercase (e.g. /artist/MAROON-5 →
+    // /artist/maroon-5). Skip namespaces that carry case-sensitive Ticketmaster
+    // ids: /venue/ (legacy id tail), /event/ (the raw "-tm-<id>" suffix is
+    // case-sensitive — lowercasing it yields a different, non-existent id), and the
+    // exact /go outbound handler. Clean /event/ slugs are already all-lowercase, so
+    // excluding the namespace has no SEO cost, and each detail page self-canonicals.
     $target = ($rawPath !== '/' && substr($rawPath, -1) === '/') ? rtrim($rawPath, '/') : $rawPath;
     $lowerTarget = strtolower($target);
-    if ($lowerTarget !== $target && strpos($target, '/venue/') !== 0 && strpos($target, '/go') !== 0) {
+    if ($lowerTarget !== $target
+        && strpos($target, '/venue/') !== 0
+        && strpos($target, '/event/') !== 0
+        && $target !== '/go') {
         $target = $lowerTarget;
     }
     if ($target !== $rawPath) {
@@ -138,15 +144,21 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
                 return;
             }
         }
-        $performerId = resolve_artist_id($client, $match[1]) ?? legacy_id_from_slug($match[1]);
+        $performerId = resolve_artist_id($client, $match[1]);
         if ($performerId === null) {
+            // Try a TM-only artist BEFORE legacy_id_from_slug: a clean slug that ends in
+            // a number (maroon-5, blink-182, sum-41) would otherwise be captured as a
+            // legacy numeric id, load an unrelated performer, and 404 on the name guard.
             $tmOnly = tm_artist_by_slug($config, $match[1]);
             if ($tmOnly !== null) {
                 render_artist_detail_page($client, $config, 0, $tmOnly);
                 return;
             }
-            render_error_page($config, 404, 'Artist not found', 'This artist is not on tour right now.');
-            return;
+            $performerId = legacy_id_from_slug($match[1]);
+            if ($performerId === null) {
+                render_error_page($config, 404, 'Artist not found', 'This artist is not on tour right now.');
+                return;
+            }
         }
         render_artist_detail_page($client, $config, $performerId);
         return;
@@ -352,6 +364,15 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
             $tmVenueId = $seedVenue !== null ? (string) $seedVenue['tm_id'] : tm_legacy_id_from_slug($venueSlug);
         }
         if ($tmVenueId === null || $tmVenueId === '') {
+            // /venue/ is excluded from the global case-fold 301, so a typed mixed-case
+            // slug would hard-404 here. Recover by 301-ing to the lowercased slug
+            // (keeping the category segment) when it resolves, like the single-segment route.
+            $lowerSlug = strtolower($venueSlug);
+            if ($lowerSlug !== $venueSlug
+                && (venue_slug_lookup($lowerSlug) !== null || resolve_seed_venue($config, $lowerSlug) !== null)) {
+                redirect_permanent('/venue/' . $lowerSlug . '/' . $venueCat);
+                return;
+            }
             render_error_page($config, 404, 'Venue not found', 'This venue page is not available.');
             return;
         }
@@ -505,7 +526,7 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
     ?>
     <link rel="stylesheet" href="<?= e(asset_url($cssHref)) ?>">
     <?php if ($schemaForOutput !== null): ?>
-    <script type="application/ld+json"><?= json_encode($schemaForOutput, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?></script>
+    <script type="application/ld+json"><?= json_encode($schemaForOutput, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?></script>
     <?php endif; ?>
     <?php if (!empty($config['ga_measurement_id'])): $gaId = $config['ga_measurement_id']; ?>
     <!-- Google Analytics 4 (gtag.js) -->
@@ -1178,6 +1199,12 @@ function render_listing_layout(array $config, array $meta, string $heading, arra
         $schema = null;
     }
 
+    // Any caller that renders the "No tickets found" empty state is a thin page —
+    // force noindex (keep follow) so a zero-inventory listing can't get indexed.
+    if ($items === [] && !isset($meta['robots'])) {
+        $meta['robots'] = 'noindex, follow';
+    }
+
     render_layout($config, $meta, function () use ($heading, $items, $type, $configAgain, $data, $filters, $extras): void {
         $total = (int) ($data['total_count'] ?? count($items));
         ?>
@@ -1463,6 +1490,9 @@ function render_city_page(HelloTicketsClient $client, array $config, int $cityId
         'title' => $city['name'] . ' Tickets, Events & Attractions | ' . $config['site_name'],
         'description' => 'Browse ' . number_format($totalEvents) . ' live events, concerts, sports and attractions in ' . $city['name'] . ' with dates, venues and prices.',
         'canonical' => $canonical,
+        // A city with no live inventory is a thin "Browse 0 events" page — noindex it
+        // (still follow) so it stays out of the index until inventory returns.
+        'robots' => ($totalEvents === 0 && $activities === []) ? 'noindex, follow' : null,
     ], function () use ($city, $events, $activities, $config, $guidePath, $eventsPageData, $totalEvents): void {
         ?>
         <section class="listing-hero city-hero">
@@ -2829,6 +2859,12 @@ function render_artist_detail_page(HelloTicketsClient $client, array $config, in
     if ($tmOnly !== null) {
         // Artist unknown to HelloTickets, sourced entirely from Ticketmaster.
         $performer = tm_normalize_attraction($tmOnly);
+        // Self-canonical 301: a stale slug-map entry can resolve a TM artist whose
+        // current name slugifies differently — consolidate onto the clean slug.
+        if (current_path() !== artist_path($performer)) {
+            redirect_permanent(artist_path($performer));
+            return;
+        }
     } else {
         $performer = api_result(static fn() => $client->performer($performerId));
         if ($performer === [] || empty($performer['id'])) {
@@ -2934,6 +2970,9 @@ function render_artist_detail_page(HelloTicketsClient $client, array $config, in
         'description' => $description,
         'canonical' => absolute_url($config, artist_path($performer)),
         'image' => $performerPhoto !== null ? absolute_image_url($config, $performerPhoto) : null,
+        // An artist with no upcoming events is a thin/empty page — keep it out of the
+        // index (still follow, so internal links and the slug survive for re-tour).
+        'robots' => $events === [] ? 'noindex, follow' : null,
     ], function () use ($config, $performer, $name, $events, $nextDate, $tourCities, $faqs, $linkableCities): void {
         ?>
         <section class="listing-hero artist-hero">
@@ -3709,21 +3748,33 @@ function artist_schema(array $config, array $performer, array $events): array
 
     $eventSchemas = [];
     foreach (array_slice($events, 0, 10) as $event) {
-        $eventSchemas[] = [
+        $start = schema_start_date($event);
+        if ($start === '') {
+            continue; // startDate is required; skip undated events rather than emit invalid nodes
+        }
+        $node = [
             '@type' => 'Event',
             'name' => $event['name'] ?? '',
-            'startDate' => schema_start_date($event),
-            'location' => [
-                '@type' => 'Place',
-                'name' => $event['venue']['name'] ?? '',
-                'address' => schema_postal_address($event['venue'] ?? []),
-            ],
+            'startDate' => $start,
             'performer' => [
                 '@type' => $schema['@type'],
                 'name' => $performer['name'] ?? '',
             ],
             'url' => event_canonical_url($config, $event),
         ];
+        $venueName = (string) ($event['venue']['name'] ?? '');
+        $address = schema_postal_address($event['venue'] ?? []);
+        $place = ['@type' => 'Place'];
+        if ($venueName !== '') {
+            $place['name'] = $venueName;
+        }
+        if (is_array($address) || (is_string($address) && $address !== '')) {
+            $place['address'] = $address;
+        }
+        if (isset($place['name']) || isset($place['address'])) {
+            $node['location'] = $place;
+        }
+        $eventSchemas[] = $node;
     }
     if ($eventSchemas !== []) {
         $schema['event'] = $eventSchemas;
@@ -4341,7 +4392,10 @@ function render_phase_one_sitemap(HelloTicketsClient $client, array $config, arr
 {
     header('Content-Type: application/xml; charset=utf-8');
     $entries = [];
-    $lastmod = (string) (seo_index()['generated_at'] ?? content_last_modified_date());
+    // Omit <lastmod> unless a caller supplies a real per-URL date (the 'static' bucket
+    // passes file mtimes). Stamping the build date on every live-schedule URL faked
+    // uniform freshness, which teaches Google to discount lastmod for the whole sitemap.
+    $lastmod = '';
     $add = static function (string $path, string $mod = '') use (&$entries, $config, $lastmod): void {
         if ($path === '') {
             return;
@@ -4429,7 +4483,7 @@ function sitemap_xml_from_entries(array $entries): string
         $xml .= "  <url><loc>" . e($loc) . "</loc>"
             . ($lastmod !== '' ? "<lastmod>" . e($lastmod) . "</lastmod>" : '')
             . "<changefreq>" . e(sitemap_changefreq_for_url((string) $loc)) . "</changefreq>"
-            . "<priority>1.0</priority>"
+            . "<priority>" . e(sitemap_priority_for_url((string) $loc)) . "</priority>"
             . "</url>\n";
     }
     $xml .= "</urlset>\n";
@@ -4446,6 +4500,26 @@ function sitemap_changefreq_for_url(string $loc): string
         return 'weekly';
     }
     return 'monthly';
+}
+
+/** Vary <priority> by page type so the signal isn't flat 1.0 on every URL. Hubs
+ *  (home, /events, /artists …) rank highest; leaf detail pages lowest. */
+function sitemap_priority_for_url(string $loc): string
+{
+    $path = (string) (parse_url($loc, PHP_URL_PATH) ?: '/');
+    if ($path === '/') {
+        return '1.0';
+    }
+    // Leaf detail pages: individual events and artist-in-city long-tail.
+    if (str_starts_with($path, '/event/') || preg_match('#^/artist/[^/]+/[^/]+$#', $path) === 1) {
+        return '0.5';
+    }
+    // Section hubs and curated landing pages.
+    if (in_array($path, ['/events', '/attractions', '/artists', '/venues', '/teams'], true)) {
+        return '0.9';
+    }
+    // Entity hubs: artist / venue / city / team / category / monthly.
+    return '0.7';
 }
 
 function phase_one_static_sitemap_paths(HelloTicketsClient $client, array $config, array $destinationsContent): array
@@ -4521,201 +4595,6 @@ function phase_one_city_sitemap_paths(array $config, array $destinationsContent)
         }
     }
     return array_values(array_unique($paths));
-}
-
-function render_sitemap(HelloTicketsClient $client, array $config, array $destinationsContent = []): void
-{
-    header('Content-Type: application/xml; charset=utf-8');
-
-    // Serve a short-lived rendered copy: building the sitemap fans out into many
-    // upstream API calls, and a crawler hitting it on a cold cache shouldn't pay
-    // (or trigger) that. Keyed by site_url so host changes can't serve stale hosts.
-    $sitemapCacheFile = rtrim((string) $config['cache_dir'], '/') . '/sitemap-' . md5($config['site_url']) . '.xml';
-    if (is_file($sitemapCacheFile) && time() - (int) filemtime($sitemapCacheFile) < 1800) {
-        readfile($sitemapCacheFile);
-        return;
-    }
-
-    // Guarded like index.php — a missing content file must not 500 Google's discovery surface.
-    $dubaiContent = file_exists(__DIR__ . '/dubai-content.php')
-        ? require __DIR__ . '/dubai-content.php'
-        : ['categories' => [], 'attractions' => []];
-
-    // Content-modified date for editorial/hub pages, as a real recrawl signal.
-    $contentMtimes = array_filter([
-        @filemtime(__DIR__ . '/destinations-content.json') ?: null,
-        @filemtime(__DIR__ . '/dubai-content.php') ?: null,
-    ]);
-    $contentMod = $contentMtimes !== [] ? date('Y-m-d', max($contentMtimes)) : date('Y-m-d');
-
-    // loc => lastmod ('' = omit), de-duped by loc, canonical URLs only.
-    // lastmod is only ever emitted when it is a REAL change date (file mtime or the
-    // API's last_updated_at). Stamping "today" on live-schedule pages teaches Google
-    // the field always lies, and it then discounts lastmod for the whole sitemap.
-    $entries = [];
-    $add = static function (string $path, string $lastmod = '') use (&$entries, $config): void {
-        $loc = absolute_url($config, $path);
-        if (!array_key_exists($loc, $entries)) {
-            $entries[$loc] = $lastmod;
-        }
-    };
-
-    // Home + evergreen static pages.
-    $add('/');
-    foreach (['/events', '/attractions', '/artists', '/venues', '/teams', '/about', '/contact', '/how-we-make-money', '/privacy', '/terms', '/llms.txt', '/llms-full.txt', '/ai-index.json'] as $staticPath) {
-        $add($staticPath, $contentMod);
-    }
-
-    // Ticketmaster-sourced hubs — live schedules, no honest per-URL change date
-    // available, so lastmod is omitted rather than faked.
-    foreach (league_seed_list() as $league) {
-        $add('/' . $league['slug']);
-    }
-    foreach (venue_seed_list() as [$venueName]) {
-        $add('/venue/' . slugify($venueName));
-    }
-    foreach (team_seed_list() as [$teamName]) {
-        $add('/team/' . slugify($teamName));
-    }
-
-    // Editorial hubs — the highest-value SEO landing pages.
-    $add('/dubai', $contentMod);
-    $add('/abu-dhabi', $contentMod);
-    foreach ($dubaiContent['categories'] ?? [] as $cat) {
-        $add('/dubai/' . $cat['slug'], $contentMod);
-    }
-    foreach ($dubaiContent['attractions'] ?? [] as $attr) {
-        $add('/dubai/' . ($attr['category_slug'] ?? 'attractions') . '/' . $attr['slug'], $contentMod);
-    }
-    foreach ($destinationsContent['countries'] ?? [] as $cSlug => $country) {
-        $add('/' . $cSlug, $contentMod);
-        foreach ($country['cities'] ?? [] as $hubCity) {
-            if (!empty($hubCity['slug'])) {
-                $add('/' . $cSlug . '/' . $hubCity['slug'], $contentMod);
-            }
-        }
-    }
-
-    // Standalone geo-city pages (/city/{slug}) — the long-tail "events in {city}"
-    // surface for cities WITHOUT an editorial hub (Edmonton, Quebec, Glasgow…).
-    // Only inventory-having cities (per the pre-built city-index) are listed, and
-    // only those that don't canonicalize to a /{country}/{city} hub (those are
-    // already covered above, and listing /city/{slug} for them would be non-canonical
-    // noise). Dubai/Abu Dhabi (132/256) have their own editorial hubs.
-    foreach (geo_cities() as $geoId => $geo) {
-        $gid = (int) $geoId;
-        if ($gid === 132 || $gid === 256 || !city_has_inventory($gid)) {
-            continue;
-        }
-        if (destination_hub_path_for_city($destinationsContent, $gid) !== null) {
-            continue;
-        }
-        $add(city_path(['name' => (string) ($geo['name'] ?? '')]));
-    }
-
-    // Category listing pages — ONLY the curated ones with hand-written content.
-    // Raw API categories render noindex and must stay out of the sitemap.
-    $curated = category_content();
-    $categories = api_result(static fn() => $client->categories(), ['categories' => []])['categories'] ?? [];
-    foreach ($categories as $category) {
-        if (isset($curated[slugify((string) ($category['name'] ?? ''))])) {
-            $add(category_path($category), $contentMod);
-        }
-    }
-
-    // Performers / artists — top 96 by popularity (two cached pages).
-    // Team-named performers (Lakers, Yankees…) are skipped: /team/{slug} is the
-    // canonical page for those entities and /artist/{slug} 301s to it.
-    $teamSlugs = [];
-    foreach (team_seed_list() as [$teamName]) {
-        $teamSlugs[slugify($teamName)] = true;
-    }
-    foreach ([1, 2] as $performerPage) {
-        $performers = api_result(static fn() => $client->performers([
-            'limit' => 48,
-            'page' => $performerPage,
-        ]), ['performers' => []])['performers'] ?? [];
-        foreach ($performers as $performer) {
-            if (isset($teamSlugs[slugify((string) ($performer['name'] ?? ''))])) {
-                continue;
-            }
-            $add(artist_path($performer));
-        }
-    }
-
-    // "This weekend in {city}" intent pages — featured market cities (always have
-    // inventory) plus every inventory-having geo city, so "weekend shows in {city}"
-    // is targeted for Edmonton/Glasgow/etc., not just the flagships.
-    foreach ($config['market_cities'] as $weekendCity) {
-        if (!empty($weekendCity['featured'])) {
-            $add(weekend_path($weekendCity));
-        }
-    }
-    foreach (geo_cities() as $geoId => $geo) {
-        $gid = (int) $geoId;
-        if ($gid === 132 || $gid === 256 || !city_has_inventory($gid)) {
-            continue;
-        }
-        $add(weekend_path(['name' => (string) ($geo['name'] ?? '')]));
-    }
-
-    // Live events — real <lastmod> from the API's last_updated_at. Dubai alone has
-    // almost no sellable events, so crawl the featured cities' inventory (capped).
-    // Two gates keep the sitemap trustworthy: (1) events starting within 3 days are
-    // skipped — they flip to noindex on expiry almost immediately after submission;
-    // (2) one entry per (date, venue) pair — dual-source catalogs can mint two slugs
-    // for the same real-world event ("goose-…" vs "goose-the-band-…").
-    $eventCityIds = [(int) $config['default_city_id']];
-    foreach ($config['market_cities'] as $eventCity) {
-        if (!empty($eventCity['featured'])) {
-            $eventCityIds[] = (int) $eventCity['id'];
-        }
-    }
-    $minEventDate = date('Y-m-d', strtotime('+3 days'));
-    $seenEventKeys = [];
-    $eventEntries = 0;
-    foreach (array_unique($eventCityIds) as $eventCityId) {
-        if ($eventEntries >= 200) {
-            break;
-        }
-        $events = api_result(static fn() => $client->performances(array_merge([
-            'limit' => 25,
-            'page' => 1,
-            'is_sellable' => 'true',
-            'city_id' => $eventCityId,
-        ], date_params(null))), ['performances' => []])['performances'] ?? [];
-        foreach ($events as $event) {
-            $eventDate = (string) ($event['start_date']['local_date'] ?? '');
-            if ($eventDate !== '' && $eventDate < $minEventDate) {
-                continue;
-            }
-            $dupeKey = $eventDate . '|' . strtolower(trim((string) ($event['venue']['name'] ?? '')));
-            if ($dupeKey !== '|' && isset($seenEventKeys[$dupeKey])) {
-                continue;
-            }
-            $seenEventKeys[$dupeKey] = true;
-            $lastmod = substr((string) ($event['last_updated_at'] ?? ''), 0, 10);
-            $add(event_path($event), preg_match('/^\d{4}-\d{2}-\d{2}$/', $lastmod) === 1 ? $lastmod : '');
-            $eventEntries++;
-        }
-    }
-
-    // /activity/ detail pages are deliberately NOT in the sitemap: list-API titles
-    // produce different slugs than the detail canonical (every entry 301s), and the
-    // pages are thin. Their rich SEO twins — the /dubai/{category}/{slug} attraction
-    // pages and the city/country hubs — are the indexed surface for activities.
-
-    $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-    $xml .= "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
-    foreach ($entries as $loc => $lastmod) {
-        $xml .= "  <url><loc>" . e($loc) . "</loc>"
-            . ($lastmod !== '' ? "<lastmod>" . e($lastmod) . "</lastmod>" : '')
-            . "</url>\n";
-    }
-    $xml .= "</urlset>\n";
-
-    @file_put_contents($sitemapCacheFile, $xml, LOCK_EX);
-    echo $xml;
 }
 
 function render_error_page(array $config, int $status, string $heading, string $message): void
@@ -4887,6 +4766,12 @@ function item_list_schema(array $config, array $items, string $type): array
 
 function event_schema(array $config, array $event): array
 {
+    // startDate is a required Event property; without a usable date the node is
+    // invalid markup, so omit it entirely (callers array_filter the @graph).
+    $start = schema_start_date($event);
+    if ($start === '') {
+        return [];
+    }
     $price = $event['price_range']['min_price'] ?? 0;
     $localDate = (string) ($event['start_date']['local_date'] ?? '');
     $isPast = $localDate !== '' && $localDate < (new DateTimeImmutable('today'))->format('Y-m-d');
@@ -4895,28 +4780,42 @@ function event_schema(array $config, array $event): array
     $schema = [
         '@type' => 'Event',
         'name' => $event['name'] ?? '',
-        'startDate' => schema_start_date($event),
+        'startDate' => $start,
         'eventAttendanceMode' => 'https://schema.org/OfflineEventAttendanceMode',
         'eventStatus' => 'https://schema.org/EventScheduled',
-        'location' => [
-            '@type' => 'Place',
-            'name' => $venueName,
-            'address' => schema_postal_address($event['venue'] ?? []),
-        ],
         'image' => [image_from_item($event, 'event', $config)],
         'description' => trim(($event['name'] ?? 'Live event')
             . ($venueName !== '' ? ' at ' . $venueName : '')
             . ($cityName !== '' ? ', ' . $cityName : '')
             . ($localDate !== '' ? ' on ' . format_date_label($localDate) : '')
             . '. Tickets via official ticketing partner.'),
-        'offers' => [
+    ];
+
+    // Location: only emit a Place when a name or a usable address exists — an
+    // all-empty Place is incomplete and fails the Event rich-result test.
+    $address = schema_postal_address($event['venue'] ?? []);
+    $place = ['@type' => 'Place'];
+    if ($venueName !== '') {
+        $place['name'] = $venueName;
+    }
+    if (is_array($address) || (is_string($address) && $address !== '')) {
+        $place['address'] = $address;
+    }
+    if (isset($place['name']) || isset($place['address'])) {
+        $schema['location'] = $place;
+    }
+
+    // Offer: only when a real price exists. price 0 reads as a FREE event to Google
+    // and contradicts the "tickets via partner" copy, risking rich-result rejection.
+    if ((float) $price > 0) {
+        $schema['offers'] = [
             '@type' => 'Offer',
             'url' => absolute_url($config, event_path($event)),
             'price' => (float) $price,
             'priceCurrency' => $event['price_range']['currency'] ?? $config['currency'],
             'availability' => $isPast ? 'https://schema.org/SoldOut' : 'https://schema.org/InStock',
-        ],
-    ];
+        ];
+    }
 
     // Real performer data only — never fabricated. HT performances carry a
     // performers[] array; the main act becomes schema performer.
@@ -4944,14 +4843,20 @@ function activity_schema(array $config, array $activity): array
             '@type' => 'Brand',
             'name' => $activity['supplier_name'] ?? 'HelloTickets',
         ],
-        'offers' => [
+    ];
+
+    // Offer only when a real price exists — a Product with no offers is still valid
+    // markup, whereas price 0 / InStock reads as free and can suppress the rich result.
+    $activityPrice = (float) ($activity['from_price'] ?? 0);
+    if ($activityPrice > 0) {
+        $schema['offers'] = [
             '@type' => 'Offer',
             'url' => absolute_url($config, activity_path($activity)),
-            'price' => (float) ($activity['from_price'] ?? 0),
+            'price' => $activityPrice,
             'priceCurrency' => $activity['currency'] ?? $config['currency'],
             'availability' => 'https://schema.org/InStock',
-        ],
-    ];
+        ];
+    }
 
     if (!empty($activity['reviews']['avg_rating'])) {
         $schema['aggregateRating'] = [
@@ -5084,7 +4989,9 @@ function render_venue_page(array $config, string $tmVenueId): void
         'size' => 50,
     ]), []);
     $events = array_map('tm_normalize_event', $rawEvents['_embedded']['events'] ?? []);
-    $totalUpcoming = (int) ($rawEvents['page']['totalElements'] ?? count($events));
+    // Only the events actually listed on the page — page.totalElements counts every TM
+    // result page (often >50), so the copy ("listed on this page") must use the shown count.
+    $totalUpcoming = count($events);
 
     // Page meta — direct-answer first paragraph (Google AI Overviews quotes these).
     $title = $venue['name'] . ' Tickets & Upcoming Events | ' . $config['site_name'];
@@ -5643,7 +5550,9 @@ function render_team_page(array $config, array $team): void
         'size' => 50,
     ]), []);
     $events = array_map('tm_normalize_event', $raw['_embedded']['events'] ?? []);
-    $total = (int) ($raw['page']['totalElements'] ?? count($events));
+    // Only the events actually listed on the page — page.totalElements counts every TM
+    // result page (often >50), so using it made the copy claim more games than shown.
+    $total = count($events);
 
     $name = $team['name'];
     $sport = (string) ($team['sport'] ?? '');
@@ -5891,6 +5800,14 @@ function render_monthly_events_page(HelloTicketsClient $client, array $config, i
         return;
     }
     $citySlug = slugify($cityName);
+    // Self-canonical 301: a legacy numeric city slug (e.g. march-in-toronto-101) can
+    // resolve to a defaulted city name and render off-canonical with HTTP 200 — send
+    // it to the clean URL before doing any work (sibling date/category pages do this).
+    $canonical = '/events/' . $monthName . '-in-' . $citySlug;
+    if (current_path() !== $canonical) {
+        redirect_permanent($canonical);
+        return;
+    }
     $monthLabel = ucfirst($monthName);
     $page = page_number();
     $perPage = 24;
@@ -6013,10 +5930,18 @@ function render_venue_category_page(array $config, string $tmVenueId, string $ve
     $labels = ['concerts'=>'Concerts','sports'=>'Sports','theatre'=>'Theatre'];
     $tmClass = ['concerts'=>'Music','sports'=>'Sports','theatre'=>'Arts & Theatre'];
     $label = $labels[$categorySlug] ?? ucfirst($categorySlug);
-    $tmClient = new TicketmasterClient($config['tm_api_key'] ?? '', $config['cache_dir'], $config['cache_ttl']);
+    $tmClient = tm_client($config); // rotation-aware factory; the singular tm_api_key is empty in prod
+    if ($tmClient === null) { render_error_page($config, 404, 'Venue not found', 'This venue is not available.'); return; }
     $venueInfo = api_result(static fn() => $tmClient->venue($tmVenueId), []);
     if ($venueInfo === []) { render_error_page($config, 404, 'Venue not found', 'This venue is not available.'); return; }
     $venueName = (string) ($venueInfo['name'] ?? ucwords(str_replace('-',' ',$venueSlug)));
+    // Self-canonical 301: consolidate legacy/variant venue slugs onto the clean name slug.
+    $canonicalSlug = slugify($venueName);
+    if ($canonicalSlug !== '' && current_path() !== '/venue/' . $canonicalSlug . '/' . $categorySlug) {
+        redirect_permanent('/venue/' . $canonicalSlug . '/' . $categorySlug);
+        return;
+    }
+    if ($canonicalSlug !== '') { $venueSlug = $canonicalSlug; }
     $cityName = (string) ($venueInfo['city']['name'] ?? '');
     $page = page_number(); $perPage = 24; $events = [];
     for ($p = 1; $p <= 3; $p++) {
@@ -6105,7 +6030,15 @@ function render_artist_country_tour(HelloTicketsClient $client, array $config, s
         $artistName = $tmArtist !== null ? (string) ($tmArtist['name'] ?? ucwords(str_replace('-',' ',$artistSlug))) : '';
     }
     if ($artistName === '') { render_error_page($config, 404, 'Artist not found', 'Not on tour.'); return; }
-    $tmClient = new TicketmasterClient($config['tm_api_key'] ?? '', $config['cache_dir'], $config['cache_ttl']);
+    // Self-canonical 301: consolidate legacy {slug}-{id} URLs onto the clean name slug.
+    $cleanArtistSlug = slugify($artistName);
+    if ($cleanArtistSlug !== '' && current_path() !== '/artist/' . $cleanArtistSlug . '/' . $countrySlug . '-tour') {
+        redirect_permanent('/artist/' . $cleanArtistSlug . '/' . $countrySlug . '-tour');
+        return;
+    }
+    if ($cleanArtistSlug !== '') { $artistSlug = $cleanArtistSlug; }
+    $tmClient = tm_client($config); // rotation-aware factory; the singular tm_api_key is empty in prod
+    if ($tmClient === null) { render_error_page($config, 404, 'No dates', $artistName . ' has no upcoming dates in ' . $countryName . '.'); return; }
     $events = []; $tmArtistId = tm_artist_slug_lookup($artistSlug);
     if ($tmArtistId !== null && $tmArtistId !== '') {
         for ($p = 0; $p < 3; $p++) {

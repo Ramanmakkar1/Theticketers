@@ -209,23 +209,29 @@ function slug_map_flush(): void
     if (!is_dir(dirname($file))) {
         @mkdir(dirname($file), 0775, true);
     }
-    $handle = @fopen($file, 'c+');
-    if ($handle === false) {
+    // Serialize writers on a STABLE lock inode that rename() never replaces. Locking
+    // the data file's own handle was unsafe: once one flusher rename()s a fresh inode
+    // into place, a flusher that had opened the OLD inode wakes from flock() reading
+    // orphaned data and clobbers the just-written map (lost learned slugs → 404s).
+    $lock = @fopen($file . '.lock', 'c');
+    if ($lock === false) {
         return;
     }
-    if (!flock($handle, LOCK_EX)) {
-        fclose($handle);
+    if (!flock($lock, LOCK_EX)) {
+        fclose($lock);
         return;
     }
-    $raw = stream_get_contents($handle);
+    // Read the CURRENT committed map fresh inside the lock so we merge onto whatever
+    // the previous flusher just wrote, not a stale snapshot.
     $disk = [];
+    $raw = is_file($file) ? @file_get_contents($file) : '';
     if (is_string($raw) && trim($raw) !== '') {
         $decoded = json_decode($raw, true);
         if (!is_array($decoded)) {
             // Never "repair" a corrupt map by wiping it — losing learned slugs turns
             // indexed clean URLs into 404s. Skip this flush; a later one will retry.
-            flock($handle, LOCK_UN);
-            fclose($handle);
+            flock($lock, LOCK_UN);
+            fclose($lock);
             return;
         }
         $disk = $decoded;
@@ -248,12 +254,12 @@ function slug_map_flush(): void
     $tmp = $file . '.tmp' . getmypid();
     if ($json !== false && @file_put_contents($tmp, $json) === strlen($json)) {
         @rename($tmp, $file);
+        $pending = []; // clear only on a successful write so a failure retries later
     } else {
         @unlink($tmp);
     }
-    flock($handle, LOCK_UN);
-    fclose($handle);
-    $pending = [];
+    flock($lock, LOCK_UN);
+    fclose($lock);
 }
 
 /**
@@ -569,13 +575,9 @@ function image_from_item(array $item, string $type, array $config): string
     }
 
     // Real harvested photo for this exact item, if we have one.
-    $id = (int) ($item['id'] ?? 0);
-    if ($id > 0) {
-        $map = image_map();
-        $key = $type . '-' . $id;
-        if (!empty($map[$key]) && is_string($map[$key])) {
-            return absolute_image_url($config, $map[$key]);
-        }
+    $mapped = mapped_image($type, (int) ($item['id'] ?? 0));
+    if ($mapped !== null) {
+        return absolute_image_url($config, $mapped);
     }
 
     // An event with no cover of its own reuses its headline performer's photo
@@ -722,7 +724,7 @@ function request_currency(array $config): string
 
     if (preg_match('#^/events/(?:today|this-week|this-weekend)-in-([^/]+)$#', $path, $match) === 1
         || preg_match('#^/city/([^/]+)$#', $path, $match) === 1
-        || preg_match('#^/city/([^/]+)/(?:concerts|sports|theatre|comedy)$#', $path, $match) === 1
+        || preg_match('#^/city/([^/]+)/(?:concerts|sports|theatre|comedy|festivals|family|classical|hip-hop|rock|country-music)$#', $path, $match) === 1
         || preg_match('#^/artist/[^/]+/([^/]+)$#', $path, $match) === 1) {
         // The captured segment is the city for date, city/category, city listing,
         // and "{artist} in {city}". Price in that city's market currency.
@@ -1122,40 +1124,56 @@ function event_path(array $performance): string
     $slug = event_slug($performance);
     $tmId = (string) ($performance['tm_id'] ?? '');
     if ($tmId !== '') {
-        // Ticketmaster ids are already URL-safe ([A-Za-z0-9_]); emit the raw id so
-        // the URL stays short and keyword-led. bin2hex() doubled the id length for
-        // no SEO gain. Anything outside that set (or implausibly short) falls back to
-        // hex so the decoder's hyphen-free tail extraction can't misread it.
-        $token = preg_match('/^[A-Za-z0-9_]{10,}$/', $tmId) === 1 ? $tmId : bin2hex($tmId);
+        // Emit the raw id (short, keyword-led) ONLY when it is URL-safe AND carries a
+        // signal slugify() can never produce — an uppercase letter or underscore. That
+        // (a) lets the decoder tell a real id from an all-lowercase keyword tail, and
+        // (b) keeps mixed-case ids intact. Ids that are all-lowercase, hyphenated, or
+        // implausibly short fall back to bin2hex (the decoder's legacy branch reverses
+        // it), so every id round-trips losslessly. Must stay in lockstep with
+        // tm_event_id_from_slug().
+        $rawSafe = preg_match('/^[A-Za-z0-9_]{10,}$/', $tmId) === 1
+            && preg_match('/[A-Z_]/', $tmId) === 1;
+        $token = $rawSafe ? $tmId : bin2hex($tmId);
         return '/event/' . $slug . '-tm-' . $token;
     }
 
-    slug_remember('event', $slug, (int) ($performance['id'] ?? 0));
+    $id = (int) ($performance['id'] ?? 0);
+    // A wholly non-Latin name slugifies to the bare 'tickets' fallback; without a
+    // disambiguator every such event would collapse onto /event/tickets. Suffix the id
+    // so distinct entities keep distinct URLs (legacy_id_from_slug recovers the id).
+    if ($slug === 'tickets' && $id > 0) {
+        $slug .= '-' . $id;
+    }
+    slug_remember('event', $slug, $id);
     return '/event/' . $slug;
 }
 
 function tm_event_id_from_slug(string $slug): ?string
 {
-    // The id is the final hyphen-free segment after the last "-tm-". slugify() only
-    // ever emits lowercase [a-z0-9-], so a real TM id (mixed case / underscores, 10+
-    // chars) can't collide with a keyword slug word.
+    // The id is the segment after the last "-tm-". Must stay in lockstep with the
+    // encoder in event_path().
     $pos = strrpos(strtolower($slug), '-tm-');
     if ($pos === false) {
         return null;
     }
     $token = substr($slug, $pos + 4); // original case preserved (lengths match)
 
-    // Legacy form: lowercase hex of even length that decodes to a valid id. These
-    // 301 to the new short form via the self-canonical redirect on the detail page.
+    // Legacy/encoded form: lowercase hex of even length that decodes to a valid id.
+    // This branch carries all-lowercase, hyphenated, or short ids that the raw form
+    // can't (TM ids may contain '-', so the decoded value is allowed hyphens). These
+    // 301 to the canonical short form via the self-canonical redirect on the page.
     if (preg_match('/^[a-f0-9]+$/', $token) === 1 && strlen($token) % 2 === 0) {
         $decoded = @hex2bin($token);
-        if (is_string($decoded) && preg_match('/^[A-Za-z0-9_]{6,}$/', $decoded) === 1) {
+        if (is_string($decoded) && preg_match('/^[A-Za-z0-9_-]{6,}$/', $decoded) === 1) {
             return $decoded;
         }
     }
 
-    // New form: the raw, URL-safe Ticketmaster id.
-    if (preg_match('/^[A-Za-z0-9_]{10,}$/', $token) === 1) {
+    // Raw form: a real TM id is 10+ URL-safe chars AND carries an uppercase letter or
+    // underscore. slugify() only emits lowercase [a-z0-9-], so requiring that signal
+    // stops an all-lowercase keyword tail (e.g. "...-tm-championships") being misread
+    // as a TM id and 404-ing a HelloTickets event.
+    if (preg_match('/^[A-Za-z0-9_]{10,}$/', $token) === 1 && preg_match('/[A-Z_]/', $token) === 1) {
         return $token;
     }
 
@@ -1288,7 +1306,14 @@ function activity_path(array $activity): string
 function artist_path(array $performer): string
 {
     $slug = slugify((string) ($performer['name'] ?? 'artist'));
-    slug_remember('artist', $slug, (int) ($performer['id'] ?? 0));
+    $id = (int) ($performer['id'] ?? 0);
+    // A wholly non-Latin name slugifies to the bare 'tickets' fallback; suffix the id
+    // so distinct artists don't all collapse onto /artist/tickets (the route's
+    // legacy_id_from_slug recovers the id from the '-<id>' tail).
+    if ($slug === 'tickets' && $id > 0) {
+        $slug = 'artist-' . $id;
+    }
+    slug_remember('artist', $slug, $id);
     return '/artist/' . $slug;
 }
 
@@ -1323,7 +1348,7 @@ function city_date_path(array $city, string $dateKey): string
 
 function city_path(array $city): string
 {
-    return '/city/' . slugify((string) $city['name']);
+    return '/city/' . slugify((string) ($city['name'] ?? ''));
 }
 
 function city_category_path(array $city, string $categorySlug): string
@@ -1338,7 +1363,7 @@ function monthly_events_path(array $city, string $month): string
 
 function category_path(array $category): string
 {
-    return '/category/' . slugify((string) $category['name']);
+    return '/category/' . slugify((string) ($category['name'] ?? ''));
 }
 
 /* ---------- Clean-slug resolvers (slug → id) ---------- */
@@ -1909,7 +1934,10 @@ function tm_artist_by_slug(array $config, string $slug): ?array
     $rememberedId = tm_artist_slug_lookup($slug);
     if ($rememberedId !== null) {
         $remembered = api_result(static fn() => $tm->attraction($rememberedId), []);
-        if (!empty($remembered['id'])) {
+        // Gate on the name still slugifying to the requested slug (matching the
+        // keyword branch below) so a stale map entry can't serve a mismatched artist
+        // off-canonical; a miss falls through to the keyword search, which self-heals.
+        if (!empty($remembered['id']) && slugify((string) ($remembered['name'] ?? '')) === $slug) {
             return $remembered;
         }
     }
@@ -2037,10 +2065,25 @@ function unique_faqs(string $type, string $slug, array $data, int $count = 8): a
     $picked = array_slice($indexed, 0, min($count, $n));
     $result = [];
     foreach ($picked as $entry) {
+        // Skip an entry whose template references a placeholder we can't fill. Callers
+        // map unknown values to '' (or '0' for counts), so strtr would silently produce
+        // broken grammar ("playing in ?", "across 0 cities") that the leftover-token
+        // guard below never catches — check the referenced keys BEFORE substituting.
+        preg_match_all('/\{[a-z_]+\}/', $entry['q'] . ' ' . $entry['a'], $refs);
+        $unfillable = false;
+        foreach (array_unique($refs[0]) as $ph) {
+            if (!array_key_exists($ph, $data) || $data[$ph] === '' || $data[$ph] === '0') {
+                $unfillable = true;
+                break;
+            }
+        }
+        if ($unfillable) {
+            continue;
+        }
         $q = strtr($entry['q'], $data);
         $a = strtr($entry['a'], $data);
-        // Skip entries with placeholders we couldn't fill — better to ship
-        // fewer clean FAQs than a question with a literal "{min_price}" in it.
+        // Backstop: skip any literal "{token}" that survived (template referenced a
+        // placeholder not present in $data at all).
         if (preg_match('/\{[a-z_]+\}/', $a) || preg_match('/\{[a-z_]+\}/', $q)) {
             continue;
         }

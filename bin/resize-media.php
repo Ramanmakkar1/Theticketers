@@ -119,7 +119,20 @@ if (realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === realpath(__FILE__)) {
     }
 
     ksort($map);
-    file_put_contents($mapFile, json_encode($map, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+    $json = json_encode($map, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    if ($json === false) {
+        fwrite(STDERR, "json_encode failed for $mapFile\n");
+        exit(1);
+    }
+    // Atomic write: a concurrent image_map() read must never see a truncated file.
+    $tmp = $mapFile . '.tmp.' . getmypid();
+    if (@file_put_contents($tmp, $json) === strlen($json)) {
+        @rename($tmp, $mapFile);
+    } else {
+        @unlink($tmp);
+        fwrite(STDERR, "short write to $mapFile\n");
+        exit(1);
+    }
     fwrite(STDOUT, sprintf(
         "resized %d (skipped %d) | %.1f MB -> %.1f MB\n",
         $done,

@@ -91,6 +91,21 @@ $storageDir = dirname($outFile);
 if (!is_dir($storageDir)) {
     @mkdir($storageDir, 0775, true);
 }
-file_put_contents($outFile, json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+$json = json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+if ($json === false) {
+    fwrite(STDERR, "json_encode failed for $outFile\n");
+    exit(1);
+}
+// Atomic write: a partial read by city_index() fails OPEN and would briefly
+// expose doorway city pages, so readers must never see a truncated file. Keep
+// the temp file in the same dir as $outFile so rename() stays on one filesystem.
+$tmp = dirname($outFile) . '/city-index.json.tmp.' . getmypid();
+if (@file_put_contents($tmp, $json) === strlen($json)) {
+    @rename($tmp, $outFile);
+} else {
+    @unlink($tmp);
+    fwrite(STDERR, "short write to $outFile\n");
+    exit(1);
+}
 
 fwrite(STDERR, sprintf("\nWrote %s — %d cities with >=%d inventory.\n", $outFile, $kept, $minInventory));

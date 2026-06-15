@@ -28,6 +28,15 @@ $css = (string) preg_replace('/\s*([{}:;,>~])\s*/', '$1', $css);
 $css = str_replace(';}', '}', $css);
 $css = trim($css);
 
-file_put_contents($dst, $css);
+// Atomic write: the live layout links this stylesheet, so a concurrent read
+// must never see a truncated file. rename() is atomic on the same filesystem.
+$tmp = $dst . '.tmp' . getmypid();
+if (@file_put_contents($tmp, $css) === strlen($css)) {
+    @rename($tmp, $dst);
+} else {
+    @unlink($tmp);
+    fwrite(STDERR, "short write to $dst\n");
+    exit(1);
+}
 $after = strlen($css);
 printf("styles.min.css: %d -> %d bytes (-%d%%)\n", $before, $after, (int) round(100 * ($before - $after) / max(1, $before)));

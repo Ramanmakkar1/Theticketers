@@ -35,11 +35,11 @@ $opts = getopt('', [
     'quiet',
 ]);
 
-$eventLimit = max(0, (int) ($opts['events'] ?? 4000));
-$artistLimit = max(0, (int) ($opts['artists'] ?? 7000));
+$eventLimit = min(50000, max(0, (int) ($opts['events'] ?? 4000)));
+$artistLimit = min(50000, max(0, (int) ($opts['artists'] ?? 7000)));
 $cityLimit = max(1, (int) ($opts['cities'] ?? 75));
-$venueLimit = max(0, (int) ($opts['venues'] ?? 3000));
-$artistCityLimit = max(0, (int) ($opts['artist-cities'] ?? 12000));
+$venueLimit = min(50000, max(0, (int) ($opts['venues'] ?? 3000)));
+$artistCityLimit = min(50000, max(0, (int) ($opts['artist-cities'] ?? 12000)));
 $cityCategoryLimit = max(0, (int) ($opts['city-categories'] ?? 500));
 $eventMinDays = max(0, (int) ($opts['event-min-days'] ?? 3));
 $minEventDate = (new DateTimeImmutable('today'))->modify('+' . $eventMinDays . ' days')->format('Y-m-d');
@@ -322,7 +322,7 @@ foreach ($cityTargets as $cityId => $city) {
         $addEventEntities($event);
     }
 
-    foreach (['today' => 1, 'week' => 3] as $dateKey => $minEvents) {
+    foreach (['today' => 1, 'week' => 5] as $dateKey => $minEvents) {
         $events = city_date_events($client, $config, (int) $cityId, (string) $dateKey, 1);
         if (count($events) >= $minEvents) {
             if ($dateKey !== 'today') {
@@ -339,7 +339,7 @@ foreach ($cityTargets as $cityId => $city) {
             break;
         }
         $events = city_category_events($client, $config, (int) $cityId, $categorySlug, 1);
-        if (count($events) >= 3) {
+        if (count($events) >= 5) {
             $add('city_categories', city_category_path($city, $categorySlug), $cityCategoryLimit);
             foreach (array_slice($events, 0, 120) as $event) {
                 $addEventEntities($event);
@@ -415,9 +415,11 @@ $outFile = seo_index_file();
 if (!is_dir(dirname($outFile))) {
     @mkdir(dirname($outFile), 0775, true);
 }
-$tmp = $outFile . '.tmp';
-file_put_contents($tmp, json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
-rename($tmp, $outFile);
+$tmp = $outFile . '.tmp' . getmypid();   // per-process temp avoids overlapping-cron corruption
+$json = json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE);
+if ($json === false) { fwrite(STDERR, 'seo-index encode failed: ' . json_last_error_msg() . "\n"); exit(1); }
+if (@file_put_contents($tmp, $json) !== strlen($json)) { @unlink($tmp); fwrite(STDERR, "seo-index write failed (short write / disk full)\n"); exit(1); }
+if (!@rename($tmp, $outFile)) { @unlink($tmp); fwrite(STDERR, "seo-index rename failed\n"); exit(1); }
 
 $say('');
 $say('Wrote ' . $outFile);

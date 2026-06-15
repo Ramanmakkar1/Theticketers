@@ -60,7 +60,7 @@ $ocTtl = (int) (getenv('HTML_CACHE_TTL') ?: 21600); // 6h default; tune via env
 
 record_ai_visit($config);
 
-if (!$ocSkip && is_file($ocFile) && (time() - filemtime($ocFile)) < $ocTtl) {
+if (!$ocSkip && is_file($ocFile) && filesize($ocFile) > 200 && (time() - filemtime($ocFile)) < $ocTtl) {
     header('X-Cache: HIT');
     header('Content-Type: text/html; charset=utf-8');
     header('Link: <' . absolute_url($config, '/llms.txt') . '>; rel="alternate"; type="text/plain"', false);
@@ -81,5 +81,9 @@ $ocHtml = ob_get_flush();
 
 if (!$ocSkip && $ocHtml !== false && http_response_code() === 200 && strlen($ocHtml) > 200) {
     if (!is_dir($ocDir)) { @mkdir($ocDir, 0775, true); }
-    @file_put_contents($ocFile, $ocHtml);
+    // Atomic publish: write to a per-process temp file then rename into place.
+    // rename() on the same filesystem is atomic, so concurrent readfile() readers
+    // never see a half-written (truncated) cache file.
+    $tmp = $ocFile . '.tmp' . getmypid();
+    if (@file_put_contents($tmp, $ocHtml) === strlen($ocHtml)) { @rename($tmp, $ocFile); } else { @unlink($tmp); }
 }

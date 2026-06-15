@@ -22,6 +22,7 @@ package-lock.json
 
 # Runtime-generated slug map (flushed per request; sitemap seeds it)
 /storage/slugs.json
+/storage/slugs.json.lock
 
 # Local secrets — recreate on the server after deploy
 /src/config.local.php

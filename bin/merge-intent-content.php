@@ -67,6 +67,27 @@ PHP;
 
 $body = var_export($existing, true);
 // var_export emits "array (" — leave as-is (valid). Tidy numeric-array noise minimally.
-file_put_contents($root . '/src/artist-intent-content.php', $header . ' ' . $body . ";\n");
+$out = $header . ' ' . $body . ";\n";
+
+// Atomic write + parse-check: the target is require()d live at render time, so a
+// half-written file would fatal page renders. Write to a temp in the SAME dir (src/),
+// lint it, then atomically rename into place.
+$target = $root . '/src/artist-intent-content.php';
+$tmp = $target . '.tmp.' . getmypid();
+if (file_put_contents($tmp, $out) === false) {
+    fwrite(STDERR, "Failed to write temp file\n");
+    exit(1);
+}
+exec('php -l ' . escapeshellarg($tmp), $lintOut, $lintCode);
+if ($lintCode !== 0) {
+    @unlink($tmp);
+    fwrite(STDERR, "Generated file failed php -l, aborting:\n" . implode("\n", $lintOut) . "\n");
+    exit(1);
+}
+if (!rename($tmp, $target)) {
+    @unlink($tmp);
+    fwrite(STDERR, "Failed to rename temp file into place\n");
+    exit(1);
+}
 
 fwrite(STDOUT, "Merged {$added} artists. Store now has " . count($existing) . " total.\n");

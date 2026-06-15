@@ -147,7 +147,21 @@ foreach ($map as $k => $v) {
 }
 
 ksort($map);
-file_put_contents($mapFile, json_encode($map, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n");
+$json = json_encode($map, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+if ($json === false) {
+    fwrite(STDERR, "json_encode failed for $mapFile\n");
+    exit(1);
+}
+// Atomic write: a concurrent image_map() read must never see a truncated file.
+$json .= "\n";
+$tmp = $mapFile . '.tmp.' . getmypid();
+if (@file_put_contents($tmp, $json) === strlen($json)) {
+    @rename($tmp, $mapFile);
+} else {
+    @unlink($tmp);
+    fwrite(STDERR, "short write to $mapFile\n");
+    exit(1);
+}
 $finalCount = count($map);
 
 echo "\nDone. Found: {$found}, Skipped (already CDN): {$skipped}, No match: {$missed}\n";

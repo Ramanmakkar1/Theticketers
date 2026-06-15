@@ -99,7 +99,15 @@ if ($json === false) {
     fwrite(STDERR, "json_encode failed\n");
     exit(1);
 }
-file_put_contents($file, $json);
+// Atomic write: a concurrent seo_index() read must never see a truncated file.
+$tmp = $file . '.tmp.' . getmypid();
+if (@file_put_contents($tmp, $json) === strlen($json)) {
+    @rename($tmp, $file);
+} else {
+    @unlink($tmp);
+    fwrite(STDERR, "short write to $file\n");
+    exit(1);
+}
 
 $delta = $before - count($evergreen);
 $deltaLabel = $delta >= 0 ? $delta . ' removed/collapsed' : abs($delta) . ' added';
