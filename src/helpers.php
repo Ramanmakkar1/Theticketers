@@ -191,7 +191,13 @@ function slug_remember(string $type, string $slug, int $id): void
         return;
     }
     $pending[$type][$slug] = $id;
+    slug_register_flush();
+}
 
+/** Register the once-per-request shutdown flush exactly once, no matter which
+ *  rememberer (int- or string-id) fired first. */
+function slug_register_flush(): void
+{
     static $registered = false;
     if (!$registered) {
         $registered = true;
@@ -280,52 +286,35 @@ function slug_for_id(string $type, int $id): ?string
     return $reverse[$type][$id] ?? null;
 }
 
-/** Venue slugs map to string Ticketmaster ids, so they get their own accessors. */
-function venue_slug_lookup(string $slug): ?string
+/** Venue and TM-artist slugs map to STRING Ticketmaster ids (not the int ids of the
+ *  HelloTickets slug map), so they share these generic string-id accessors. */
+function string_slug_lookup(string $type, string $slug): ?string
 {
-    $id = slug_map()['venue'][$slug] ?? null;
+    $id = slug_map()[$type][$slug] ?? null;
     if (is_string($id) && $id !== '') {
         return $id;
     }
-    $fallback = seo_index()['maps']['venue'][$slug] ?? null;
+    $fallback = seo_index()['maps'][$type][$slug] ?? null;
     return is_string($fallback) && $fallback !== '' ? $fallback : null;
 }
 
-function venue_slug_remember(string $slug, string $tmId): void
+function string_slug_remember(string $type, string $slug, string $id): void
 {
-    if ($tmId === '' || $slug === '' || $slug === 'tickets' || venue_slug_lookup($slug) === $tmId) {
+    if ($id === '' || $slug === '' || $slug === 'tickets' || string_slug_lookup($type, $slug) === $id) {
         return;
     }
     $pending = &slug_pending();
-    if (($pending['venue'][$slug] ?? '') === $tmId) {
+    if (($pending[$type][$slug] ?? '') === $id) {
         return;
     }
-    $pending['venue'][$slug] = $tmId;
-    register_shutdown_function('slug_map_flush');
+    $pending[$type][$slug] = $id;
+    slug_register_flush(); // guarded: registers the shutdown flush at most once per request
 }
 
-function tm_artist_slug_lookup(string $slug): ?string
-{
-    $id = slug_map()['tm_artist'][$slug] ?? null;
-    if (is_string($id) && $id !== '') {
-        return $id;
-    }
-    $fallback = seo_index()['maps']['tm_artist'][$slug] ?? null;
-    return is_string($fallback) && $fallback !== '' ? $fallback : null;
-}
-
-function tm_artist_slug_remember(string $slug, string $tmId): void
-{
-    if ($tmId === '' || $slug === '' || $slug === 'tickets' || tm_artist_slug_lookup($slug) === $tmId) {
-        return;
-    }
-    $pending = &slug_pending();
-    if (($pending['tm_artist'][$slug] ?? '') === $tmId) {
-        return;
-    }
-    $pending['tm_artist'][$slug] = $tmId;
-    register_shutdown_function('slug_map_flush');
-}
+function venue_slug_lookup(string $slug): ?string { return string_slug_lookup('venue', $slug); }
+function venue_slug_remember(string $slug, string $tmId): void { string_slug_remember('venue', $slug, $tmId); }
+function tm_artist_slug_lookup(string $slug): ?string { return string_slug_lookup('tm_artist', $slug); }
+function tm_artist_slug_remember(string $slug, string $tmId): void { string_slug_remember('tm_artist', $slug, $tmId); }
 
 /**
  * Guard for LEGACY "{name}-{id}" URLs only: the name part has to plausibly belong to

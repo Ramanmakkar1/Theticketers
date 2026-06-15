@@ -226,7 +226,20 @@ document.querySelectorAll('[data-carousel]').forEach(carousel => {
         }
     }
 
+    // Slides past the first carry their image in data-bg instead of an inline
+    // background, so the browser doesn't eager-download every hero up front. Promote
+    // a slide's image to a real background the first time it (or the next slide) shows.
+    function loadBg(i) {
+        const s = slides[i];
+        if (s && s.dataset && s.dataset.bg) {
+            s.style.backgroundImage = "url('" + s.dataset.bg + "')";
+            delete s.dataset.bg;
+        }
+    }
+
     function render() {
+        loadBg(index);
+        loadBg((index + 1) % slides.length); // preload the next slide so the swap isn't blank
         track.style.transform = 'translateX(-' + (index * 100) + '%)';
         if (dotsWrap) {
             [...dotsWrap.children].forEach((dot, i) => dot.classList.toggle('active', i === index));
@@ -237,6 +250,8 @@ document.querySelectorAll('[data-carousel]').forEach(carousel => {
         index = (i + slides.length) % slides.length;
         render();
     }
+
+    render(); // set initial active dot and warm slide 2's image
 
     // Respect reduced-motion: no auto-rotation, instant (non-animated) slide moves.
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

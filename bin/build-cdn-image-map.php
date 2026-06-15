@@ -39,7 +39,7 @@ $mapFile = $root . '/storage/tm-images.json';
 $map = is_file($mapFile) ? (json_decode((string) file_get_contents($mapFile), true) ?: []) : [];
 $startCount = count($map);
 
-function tm_search(string $name, array &$keys, int &$cursor): ?string
+function tm_search(string $name, array &$keys, int &$cursor, int $attempt = 0): ?string
 {
     $keyCount = count($keys);
     $params = http_build_query([
@@ -63,8 +63,11 @@ function tm_search(string $name, array &$keys, int &$cursor): ?string
     curl_close($ch);
 
     if ($status === 429) {
-        usleep(600000);
-        return tm_search($name, $keys, $cursor);
+        if ($attempt >= 4) {
+            return null;
+        }
+        usleep(600000 * (1 << $attempt));
+        return tm_search($name, $keys, $cursor, $attempt + 1);
     }
     if ($status !== 200 || !is_string($body)) {
         return null;

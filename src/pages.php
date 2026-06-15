@@ -7,16 +7,18 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
 
     // Normalize trailing slash AND case in a single 301 (chained redirects leak
     // crawl budget). All our keyword slugs are lowercase (e.g. /artist/MAROON-5 →
-    // /artist/maroon-5). Skip namespaces that carry case-sensitive Ticketmaster
-    // ids: /venue/ (legacy id tail), /event/ (the raw "-tm-<id>" suffix is
-    // case-sensitive — lowercasing it yields a different, non-existent id), and the
-    // exact /go outbound handler. Clean /event/ slugs are already all-lowercase, so
-    // excluding the namespace has no SEO cost, and each detail page self-canonicals.
+    // /artist/maroon-5). Skip case-folding only where it would corrupt a case-sensitive
+    // Ticketmaster id: /venue/ (legacy id tail) and /event/ URLs that carry the raw
+    // "-tm-<id>" suffix (lowercasing the id yields a different, non-existent one — the
+    // detail page still self-canonicals the keyword part). Clean /event/ slugs with no
+    // -tm- tail are still folded so mixed-case typed links 301 instead of 404. Plus the
+    // exact /go outbound handler.
     $target = ($rawPath !== '/' && substr($rawPath, -1) === '/') ? rtrim($rawPath, '/') : $rawPath;
     $lowerTarget = strtolower($target);
+    $caseSensitiveTmEvent = strpos($target, '/event/') === 0 && stripos($target, '-tm-') !== false;
     if ($lowerTarget !== $target
         && strpos($target, '/venue/') !== 0
-        && strpos($target, '/event/') !== 0
+        && !$caseSensitiveTmEvent
         && $target !== '/go') {
         $target = $lowerTarget;
     }
@@ -929,8 +931,12 @@ function render_home_page(HelloTicketsClient $client, array $config, array $dest
             <div class="container">
                 <div class="carousel" data-carousel>
                     <div class="carousel-track" data-carousel-track>
-                        <?php foreach ($slides as $slide): ?>
+                        <?php foreach ($slides as $slideIndex => $slide): ?>
+                            <?php if ($slideIndex === 0): ?>
                             <div class="carousel-slide" style="background-image: url('<?= e($slide['image']) ?>')">
+                            <?php else: /* deferred — app.js sets the bg as the slide approaches view (saves up-front hero downloads) */ ?>
+                            <div class="carousel-slide" data-bg="<?= e($slide['image']) ?>">
+                            <?php endif; ?>
                                 <div class="carousel-caption">
                                     <span class="slide-tag"><?= e($slide['tag']) ?></span>
                                     <h2><?= e($slide['title']) ?></h2>
@@ -1118,7 +1124,7 @@ function render_events_page(HelloTicketsClient $client, array $config, int $city
         'canonical' => absolute_url($config, current_path(), array_filter([
             'page' => $page > 1 ? $page : null,
         ])),
-    ], $seo['h1'] ?? $title, $items, 'event', $config, $data, [
+    ], $seo['h1'] ?? $title, $items, 'event', $data, [
         'city_id' => $cityId,
         'date' => $date,
         'q' => $query,
@@ -1177,13 +1183,13 @@ function render_activities_page(HelloTicketsClient $client, array $config, int $
         'description' => $seo['meta_description'] ?? ('Compare ' . $city['name'] . ' attractions, tours and experiences with current prices and partner checkout.'),
         'robots' => ($categoryLabel !== null && $seo === null) ? 'noindex, follow' : null,
         'canonical' => absolute_url($config, current_path(), array_filter(['page' => $page > 1 ? $page : null])),
-    ], $seo['h1'] ?? $title, $items, 'activity', $config, $data, [
+    ], $seo['h1'] ?? $title, $items, 'activity', $data, [
         'city_id' => $cityId,
         'q' => search_query(),
     ], $seo ?? []);
 }
 
-function render_listing_layout(array $config, array $meta, string $heading, array $items, string $type, array $configAgain, array $data, array $filters, array $extras = []): void
+function render_listing_layout(array $config, array $meta, string $heading, array $items, string $type, array $data, array $filters, array $extras = []): void
 {
     // Curated category pages append FAQPage to the ItemList schema.
     $schema = item_list_schema($config, $items, $type);
@@ -1205,7 +1211,7 @@ function render_listing_layout(array $config, array $meta, string $heading, arra
         $meta['robots'] = 'noindex, follow';
     }
 
-    render_layout($config, $meta, function () use ($heading, $items, $type, $configAgain, $data, $filters, $extras): void {
+    render_layout($config, $meta, function () use ($heading, $items, $type, $config, $data, $filters, $extras): void {
         $total = (int) ($data['total_count'] ?? count($items));
         ?>
         <section class="listing-hero">
@@ -1230,7 +1236,7 @@ function render_listing_layout(array $config, array $meta, string $heading, arra
         <section class="section-band">
             <div class="container">
                 <?php if ($items === []): ?>
-                    <?php $emptyCity = city_for_id((int) ($filters['city_id'] ?? 0), $configAgain); ?>
+                    <?php $emptyCity = city_for_id((int) ($filters['city_id'] ?? 0), $config); ?>
                     <div class="empty-state">
                         <h2>No tickets found</h2>
                         <p>Try a broader search or browse all <?= e($emptyCity['name']) ?> listings.</p>
@@ -1239,7 +1245,7 @@ function render_listing_layout(array $config, array $meta, string $heading, arra
                 <?php else: ?>
                     <div class="card-grid">
                         <?php foreach ($items as $item): ?>
-                            <?= $type === 'event' ? event_card($item, $configAgain) : activity_card($item, $configAgain) ?>
+                            <?= $type === 'event' ? event_card($item, $config) : activity_card($item, $config) ?>
                         <?php endforeach; ?>
                     </div>
                     <?php render_pagination($data); ?>
@@ -1746,7 +1752,7 @@ function render_event_detail_page(HelloTicketsClient $client, array $config, int
         (float) $price > 0 ? ['q' => 'How much are ' . $performance['name'] . ' tickets?',
          'a' => 'Tickets currently start from ' . money($price, $currency) . '. Prices vary by seat and can change with demand — the latest prices are on our partner\'s checkout.'] : null,
         $venueName !== '' ? ['q' => 'Where is ' . $performance['name'] . ' taking place?',
-         'a' => 'The venue is ' . $venueName . (!empty($performance['venue']['address']) ? ', ' . trim((string) $performance['venue']['address']) : '') . ', ' . $cityName . '.'] : null,
+         'a' => 'The venue is ' . $venueName . (!empty($performance['venue']['address']) ? ', ' . trim((string) $performance['venue']['address']) : '') . ($cityName !== '' ? ', ' . $cityName : '') . '.'] : null,
     ], static fn($f) => $f !== null && $f['a'] !== null));
 
     $eventName = (string) $performance['name'];
@@ -1803,7 +1809,7 @@ function render_event_detail_page(HelloTicketsClient $client, array $config, int
                         <dl class="detail-list">
                             <div><dt>Date</dt><dd><?= e(format_date_time($performance['start_date'] ?? [])) ?></dd></div>
                             <div><dt>Venue</dt><dd><?= e($performance['venue']['name'] ?? 'Venue TBA') ?></dd></div>
-                            <div><dt>Address</dt><dd><?= e(trim(($performance['venue']['address'] ?? '') . ', ' . ($performance['venue']['city'] ?? ''))) ?></dd></div>
+                            <div><dt>Address</dt><dd><?= e(trim(($performance['venue']['address'] ?? '') . ', ' . ($performance['venue']['city'] ?? ''), ', ')) ?></dd></div>
                             <div><dt>Category</dt><dd><?= e($performance['category']['name'] ?? 'Event') ?></dd></div>
                         </dl>
 
@@ -2970,6 +2976,8 @@ function render_artist_detail_page(HelloTicketsClient $client, array $config, in
         'description' => $description,
         'canonical' => absolute_url($config, artist_path($performer)),
         'image' => $performerPhoto !== null ? absolute_image_url($config, $performerPhoto) : null,
+        // The hero avatar is the LCP element — preload it (mirrors event/activity pages).
+        'preload_image' => $performerPhoto,
         // An artist with no upcoming events is a thin/empty page — keep it out of the
         // index (still follow, so internal links and the slug survive for re-tour).
         'robots' => $events === [] ? 'noindex, follow' : null,
@@ -2980,7 +2988,7 @@ function render_artist_detail_page(HelloTicketsClient $client, array $config, in
                 <?php $heroImg = mapped_image('performer', (int) ($performer['id'] ?? 0)); ?>
                 <div class="artist-hero__row">
                     <?php if ($heroImg !== null): ?>
-                        <span class="artist-avatar artist-avatar--lg artist-avatar--img"><img src="<?= e($heroImg) ?>" alt="<?= e($name) ?>" loading="lazy"></span>
+                        <span class="artist-avatar artist-avatar--lg artist-avatar--img"><img src="<?= e($heroImg) ?>" alt="<?= e($name) ?>" fetchpriority="high"></span>
                     <?php else: ?>
                         <span class="artist-avatar artist-avatar--lg" aria-hidden="true"><?= e(artist_initials($name)) ?></span>
                     <?php endif; ?>
@@ -3747,10 +3755,15 @@ function artist_schema(array $config, array $performer, array $events): array
     ];
 
     $eventSchemas = [];
+    $today = (new DateTimeImmutable('today'))->format('Y-m-d');
     foreach (array_slice($events, 0, 10) as $event) {
         $start = schema_start_date($event);
         if ($start === '') {
             continue; // startDate is required; skip undated events rather than emit invalid nodes
+        }
+        $eventDate = (string) ($event['start_date']['local_date'] ?? '');
+        if ($eventDate !== '' && $eventDate < $today) {
+            continue; // don't advertise a past date in an artist's upcoming-events markup
         }
         $node = [
             '@type' => 'Event',
@@ -4935,6 +4948,7 @@ function venue_from_seed(array $config, string $name, string $city): ?array
 /** Clean /venue/{slug} → normalized TM venue, via the seed list (the only venues we link). */
 function resolve_seed_venue(array $config, string $slug): ?array
 {
+    // Cheap pass first: a seed-name slug match needs no API call.
     foreach (venue_seed_list() as [$name, $city]) {
         if (slugify($name) === $slug) {
             return venue_from_seed($config, $name, $city);
@@ -4942,14 +4956,20 @@ function resolve_seed_venue(array $config, string $slug): ?array
     }
     // Ticketmaster's canonical venue name can differ from our seed name (e.g. seed
     // "Santiago Bernabéu" resolves to "Santiago Bernabéu Stadium") — links and
-    // canonicals use the TM name, so match those too. All calls are cached.
-    foreach (venue_seed_list() as [$name, $city]) {
-        $venue = venue_from_seed($config, $name, $city);
-        if ($venue !== null && slugify((string) $venue['name']) === $slug) {
-            return $venue;
+    // canonicals use the TM name, so match those too. Resolve every seed once and
+    // memoize the TM-name → venue map for the request so repeated misses (404 sprays,
+    // mixed-case retries) don't re-walk all 21 seeds with fresh API calls.
+    static $byTmSlug = null;
+    if ($byTmSlug === null) {
+        $byTmSlug = [];
+        foreach (venue_seed_list() as [$name, $city]) {
+            $venue = venue_from_seed($config, $name, $city);
+            if ($venue !== null) {
+                $byTmSlug[slugify((string) $venue['name'])] = $venue;
+            }
         }
     }
-    return null;
+    return $byTmSlug[$slug] ?? null;
 }
 
 function render_venue_page(array $config, string $tmVenueId): void
@@ -5938,6 +5958,9 @@ function render_venue_category_page(array $config, string $tmVenueId, string $ve
     // Self-canonical 301: consolidate legacy/variant venue slugs onto the clean name slug.
     $canonicalSlug = slugify($venueName);
     if ($canonicalSlug !== '' && current_path() !== '/venue/' . $canonicalSlug . '/' . $categorySlug) {
+        // Register slug→tm_id first (mirrors tm_venue_path) so the redirected request
+        // resolves the clean slug for non-seed venues instead of 404-ing.
+        venue_slug_remember($canonicalSlug, $tmVenueId);
         redirect_permanent('/venue/' . $canonicalSlug . '/' . $categorySlug);
         return;
     }

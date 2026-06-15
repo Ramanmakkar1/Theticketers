@@ -157,12 +157,14 @@ final class TicketmasterClient
             return $body;
         }
 
-        // Every key was rate-limited at once (rare). Back off once, then retry the rotation.
-        if ($retry === 0) {
+        // Every key was rate-limited at once (rare). Batch (CLI) scripts back off once
+        // and retry the rotation; a live visitor request must NOT block ~1s — it returns
+        // null immediately so get() can serve the stale-on-error cache.
+        if ($retry === 0 && PHP_SAPI === 'cli') {
             usleep(900000);
             return $this->request($url, 1);
         }
-        error_log('[tm] all ' . $n . ' keys rate-limited (429) after backoff');
+        error_log('[tm] all ' . $n . ' keys rate-limited (429)' . ($retry === 0 ? '' : ' after backoff'));
         return null;
     }
 
