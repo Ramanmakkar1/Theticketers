@@ -332,7 +332,9 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
     }
 
     if (preg_match('#^/event/([^/]+)$#', $path, $match)) {
-        $tmEventId = tm_event_id_from_slug($match[1]);
+        // Clean slug resolved via the persisted tm_event map, OR the legacy
+        // "-tm-<id>" form (which self-canonicals to the clean URL on render).
+        $tmEventId = tm_event_id_from_slug($match[1]) ?? string_slug_lookup('tm_event', $match[1]);
         if ($tmEventId !== null) {
             render_ticketmaster_event_detail_page($config, $tmEventId);
             return;

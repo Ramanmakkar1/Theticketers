@@ -1127,17 +1127,21 @@ function event_path(array $performance): string
     $slug = event_slug($performance);
     $tmId = (string) ($performance['tm_id'] ?? '');
     if ($tmId !== '') {
-        // Emit the raw id (short, keyword-led) ONLY when it is URL-safe AND carries a
-        // signal slugify() can never produce — an uppercase letter or underscore. That
-        // (a) lets the decoder tell a real id from an all-lowercase keyword tail, and
-        // (b) keeps mixed-case ids intact. Ids that are all-lowercase, hyphenated, or
-        // implausibly short fall back to bin2hex (the decoder's legacy branch reverses
-        // it), so every id round-trips losslessly. Must stay in lockstep with
-        // tm_event_id_from_slug().
-        $rawSafe = preg_match('/^[A-Za-z0-9_]{10,}$/', $tmId) === 1
-            && preg_match('/[A-Z_]/', $tmId) === 1;
-        $token = $rawSafe ? $tmId : bin2hex($tmId);
-        return '/event/' . $slug . '-tm-' . $token;
+        // Clean, keyword-only URL — no raw id in the path. The slug→id mapping is
+        // persisted (slug map / seo index) and resolved on the way in, exactly like
+        // venue and TM-artist pages. A date token disambiguates the same event/tour
+        // playing multiple nights at one venue (they otherwise share name+city), so
+        // the slug stays deterministic and unique per performance. Must stay in
+        // lockstep with the resolver in dispatch() (string_slug_lookup('tm_event')).
+        $localDate = (string) ($performance['start_date']['local_date'] ?? '');
+        if (preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $localDate, $dm) === 1) {
+            // Drop the year from the token when the slug already carries it
+            // (e.g. "...-convocation-2026-edmonton") to avoid a duplicated year.
+            $dateToken = slug_contains_word($slug, $dm[1]) ? $dm[2] . '-' . $dm[3] : $localDate;
+            $slug .= '-' . $dateToken;
+        }
+        string_slug_remember('tm_event', $slug, $tmId);
+        return '/event/' . $slug;
     }
 
     $id = (int) ($performance['id'] ?? 0);
