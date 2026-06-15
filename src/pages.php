@@ -175,7 +175,7 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
         render_static_page($config, 'About ' . $config['site_name'], $config['site_name'] . ' is a ticket discovery site for events, attractions and experiences in Dubai, Abu Dhabi and top destinations worldwide.', '/about', function () use ($config): void {
             ?>
             <p><?= e($config['site_name']) ?> is a ticket discovery site for events, attractions and experiences in Dubai, Abu Dhabi and top destinations across <?= e(natural_join(array_map(static fn(array $m): string => (string) $m['name'], array_values($config['markets'] ?? [])))) ?>.</p>
-            <p>We list concerts, theatre, sports, tours and attractions with live prices and availability supplied by official ticketing partners &mdash; HelloTickets for attractions, tours and international events, and Ticketmaster for North American sports, venues and arena tours. When you choose a ticket, you complete your booking securely on the partner's own site: they handle payment, ticket delivery and customer support, and the price you pay is the partner's price.</p>
+            <p>We list concerts, theatre, sports, tours and attractions with live prices and availability supplied by official ticketing partners &mdash; HelloTickets for attractions, tours and international events, and leading primary ticketing platforms for North American sports, venues and arena tours. When you choose a ticket, you complete your booking securely on the partner's own site: they handle payment, ticket delivery and customer support, and the price you pay is the partner's price.</p>
             <h2>What you'll find here</h2>
             <ul>
                 <li><strong>Destination guides</strong> for <a href="/dubai">Dubai</a>, <a href="/abu-dhabi">Abu Dhabi</a> and flagship cities across six countries, each hand-written with practical tips, highlights and FAQs.</li>
@@ -208,7 +208,7 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
     if ($path === '/how-we-make-money') {
         render_static_page($config, 'How We Make Money', $config['site_name'] . ' is free to use. Here is how affiliate commissions fund the site without changing the price you pay.', '/how-we-make-money', function () use ($config): void {
             ?>
-            <p><?= e($config['site_name']) ?> is free to use. When you buy a ticket through a link on our site, the ticketing partner that completes your booking &mdash; HelloTickets or Ticketmaster &mdash; may pay us a commission. This never increases the price you pay: prices and availability come directly from the partner, and you'd pay exactly the same buying from them directly.</p>
+            <p><?= e($config['site_name']) ?> is free to use. When you buy a ticket through a link on our site, the ticketing partner that completes your booking may pay us a commission. This never increases the price you pay: prices and availability come directly from the partner, and you'd pay exactly the same buying from them directly.</p>
             <p>We do not process payments, hold ticket inventory, or charge any fees. Commissions are how we fund the site.</p>
             <h2>What this means in practice</h2>
             <ul>
@@ -231,12 +231,12 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
             </ul>
             <p>We set no advertising or analytics cookies.</p>
             <h2>Optional location detection</h2>
-            <p>If you press <strong>"Detect my location"</strong> in the city chooser, your browser asks ipapi.co (a third-party geolocation service) which city your internet connection is in, so we can preselect it. This sends your IP address to ipapi.co (<a href="https://ipapi.co/privacy/" rel="noopener">their privacy policy</a>). It happens only when you press the button &mdash; never automatically.</p>
+            <p>If you press <strong>"Detect my location"</strong> in the city chooser, your browser asks a third-party geolocation service (<a href="https://ipwho.is/" rel="noopener">ipwho.is</a>, falling back to <a href="https://www.geojs.io/" rel="noopener">GeoJS</a>) which city your internet connection is in, so we can preselect it. This sends your IP address to that service. It happens only when you press the button &mdash; never automatically.</p>
             <h2>Click logs</h2>
             <p>When you click out to a ticket partner, we record the ticket clicked, the time, your browser type and an <strong>anonymised</strong> IP address (last digits removed, so it no longer identifies you). We use this to count clicks and detect abuse. Logs are routinely deleted after 90 days.</p>
             <p>We also keep minimal AI discovery logs when a known AI crawler or AI referral visits the site. These logs contain the page path, source label, browser type and anonymised IP address only, so we can understand whether services like ChatGPT, Perplexity and Claude can access our pages.</p>
             <h2>Buying tickets</h2>
-            <p>Purchases happen on our partners' sites (HelloTickets, Ticketmaster) via Impact affiliate links, which set their own tracking for commission attribution. Their privacy policies govern checkout: we never see your name, payment details or order contents.</p>
+            <p>Purchases happen on our partners' sites via Impact affiliate links, which set their own tracking for commission attribution. Their privacy policies govern checkout: we never see your name, payment details or order contents.</p>
             <h2>Your rights</h2>
             <p>Under GDPR/UK GDPR you can request access to, correction of, or deletion of any data we hold. Since we store no accounts and anonymise click logs, there is usually nothing identifying to return &mdash; but send a request through our <a href="/contact">contact form</a> and we will check and respond within 30 days. EU/UK visitors may also complain to their local data-protection authority.</p>
             <?php
@@ -249,7 +249,7 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
             ?>
             <p>Last updated: <?= e(date('F j, Y')) ?>. By using <?= e($config['site_name']) ?> you agree to these terms.</p>
             <h2>What we are (and aren't)</h2>
-            <p><?= e($config['site_name']) ?> is a free ticket discovery and comparison site. We do not sell tickets, process payments or hold inventory. Every purchase is completed on a partner's website (HelloTickets or Ticketmaster) under <em>their</em> terms of sale &mdash; including pricing, delivery, cancellations and refunds. For booking issues, contact the partner using the details in your confirmation email.</p>
+            <p><?= e($config['site_name']) ?> is a free ticket discovery and comparison site. We do not sell tickets, process payments or hold inventory. Every purchase is completed on a partner's website under <em>their</em> terms of sale &mdash; including pricing, delivery, cancellations and refunds. For booking issues, contact the partner using the details in your confirmation email.</p>
             <h2>Accuracy</h2>
             <p>Prices, dates and availability are supplied live by our partners and can change between your viewing a page and completing checkout. The partner's checkout price is always the binding one. We work to keep listings accurate but provide the site "as is", without warranties, and are not liable for losses arising from listing errors or partner availability changes &mdash; your statutory consumer rights are unaffected.</p>
             <h2>Affiliate disclosure</h2>
@@ -1800,35 +1800,36 @@ function render_event_detail_page(HelloTicketsClient $client, array $config, int
                     </div>
                 </div>
 
-                <div class="detail-gallery" style="background-image: url('<?= e($image) ?>')"></div>
+                <div class="detail-hero-split">
+                    <div class="detail-gallery" style="background-image: url('<?= e($image) ?>')"></div>
 
-                <div class="detail-grid">
-                    <div class="detail-content">
-                        <p class="detail-summary"><?= e($summary) ?></p>
-                        <h2>Event details</h2>
-                        <dl class="detail-list">
+                    <aside class="checkout-panel">
+                        <?php if ((float) $price > 0): ?>
+                        <span class="price-label">Tickets From</span>
+                        <strong><?= e(money($price, (string) $currency)) ?></strong>
+                        <?php endif; ?>
+                        <dl class="detail-list checkout-facts">
                             <div><dt>Date</dt><dd><?= e(format_date_time($performance['start_date'] ?? [])) ?></dd></div>
                             <div><dt>Venue</dt><dd><?= e($performance['venue']['name'] ?? 'Venue TBA') ?></dd></div>
                             <div><dt>Address</dt><dd><?= e(trim(($performance['venue']['address'] ?? '') . ', ' . ($performance['venue']['city'] ?? ''), ', ')) ?></dd></div>
                             <div><dt>Category</dt><dd><?= e($performance['category']['name'] ?? 'Event') ?></dd></div>
                         </dl>
-
-                        <?php if (!empty($performance['performers'])): ?>
-                            <h2>Performers</h2>
-                            <div class="tag-grid compact-tags">
-                                <?php foreach ($performance['performers'] ?? [] as $performer): ?>
-                                    <span><?= e($performer['name'] ?? '') ?></span>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-
-                    <aside class="checkout-panel">
-                        <span class="price-label">Tickets From</span>
-                        <strong><?= e(money($price, (string) $currency)) ?></strong>
                         <a class="button-link wide" href="<?= e(go_url($performance, 'event')) ?>" rel="sponsored nofollow">Find Tickets</a>
                         <p class="checkout-note">Secure checkout on our official ticket partner's site. We may earn a commission &mdash; at no extra cost to you.</p>
                     </aside>
+                </div>
+
+                <div class="detail-content">
+                    <p class="detail-summary"><?= e($summary) ?></p>
+
+                    <?php if (!empty($performance['performers'])): ?>
+                        <h2>Performers</h2>
+                        <div class="tag-grid compact-tags">
+                            <?php foreach ($performance['performers'] ?? [] as $performer): ?>
+                                <span><?= e($performer['name'] ?? '') ?></span>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </section>
@@ -1913,7 +1914,7 @@ function render_ticketmaster_event_detail_page(array $config, string $tmEventId)
         . ($cityName !== '' ? ' in ' . $cityName : '')
         . ($whenLabel !== '' && $whenLabel !== 'Upcoming' ? ' on ' . $whenLabel : '')
         . '. ' . ($price > 0 ? 'Tickets start from ' . money($price, $currency) . ' and availability' : 'Ticket availability')
-        . ' is live from Ticketmaster — checkout completes securely on the partner site.';
+        . ' is live now — checkout completes securely on our official ticketing partner site.';
 
     $eventFaqs = array_values(array_filter([
         ['q' => 'When is ' . $eventName . ($cityName !== '' ? ' in ' . $cityName : '') . '?',
@@ -1921,12 +1922,12 @@ function render_ticketmaster_event_detail_page(array $config, string $tmEventId)
             ? $eventName . ' takes place on ' . $whenLabel . ($venueName !== '' ? ' at ' . $venueName : '') . ($cityName !== '' ? ' in ' . $cityName : '') . '.'
             : null],
         $price > 0 ? ['q' => 'How much are ' . $eventName . ' tickets?',
-         'a' => 'Tickets currently start from ' . money($price, $currency) . '. Prices vary by seat and can change with demand — the latest prices are on Ticketmaster checkout.'] : null,
+         'a' => 'Tickets currently start from ' . money($price, $currency) . '. Prices vary by seat and can change with demand — the latest prices are on the partner checkout.'] : null,
         $venueName !== '' ? ['q' => 'Where is ' . $eventName . ' taking place?',
          'a' => 'The venue is ' . $venueName . (!empty($performance['venue']['address']) ? ', ' . trim((string) $performance['venue']['address']) : '') . ($cityName !== '' ? ', ' . $cityName : '') . '.'] : null,
     ], static fn($f) => $f !== null && $f['a'] !== null));
     $eventFaqs[] = ['q' => 'Who handles checkout for ' . $eventName . '?',
-        'a' => 'Checkout is handled by Ticketmaster or the official ticketing partner. We show the event details first, then send you to the secure partner checkout when you choose Get Tickets.'];
+        'a' => 'Checkout is handled by our official ticketing partner. We show the event details first, then send you to the secure partner checkout when you choose Get Tickets.'];
     $eventFaqs[] = ['q' => 'How are tickets delivered for ' . $eventName . '?',
         'a' => 'Delivery options are confirmed by the ticketing partner during checkout. Most events support mobile tickets that can be scanned from your phone.'];
 
@@ -1943,7 +1944,7 @@ function render_ticketmaster_event_detail_page(array $config, string $tmEventId)
         'description' => $eventName . ($venueName !== '' ? ' at ' . $venueName : '') . ($cityName !== '' ? ', ' . $cityName : '')
             . ($dateLabel !== '' ? ' on ' . $dateLabel : '') . '.'
             . ($price > 0 ? ' Tickets from ' . money($price, $currency) . ' with live availability' : ' Live ticket availability')
-            . ' — secure checkout via Ticketmaster.',
+            . ' — secure checkout via our official ticketing partner.',
         'canonical' => absolute_url($config, $canonicalPath),
         'image' => image_from_item($performance, 'event', $config),
         'preload_image' => image_from_item($performance, 'event', $config),
@@ -1965,35 +1966,36 @@ function render_ticketmaster_event_detail_page(array $config, string $tmEventId)
                     </div>
                 </div>
 
-                <div class="detail-gallery" style="background-image: url('<?= e($image) ?>')"></div>
+                <div class="detail-hero-split">
+                    <div class="detail-gallery" style="background-image: url('<?= e($image) ?>')"></div>
 
-                <div class="detail-grid">
-                    <div class="detail-content">
-                        <p class="detail-summary"><?= e($summary) ?></p>
-                        <h2>Event details</h2>
-                        <dl class="detail-list">
+                    <aside class="checkout-panel">
+                        <?php if ((float) $price > 0): ?>
+                        <span class="price-label">Tickets From</span>
+                        <strong><?= e(money($price, (string) $currency)) ?></strong>
+                        <?php endif; ?>
+                        <dl class="detail-list checkout-facts">
                             <div><dt>Date</dt><dd><?= e(format_date_time($performance['start_date'] ?? [])) ?></dd></div>
                             <div><dt>Venue</dt><dd><?= e($venueName !== '' ? $venueName : 'Venue TBA') ?></dd></div>
                             <div><dt>Address</dt><dd><?= e(trim(($performance['venue']['address'] ?? '') . ', ' . ($performance['venue']['city'] ?? ''), ', ')) ?></dd></div>
                             <div><dt>Category</dt><dd><?= e($performance['category']['name'] ?? 'Event') ?></dd></div>
                         </dl>
-
-                        <?php if (!empty($performance['performers'])): ?>
-                            <h2>Performers</h2>
-                            <div class="tag-grid compact-tags">
-                                <?php foreach ($performance['performers'] ?? [] as $performer): ?>
-                                    <span><?= e($performer['name'] ?? '') ?></span>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-
-                    <aside class="checkout-panel">
-                        <span class="price-label">Tickets From</span>
-                        <strong><?= e(money($price, (string) $currency)) ?></strong>
                         <a class="button-link wide" href="<?= e(go_url($performance, 'event')) ?>" rel="sponsored nofollow">Get Tickets</a>
-                        <p class="checkout-note">Secure checkout on Ticketmaster or the official ticketing partner. We may earn a commission &mdash; at no extra cost to you.</p>
+                        <p class="checkout-note">Secure checkout on our official ticketing partner's site. We may earn a commission &mdash; at no extra cost to you.</p>
                     </aside>
+                </div>
+
+                <div class="detail-content">
+                    <p class="detail-summary"><?= e($summary) ?></p>
+
+                    <?php if (!empty($performance['performers'])): ?>
+                        <h2>Performers</h2>
+                        <div class="tag-grid compact-tags">
+                            <?php foreach ($performance['performers'] ?? [] as $performer): ?>
+                                <span><?= e($performer['name'] ?? '') ?></span>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </section>
@@ -2001,7 +2003,7 @@ function render_ticketmaster_event_detail_page(array $config, string $tmEventId)
         <section class="section-band muted">
             <div class="container artist-seo-content">
                 <h2>About <?= e($eventName) ?></h2>
-                <p><?= e($eventName) ?><?php if ($venueName !== ''): ?> takes place at <?= e($venueName) ?><?php endif; ?><?php if ($cityName !== ''): ?> in <?= e($cityName) ?><?php endif; ?>. <?php if ($whenLabel !== ''): ?>The event is scheduled for <?= e($whenLabel) ?>.<?php endif; ?> Tickets are available now from Ticketmaster or the official ticketing partner.</p>
+                <p><?= e($eventName) ?><?php if ($venueName !== ''): ?> takes place at <?= e($venueName) ?><?php endif; ?><?php if ($cityName !== ''): ?> in <?= e($cityName) ?><?php endif; ?>. <?php if ($whenLabel !== ''): ?>The event is scheduled for <?= e($whenLabel) ?>.<?php endif; ?> Tickets are available now from our official ticketing partner.</p>
                 <p>All prices shown are live from partner inventory and may change based on demand and seat availability. Open checkout from this page when you are ready to choose seats.</p>
             </div>
         </section>
@@ -2138,8 +2140,10 @@ function render_activity_detail_page(HelloTicketsClient $client, array $config, 
                     </div>
 
                     <aside class="checkout-panel">
+                        <?php if ((float) $price > 0): ?>
                         <span class="price-label">Tickets From</span>
                         <strong><?= e(money($price, (string) $currency)) ?></strong>
+                        <?php endif; ?>
                         <a class="button-link wide" href="<?= e(go_url($activity, 'activity')) ?>" rel="sponsored nofollow">Check Availability</a>
                         <p class="checkout-note">Secure checkout on our official ticket partner's site. We may earn a commission &mdash; at no extra cost to you.</p>
                     </aside>
@@ -4201,7 +4205,7 @@ function render_llms_txt(HelloTicketsClient $client, array $config, array $desti
     echo "10 genres: concerts, sports, theatre, comedy, festivals, family, classical, hip-hop, rock, country-music.\n";
 
     echo "\n## Data and attribution\n\n";
-    echo "- Event, attraction, price and availability data comes from ticketing partners including HelloTickets and Ticketmaster where configured.\n";
+    echo "- Event, attraction, price and availability data comes from official ticketing partners where configured.\n";
     echo "- TheTicketers does not process payment, issue tickets or handle refunds; partner checkout terms apply.\n";
     echo "- Prefer citing canonical page URLs from this site, not outbound /go redirect URLs.\n\n";
 
@@ -4327,7 +4331,7 @@ function render_ai_index_json(array $config, array $destinationsContent): void
         ],
         'data_sources' => [
             'HelloTickets for attractions, tours and international events where configured',
-            'Ticketmaster for North American sports, venues and arena tours where configured',
+            'Primary ticketing platforms for North American sports, venues and arena tours where configured',
         ],
         'commercial_disclosure' => 'TheTicketers may earn affiliate commission when users buy through partner links. The user completes checkout, payment, delivery and support on the partner site.',
         'citation_guidance' => [
@@ -6250,10 +6254,10 @@ function render_llms_full_txt(array $config, array $destinationsContent): void
     $siteName = $config['site_name'];
     $siteUrl = $config['site_url'];
     echo "# {$siteName} — Complete Site Guide for AI Systems\n\n";
-    echo "> {$siteName} is a ticket discovery and comparison site covering concerts, sports, theatre, tours and attractions across 10 countries. We aggregate live inventory from HelloTickets and Ticketmaster, showing real-time prices, dates and availability. We do not sell tickets directly — purchases complete on the partner's secure checkout.\n\n";
+    echo "> {$siteName} is a ticket discovery and comparison site covering concerts, sports, theatre, tours and attractions across 10 countries. We aggregate live inventory from official ticketing partners, showing real-time prices, dates and availability. We do not sell tickets directly — purchases complete on the partner's secure checkout.\n\n";
     echo "## Key Facts\n";
     echo "- Coverage: " . count($destinationsContent['countries'] ?? []) . " countries, " . count($destinationsContent['cities'] ?? []) . "+ destination cities\n";
-    echo "- Ticket partners: HelloTickets (attractions, tours, international events), Ticketmaster (NA sports, concerts, venues)\n";
+    echo "- Ticket partners: HelloTickets (attractions, tours, international events) and primary ticketing platforms (NA sports, concerts, venues)\n";
     echo "- Pricing: All prices shown are live from partners. We never mark up or resell.\n";
     echo "- Booking: Checkout happens on the partner's site. We earn affiliate commission at no extra cost to the buyer.\n\n";
     echo "## Page Types & URL Patterns\n\n";

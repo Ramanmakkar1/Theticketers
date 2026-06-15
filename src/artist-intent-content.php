@@ -30,7 +30,7 @@ return array (
       'currency' => 'USD',
       'intro' => 
       array (
-        0 => 'Billie Eilish tickets typically run from around $65 for upper-tier seats to $350 or more for the floor and VIP packages, though the exact figure you pay depends on the city, the date and how early you buy. Arena shows on the "Hit Me Hard and Soft" tour use Ticketmaster\'s dynamic pricing, so the headline number moves with demand rather than sitting at a fixed face value.',
+        0 => 'Billie Eilish tickets typically run from around $65 for upper-tier seats to $350 or more for the floor and VIP packages, though the exact figure you pay depends on the city, the date and how early you buy. Arena shows on the "Hit Me Hard and Soft" tour use dynamic pricing, so the headline number moves with demand rather than sitting at a fixed face value.',
         1 => 'This guide breaks down what each seating tier actually costs, why the price you saw yesterday may be different today, and how to land the cheaper end of the range. Live "from" prices for every confirmed date appear in the cards below the moment a show goes on sale, so you can compare two nights of the same tour at a glance.',
       ),
       'tiers' => 
@@ -56,7 +56,7 @@ return array (
           'desc' => 'Official VIP runs $300 and up and bundles premium seating or early GA entry with merch and early load-in. It is not a meet-and-greet on this tour — read what each package includes before paying the premium.',
         ),
       ),
-      'why' => 'Billie Eilish\'s on-sales use dynamic pricing, which means Ticketmaster adjusts the price in real time based on how fast a section is selling. A date that opens at $90 can climb past $150 within minutes for an in-demand city, then ease back as more dates are added or resale supply grows. Prices are generally lowest right at on-sale and for weekday shows, and highest for weekend dates in major markets.',
+      'why' => 'Billie Eilish\'s on-sales use dynamic pricing, which means the ticketing system adjusts the price in real time based on how fast a section is selling. A date that opens at $90 can climb past $150 within minutes for an in-demand city, then ease back as more dates are added or resale supply grows. Prices are generally lowest right at on-sale and for weekday shows, and highest for weekend dates in major markets.',
       'faqs' => 
       array (
         0 => 
@@ -92,7 +92,7 @@ return array (
         6 => 
         array (
           'q' => 'When do Billie Eilish tickets go on sale?',
-          'a' => 'Tickets release a few months before each leg, with artist and Ticketmaster presales running a day or two ahead of the general on-sale. New dates appear on this page as soon as they\'re live.',
+          'a' => 'Tickets release a few months before each leg, with artist and official presales running a day or two ahead of the general on-sale. New dates appear on this page as soon as they\'re live.',
         ),
         7 => 
         array (
@@ -404,7 +404,7 @@ return array (
           'desc' => 'Official packages from roughly 500 USD up to around 900 USD or beyond, bundling premium seating or early pitch entry with lounge access, dedicated entrances, merchandise and other extras.',
         ),
       ),
-      'why' => 'Coldplay tours are promoted by Live Nation and ticketed largely through Ticketmaster, which means most shows use dynamic pricing. Under that model, standard face values move with demand: high-demand seats and the busiest dates can rise above their starting price during a sale, while quieter sections may settle lower. Infinity Tickets and official VIP packages are priced separately from the dynamic standard tiers. Resale prices on the secondary market are set by sellers and routinely exceed face value, so they are not a reliable guide to what the band charges directly.',
+      'why' => 'Coldplay tours are promoted by Live Nation and ticketed largely through major ticketing platforms, which means most shows use dynamic pricing. Under that model, standard face values move with demand: high-demand seats and the busiest dates can rise above their starting price during a sale, while quieter sections may settle lower. Infinity Tickets and official VIP packages are priced separately from the dynamic standard tiers. Resale prices on the secondary market are set by sellers and routinely exceed face value, so they are not a reliable guide to what the band charges directly.',
       'faqs' => 
       array (
         0 => 
@@ -430,7 +430,7 @@ return array (
         4 => 
         array (
           'q' => 'Do Coldplay tickets use dynamic pricing?',
-          'a' => 'Most Coldplay dates ticketed through Ticketmaster use dynamic pricing, so standard face values rise and fall with demand during a sale. Infinity Tickets and official VIP packages sit outside that system and are priced separately, while resale listings are set by individual sellers.',
+          'a' => 'Most Coldplay dates ticketed through major platforms use dynamic pricing, so standard face values rise and fall with demand during a sale. Infinity Tickets and official VIP packages sit outside that system and are priced separately, while resale listings are set by individual sellers.',
         ),
         5 => 
         array (
@@ -579,7 +579,7 @@ return array (
           'desc' => 'Official packages, typically 450 to 600 USD and occasionally beyond, bundling premium seating with extras such as early entry, dedicated check-in or branded merchandise. Contents differ by city and are set by the tour\'s hospitality partner rather than fixed nightly.',
         ),
       ),
-      'why' => 'Shakira\'s recent shows run through Ticketmaster and Live Nation, both of which apply dynamic pricing on a portion of seats. Under that model the listed face value of certain sections moves up or down with live demand rather than staying fixed, so a section can read higher when a date sells quickly and ease back when it does not. The bands above reflect typical released face values; resale and platform listings can sit well above them. Final amounts, plus any service fees, are confirmed only at checkout for the specific date and seat.',
+      'why' => 'Shakira\'s recent shows run through Live Nation and other major ticketing platforms, both of which apply dynamic pricing on a portion of seats. Under that model the listed face value of certain sections moves up or down with live demand rather than staying fixed, so a section can read higher when a date sells quickly and ease back when it does not. The bands above reflect typical released face values; resale and platform listings can sit well above them. Final amounts, plus any service fees, are confirmed only at checkout for the specific date and seat.',
       'faqs' => 
       array (
         0 => 
@@ -595,7 +595,7 @@ return array (
         2 => 
         array (
           'q' => 'Why do Shakira ticket prices change so much?',
-          'a' => 'Shakira tours through Ticketmaster and Live Nation, which apply dynamic pricing to part of the seating map. That means the face value of some sections rises and falls with real-time demand, so prices for the same seat type can differ between dates and even shift during a single sale window.',
+          'a' => 'Shakira tours through Live Nation and other major ticketing platforms, which apply dynamic pricing to part of the seating map. That means the face value of some sections rises and falls with real-time demand, so prices for the same seat type can differ between dates and even shift during a single sale window.',
         ),
         3 => 
         array (
@@ -753,7 +753,7 @@ return array (
           'desc' => 'Official packages combining prime seating with extras such as early entry, merchandise or lounge access, generally from 450 USD upward to around 600 USD. Availability and inclusions vary by city and venue.',
         ),
       ),
-      'why' => 'Diljit Dosanjh\'s recent dates run through Ticketmaster and Live Nation, which apply dynamic pricing to many shows. Under that model the listed price for in-demand seats moves with real-time demand rather than holding a single fixed figure, so the same seat can cost more during a surge and ease back when demand softens. This is why two buyers can pay different amounts for comparable seats on the same night, and why face values are best treated as a guide rather than a fixed figure. Resale listings sit on top of this and can run above or below face value depending on how a show is selling. Final checkout prices also include service and facility fees that are not reflected in the bands above.',
+      'why' => 'Diljit Dosanjh\'s recent dates run through Live Nation and other major ticketing platforms, which apply dynamic pricing to many shows. Under that model the listed price for in-demand seats moves with real-time demand rather than holding a single fixed figure, so the same seat can cost more during a surge and ease back when demand softens. This is why two buyers can pay different amounts for comparable seats on the same night, and why face values are best treated as a guide rather than a fixed figure. Resale listings sit on top of this and can run above or below face value depending on how a show is selling. Final checkout prices also include service and facility fees that are not reflected in the bands above.',
       'faqs' => 
       array (
         0 => 
@@ -764,7 +764,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do Diljit Dosanjh ticket prices change?',
-          'a' => 'Prices change because his tours use dynamic pricing through Ticketmaster and Live Nation, where the cost of in-demand seats rises and falls with real-time demand. Stadium dates also carry a wider ceiling than arena shows, and resale listings add further variation. The same seat can therefore carry a different price from one moment to the next.',
+          'a' => 'Prices change because his tours use dynamic pricing through Live Nation and other major ticketing platforms, where the cost of in-demand seats rises and falls with real-time demand. Stadium dates also carry a wider ceiling than arena shows, and resale listings add further variation. The same seat can therefore carry a different price from one moment to the next.',
         ),
         2 => 
         array (
@@ -779,7 +779,7 @@ return array (
         4 => 
         array (
           'q' => 'Do Diljit Dosanjh tickets include fees?',
-          'a' => 'The face values quoted here do not include service and facility fees, which Ticketmaster and Live Nation add at checkout. The final amount paid is therefore higher than the listed seat price, and fees vary by venue and ticket type.',
+          'a' => 'The face values quoted here do not include service and facility fees, which Live Nation and other ticketing platforms add at checkout. The final amount paid is therefore higher than the listed seat price, and fees vary by venue and ticket type.',
         ),
         5 => 
         array (
@@ -925,7 +925,7 @@ return array (
           'desc' => 'Official packages bundling early entry, premium placement, lounge access or merchandise. These typically start around $500 and reach $750 or beyond depending on inclusions.',
         ),
       ),
-      'why' => 'Bad Bunny\'s tour is sold through Ticketmaster and promoted by Live Nation, both of which use dynamic pricing on high-demand shows. That means the listed face value can move up or down in real time according to how quickly a section is selling, so two buyers in the same block may pay different amounts depending on when they purchase. Genuinely fixed prices are rare on a tour of this scale; the figures above describe the usual range rather than a guaranteed rate.',
+      'why' => 'Bad Bunny\'s tour is promoted by Live Nation and sold through major ticketing platforms, both of which use dynamic pricing on high-demand shows. That means the listed face value can move up or down in real time according to how quickly a section is selling, so two buyers in the same block may pay different amounts depending on when they purchase. Genuinely fixed prices are rare on a tour of this scale; the figures above describe the usual range rather than a guaranteed rate.',
       'faqs' => 
       array (
         0 => 
@@ -941,7 +941,7 @@ return array (
         2 => 
         array (
           'q' => 'Do Bad Bunny ticket prices use dynamic pricing?',
-          'a' => 'Yes. Shows sold through Ticketmaster and promoted by Live Nation commonly use dynamic pricing, so the face value of a section can rise or fall in real time as it sells. This is why prices quoted for the same area can differ between buyers depending on timing.',
+          'a' => 'Yes. Shows promoted by Live Nation and sold through major ticketing platforms commonly use dynamic pricing, so the face value of a section can rise or fall in real time as it sells. This is why prices quoted for the same area can differ between buyers depending on timing.',
         ),
         3 => 
         array (
@@ -1096,7 +1096,7 @@ return array (
           'desc' => 'Official premium packages, branded on the Cowboy Carter run with names such as Real Live Boogie and Club Ho Down, that bundle prime seating with extras. These commonly run from roughly 480 USD to 1,200 USD depending on the inclusions and the city.',
         ),
       ),
-      'why' => 'Beyoncé\'s tours are promoted through Live Nation and sold via Ticketmaster, which means most dates use dynamic pricing. Under that model the listed face value of a seat moves with demand in real time, so identical seats can cost different amounts at different moments and a popular night may price higher than a quieter one. Official VIP and platinum tiers are priced separately again. Buyers comparing options should note whether a price is a primary face value or a resale listing, as the two can diverge sharply for an artist at this level of demand.',
+      'why' => 'Beyoncé\'s tours are promoted by Live Nation and sold through major ticketing platforms, which means most dates use dynamic pricing. Under that model the listed face value of a seat moves with demand in real time, so identical seats can cost different amounts at different moments and a popular night may price higher than a quieter one. Official VIP and platinum tiers are priced separately again. Buyers comparing options should note whether a price is a primary face value or a resale listing, as the two can diverge sharply for an artist at this level of demand.',
       'faqs' => 
       array (
         0 => 
@@ -1107,7 +1107,7 @@ return array (
         1 => 
         array (
           'q' => 'Why are Beyoncé tickets so expensive?',
-          'a' => 'Beyoncé tickets are priced at the upper end mainly because she performs in stadiums with large-scale staging and her shows draw very high demand. Dynamic pricing on Ticketmaster then lets face values rise as a date sells, and premium and VIP tiers add further cost above standard seating.',
+          'a' => 'Beyoncé tickets are priced at the upper end mainly because she performs in stadiums with large-scale staging and her shows draw very high demand. Dynamic pricing then lets face values rise as a date sells, and premium and VIP tiers add further cost above standard seating.',
         ),
         2 => 
         array (
@@ -1117,7 +1117,7 @@ return array (
         3 => 
         array (
           'q' => 'Do Beyoncé tickets use dynamic pricing?',
-          'a' => 'Yes. Beyoncé\'s tours run through Ticketmaster, and most dates use dynamic pricing, so the face value of a seat changes in line with demand rather than staying fixed. This is why two buyers can pay different amounts for comparable seats on the same night.',
+          'a' => 'Yes. Beyoncé\'s tours run through major ticketing platforms, and most dates use dynamic pricing, so the face value of a seat changes in line with demand rather than staying fixed. This is why two buyers can pay different amounts for comparable seats on the same night.',
         ),
         4 => 
         array (
@@ -1450,7 +1450,7 @@ return array (
           'desc' => 'Official packages adding early entry, premium viewing, lounge access or merchandise. These often start near the top of the 400 USD band and can rise further depending on what is included.',
         ),
       ),
-      'why' => 'Ed Sheeran tours through Ticketmaster and Live Nation, which apply dynamic pricing on many dates. This means face values are not fixed: the system adjusts certain seats up or down according to live demand, so a section listed at one figure early on can read higher once a show sells well. Platinum seats use the same mechanism to price in-demand positions at market rate. Service and facility fees are added at checkout on top of the listed price, and resale figures move independently of face value. The bands above reflect typical primary pricing; popular markets and weekend dates trend toward the upper end.',
+      'why' => 'Ed Sheeran tours through Live Nation and other major ticketing platforms, which apply dynamic pricing on many dates. This means face values are not fixed: the system adjusts certain seats up or down according to live demand, so a section listed at one figure early on can read higher once a show sells well. Platinum seats use the same mechanism to price in-demand positions at market rate. Service and facility fees are added at checkout on top of the listed price, and resale figures move independently of face value. The bands above reflect typical primary pricing; popular markets and weekend dates trend toward the upper end.',
       'faqs' => 
       array (
         0 => 
@@ -1461,7 +1461,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do Ed Sheeran ticket prices change?',
-          'a' => 'Most Ed Sheeran dates use dynamic pricing through Ticketmaster, so the cost of certain seats shifts with demand rather than staying fixed. Platinum seats are priced at market rate for sought-after positions. On top of that, service and facility fees are added at checkout, and resale prices move independently. This is why two people in similar seats can pay different amounts.',
+          'a' => 'Most Ed Sheeran dates use dynamic pricing, so the cost of certain seats shifts with demand rather than staying fixed. Platinum seats are priced at market rate for sought-after positions. On top of that, service and facility fees are added at checkout, and resale prices move independently. This is why two people in similar seats can pay different amounts.',
         ),
         2 => 
         array (
@@ -1619,7 +1619,7 @@ return array (
           'desc' => 'Official VIP packages and premium positions, often 450 to 600 USD or more, which may bundle early entry, dedicated areas or merchandise alongside the seat.',
         ),
       ),
-      'why' => 'Karol G\'s stadium tours are promoted through Live Nation and sold on Ticketmaster, which apply dynamic pricing to many shows. This means face values for some sections move with demand rather than staying fixed, so identical seats can cost different amounts at different points in a sale. High-demand cities and on-sale surges push prices toward the upper end of each tier, while quieter dates or later releases can sit lower. Resale listings add a separate layer and are not capped by the original face value.',
+      'why' => 'Karol G\'s stadium tours are promoted by Live Nation and sold through major ticketing platforms, which apply dynamic pricing to many shows. This means face values for some sections move with demand rather than staying fixed, so identical seats can cost different amounts at different points in a sale. High-demand cities and on-sale surges push prices toward the upper end of each tier, while quieter dates or later releases can sit lower. Resale listings add a separate layer and are not capped by the original face value.',
       'faqs' => 
       array (
         0 => 
@@ -1630,7 +1630,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do Karol G ticket prices change so much?',
-          'a' => 'Her tours use dynamic pricing through Ticketmaster, so face values for some sections rise and fall with demand during a sale. A seat can therefore cost more in a high-demand city or peak on-sale moment than the same seat elsewhere.',
+          'a' => 'Her tours use dynamic pricing, so face values for some sections rise and fall with demand during a sale. A seat can therefore cost more in a high-demand city or peak on-sale moment than the same seat elsewhere.',
         ),
         2 => 
         array (
@@ -1764,7 +1764,7 @@ return array (
       'intro' => 
       array (
         0 => 'Drake ticket prices tend to sit in the mid-to-upper arena band, reflecting the scale of the venues he fills rather than the higher tiers commanded by stadium headliners. Entry-level seats usually open around the cost of a standard arena ticket, while floor positions close to the stage and packaged seats carry a clear premium. Where a show lands within that band depends on the city, the night of the week and how the venue is configured.',
-        1 => 'Because most of Drake\'s runs are sold through Ticketmaster and Live Nation, the headline figure quoted for a Drake ticket is a starting point rather than a fixed rate. The exact price you pay shifts with demand, seat location and timing, so two people in the same section can pay different amounts. Reading the ticket prices alongside the seat map is the most reliable way to judge value before committing.',
+        1 => 'Because most of Drake\'s runs are sold through Live Nation and other major ticketing platforms, the headline figure quoted for a Drake ticket is a starting point rather than a fixed rate. The exact price you pay shifts with demand, seat location and timing, so two people in the same section can pay different amounts. Reading the ticket prices alongside the seat map is the most reliable way to judge value before committing.',
       ),
       'tiers' => 
       array (
@@ -1789,7 +1789,7 @@ return array (
           'desc' => 'Premium packages with early entry, prime seating and merchandise or hospitality extras, commonly from 320 up to around 450 USD or more depending on the inclusions and the market.',
         ),
       ),
-      'why' => 'Drake\'s tours are routed and sold by Live Nation and Ticketmaster, which apply dynamic pricing to in-demand shows. Under that model the published price is not fixed; it moves up or down with live demand, the section selected and how close the date is. High-profile dates and prime floor seats are the most likely to climb above their starting figures, while upper-level seats and quieter markets tend to stay closer to the lower end of the band. Knowing this in advance helps explain why the same seat can be quoted differently from one visit to the next.',
+      'why' => 'Drake\'s tours are routed and sold by Live Nation and other major ticketing platforms, which apply dynamic pricing to in-demand shows. Under that model the published price is not fixed; it moves up or down with live demand, the section selected and how close the date is. High-profile dates and prime floor seats are the most likely to climb above their starting figures, while upper-level seats and quieter markets tend to stay closer to the lower end of the band. Knowing this in advance helps explain why the same seat can be quoted differently from one visit to the next.',
       'faqs' => 
       array (
         0 => 
@@ -1800,7 +1800,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do Drake ticket prices change so much?',
-          'a' => 'Most Drake dates use dynamic pricing through Ticketmaster, so the figure quoted reflects live demand at the moment you look. Prices rise on busy sections and high-profile nights and ease on quieter dates, which is why the same seat can show different amounts.',
+          'a' => 'Most Drake dates use dynamic pricing, so the figure quoted reflects live demand at the moment you look. Prices rise on busy sections and high-profile nights and ease on quieter dates, which is why the same seat can show different amounts.',
         ),
         2 => 
         array (
@@ -2138,13 +2138,13 @@ return array (
           'desc' => 'Official VIP and hospitality packages bundle a premium seat with extras such as early entry, a lounge, or merchandise. Pricing is set per package rather than per seat and frequently lands above 400 USD, so it sits outside the standard ticket bands above.',
         ),
       ),
-      'why' => 'Dua Lipa\'s tours are promoted by Live Nation and sold through Ticketmaster, which means most dates use dynamic pricing. Under that system the listed face value moves with real-time demand rather than staying fixed, so popular sections can climb during a busy sale and softer dates may ease back. This is why two seats in the same block can carry different prices, and why the figures here are bands rather than a single number. Booking fees, facility charges, and any VIP package costs are added on top, and the live prices shown alongside this guide reflect what is actually available at the time you look.',
+      'why' => 'Dua Lipa\'s tours are promoted by Live Nation and sold through major ticketing platforms, which means most dates use dynamic pricing. Under that system the listed face value moves with real-time demand rather than staying fixed, so popular sections can climb during a busy sale and softer dates may ease back. This is why two seats in the same block can carry different prices, and why the figures here are bands rather than a single number. Booking fees, facility charges, and any VIP package costs are added on top, and the live prices shown alongside this guide reflect what is actually available at the time you look.',
       'faqs' => 
       array (
         0 => 
         array (
           'q' => 'How much are Dua Lipa tickets?',
-          'a' => 'Dua Lipa tickets generally range from about 45 USD for upper-tier seats to 400 USD or more for premium front-block positions, with mid-tier seating around 90 to 180 USD. The exact figure depends on the venue, city, and demand on the day, since her current run uses dynamic pricing through Ticketmaster.',
+          'a' => 'Dua Lipa tickets generally range from about 45 USD for upper-tier seats to 400 USD or more for premium front-block positions, with mid-tier seating around 90 to 180 USD. The exact figure depends on the venue, city, and demand on the day, since her current run uses dynamic pricing.',
         ),
         1 => 
         array (
@@ -2311,7 +2311,7 @@ return array (
           'desc' => 'Premium packages from roughly 650 to 950 USD and occasionally beyond, bundling prime positions with extras such as early entry, dedicated entrances or merchandise. Inclusions are set by the promoter and differ by venue.',
         ),
       ),
-      'why' => 'Most Bruno Mars dates run through Ticketmaster and Live Nation, which apply dynamic pricing on many shows. This means face values can move up or down with demand rather than staying fixed, so an identical seat may cost more for a high-demand night than a quieter one. Posted prices also exclude service and facility fees added at checkout, and any VIP or package elements carry their own pricing. The bands above reflect typical primary-market levels; resale listings can sit higher still for sought-after sections.',
+      'why' => 'Most Bruno Mars dates run through Live Nation and other major ticketing platforms, which apply dynamic pricing on many shows. This means face values can move up or down with demand rather than staying fixed, so an identical seat may cost more for a high-demand night than a quieter one. Posted prices also exclude service and facility fees added at checkout, and any VIP or package elements carry their own pricing. The bands above reflect typical primary-market levels; resale listings can sit higher still for sought-after sections.',
       'faqs' => 
       array (
         0 => 
@@ -2347,7 +2347,7 @@ return array (
         6 => 
         array (
           'q' => 'Are Bruno Mars tickets more expensive on resale sites?',
-          'a' => 'Resale listings can sit above primary prices for popular dates and sought-after sections, though they sometimes settle closer to face value nearer the show. The primary market through Ticketmaster and Live Nation is generally the starting reference point for what a seat should cost.',
+          'a' => 'Resale listings can sit above primary prices for popular dates and sought-after sections, though they sometimes settle closer to face value nearer the show. The primary market through Live Nation and other major ticketing platforms is generally the starting reference point for what a seat should cost.',
         ),
         7 => 
         array (
@@ -2480,7 +2480,7 @@ return array (
           'desc' => 'Premium packages that can run from roughly 600 to 1,100 USD or more. These usually bundle a prime seat with early entry, hospitality areas or exclusive merchandise, and sit at the top of the range.',
         ),
       ),
-      'why' => 'Kendrick Lamar tickets are sold largely through dynamic pricing, used across most major Ticketmaster and Live Nation tours. Under this model the face value of a seat shifts with real-time demand rather than staying fixed, so a popular section can cost more as a date sells through and may ease if demand softens. High-profile markets and co-headline dates tend to see the sharpest movement. Added service and facility fees also affect the final total, which is why the same seat can carry different prices across cities and over time.',
+      'why' => 'Kendrick Lamar tickets are sold largely through dynamic pricing, used across most major Live Nation and other major ticketing platforms. Under this model the face value of a seat shifts with real-time demand rather than staying fixed, so a popular section can cost more as a date sells through and may ease if demand softens. High-profile markets and co-headline dates tend to see the sharpest movement. Added service and facility fees also affect the final total, which is why the same seat can carry different prices across cities and over time.',
       'faqs' => 
       array (
         0 => 
@@ -2531,7 +2531,7 @@ return array (
       'intro' => 
       array (
         0 => 'Kendrick Lamar\'s most recent major outing was the Grand National Tour, a stadium run supporting his album GNX and staged in part as a co-headline with SZA. It moved through North America, Europe, Australia and South America, marking his largest production to date. Tour dates for any future run are published by the artist and primary sellers; the schedule and on-sale details for upcoming shows are shown separately by the system.',
-        1 => 'The Grand National Tour paired a deep catalogue set with the GNX material and a stage production built around its four-act structure. When Kendrick Lamar confirms new tour dates, they typically go on sale through Ticketmaster and Live Nation with presales ahead of general release. The information here describes how his touring generally works rather than any specific announced date.',
+        1 => 'The Grand National Tour paired a deep catalogue set with the GNX material and a stage production built around its four-act structure. When Kendrick Lamar confirms new tour dates, they typically go on sale through Live Nation and other major ticketing platforms with presales ahead of general release. The information here describes how his touring generally works rather than any specific announced date.',
       ),
       'faqs' => 
       array (
@@ -2548,7 +2548,7 @@ return array (
         2 => 
         array (
           'q' => 'Where can I get Kendrick Lamar tour dates and tickets?',
-          'a' => 'Official tour dates and tickets are released through Ticketmaster and Live Nation, usually with artist and cardholder presales before the general on-sale. Live availability for any confirmed Kendrick Lamar shows is displayed separately by the system rather than within this evergreen overview.',
+          'a' => 'Official tour dates and tickets are released through Live Nation and other major ticketing platforms, usually with artist and cardholder presales before the general on-sale. Live availability for any confirmed Kendrick Lamar shows is displayed separately by the system rather than within this evergreen overview.',
         ),
         3 => 
         array (
@@ -2626,7 +2626,7 @@ return array (
       'currency' => 'USD',
       'intro' => 
       array (
-        0 => 'Sabrina Carpenter ticket prices sit in the mid band typical of a current arena headliner rather than a stadium act. Standard seated and general-admission tickets released by Ticketmaster have generally opened around the lower end, with premium lower-bowl seats and packages reaching higher. Because demand for her shows is consistently strong, the gap between the cheapest upper-tier seat and a front-section ticket can be wide on any given night.',
+        0 => 'Sabrina Carpenter ticket prices sit in the mid band typical of a current arena headliner rather than a stadium act. Standard seated and general-admission tickets released through major ticketing platforms have generally opened around the lower end, with premium lower-bowl seats and packages reaching higher. Because demand for her shows is consistently strong, the gap between the cheapest upper-tier seat and a front-section ticket can be wide on any given night.',
         1 => 'When weighing Sabrina Carpenter ticket prices it helps to separate face value from resale. Primary prices are set per market and per seating zone, while resale listings float with demand and often run well above the original price for popular dates. The bands below reflect realistic primary pricing for a pop arena tour and are intended as a general guide rather than a quote for any single show.',
       ),
       'tiers' => 
@@ -2652,7 +2652,7 @@ return array (
           'desc' => 'Official VIP and enhanced packages generally fall in the USD 250 to 400 range. They bundle a premium seat with extras such as early entry, a merchandise item or a dedicated check-in, and are sold in limited numbers.',
         ),
       ),
-      'why' => 'Sabrina Carpenter\'s tours are promoted through Ticketmaster and Live Nation, which apply dynamic pricing on many dates. Under that model a portion of inventory is not fixed at a single face value; prices move up or down with real-time demand, so the same seat can cost more during a high-demand on-sale than a quieter one. This is separate from resale, where independent sellers set their own asking prices that can sit far above the original. The bands here describe primary pricing; actual figures vary by city, venue size, seating zone and how demand moves during the sale.',
+      'why' => 'Sabrina Carpenter\'s tours are promoted through Live Nation and other major ticketing platforms, which apply dynamic pricing on many dates. Under that model a portion of inventory is not fixed at a single face value; prices move up or down with real-time demand, so the same seat can cost more during a high-demand on-sale than a quieter one. This is separate from resale, where independent sellers set their own asking prices that can sit far above the original. The bands here describe primary pricing; actual figures vary by city, venue size, seating zone and how demand moves during the sale.',
       'faqs' => 
       array (
         0 => 
@@ -2673,7 +2673,7 @@ return array (
         3 => 
         array (
           'q' => 'Do Sabrina Carpenter tickets use dynamic pricing?',
-          'a' => 'Yes. Many of Sabrina Carpenter\'s dates are sold through Ticketmaster and Live Nation using dynamic pricing, where part of the inventory adjusts with demand. That means the listed price for a section can change during the sale rather than staying at a single fixed figure, which is why two buyers can pay different amounts for similar seats.',
+          'a' => 'Yes. Many of Sabrina Carpenter\'s dates are sold through Live Nation and other major ticketing platforms using dynamic pricing, where part of the inventory adjusts with demand. That means the listed price for a section can change during the sale rather than staying at a single fixed figure, which is why two buyers can pay different amounts for similar seats.',
         ),
         4 => 
         array (
@@ -2799,7 +2799,7 @@ return array (
       'intro' => 
       array (
         0 => 'Post Malone ticket prices sit at the higher end of the live market because he now plays stadiums rather than arenas, and most North American dates are co-headline shows that pair his catalogue with a second major name. Entry-level seats generally open in the region of 60 to 110 US dollars, while lower-bowl and pitch positions climb steeply. The spread on any given night reflects venue size, sightline and how close demand sits to the stage.',
-        1 => 'Because Post Malone tours through Ticketmaster and Live Nation, his ticket prices are usually set by dynamic pricing rather than fixed face values. That means the same seat can carry a different cost depending on when you buy and how a particular stadium is selling. The bands below describe how the tiers tend to work across a typical date, not the exact figure for any one show.',
+        1 => 'Because Post Malone tours through Live Nation and other major ticketing platforms, his ticket prices are usually set by dynamic pricing rather than fixed face values. That means the same seat can carry a different cost depending on when you buy and how a particular stadium is selling. The bands below describe how the tiers tend to work across a typical date, not the exact figure for any one show.',
       ),
       'tiers' => 
       array (
@@ -2824,7 +2824,7 @@ return array (
           'desc' => 'Front-section seats, early-entry and hospitality packages, typically 400 to 850 USD or above on the highest-demand nights. These cover the closest fixed positions and any official VIP extras bundled by the promoter.',
         ),
       ),
-      'why' => 'Post Malone\'s tours run on Ticketmaster\'s dynamic, demand-based pricing, so a seat\'s cost moves with how strongly a given stadium is selling rather than sitting at one printed face value. A ticket bought early in a quieter market can cost noticeably less than the identical seat once a date heats up. Official VIP and premium packages are priced separately on top of the standard tiers, which is why the overall range is wide.',
+      'why' => 'Post Malone\'s tours run on dynamic, demand-based pricing, so a seat\'s cost moves with how strongly a given stadium is selling rather than sitting at one printed face value. A ticket bought early in a quieter market can cost noticeably less than the identical seat once a date heats up. Official VIP and premium packages are priced separately on top of the standard tiers, which is why the overall range is wide.',
       'faqs' => 
       array (
         0 => 
@@ -2835,7 +2835,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do Post Malone ticket prices change so much?',
-          'a' => 'Most Post Malone dates use Ticketmaster\'s dynamic pricing, which adjusts the cost of a seat according to live demand. The same lower-bowl seat can carry a different price from one day to the next, and from one stadium to another, which is why his ticket prices vary more than a fixed face value would.',
+          'a' => 'Most Post Malone dates use dynamic pricing, which adjusts the cost of a seat according to live demand. The same lower-bowl seat can carry a different price from one day to the next, and from one stadium to another, which is why his ticket prices vary more than a fixed face value would.',
         ),
         2 => 
         array (
@@ -2855,7 +2855,7 @@ return array (
         5 => 
         array (
           'q' => 'Do Post Malone ticket prices include fees?',
-          'a' => 'The headline price rarely includes service and facility fees, which Ticketmaster adds at checkout. Expect the final total to sit above the listed figure, and note that some markets now show all-in pricing where the fees are folded into the displayed amount from the start.',
+          'a' => 'The headline price rarely includes service and facility fees, added at checkout. Expect the final total to sit above the listed figure, and note that some markets now show all-in pricing where the fees are folded into the displayed amount from the start.',
         ),
         6 => 
         array (
@@ -2997,7 +2997,7 @@ return array (
           'desc' => 'The Snake Pit inside the stage ring, plus official premium and Enhanced Experience packages, which can run from roughly 450 up to 850 USD or beyond. These offer the closest vantage point and, in package form, may add early entry or merchandise.',
         ),
       ),
-      'why' => 'Metallica tours through Live Nation and Ticketmaster, which apply dynamic pricing on many primary tickets. That means the listed price can move up or down with demand rather than staying at a fixed face value, so identical seats may cost different amounts depending on when you look. High-demand cities and the Sphere dates tend to sit at the firmer end. Checking prices across more than one date, and comparing primary against verified resale, gives the clearest read on what a given seat is actually worth.',
+      'why' => 'Metallica tours through Live Nation and other major ticketing platforms, which apply dynamic pricing on many primary tickets. That means the listed price can move up or down with demand rather than staying at a fixed face value, so identical seats may cost different amounts depending on when you look. High-demand cities and the Sphere dates tend to sit at the firmer end. Checking prices across more than one date, and comparing primary against verified resale, gives the clearest read on what a given seat is actually worth.',
       'faqs' => 
       array (
         0 => 
@@ -3147,7 +3147,7 @@ return array (
       'intro' => 
       array (
         0 => 'Arijit Singh ticket prices in the United States generally sit at the upper end of the Bollywood live market, reflecting the size of the venues he fills and the strength of diaspora demand. Most seats land somewhere between the low hundreds and several hundred dollars, with entry-level upper-tier places opening the band and front-of-floor and premium hospitality closing it. The figures below describe how pricing tends to work rather than any single show on sale.',
-        1 => 'Because Arijit Singh plays large arenas and, increasingly, stadium-scale rooms abroad, prices vary widely by city, seat location and how early you book. Tickets sold through Ticketmaster and other primary outlets usually carry per-ticket service fees on top of the face value, so the amount at checkout runs higher than the headline price. Resale listings can sit well above or, late in a slow on-sale, slightly below face.',
+        1 => 'Because Arijit Singh plays large arenas and, increasingly, stadium-scale rooms abroad, prices vary widely by city, seat location and how early you book. Tickets sold through major ticketing platforms usually carry per-ticket service fees on top of the face value, so the amount at checkout runs higher than the headline price. Resale listings can sit well above or, late in a slow on-sale, slightly below face.',
       ),
       'tiers' => 
       array (
@@ -3172,7 +3172,7 @@ return array (
           'desc' => 'Official packages bundling premium placement with extras such as early entry, dedicated entrances or merchandise. These commonly start near $400 and reach $600 or more depending on the city and what is included.',
         ),
       ),
-      'why' => 'Arijit Singh tours through Ticketmaster and other major promoters, most of which apply dynamic pricing, so the cost of a given seat can move up or down with demand rather than staying fixed for the whole on-sale. High-demand cities and front sections tend to be priced higher from the outset and can climb further as a show approaches a sell-out, while slower markets may settle lower. Add per-ticket service and facility fees to any face value when budgeting, and treat resale prices as a separate market that reflects scarcity rather than the official rate.',
+      'why' => 'Arijit Singh tours through major ticketing platforms and other major promoters, most of which apply dynamic pricing, so the cost of a given seat can move up or down with demand rather than staying fixed for the whole on-sale. High-demand cities and front sections tend to be priced higher from the outset and can climb further as a show approaches a sell-out, while slower markets may settle lower. Add per-ticket service and facility fees to any face value when budgeting, and treat resale prices as a separate market that reflects scarcity rather than the official rate.',
       'faqs' => 
       array (
         0 => 
@@ -3193,7 +3193,7 @@ return array (
         3 => 
         array (
           'q' => 'Do Arijit Singh tickets use dynamic pricing?',
-          'a' => 'Yes. Like most major tours sold through Ticketmaster and large promoters, Arijit Singh shows commonly use dynamic pricing, so seat prices can rise or fall with demand during the on-sale rather than staying fixed.',
+          'a' => 'Yes. Like most major tours sold through major ticketing platforms and large promoters, Arijit Singh shows commonly use dynamic pricing, so seat prices can rise or fall with demand during the on-sale rather than staying fixed.',
         ),
         4 => 
         array (
@@ -3342,7 +3342,7 @@ return array (
           'desc' => 'Official packages combining prime floor or front-section positions with extras such as merchandise or early entry, commonly 360 to 525 USD or above. Allocations are limited and vary by city.',
         ),
       ),
-      'why' => 'Travis Scott tours run on dynamic pricing through the primary ticketing systems used by major Live Nation and Ticketmaster productions. This means the listed price for a section can move up or down in response to live demand rather than staying fixed from the on-sale, so two buyers in the same category may pay different amounts depending on when they purchase. Premium and platinum-style seats are priced by the system to track market value, which is why the most in-demand floor positions can climb well above the standard face value. Knowing this helps explain why quoted figures shift between markets and over time.',
+      'why' => 'Travis Scott tours run on dynamic pricing through the primary ticketing systems used by major Live Nation and other ticketing platforms. This means the listed price for a section can move up or down in response to live demand rather than staying fixed from the on-sale, so two buyers in the same category may pay different amounts depending on when they purchase. Premium and platinum-style seats are priced by the system to track market value, which is why the most in-demand floor positions can climb well above the standard face value. Knowing this helps explain why quoted figures shift between markets and over time.',
       'faqs' => 
       array (
         0 => 
@@ -3368,7 +3368,7 @@ return array (
         4 => 
         array (
           'q' => 'Does Travis Scott use dynamic pricing?',
-          'a' => 'Yes. Like most major Live Nation and Ticketmaster tours, Travis Scott shows use dynamic pricing, where the cost of a section shifts with live demand. This is why the same seat can carry different prices at different points in the sale and why premium positions often exceed the base face value.',
+          'a' => 'Yes. Like most major Live Nation and other major ticketing platforms, Travis Scott shows use dynamic pricing, where the cost of a section shifts with live demand. This is why the same seat can carry different prices at different points in the sale and why premium positions often exceed the base face value.',
         ),
         5 => 
         array (
@@ -3512,7 +3512,7 @@ return array (
           'desc' => 'Front-block seats and official VIP packages range from roughly 450 to 1,200 USD. These can bundle early entry, premium viewing areas and merchandise, with exact inclusions varying by tour and city.',
         ),
       ),
-      'why' => 'SZA\'s larger tours run through Ticketmaster and Live Nation, both of which use dynamic pricing on high-demand dates. This means the listed face value can rise or fall in real time according to how a particular show is selling, so two buyers purchasing the same tier on different days may pay different amounts. Premium and platinum seats are priced this way most often, while standard sections tend to move less. Resale listings add a further layer of variation, sitting above or below face value depending on the date and city.',
+      'why' => 'SZA\'s larger tours run through Live Nation and other major ticketing platforms, both of which use dynamic pricing on high-demand dates. This means the listed face value can rise or fall in real time according to how a particular show is selling, so two buyers purchasing the same tier on different days may pay different amounts. Premium and platinum seats are priced this way most often, while standard sections tend to move less. Resale listings add a further layer of variation, sitting above or below face value depending on the date and city.',
       'faqs' => 
       array (
         0 => 
@@ -3523,7 +3523,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do SZA ticket prices change?',
-          'a' => 'Most of SZA\'s major dates run through Ticketmaster and Live Nation, which apply dynamic pricing to in-demand shows. Face value can shift in real time based on demand, so the same seating tier may cost different amounts on different days. Premium and platinum seats are most affected, while standard sections move less.',
+          'a' => 'Most of SZA\'s major dates run through Live Nation and other major ticketing platforms, which apply dynamic pricing to in-demand shows. Face value can shift in real time based on demand, so the same seating tier may cost different amounts on different days. Premium and platinum seats are most affected, while standard sections move less.',
         ),
         2 => 
         array (
@@ -3684,7 +3684,7 @@ return array (
           'desc' => 'Official VIP packages bundle a premium seat with extras such as lounge access, early entry and exclusive merchandise. Pricing sits above standard floor tickets, frequently in the $500 to $850 range, and the contents differ by package and city.',
         ),
       ),
-      'why' => 'Ariana Grande\'s tours are routed through Ticketmaster and Live Nation, which apply dynamic pricing to many seats. That means the listed price for a given section can move up or down with demand rather than staying fixed from on-sale, so two buyers in similar seats may pay different amounts depending on timing. Verified resale adds a second layer: those prices are set by individual sellers and can exceed original face value, particularly for floors and sold-out nights. The bands here describe typical face-value ranges by section; the live figure shown at checkout reflects current demand for the specific date and venue.',
+      'why' => 'Ariana Grande\'s tours are routed through Live Nation and other major ticketing platforms, which apply dynamic pricing to many seats. That means the listed price for a given section can move up or down with demand rather than staying fixed from on-sale, so two buyers in similar seats may pay different amounts depending on timing. Verified resale adds a second layer: those prices are set by individual sellers and can exceed original face value, particularly for floors and sold-out nights. The bands here describe typical face-value ranges by section; the live figure shown at checkout reflects current demand for the specific date and venue.',
       'faqs' => 
       array (
         0 => 
@@ -3695,7 +3695,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do Ariana Grande ticket prices change?',
-          'a' => 'Most of her dates use Ticketmaster dynamic pricing, so seat costs shift with demand instead of holding a fixed rate. A section may be priced higher during peak interest and ease back later, which is why quoted figures vary between buyers and over time.',
+          'a' => 'Most of her dates use dynamic pricing, so seat costs shift with demand instead of holding a fixed rate. A section may be priced higher during peak interest and ease back later, which is why quoted figures vary between buyers and over time.',
         ),
         2 => 
         array (
@@ -3861,7 +3861,7 @@ return array (
           'desc' => 'Official hospitality, early entry and prime positions, generally 450 to 1,200 USD or more. These bundle perks such as merchandise and dedicated areas, so the headline figure covers more than the seat alone.',
         ),
       ),
-      'why' => 'Harry Styles tours use dynamic pricing, the system Ticketmaster and Live Nation apply to most major stadium and arena runs. Under it, the cost of a section moves with live demand rather than staying fixed, so popular nights and the best-placed seats can climb well above the starting figure, sometimes within minutes of going on sale. Official resale and verified secondary listings add further variation, and packages carry a premium for their extras. This is why a single quoted price is unreliable and the bands above are framed as a range.',
+      'why' => 'Harry Styles tours use dynamic pricing, the system Live Nation and other major ticketing platforms apply to most major stadium and arena runs. Under it, the cost of a section moves with live demand rather than staying fixed, so popular nights and the best-placed seats can climb well above the starting figure, sometimes within minutes of going on sale. Official resale and verified secondary listings add further variation, and packages carry a premium for their extras. This is why a single quoted price is unreliable and the bands above are framed as a range.',
       'faqs' => 
       array (
         0 => 
@@ -3887,7 +3887,7 @@ return array (
         4 => 
         array (
           'q' => 'Does Harry Styles use dynamic pricing?',
-          'a' => 'Yes. Like most major Ticketmaster and Live Nation tours, Harry Styles dates use dynamic pricing, so the cost of a given section changes with live demand. This is why the same seats can appear at different prices during a single on-sale, and why high-demand nights move toward the top of the range fastest.',
+          'a' => 'Yes. Like most major Live Nation and other major ticketing platforms, Harry Styles dates use dynamic pricing, so the cost of a given section changes with live demand. This is why the same seats can appear at different prices during a single on-sale, and why high-demand nights move toward the top of the range fastest.',
         ),
         5 => 
         array (
@@ -4041,7 +4041,7 @@ return array (
           'desc' => 'Bundled experiences that may include early entry, a dedicated viewing area and merchandise, typically from around 250 up to 320 USD. Contents differ by promoter and city, so the inclusions are worth checking before buying.',
         ),
       ),
-      'why' => 'Chappell Roan tours are routed through Ticketmaster and Live Nation, which generally means dynamic pricing on at least part of the inventory. Under that model the listed price of a ticket can move up or down with real-time demand rather than staying fixed, so two seats in the same section can carry different prices depending on when they are bought. Roan has publicly pushed to keep face values reasonable and to limit resale mark-ups, but high demand still pushes premium and limited-allocation tickets toward the top of the band. The figures here are typical face-value guidance; verified resale can sit well above them.',
+      'why' => 'Chappell Roan tours are routed through Live Nation and other major ticketing platforms, which generally means dynamic pricing on at least part of the inventory. Under that model the listed price of a ticket can move up or down with real-time demand rather than staying fixed, so two seats in the same section can carry different prices depending on when they are bought. Roan has publicly pushed to keep face values reasonable and to limit resale mark-ups, but high demand still pushes premium and limited-allocation tickets toward the top of the band. The figures here are typical face-value guidance; verified resale can sit well above them.',
       'faqs' => 
       array (
         0 => 
@@ -4052,7 +4052,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do Chappell Roan ticket prices change so much?',
-          'a' => 'Her tours typically run on Ticketmaster and Live Nation systems that use dynamic pricing, so part of the inventory shifts with live demand rather than holding a fixed price. A popular date can see the same section priced higher than a quieter one, which is the main reason quoted figures move between shows.',
+          'a' => 'Her tours typically run on Live Nation and other major ticketing platform systems that use dynamic pricing, so part of the inventory shifts with live demand rather than holding a fixed price. A popular date can see the same section priced higher than a quieter one, which is the main reason quoted figures move between shows.',
         ),
         2 => 
         array (
@@ -4067,7 +4067,7 @@ return array (
         4 => 
         array (
           'q' => 'Does Chappell Roan use dynamic pricing?',
-          'a' => 'Yes, like most major Ticketmaster and Live Nation tours, Chappell Roan shows commonly apply dynamic pricing to some tickets. This means a portion of seats are priced in response to demand at the moment of sale, so face values can rise on busy dates and ease on slower ones.',
+          'a' => 'Yes, like most major Live Nation and other major ticketing platforms, Chappell Roan shows commonly apply dynamic pricing to some tickets. This means a portion of seats are priced in response to demand at the moment of sale, so face values can rise on busy dates and ease on slower ones.',
         ),
         5 => 
         array (
@@ -4092,14 +4092,14 @@ return array (
       'intro' => 
       array (
         0 => 'Chappell Roan\'s most recent headline run is the Visions of Damsels & Other Dangerous Things Tour, a large-scale arena and festival production that followed the breakout success of her debut album. Tour dates for it have spanned international festival slots and headline arena shows across multiple continents. Because routing and on-sale timing differ by region, the way to confirm current dates is always the official listing for your country rather than older schedules.',
-        1 => 'When Chappell Roan tour dates are announced, they typically move through standard presale and general on-sale stages via Ticketmaster and Live Nation. Festival appearances are booked separately from her own headline shows, so a city may see her on a festival bill in one year and a standalone arena date in another. Checking the official artist page is the most reliable way to see which format applies near you.',
+        1 => 'When Chappell Roan tour dates are announced, they typically move through standard presale and general on-sale stages via Live Nation and other major ticketing platforms. Festival appearances are booked separately from her own headline shows, so a city may see her on a festival bill in one year and a standalone arena date in another. Checking the official artist page is the most reliable way to see which format applies near you.',
       ),
       'faqs' => 
       array (
         0 => 
         array (
           'q' => 'Is Chappell Roan touring in 2026?',
-          'a' => 'Chappell Roan\'s Visions of Damsels & Other Dangerous Things Tour extended into early 2026 with festival and headline dates, including headlining Laneway Festival across Australia and New Zealand. Whether further shows are added beyond that depends on new announcements, so the official Live Nation and Ticketmaster listings are the place to confirm current and upcoming dates for your region.',
+          'a' => 'Chappell Roan\'s Visions of Damsels & Other Dangerous Things Tour extended into early 2026 with festival and headline dates, including headlining Laneway Festival across Australia and New Zealand. Whether further shows are added beyond that depends on new announcements, so the official Live Nation listings are the place to confirm current and upcoming dates for your region.',
         ),
         1 => 
         array (
@@ -4109,7 +4109,7 @@ return array (
         2 => 
         array (
           'q' => 'How do I get Chappell Roan tour dates and presale access?',
-          'a' => 'Tour dates and presale codes are released through official channels, usually Ticketmaster, Live Nation and the artist\'s mailing list. Presales typically run ahead of the general on-sale, so registering interest in advance and following the official artist page is the most reliable way to access tickets early.',
+          'a' => 'Tour dates and presale codes are released through official channels, usually Live Nation, major ticketing platforms and the artist\'s mailing list. Presales typically run ahead of the general on-sale, so registering interest in advance and following the official artist page is the most reliable way to access tickets early.',
         ),
         3 => 
         array (
@@ -4211,7 +4211,7 @@ return array (
           'desc' => 'Official packages bundling premium placement, early entry, merchandise or lounge access, often 350 to 450 USD or higher depending on the market and inclusions.',
         ),
       ),
-      'why' => 'Lana Del Rey\'s tours are sold through Ticketmaster and Live Nation, which apply dynamic pricing on many in-demand sections. This means the listed price can move up or down with real-time demand rather than staying fixed, so identical seats may cost more during peak buying windows. Standard face value is set first, but Platinum and dynamically priced inventory can climb well above it on her most sought-after dates. Final prices also depend on the venue, city and any added service fees.',
+      'why' => 'Lana Del Rey\'s tours are sold through Live Nation and other major ticketing platforms, which apply dynamic pricing on many in-demand sections. This means the listed price can move up or down with real-time demand rather than staying fixed, so identical seats may cost more during peak buying windows. Standard face value is set first, but Platinum and dynamically priced inventory can climb well above it on her most sought-after dates. Final prices also depend on the venue, city and any added service fees.',
       'faqs' => 
       array (
         0 => 
@@ -4222,7 +4222,7 @@ return array (
         1 => 
         array (
           'q' => 'Why are Lana Del Rey tickets so expensive?',
-          'a' => 'Lana Del Rey tours rarely and demand runs high, so prices skew upward, and Ticketmaster\'s dynamic pricing pushes sought-after sections above standard face value. Her recent move to stadiums has not eased this, since pit and premium inventory remains limited relative to the audience wanting it.',
+          'a' => 'Lana Del Rey tours rarely and demand runs high, so prices skew upward, and dynamic pricing pushes sought-after sections above standard face value. Her recent move to stadiums has not eased this, since pit and premium inventory remains limited relative to the audience wanting it.',
         ),
         2 => 
         array (
@@ -4232,7 +4232,7 @@ return array (
         3 => 
         array (
           'q' => 'Does Lana Del Rey use dynamic pricing?',
-          'a' => 'Yes. Her shows are sold via Ticketmaster and Live Nation, which apply dynamic pricing to many sections. Prices on those tickets shift with live demand, so the same seat can cost noticeably more during peak buying periods than at quieter moments.',
+          'a' => 'Yes. Her shows are sold via Live Nation and other major ticketing platforms, which apply dynamic pricing to many sections. Prices on those tickets shift with live demand, so the same seat can cost noticeably more during peak buying periods than at quieter moments.',
         ),
         4 => 
         array (
@@ -4262,7 +4262,7 @@ return array (
       'intro' => 
       array (
         0 => 'Lana Del Rey\'s most recent run was the 2025 UK and Ireland Tour, her first all-stadium outing, which played venues including Cardiff\'s Principality Stadium and London\'s Wembley Stadium across June and July. Tour dates for any new leg are announced per market and listed separately, so this page covers how her touring generally works rather than confirming specific upcoming shows.',
-        1 => 'Lana Del Rey tours selectively, favouring concentrated runs over long global legs, which keeps each announcement closely watched. New tour dates typically surface alongside album activity and go on sale through Ticketmaster and Live Nation. Because she plays infrequently, demand for any fresh dates tends to be heavy, and shows in major cities often sell through quickly once general sale opens.',
+        1 => 'Lana Del Rey tours selectively, favouring concentrated runs over long global legs, which keeps each announcement closely watched. New tour dates typically surface alongside album activity and go on sale through Live Nation and other major ticketing platforms. Because she plays infrequently, demand for any fresh dates tends to be heavy, and shows in major cities often sell through quickly once general sale opens.',
       ),
       'faqs' => 
       array (
@@ -4284,7 +4284,7 @@ return array (
         3 => 
         array (
           'q' => 'Where can I find Lana Del Rey tour dates?',
-          'a' => 'Confirmed Lana Del Rey tour dates appear on this page once announced, drawn from official Ticketmaster and Live Nation listings. Because she tours selectively and dates are released per market, checking back around album announcements is the most reliable way to catch new shows early.',
+          'a' => 'Confirmed Lana Del Rey tour dates appear on this page once announced, drawn from official Live Nation listings. Because she tours selectively and dates are released per market, checking back around album announcements is the most reliable way to catch new shows early.',
         ),
       ),
     ),
@@ -4375,7 +4375,7 @@ return array (
           'desc' => 'Official VIP and hospitality packages, which may include premium seating, early entry, a merchandise item or lounge access, generally sit between 300 and 400 USD or higher depending on the inclusions.',
         ),
       ),
-      'why' => 'Most of Katy Perry\'s arena dates are sold through Ticketmaster and Live Nation, which apply dynamic pricing on a large share of inventory. This means the listed price moves with real-time demand rather than staying fixed, so popular shows and prime seats can rise above their initial level and quieter dates may settle lower. Face value is also separate from booking, service and facility fees, which are added at checkout and vary by venue and market.',
+      'why' => 'Most of Katy Perry\'s arena dates are sold through Live Nation and other major ticketing platforms, which apply dynamic pricing on a large share of inventory. This means the listed price moves with real-time demand rather than staying fixed, so popular shows and prime seats can rise above their initial level and quieter dates may settle lower. Face value is also separate from booking, service and facility fees, which are added at checkout and vary by venue and market.',
       'faqs' => 
       array (
         0 => 
@@ -4547,7 +4547,7 @@ return array (
           'desc' => 'Official packages such as the Daughter from Hell, Good Reason and Look At My Life Lounge tiers bundle a premium ticket with extras like early entry, merchandise or lounge access, generally landing in the 250 to 400 USD range depending on the inclusions and city.',
         ),
       ),
-      'why' => 'Gracie Abrams\'s arena tours are promoted through Live Nation and sold via Ticketmaster, which means most North American dates use dynamic pricing. Under that model the face value of a ticket can move up or down with demand rather than staying fixed, so identical seats may cost different amounts at different points in a sale and popular shows can climb above the standard band. The ranges shown reflect typical face values across her arena run; the prices you see for a specific date are drawn in separately and account for that show\'s seating map, market and current demand, before any service fees are added at checkout.',
+      'why' => 'Gracie Abrams\'s arena tours are promoted by Live Nation and sold through major ticketing platforms, which means most North American dates use dynamic pricing. Under that model the face value of a ticket can move up or down with demand rather than staying fixed, so identical seats may cost different amounts at different points in a sale and popular shows can climb above the standard band. The ranges shown reflect typical face values across her arena run; the prices you see for a specific date are drawn in separately and account for that show\'s seating map, market and current demand, before any service fees are added at checkout.',
       'faqs' => 
       array (
         0 => 
@@ -4563,7 +4563,7 @@ return array (
         2 => 
         array (
           'q' => 'Does Gracie Abrams use dynamic pricing?',
-          'a' => 'Yes. Most of Gracie Abrams\'s Ticketmaster and Live Nation arena dates use dynamic pricing, so face values can rise or fall with demand during a sale. This means the same seat may be listed at different prices at different times, and busier shows often cost more than the standard band suggests.',
+          'a' => 'Yes. Most of Gracie Abrams\'s Live Nation arena dates use dynamic pricing, so face values can rise or fall with demand during a sale. This means the same seat may be listed at different prices at different times, and busier shows often cost more than the standard band suggests.',
         ),
         3 => 
         array (
@@ -4583,7 +4583,7 @@ return array (
         6 => 
         array (
           'q' => 'Do Gracie Abrams ticket prices include fees?',
-          'a' => 'The face values quoted here do not include service or processing fees, which Ticketmaster and other primary sellers add at checkout. Final costs can therefore run higher than the listed band, so it is worth viewing the full breakdown before completing a purchase.',
+          'a' => 'The face values quoted here do not include service or processing fees, which the primary sellers add at checkout. Final costs can therefore run higher than the listed band, so it is worth viewing the full breakdown before completing a purchase.',
         ),
         7 => 
         array (
@@ -4719,7 +4719,7 @@ return array (
           'desc' => 'Top of the range, usually 250 to 350 USD or more. Packages have included early entry, premium seating, exclusive merchandise and, on some dates, a photo opportunity, with exact contents varying by tour and city.',
         ),
       ),
-      'why' => 'Tate McRae\'s tours are routed through Ticketmaster and Live Nation, which means most on-sales use dynamic pricing. Under that model the listed price moves with live demand rather than staying fixed, so popular dates and the best seats can climb above their starting figure during a busy on-sale and ease back when demand softens. Face value also varies by city, venue capacity and seating level, and resale prices sit separately again and can run higher still. Treat the bands here as a guide to typical primary pricing rather than a guaranteed rate for any given show.',
+      'why' => 'Tate McRae\'s tours are routed through Live Nation and other major ticketing platforms, which means most on-sales use dynamic pricing. Under that model the listed price moves with live demand rather than staying fixed, so popular dates and the best seats can climb above their starting figure during a busy on-sale and ease back when demand softens. Face value also varies by city, venue capacity and seating level, and resale prices sit separately again and can run higher still. Treat the bands here as a guide to typical primary pricing rather than a guaranteed rate for any given show.',
       'faqs' => 
       array (
         0 => 
@@ -4730,7 +4730,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do Tate McRae ticket prices change so much?',
-          'a' => 'Most of her shows run on Ticketmaster and Live Nation dynamic pricing, so the listed cost rises and falls with live demand during an on-sale rather than holding a fixed figure. Add differences in venue size, seating level and city, plus separate resale listings, and the spread between the cheapest and dearest seats for the same tour can be wide.',
+          'a' => 'Most of her shows run on Live Nation and other major ticketing platforms with dynamic pricing, so the listed cost rises and falls with live demand during an on-sale rather than holding a fixed figure. Add differences in venue size, seating level and city, plus separate resale listings, and the spread between the cheapest and dearest seats for the same tour can be wide.',
         ),
         2 => 
         array (
@@ -4864,7 +4864,7 @@ return array (
       'intro' => 
       array (
         0 => 'Green Day ticket prices generally sit within a broad band that reflects the band\'s move between large arenas, festival headline slots and the occasional stadium. Entry-level seats tend to land at the lower end, while floor positions close to the stage, pit access and hospitality packages carry a clear premium. As with most major rock tours, the figures shift by city, venue size and how much demand a given show attracts.',
-        1 => 'Because Green Day work with Ticketmaster and Live Nation, most on-sales for the band use dynamic pricing, so the cost of a given seat can move during a sale rather than holding a fixed face value. The bands below describe how Green Day pricing usually breaks down across upper tiers, lower bowl, floor or pit, and VIP, giving a realistic sense of what each part of the room tends to cost.',
+        1 => 'Because Green Day work with Live Nation and other major ticketing platforms, most on-sales for the band use dynamic pricing, so the cost of a given seat can move during a sale rather than holding a fixed face value. The bands below describe how Green Day pricing usually breaks down across upper tiers, lower bowl, floor or pit, and VIP, giving a realistic sense of what each part of the room tends to cost.',
       ),
       'tiers' => 
       array (
@@ -4894,7 +4894,7 @@ return array (
           'desc' => 'Official VIP and hospitality packages, which can reach $600 to $950 or more. These bundle premium seating or early entry with extras such as merchandise, dedicated entrance or lounge access, and sit at the top of the Green Day price range.',
         ),
       ),
-      'why' => 'Most Green Day shows are sold through Ticketmaster and Live Nation, which apply dynamic pricing to many sections. This means a seat\'s cost is tied to live demand and can rise or fall during a sale rather than holding one fixed face value. Popular dates, marquee cities and the best floor or pit positions are the most likely to move upward, while upper-tier and lawn seats stay closer to the lower end of the band. Resale listings add further variation and can sit above or below the original price depending on how a particular show is selling.',
+      'why' => 'Most Green Day shows are sold through Live Nation and other major ticketing platforms, which apply dynamic pricing to many sections. This means a seat\'s cost is tied to live demand and can rise or fall during a sale rather than holding one fixed face value. Popular dates, marquee cities and the best floor or pit positions are the most likely to move upward, while upper-tier and lawn seats stay closer to the lower end of the band. Resale listings add further variation and can sit above or below the original price depending on how a particular show is selling.',
       'faqs' => 
       array (
         0 => 
@@ -4905,7 +4905,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do Green Day ticket prices change during a sale?',
-          'a' => 'Green Day on-sales through Ticketmaster and Live Nation use dynamic pricing on many sections, so the cost of a seat is linked to live demand and can shift while a sale is running. Higher-profile dates and the best floor or pit spots are the most likely to move upward, while upper-tier seats usually stay nearer the lower end.',
+          'a' => 'Green Day on-sales through Live Nation and other major ticketing platforms use dynamic pricing on many sections, so the cost of a seat is linked to live demand and can shift while a sale is running. Higher-profile dates and the best floor or pit spots are the most likely to move upward, while upper-tier seats usually stay nearer the lower end.',
         ),
         2 => 
         array (
@@ -4945,14 +4945,14 @@ return array (
       'intro' => 
       array (
         0 => 'Green Day tour dates have centred on The Saviors Tour, the band\'s run supporting their 2024 album Saviors alongside landmark anniversaries of Dookie and American Idiot. The trek has moved through arenas, stadiums and major festival headline slots across North America, Europe and beyond, pairing newer material with the catalogue that built the band\'s reputation. Routing and venues vary by leg, so the scale of a given Green Day show depends on the market.',
-        1 => 'When planning around Green Day tour dates it helps to know how the band typically stages a run. Shows are usually announced city by city, with on-sales handled through Ticketmaster and Live Nation, and festival appearances slotting in alongside headline arena and stadium nights. The sections below cover the common questions fans raise about touring, where Green Day tend to play, and how their live schedule is generally structured.',
+        1 => 'When planning around Green Day tour dates it helps to know how the band typically stages a run. Shows are usually announced city by city, with on-sales handled through Live Nation and other major ticketing platforms, and festival appearances slotting in alongside headline arena and stadium nights. The sections below cover the common questions fans raise about touring, where Green Day tend to play, and how their live schedule is generally structured.',
       ),
       'faqs' => 
       array (
         0 => 
         array (
           'q' => 'Is Green Day touring in 2026?',
-          'a' => 'Green Day have toured heavily in recent years behind The Saviors Tour, and the band continue to announce live dates and festival appearances city by city. Any new 2026 shows are confirmed through official channels and on-sales via Ticketmaster and Live Nation, so checking the band\'s listings is the reliable way to see the current schedule.',
+          'a' => 'Green Day have toured heavily in recent years behind The Saviors Tour, and the band continue to announce live dates and festival appearances city by city. Any new 2026 shows are confirmed through official channels and on-sales via Live Nation and other major ticketing platforms, so checking the band\'s listings is the reliable way to see the current schedule.',
         ),
         1 => 
         array (
@@ -4967,7 +4967,7 @@ return array (
         3 => 
         array (
           'q' => 'How are Green Day tour dates announced?',
-          'a' => 'Green Day tour dates are announced city by city through the band\'s official channels, with tickets sold via Ticketmaster and Live Nation. On-sales are usually scheduled per show, and festival appearances are confirmed separately by the individual events, so the full live schedule builds up across multiple announcements.',
+          'a' => 'Green Day tour dates are announced city by city through the band\'s official channels, with tickets sold via Live Nation and other major ticketing platforms. On-sales are usually scheduled per show, and festival appearances are confirmed separately by the individual events, so the full live schedule builds up across multiple announcements.',
         ),
       ),
     ),
@@ -5241,7 +5241,7 @@ return array (
           'desc' => 'The top tier, broadly 260 to 350 USD, spans premium floor standing, front-section seats and official VIP packages that may add early entry, merchandise or hospitality. Exact contents and prices depend on the venue and the package offered for that run.',
         ),
       ),
-      'why' => 'Most major Imagine Dragons dates are sold through Ticketmaster and Live Nation using dynamic pricing, so the cost of a given seat can rise or fall with real-time demand rather than staying fixed at a published face value. Popular shows and prime seats may sit well above the figures here, while quieter dates can fall below them. Platinum and official VIP inventory is priced separately and tends to sit at the upper end. Treat the bands above as a realistic starting reference and check the live seat map for the current price before booking.',
+      'why' => 'Most major Imagine Dragons dates are sold through Live Nation and other major ticketing platforms using dynamic pricing, so the cost of a given seat can rise or fall with real-time demand rather than staying fixed at a published face value. Popular shows and prime seats may sit well above the figures here, while quieter dates can fall below them. Platinum and official VIP inventory is priced separately and tends to sit at the upper end. Treat the bands above as a realistic starting reference and check the live seat map for the current price before booking.',
       'faqs' => 
       array (
         0 => 
@@ -5257,7 +5257,7 @@ return array (
         2 => 
         array (
           'q' => 'Why do Imagine Dragons ticket prices change so much?',
-          'a' => 'Most Imagine Dragons dates use dynamic pricing through Ticketmaster and Live Nation, so seat prices move with live demand instead of staying at a single fixed figure. A high-demand stadium night can sit well above the typical band, while a quieter date may fall below it.',
+          'a' => 'Most Imagine Dragons dates use dynamic pricing through Live Nation and other major ticketing platforms, so seat prices move with live demand instead of staying at a single fixed figure. A high-demand stadium night can sit well above the typical band, while a quieter date may fall below it.',
         ),
         3 => 
         array (
@@ -5413,7 +5413,7 @@ return array (
           'desc' => 'Official VIP bundles typically range from around $200 to $600 per person. They commonly add early entry, priority pit or premium reserved seating, exclusive merchandise and a commemorative item rather than guaranteeing the very front row.',
         ),
       ),
-      'why' => 'Twenty One Pilots tickets are sold largely through Ticketmaster and Live Nation, which apply dynamic pricing to most major dates. This means the listed price can move with demand rather than staying fixed: high-demand sections and shows flagged as selling quickly may climb above the opening figure, while quieter dates can hold nearer the lower end. Service fees and taxes are added at checkout and commonly increase the headline price by roughly 15 to 30 percent. Quoting a single band rather than one number reflects how the same seat type can differ between an arena, an amphitheatre and a stadium date, and from one city to the next.',
+      'why' => 'Twenty One Pilots tickets are sold largely through Live Nation and other major ticketing platforms, which apply dynamic pricing to most major dates. This means the listed price can move with demand rather than staying fixed: high-demand sections and shows flagged as selling quickly may climb above the opening figure, while quieter dates can hold nearer the lower end. Service fees and taxes are added at checkout and commonly increase the headline price by roughly 15 to 30 percent. Quoting a single band rather than one number reflects how the same seat type can differ between an arena, an amphitheatre and a stadium date, and from one city to the next.',
       'faqs' => 
       array (
         0 => 
@@ -5429,7 +5429,7 @@ return array (
         2 => 
         array (
           'q' => 'Why do Twenty One Pilots ticket prices change?',
-          'a' => 'Most Twenty One Pilots dates use dynamic pricing through Ticketmaster and Live Nation, so prices rise and fall with demand rather than staying fixed. A section flagged as selling fast can climb above its opening figure, while a quieter show may settle nearer the lower band.',
+          'a' => 'Most Twenty One Pilots dates use dynamic pricing through Live Nation and other major ticketing platforms, so prices rise and fall with demand rather than staying fixed. A section flagged as selling fast can climb above its opening figure, while a quieter show may settle nearer the lower band.',
         ),
         3 => 
         array (
@@ -5584,7 +5584,7 @@ return array (
           'desc' => 'Front-of-floor, premium-located seats and the best house positions, often 320 to 450 USD or more in busier markets. The closest standard tickets short of a packaged VIP option.',
         ),
       ),
-      'why' => 'Red Hot Chili Peppers tours through Ticketmaster and Live Nation, which means many shows use dynamic pricing. Under that model the listed price moves with demand rather than staying fixed, so identical seats can cost more for a high-demand market or date and less for a quieter one. Official Platinum seats are priced this way deliberately and are not VIP packages despite the higher figures. Service and facility fees are added at checkout on top of the face value, so the final total usually exceeds the headline price.',
+      'why' => 'Red Hot Chili Peppers tours through Live Nation and other major ticketing platforms, which means many shows use dynamic pricing. Under that model the listed price moves with demand rather than staying fixed, so identical seats can cost more for a high-demand market or date and less for a quieter one. Official Platinum seats are priced this way deliberately and are not VIP packages despite the higher figures. Service and facility fees are added at checkout on top of the face value, so the final total usually exceeds the headline price.',
       'faqs' => 
       array (
         0 => 
@@ -5595,7 +5595,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do Red Hot Chili Peppers ticket prices change?',
-          'a' => 'Most Red Hot Chili Peppers dates run on Ticketmaster and Live Nation dynamic pricing, so the same seat can cost different amounts depending on how strong demand is for that particular show. Official Platinum tickets float in price for the same reason. This is standard for the band\'s tours and explains why a stadium date in one city may list higher than an amphitheatre date elsewhere.',
+          'a' => 'Most Red Hot Chili Peppers dates run on Live Nation and other major ticketing platforms with dynamic pricing, so the same seat can cost different amounts depending on how strong demand is for that particular show. Official Platinum tickets float in price for the same reason. This is standard for the band\'s tours and explains why a stadium date in one city may list higher than an amphitheatre date elsewhere.',
         ),
         2 => 
         array (
@@ -5756,7 +5756,7 @@ return array (
           'desc' => 'Official packages bundling prime seating with early entry, merchandise or hospitality. These typically start around 350 USD and can reach 450 USD or more, varying by the inclusions offered at each venue.',
         ),
       ),
-      'why' => 'Foo Fighters tours through Ticketmaster and Live Nation, which commonly apply dynamic pricing on higher-demand shows. Under that model, face value for popular sections can rise above the standard published price as seats sell, so two buyers at the same show may pay different amounts depending on when they purchase. Prices also shift between stadium and arena dates and between major and secondary markets. The bands here describe typical primary levels; resale can sit well above them for sought-after dates.',
+      'why' => 'Foo Fighters tours through Live Nation and other major ticketing platforms, which commonly apply dynamic pricing on higher-demand shows. Under that model, face value for popular sections can rise above the standard published price as seats sell, so two buyers at the same show may pay different amounts depending on when they purchase. Prices also shift between stadium and arena dates and between major and secondary markets. The bands here describe typical primary levels; resale can sit well above them for sought-after dates.',
       'faqs' => 
       array (
         0 => 
@@ -5777,7 +5777,7 @@ return array (
         3 => 
         array (
           'q' => 'Does Foo Fighters use dynamic pricing?',
-          'a' => 'Yes. Like most major Ticketmaster and Live Nation tours, Foo Fighters dates often use dynamic pricing, where the face value of in-demand sections can rise as seats sell. This means the same section may cost different amounts depending on when you buy.',
+          'a' => 'Yes. Like most major Live Nation and other large-scale tours, Foo Fighters dates often use dynamic pricing, where the face value of in-demand sections can rise as seats sell. This means the same section may cost different amounts depending on when you buy.',
         ),
         4 => 
         array (
@@ -5792,7 +5792,7 @@ return array (
         6 => 
         array (
           'q' => 'Why are resale Foo Fighters tickets more expensive than face value?',
-          'a' => 'Resale prices reflect open-market demand rather than the band\'s set face value, so they can sit well above primary levels for popular shows. Buying during the official on-sale through Ticketmaster or Live Nation is usually the most cost-effective route.',
+          'a' => 'Resale prices reflect open-market demand rather than the band\'s set face value, so they can sit well above primary levels for popular shows. Buying during the official on-sale through Live Nation and other major ticketing platforms is usually the most cost-effective route.',
         ),
         7 => 
         array (
@@ -5807,14 +5807,14 @@ return array (
       'intro' => 
       array (
         0 => 'Foo Fighters tour dates for the Take Cover Tour 2026 cover a run of stadium and large-arena shows across multiple markets. The band returns to large-format touring with a set built around its catalogue rather than a single new album cycle, and the schedule mixes major-city stadium stops with arena dates. Specific cities and on-sale details are confirmed through official channels, so the picture below explains how the touring run is structured rather than listing fixed dates.',
-        1 => 'As with previous Foo Fighters runs, the Take Cover Tour 2026 routes through stadiums and arenas with support acts varying by region. Tour dates are announced in stages and released through Ticketmaster and Live Nation, with presales typically preceding the general on-sale. Because routing and additions can change, checking the official listings remains the reliable way to confirm whether the band is playing a particular city.',
+        1 => 'As with previous Foo Fighters runs, the Take Cover Tour 2026 routes through stadiums and arenas with support acts varying by region. Tour dates are announced in stages and released through Live Nation and other major ticketing platforms, with presales typically preceding the general on-sale. Because routing and additions can change, checking the official listings remains the reliable way to confirm whether the band is playing a particular city.',
       ),
       'faqs' => 
       array (
         0 => 
         array (
           'q' => 'Is Foo Fighters touring in 2026?',
-          'a' => 'Yes. Foo Fighters are touring in 2026 on the Take Cover Tour, a run of stadium and arena shows across several markets. Dates are released in stages through official channels, so the current schedule is confirmed via Ticketmaster and Live Nation listings.',
+          'a' => 'Yes. Foo Fighters are touring in 2026 on the Take Cover Tour, a run of stadium and arena shows across several markets. Dates are released in stages through official channels, so the current schedule is confirmed via Live Nation and other official listings.',
         ),
         1 => 
         array (
@@ -5829,7 +5829,7 @@ return array (
         3 => 
         array (
           'q' => 'Where can I buy Foo Fighters tour tickets?',
-          'a' => 'Official Foo Fighters tickets are sold through Ticketmaster and Live Nation, usually with artist and venue presales ahead of the general on-sale. Buying through these primary channels is the most reliable way to secure tickets at face value.',
+          'a' => 'Official Foo Fighters tickets are sold through Live Nation and other major ticketing platforms, usually with artist and venue presales ahead of the general on-sale. Buying through these primary channels is the most reliable way to secure tickets at face value.',
         ),
       ),
     ),
@@ -5931,7 +5931,7 @@ return array (
           'desc' => 'Official packages from around 300 up to 450 USD and occasionally beyond, bundling premium placement with early entry, hospitality or merchandise. Allocation is limited and varies by venue.',
         ),
       ),
-      'why' => 'Like most large Ticketmaster and Live Nation tours, Arctic Monkeys shows generally use dynamic pricing, so the cost of a given seat can move up or down with demand rather than holding a single fixed figure. The most sought-after blocks for popular dates can climb well above their starting price, while quieter markets or late-released seats sometimes settle lower. Final totals also include booking and facility fees added at checkout, which is why the price you pay can differ from the headline face value.',
+      'why' => 'Like most large Live Nation and other major touring runs, Arctic Monkeys shows generally use dynamic pricing, so the cost of a given seat can move up or down with demand rather than holding a single fixed figure. The most sought-after blocks for popular dates can climb well above their starting price, while quieter markets or late-released seats sometimes settle lower. Final totals also include booking and facility fees added at checkout, which is why the price you pay can differ from the headline face value.',
       'faqs' => 
       array (
         0 => 
@@ -6080,7 +6080,7 @@ return array (
       'intro' => 
       array (
         0 => 'The Killers play arenas, large theatres and festival main stages, and ticket prices tend to reflect that scale rather than the premiums seen on full stadium runs. Across a typical show, face values usually open around the low end for upper-tier and general admission positions and climb toward the upper bands for lower-bowl seating and front-of-stage spots. Where the band stages a Las Vegas residency, pricing sits noticeably higher than a standard arena night.',
-        1 => 'Because most of The Killers\' dates are sold through Ticketmaster and Live Nation, the figures shown at checkout are primary face values before fees, and they shift with demand. The bands below give a realistic sense of what The Killers ticket prices look like for a standard arena or festival show; resale listings on secondary sites can run well above these numbers, particularly for sold-out markets and marquee festival appearances.',
+        1 => 'Because most of The Killers\' dates are sold through Live Nation and other major ticketing platforms, the figures shown at checkout are primary face values before fees, and they shift with demand. The bands below give a realistic sense of what The Killers ticket prices look like for a standard arena or festival show; resale listings on secondary sites can run well above these numbers, particularly for sold-out markets and marquee festival appearances.',
       ),
       'tiers' => 
       array (
@@ -6105,7 +6105,7 @@ return array (
           'desc' => 'Front-of-stage standing, premium packages and the best floor rows typically reach 235 to 300 USD, and occasionally higher for Las Vegas residency nights. These often bundle early entry or dedicated entrances depending on the venue.',
         ),
       ),
-      'why' => 'The Killers tour mainly through Ticketmaster and Live Nation, which apply dynamic pricing to many dates. That means face values are not fixed: they move up or down with demand, so the same seat can cost more for a high-demand market or a festival headline slot than for a midweek arena date. Official platinum seats are priced this way as well, which is why a small number of premium positions can exceed the standard top band. The figures here describe typical primary face values before service fees; resale prices are set by sellers and frequently sit above them.',
+      'why' => 'The Killers tour mainly through Live Nation and other major ticketing platforms, which apply dynamic pricing to many dates. That means face values are not fixed: they move up or down with demand, so the same seat can cost more for a high-demand market or a festival headline slot than for a midweek arena date. Official platinum seats are priced this way as well, which is why a small number of premium positions can exceed the standard top band. The figures here describe typical primary face values before service fees; resale prices are set by sellers and frequently sit above them.',
       'faqs' => 
       array (
         0 => 
@@ -6116,7 +6116,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do The Killers ticket prices change so much?',
-          'a' => 'Most of The Killers\' dates use dynamic pricing through Ticketmaster and Live Nation, so face values rise and fall with demand. A high-demand market, a festival headline slot or a Las Vegas residency night will typically carry higher prices than a standard midweek arena date, even for comparable seats.',
+          'a' => 'Most of The Killers\' dates use dynamic pricing through Live Nation and other major ticketing platforms, so face values rise and fall with demand. A high-demand market, a festival headline slot or a Las Vegas residency night will typically carry higher prices than a standard midweek arena date, even for comparable seats.',
         ),
         2 => 
         array (
@@ -6277,7 +6277,7 @@ return array (
           'desc' => 'Packaged experiences combining prime seating or pitch access with hospitality, early entry or merchandise. These commonly run from 600 USD up to around 2,500 USD for the most comprehensive packages.',
         ),
       ),
-      'why' => 'Oasis tickets are sold across multiple price tiers because stadiums hold a wide spread of seating, from distant upper sections to front-pitch standing. Several markets on the reunion tour also used Ticketmaster\'s dynamic pricing, where the live price of in-demand tickets moves with demand during the sale rather than staying fixed at the advertised figure, which is what pushed some UK standing prices well above their initial level. The band opted out of dynamic pricing for its North American and several later international dates, so those went on sale at set face values instead. Resale platforms add a further layer, and listings there frequently sit above face value for the busiest shows.',
+      'why' => 'Oasis tickets are sold across multiple price tiers because stadiums hold a wide spread of seating, from distant upper sections to front-pitch standing. Several markets on the reunion tour also used dynamic pricing, where the live price of in-demand tickets moves with demand during the sale rather than staying fixed at the advertised figure, which is what pushed some UK standing prices well above their initial level. The band opted out of dynamic pricing for its North American and several later international dates, so those went on sale at set face values instead. Resale platforms add a further layer, and listings there frequently sit above face value for the busiest shows.',
       'faqs' => 
       array (
         0 => 
@@ -6288,7 +6288,7 @@ return array (
         1 => 
         array (
           'q' => 'Why did Oasis tickets get more expensive during the sale?',
-          'a' => 'Several Oasis dates used Ticketmaster\'s dynamic pricing, which lets the price of high-demand tickets rise during the sale in response to demand. This is why some UK standing tickets ended up costing significantly more than their advertised starting figure rather than staying fixed.',
+          'a' => 'Several Oasis dates used dynamic pricing, which lets the price of high-demand tickets rise during the sale in response to demand. This is why some UK standing tickets ended up costing significantly more than their advertised starting figure rather than staying fixed.',
         ),
         2 => 
         array (
@@ -6426,7 +6426,7 @@ return array (
       'currency' => 'USD',
       'intro' => 
       array (
-        0 => 'Pearl Jam ticket prices generally reflect the band\'s arena-scale touring, with most face-value seats falling between roughly 60 and 300 USD before fees. As with the majority of Live Nation and Ticketmaster runs, the band uses dynamic pricing, so the cost of a given seat can move with demand across an on-sale. Upper-tier seats sit at the lower end of that band, while floor positions and limited premium packages reach the upper end.',
+        0 => 'Pearl Jam ticket prices generally reflect the band\'s arena-scale touring, with most face-value seats falling between roughly 60 and 300 USD before fees. As with the majority of Live Nation and other major touring runs, the band uses dynamic pricing, so the cost of a given seat can move with demand across an on-sale. Upper-tier seats sit at the lower end of that band, while floor positions and limited premium packages reach the upper end.',
         1 => 'Where you sit accounts for most of the variation in Pearl Jam ticket prices. The band typically plays multi-night arena stands rather than single-date stadium shows, which keeps the overall range narrower than that of larger stadium acts. Resale availability and premium VIP packages can push prices well above face value, particularly for closer floor sections, opening nights and the band\'s home-market dates.',
       ),
       'tiers' => 
@@ -6452,7 +6452,7 @@ return array (
           'desc' => 'Premium experiences combining prime seating with extras such as early entry or merchandise. These are priced separately and commonly run several times the cost of a base seat.',
         ),
       ),
-      'why' => 'Pearl Jam tours through Ticketmaster and Live Nation, which apply dynamic pricing on most dates. Under this model, face values are not fixed: they adjust to live demand as a show sells, so an identical seat can cost more during peak buying and ease back as interest settles. Service and facility fees are added at checkout and vary by venue. Resale prices on the secondary market are set by individual sellers and frequently exceed face value, especially for sought-after floor sections and the band\'s hometown dates.',
+      'why' => 'Pearl Jam tours through Live Nation and other major ticketing platforms, which apply dynamic pricing on most dates. Under this model, face values are not fixed: they adjust to live demand as a show sells, so an identical seat can cost more during peak buying and ease back as interest settles. Service and facility fees are added at checkout and vary by venue. Resale prices on the secondary market are set by individual sellers and frequently exceed face value, especially for sought-after floor sections and the band\'s hometown dates.',
       'faqs' => 
       array (
         0 => 
@@ -6463,7 +6463,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do Pearl Jam ticket prices change?',
-          'a' => 'Most Pearl Jam dates use dynamic pricing through Ticketmaster, so face values rise and fall with live demand during an on-sale. A seat that costs one figure early can shift as a show sells. Service fees added at checkout and seller-set resale prices on the secondary market add further variation.',
+          'a' => 'Most Pearl Jam dates use dynamic pricing, so face values rise and fall with live demand during an on-sale. A seat that costs one figure early can shift as a show sells. Service fees added at checkout and seller-set resale prices on the secondary market add further variation.',
         ),
         2 => 
         array (
@@ -6483,7 +6483,7 @@ return array (
         5 => 
         array (
           'q' => 'Do Pearl Jam ticket prices include fees?',
-          'a' => 'It depends on the on-sale. Pearl Jam has used all-in pricing on recent runs, where the displayed price already includes service fees and only taxes are added at checkout. On standard Ticketmaster sales and on resale platforms, however, service, facility or buyer fees can be added on top of the listed price, raising the final total.',
+          'a' => 'It depends on the on-sale. Pearl Jam has used all-in pricing on recent runs, where the displayed price already includes service fees and only taxes are added at checkout. On standard primary sales and on resale platforms, however, service, facility or buyer fees can be added on top of the listed price, raising the final total.',
         ),
         6 => 
         array (
@@ -6628,7 +6628,7 @@ return array (
           'desc' => 'Front-floor seats and VIP packages with early entry or merchandise, commonly between 250 and 300 USD and occasionally higher in busier cities.',
         ),
       ),
-      'why' => 'Doja Cat tours through Ticketmaster and Live Nation, which apply dynamic pricing on most major runs. That means the listed price for a given seat can move up or down with real-time demand rather than staying fixed, so two buyers in the same section may pay different amounts depending on when they purchase. Service and facility fees are added at checkout on top of the seat price. Premium markets and the most sought-after dates tend to sit at the upper end of the band, while quieter dates and upper-tier seats stay nearer the floor of the range.',
+      'why' => 'Doja Cat tours through Live Nation and other major ticketing platforms, which apply dynamic pricing on most major runs. That means the listed price for a given seat can move up or down with real-time demand rather than staying fixed, so two buyers in the same section may pay different amounts depending on when they purchase. Service and facility fees are added at checkout on top of the seat price. Premium markets and the most sought-after dates tend to sit at the upper end of the band, while quieter dates and upper-tier seats stay nearer the floor of the range.',
       'faqs' => 
       array (
         0 => 
@@ -6654,7 +6654,7 @@ return array (
         4 => 
         array (
           'q' => 'Why do Doja Cat ticket prices change?',
-          'a' => 'Prices change because her tours use dynamic pricing through Ticketmaster, which adjusts seat costs in line with live demand. A high-interest date or market can push prices up, while quieter shows may stay closer to the base level.',
+          'a' => 'Prices change because her tours use dynamic pricing, which adjusts seat costs in line with live demand. A high-interest date or market can push prices up, while quieter shows may stay closer to the base level.',
         ),
         5 => 
         array (
@@ -6805,7 +6805,7 @@ return array (
           'desc' => 'Official VIP bundles with early entry, premium placement and merchandise items, ranging roughly 280 to 350 USD and occasionally higher in major cities.',
         ),
       ),
-      'why' => 'Most Tyler, The Creator dates are sold through Ticketmaster, which applies dynamic pricing on selected sections. This means the listed price can rise or fall with live demand rather than holding a fixed figure, so the same seat type may cost more for a high-demand city or a fast-selling night. Service and facility fees are added at checkout on top of the face value. Standard reserved sections away from the most sought-after seats are less likely to move sharply, while floor and front-block prices fluctuate most.',
+      'why' => 'Most Tyler, The Creator dates are sold through major ticketing platforms, with dynamic pricing applied on selected sections. This means the listed price can rise or fall with live demand rather than holding a fixed figure, so the same seat type may cost more for a high-demand city or a fast-selling night. Service and facility fees are added at checkout on top of the face value. Standard reserved sections away from the most sought-after seats are less likely to move sharply, while floor and front-block prices fluctuate most.',
       'faqs' => 
       array (
         0 => 
@@ -6816,7 +6816,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do Tyler, The Creator ticket prices change?',
-          'a' => 'Most Tyler, The Creator dates use Ticketmaster dynamic pricing, so prices on selected sections move with live demand rather than staying fixed. A fast-selling city or a single high-demand night can push the same seat above its starting figure. Service and facility fees are also added at checkout, which raises the total beyond the listed face value.',
+          'a' => 'Most Tyler, The Creator dates use dynamic pricing, so prices on selected sections move with live demand rather than staying fixed. A fast-selling city or a single high-demand night can push the same seat above its starting figure. Service and facility fees are also added at checkout, which raises the total beyond the listed face value.',
         ),
         2 => 
         array (
@@ -6846,7 +6846,7 @@ return array (
         7 => 
         array (
           'q' => 'What fees are added to Tyler, The Creator tickets?',
-          'a' => 'Service and facility charges are added at checkout on top of the listed face value, which is standard for Ticketmaster and Live Nation arena sales. These can add a meaningful amount per ticket, so the final total is higher than the headline price. The exact fee depends on the venue and ticket type.',
+          'a' => 'Service and facility charges are added at checkout on top of the listed face value, which is standard for Live Nation and other major ticketing platforms on arena sales. These can add a meaningful amount per ticket, so the final total is higher than the headline price. The exact fee depends on the venue and ticket type.',
         ),
       ),
     ),
@@ -6977,7 +6977,7 @@ return array (
           'desc' => 'Official VIP and hospitality bundles, commonly 350 to 600 USD or more. These can include premium seating, early entry, merchandise or lounge access, and are priced above standard tickets for the added inclusions rather than the seat alone.',
         ),
       ),
-      'why' => 'Most Nicki Minaj dates are sold through Ticketmaster using dynamic pricing, which means face value shifts with demand rather than staying fixed. A seat in the same section can cost more on a fast-selling date and less on a quieter one, and added shows or second legs sometimes see prices adjusted downward. Resale prices move independently and can sit above or below the primary allocation. The figures here describe typical bands rather than a set rate, so checking the live primary and verified resale options for a specific date gives the most accurate picture.',
+      'why' => 'Most Nicki Minaj dates are sold through major ticketing platforms using dynamic pricing, which means face value shifts with demand rather than staying fixed. A seat in the same section can cost more on a fast-selling date and less on a quieter one, and added shows or second legs sometimes see prices adjusted downward. Resale prices move independently and can sit above or below the primary allocation. The figures here describe typical bands rather than a set rate, so checking the live primary and verified resale options for a specific date gives the most accurate picture.',
       'faqs' => 
       array (
         0 => 
@@ -7297,7 +7297,7 @@ return array (
       'intro' => 
       array (
         0 => 'Future ticket prices generally sit in the arena tier of live hip-hop, below the stadium bracket occupied by the genre\'s biggest crossover headliners. Across a typical run, entry-level seats tend to open in the lower band, with floor and lower-bowl positions costing more and hospitality packages sitting at the top. Demand is heaviest in his home market of Atlanta and in larger coastal cities, where availability tightens fastest and resale activity is most pronounced.',
-        1 => 'What you pay for Future largely depends on where he plays and how close you sit rather than a fixed figure. Upper-level seats remain the most economical way in, mid-tier and lower-bowl seats carry a premium, and the floor commands the highest face value before VIP. Because most of his recent dates run through Ticketmaster and Live Nation, the prices below reflect realistic primary face values rather than resale, which can move higher when a show sells quickly.',
+        1 => 'What you pay for Future largely depends on where he plays and how close you sit rather than a fixed figure. Upper-level seats remain the most economical way in, mid-tier and lower-bowl seats carry a premium, and the floor commands the highest face value before VIP. Because most of his recent dates run through Live Nation and other major ticketing platforms, the prices below reflect realistic primary face values rather than resale, which can move higher when a show sells quickly.',
       ),
       'tiers' => 
       array (
@@ -7322,7 +7322,7 @@ return array (
           'desc' => 'Premium and VIP packages bundling prime seating with early entry or merchandise. These typically range from around 300 up to 450 USD, and limited premium inventory can reach the top of that band.',
         ),
       ),
-      'why' => 'Future\'s tours are routed through Ticketmaster and Live Nation, which use dynamic pricing on a large share of seats. That means face values can rise and fall in real time with demand rather than staying fixed, so a section listed at one figure early in a sale may cost more once a show is moving quickly. Released-in-stages pricing, platinum seats and add-on fees also affect the final total, which is why the bands above describe general ranges rather than a single set price.',
+      'why' => 'Future\'s tours are routed through Live Nation and other major ticketing platforms, which use dynamic pricing on a large share of seats. That means face values can rise and fall in real time with demand rather than staying fixed, so a section listed at one figure early in a sale may cost more once a show is moving quickly. Released-in-stages pricing, platinum seats and add-on fees also affect the final total, which is why the bands above describe general ranges rather than a single set price.',
       'faqs' => 
       array (
         0 => 
@@ -7338,7 +7338,7 @@ return array (
         2 => 
         array (
           'q' => 'Why do Future ticket prices change so much?',
-          'a' => 'Most Future dates run through Ticketmaster and Live Nation, which apply dynamic pricing to many seats. Prices move with live demand, so the same section can cost more once a show starts selling quickly, and platinum or premium seats are priced separately from standard inventory.',
+          'a' => 'Most Future dates run through Live Nation and other major ticketing platforms, which apply dynamic pricing to many seats. Prices move with live demand, so the same section can cost more once a show starts selling quickly, and platinum or premium seats are priced separately from standard inventory.',
         ),
         3 => 
         array (
@@ -7353,7 +7353,7 @@ return array (
         5 => 
         array (
           'q' => 'Do Future ticket prices include fees?',
-          'a' => 'The face values quoted are before service and facility fees, which Ticketmaster adds at checkout. The final total is usually noticeably higher than the listed seat price, so it is worth viewing the all-in figure before completing a purchase.',
+          'a' => 'The face values quoted are before service and facility fees, which are added at checkout. The final total is usually noticeably higher than the listed seat price, so it is worth viewing the all-in figure before completing a purchase.',
         ),
         6 => 
         array (
@@ -7373,14 +7373,14 @@ return array (
       'intro' => 
       array (
         0 => 'Future\'s most recent headline run was the We Trust You Tour, staged jointly with producer Metro Boomin in support of their collaborative albums We Don\'t Trust You and We Still Don\'t Trust You. The North American run played arenas through the second half of 2024, and Future tour dates from that cycle leaned heavily on the two records alongside his deep back catalogue. Any future routing is announced by the artist\'s team and his promoters rather than fixed in advance.',
-        1 => 'Beyond the joint headline tour, Future regularly appears at major festivals and one-off arena shows, so tour activity is not limited to a single named run. When new dates are confirmed they are typically routed through Ticketmaster and Live Nation, with on-sales staggered by market. Checking the official listings is the most reliable way to see where he is currently scheduled to perform.',
+        1 => 'Beyond the joint headline tour, Future regularly appears at major festivals and one-off arena shows, so tour activity is not limited to a single named run. When new dates are confirmed they are typically routed through Live Nation and other major ticketing platforms, with on-sales staggered by market. Checking the official listings is the most reliable way to see where he is currently scheduled to perform.',
       ),
       'faqs' => 
       array (
         0 => 
         array (
           'q' => 'Is Future touring in 2026?',
-          'a' => 'Future\'s most recent major headline run was the 2024 We Trust You Tour with Metro Boomin. Any 2026 activity tends to centre on festival appearances and individual shows rather than a confirmed headline tour, so the official Ticketmaster and Live Nation listings are the place to confirm current dates.',
+          'a' => 'Future\'s most recent major headline run was the 2024 We Trust You Tour with Metro Boomin. Any 2026 activity tends to centre on festival appearances and individual shows rather than a confirmed headline tour, so the official Live Nation listings are the place to confirm current dates.',
         ),
         1 => 
         array (
@@ -7497,7 +7497,7 @@ return array (
           'desc' => 'Packages bundling premium seating with early entry, lounge access or merchandise, generally 600 to 800 USD or more. Contents differ by venue, so the value depends on what each specific package includes.',
         ),
       ),
-      'why' => 'Peso Pluma\'s tours are sold through Ticketmaster using dynamic pricing, so a seat\'s cost rises and falls with real-time demand rather than staying fixed. Popular markets and the days right after on-sale tend to show the highest prices, while quieter dates and last-minute releases can soften. Verified resale adds further variation, with listings sometimes above or below original face value. Because of this, two seats in the same section can carry different prices, and the bands above describe typical levels rather than guaranteed figures.',
+      'why' => 'Peso Pluma\'s tours are sold through major ticketing platforms using dynamic pricing, so a seat\'s cost rises and falls with real-time demand rather than staying fixed. Popular markets and the days right after on-sale tend to show the highest prices, while quieter dates and last-minute releases can soften. Verified resale adds further variation, with listings sometimes above or below original face value. Because of this, two seats in the same section can carry different prices, and the bands above describe typical levels rather than guaranteed figures.',
       'faqs' => 
       array (
         0 => 
@@ -7644,7 +7644,7 @@ return array (
       'intro' => 
       array (
         0 => 'Feid ticket prices generally sit in the mid band for a touring reggaeton headliner, reflecting the theatre, House of Blues and Fillmore-scale rooms that make up much of his recent itinerary rather than full stadium pricing. Face value across his shows typically runs from around 50 USD for upper or general admission standing up to roughly 200 to 350 USD for front-of-stage and VIP positions, with the exact band shifting by city, venue size and how the room is configured.',
-        1 => 'Because demand for the Medellin singer tends to outstrip the intimate venues he favours, the resale market often sits well above face value, with averages reported around the 200 USD mark. Booking through official primary channels at face value, including Ticketmaster\'s Face Value Exchange, is usually the more economical route, and Feid ticket prices on the secondary market should be treated as a separate, demand-driven figure.',
+        1 => 'Because demand for the Medellin singer tends to outstrip the intimate venues he favours, the resale market often sits well above face value, with averages reported around the 200 USD mark. Booking through official primary channels at face value, including the official Face Value Exchange, is usually the more economical route, and Feid ticket prices on the secondary market should be treated as a separate, demand-driven figure.',
       ),
       'tiers' => 
       array (
@@ -7669,7 +7669,7 @@ return array (
           'desc' => 'Official VIP bundles can run from around 200 to 350 USD and may add early entry, priority merchandise access, a collectible gift item and a dedicated check-in, though contents vary by date and are not a guarantee of the closest seats.',
         ),
       ),
-      'why' => 'Most of Feid\'s tours are promoted by Live Nation and ticketed through Ticketmaster, which applies dynamic pricing to a portion of inventory. Under this model a section is not fixed at a single number; prices for those seats move up or down with real-time demand, so the same tier can cost more for a fast-selling night than a quieter one. Face value, resale and platform fees are also distinct figures, and the headline prices quoted on resale sites usually reflect demand rather than what the box office originally charged.',
+      'why' => 'Most of Feid\'s tours are promoted by Live Nation and sold through major ticketing platforms, which apply dynamic pricing to a portion of inventory. Under this model a section is not fixed at a single number; prices for those seats move up or down with real-time demand, so the same tier can cost more for a fast-selling night than a quieter one. Face value, resale and platform fees are also distinct figures, and the headline prices quoted on resale sites usually reflect demand rather than what the box office originally charged.',
       'faqs' => 
       array (
         0 => 
@@ -7680,12 +7680,12 @@ return array (
         1 => 
         array (
           'q' => 'Why do Feid ticket prices vary so much between shows?',
-          'a' => 'Prices vary because Feid plays a mix of intimate theatres and larger Latin American arenas, and because Ticketmaster applies dynamic pricing to part of the inventory. A sold-out House of Blues date can carry very different numbers from an arena show, and demand shifts the figure within a single tier.',
+          'a' => 'Prices vary because Feid plays a mix of intimate theatres and larger Latin American arenas, and because dynamic pricing is applied to part of the inventory. A sold-out House of Blues date can carry very different numbers from an arena show, and demand shifts the figure within a single tier.',
         ),
         2 => 
         array (
           'q' => 'Are Feid tickets cheaper at face value than on resale?',
-          'a' => 'Usually yes. Resale averages for Feid have been reported around 200 USD, often above the original box-office price, while official primary tickets and the Ticketmaster Face Value Exchange let you buy or resell at the set face value, which tends to be the more economical route.',
+          'a' => 'Usually yes. Resale averages for Feid have been reported around 200 USD, often above the original box-office price, while official primary tickets and the official Face Value Exchange let you buy or resell at the set face value, which tends to be the more economical route.',
         ),
         3 => 
         array (
@@ -7700,7 +7700,7 @@ return array (
         5 => 
         array (
           'q' => 'Does Feid use dynamic pricing?',
-          'a' => 'Yes. Like most major Live Nation and Ticketmaster tours, Feid\'s shows use dynamic pricing on a portion of seats, so prices rise and fall with demand. The same section can cost noticeably more on a high-demand night than on a slower one.',
+          'a' => 'Yes. Like most major Live Nation tours, Feid\'s shows use dynamic pricing on a portion of seats, so prices rise and fall with demand. The same section can cost noticeably more on a high-demand night than on a slower one.',
         ),
         6 => 
         array (
@@ -7710,7 +7710,7 @@ return array (
         7 => 
         array (
           'q' => 'Are there extra fees on top of the Feid ticket price?',
-          'a' => 'Yes. The advertised price is usually before service and facility fees, which Ticketmaster adds at checkout, so the final total is higher than the face value shown. Resale platforms add their own fees on top of the listed price as well.',
+          'a' => 'Yes. The advertised price is usually before service and facility fees, which are added at checkout, so the final total is higher than the face value shown. Resale platforms add their own fees on top of the listed price as well.',
         ),
       ),
     ),
@@ -7742,7 +7742,7 @@ return array (
         3 => 
         array (
           'q' => 'How can I get Feid tickets at face value?',
-          'a' => 'Feid tickets are sold through Ticketmaster and official presale channels, and the tour uses the Ticketmaster Face Value Exchange, which lets fans resell spare tickets only at the original price. Buying through these official routes is the most reliable way to secure face-value entry.',
+          'a' => 'Feid tickets are sold through major ticketing platforms and official presale channels, and the tour uses the official Face Value Exchange, which lets fans resell spare tickets only at the original price. Buying through these official routes is the most reliable way to secure face-value entry.',
         ),
       ),
     ),
@@ -7841,7 +7841,7 @@ return array (
           'desc' => 'Bundled experiences that can reach 320 to 450 USD or more, often combining a prime location with early entry, merchandise or lounge access. Contents differ by promoter and venue.',
         ),
       ),
-      'why' => 'Rauw Alejandro\'s tours are promoted by Live Nation and ticketed through Ticketmaster, which apply dynamic pricing on many dates. Under this model the face value of a ticket can rise or fall in real time based on demand, so two buyers may pay different amounts for comparable seats. Fees are added at checkout and resale prices are set by sellers, both of which can push the final cost above the figures shown here.',
+      'why' => 'Rauw Alejandro\'s tours are promoted by Live Nation and sold through major ticketing platforms, which apply dynamic pricing on many dates. Under this model the face value of a ticket can rise or fall in real time based on demand, so two buyers may pay different amounts for comparable seats. Fees are added at checkout and resale prices are set by sellers, both of which can push the final cost above the figures shown here.',
       'faqs' => 
       array (
         0 => 
@@ -7852,7 +7852,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do Rauw Alejandro ticket prices change?',
-          'a' => 'Most Rauw Alejandro dates use dynamic pricing through Ticketmaster, so face values move up or down with demand. A high-demand market or a date near the stage can cost noticeably more than an off-peak show in the same tour.',
+          'a' => 'Most Rauw Alejandro dates use dynamic pricing, so face values move up or down with demand. A high-demand market or a date near the stage can cost noticeably more than an off-peak show in the same tour.',
         ),
         2 => 
         array (
@@ -7867,7 +7867,7 @@ return array (
         4 => 
         array (
           'q' => 'Do Rauw Alejandro ticket prices include fees?',
-          'a' => 'No. The face values quoted for Rauw Alejandro tickets are usually before fees, which Ticketmaster adds at checkout. The final amount paid is therefore higher than the listed price, and resale tickets carry their own seller-set pricing.',
+          'a' => 'No. The face values quoted for Rauw Alejandro tickets are usually before fees, which are added at checkout. The final amount paid is therefore higher than the listed price, and resale tickets carry their own seller-set pricing.',
         ),
         5 => 
         array (
@@ -7892,14 +7892,14 @@ return array (
       'intro' => 
       array (
         0 => 'Rauw Alejandro\'s most recent run of tour dates was the Cosa Nuestra World Tour, staged in support of his 2024 album Cosa Nuestra and its follow-up material. The production marked his first outing with a full live band, pairing a Broadway-inspired staging concept with the choreography that defines his shows. It moved through arenas in North America before reaching select European cities.',
-        1 => 'When Rauw Alejandro announces fresh tour dates, they are typically routed through arenas and promoted by Live Nation, with on-sale handled by Ticketmaster. Confirmed dates and venues for any current run are listed separately, as the schedule and routing change between tours and tend to favour major metropolitan markets.',
+        1 => 'When Rauw Alejandro announces fresh tour dates, they are typically routed through arenas and promoted by Live Nation, with on-sale handled through major ticketing platforms. Confirmed dates and venues for any current run are listed separately, as the schedule and routing change between tours and tend to favour major metropolitan markets.',
       ),
       'faqs' => 
       array (
         0 => 
         array (
           'q' => 'Is Rauw Alejandro touring in 2026?',
-          'a' => 'Rauw Alejandro\'s Cosa Nuestra World Tour ran through 2025 and concluded in San Juan. Any 2026 dates would be announced separately through Live Nation and Ticketmaster, so check the live listings for the latest confirmed schedule rather than assuming a continuation.',
+          'a' => 'Rauw Alejandro\'s Cosa Nuestra World Tour ran through 2025 and concluded in San Juan. Any 2026 dates would be announced separately through Live Nation and other major ticketing platforms, so check the live listings for the latest confirmed schedule rather than assuming a continuation.',
         ),
         1 => 
         array (
@@ -8013,7 +8013,7 @@ return array (
           'desc' => 'Official VIP and hospitality packages, generally 250 to 320 USD and occasionally beyond. These bundle priority entry, premium positions, and merchandise; exact contents vary by venue and promoter, and meet-and-greet style extras sit at the top of this band.',
         ),
       ),
-      'why' => 'Maluma\'s tours run on Ticketmaster and Live Nation, which use dynamic pricing on many dates. Under that model, face values rise and fall with real-time demand rather than staying fixed, so popular sections in major cities can climb well above the opening price while quieter dates settle lower. Resale marketplaces add a further layer of variation, with their own fees. The bands here describe typical ranges; the figure any buyer sees depends on the date, city, section, and how early they book.',
+      'why' => 'Maluma\'s tours run on Live Nation and other major ticketing platforms, which use dynamic pricing on many dates. Under that model, face values rise and fall with real-time demand rather than staying fixed, so popular sections in major cities can climb well above the opening price while quieter dates settle lower. Resale marketplaces add a further layer of variation, with their own fees. The bands here describe typical ranges; the figure any buyer sees depends on the date, city, section, and how early they book.',
       'faqs' => 
       array (
         0 => 
@@ -8024,7 +8024,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do Maluma ticket prices change so much?',
-          'a' => 'Maluma\'s shows are sold through Ticketmaster and Live Nation, which apply dynamic pricing to many dates. That means face values move with live demand, so the same seat can cost more in a major city or on a high-demand night than in a quieter market.',
+          'a' => 'Maluma\'s shows are sold through Live Nation and other major ticketing platforms, which apply dynamic pricing to many dates. That means face values move with live demand, so the same seat can cost more in a major city or on a high-demand night than in a quieter market.',
         ),
         2 => 
         array (
@@ -8185,7 +8185,7 @@ return array (
           'desc' => 'Official VIP and premium hospitality packages tend to range from about 500 to 650 USD or higher. These can bundle early entry, premium viewing areas and merchandise rather than just a better seat.',
         ),
       ),
-      'why' => 'Morgan Wallen tours through Ticketmaster and Live Nation, which apply dynamic pricing on many of his dates. This means the listed price for a given seat can move up or down with demand rather than staying fixed, so an in-demand stadium night may show prices well above the base figure, while quieter dates settle lower. Wallen\'s recent on-sales drew criticism for how high primary prices climbed, which reflects dynamic pricing responding to heavy demand. Service and facility fees are added at checkout on top of the face value, and resale prices on the secondary market move independently of the primary range. The bands here describe typical primary pricing; always check the live figure for your specific date.',
+      'why' => 'Morgan Wallen tours through Live Nation and other major ticketing platforms, which apply dynamic pricing on many of his dates. This means the listed price for a given seat can move up or down with demand rather than staying fixed, so an in-demand stadium night may show prices well above the base figure, while quieter dates settle lower. Wallen\'s recent on-sales drew criticism for how high primary prices climbed, which reflects dynamic pricing responding to heavy demand. Service and facility fees are added at checkout on top of the face value, and resale prices on the secondary market move independently of the primary range. The bands here describe typical primary pricing; always check the live figure for your specific date.',
       'faqs' => 
       array (
         0 => 
@@ -8206,7 +8206,7 @@ return array (
         3 => 
         array (
           'q' => 'Does Morgan Wallen use dynamic pricing?',
-          'a' => 'Yes. Many Morgan Wallen dates use Ticketmaster\'s dynamic pricing, so the price of a seat can shift with demand rather than staying fixed. This is why the same section can cost noticeably more on a sought-after stadium night than on a quieter date.',
+          'a' => 'Yes. Many Morgan Wallen dates use dynamic pricing, so the price of a seat can shift with demand rather than staying fixed. This is why the same section can cost noticeably more on a sought-after stadium night than on a quieter date.',
         ),
         4 => 
         array (
@@ -8357,7 +8357,7 @@ return array (
           'desc' => 'Front-of-stage pit, official VIP packages and best-available premium seats, often 400 to 600 USD and occasionally higher in the busiest markets. These may bundle early entry or merchandise depending on the tour\'s package structure.',
         ),
       ),
-      'why' => 'Most Zach Bryan dates run through Ticketmaster and use dynamic pricing, which means face values shift with demand rather than staying fixed. When a show sells quickly, prices for the remaining seats rise in real time, so two buyers in the same section can pay different amounts depending on when they check out. Resale supply also feeds into what you see, and popular stadium nights frequently trade above the original face value. Adding service and facility fees at checkout raises the final total beyond the listed ticket price.',
+      'why' => 'Most Zach Bryan dates are sold through major ticketing platforms and use dynamic pricing, which means face values shift with demand rather than staying fixed. When a show sells quickly, prices for the remaining seats rise in real time, so two buyers in the same section can pay different amounts depending on when they check out. Resale supply also feeds into what you see, and popular stadium nights frequently trade above the original face value. Adding service and facility fees at checkout raises the final total beyond the listed ticket price.',
       'faqs' => 
       array (
         0 => 
@@ -8368,7 +8368,7 @@ return array (
         1 => 
         array (
           'q' => 'Why are Zach Bryan tickets so expensive?',
-          'a' => 'Zach Bryan plays stadiums and large outdoor venues, so prices skew higher than a typical arena country act. Strong demand, dynamic pricing on Ticketmaster and active resale all push figures up, particularly for floor and premium positions where supply is limited relative to interest.',
+          'a' => 'Zach Bryan plays stadiums and large outdoor venues, so prices skew higher than a typical arena country act. Strong demand, dynamic pricing and active resale all push figures up, particularly for floor and premium positions where supply is limited relative to interest.',
         ),
         2 => 
         array (
@@ -8378,7 +8378,7 @@ return array (
         3 => 
         array (
           'q' => 'Does Zach Bryan use dynamic pricing?',
-          'a' => 'Yes. Like most major Ticketmaster and Live Nation tours, Zach Bryan shows use dynamic pricing, so face values rise and fall with demand during the sale. The same seat can cost different amounts depending on timing, and the fastest-selling dates tend to see the steepest increases.',
+          'a' => 'Yes. Like most major Live Nation tours, Zach Bryan shows use dynamic pricing, so face values rise and fall with demand during the sale. The same seat can cost different amounts depending on timing, and the fastest-selling dates tend to see the steepest increases.',
         ),
         4 => 
         array (
@@ -8528,7 +8528,7 @@ return array (
           'desc' => 'Official premium experiences, hospitality and front-row packages sit at the top of the range, commonly from roughly 550 to 850 USD and occasionally beyond. These may bundle early entry, dedicated entrances, merchandise or lounge access.',
         ),
       ),
-      'why' => 'Luke Combs\'s stadium shows are sold largely through Ticketmaster, where most major Live Nation tours of this scale use dynamic pricing. That means face values are not fixed in advance and can move up or down with demand as a particular night sells, so the same section may cost more on a high-demand Saturday than on a slower weeknight date. Verified resale adds further variation, since listings can run above or below the original face value depending on how the market is moving close to showtime. As a result, the bands here describe the general shape of what seats tend to cost rather than a fixed tariff, and the cheapest get-in figure for any one show is best confirmed against current live listings.',
+      'why' => 'Luke Combs\'s stadium shows are sold largely through major ticketing platforms, where most major Live Nation tours of this scale use dynamic pricing. That means face values are not fixed in advance and can move up or down with demand as a particular night sells, so the same section may cost more on a high-demand Saturday than on a slower weeknight date. Verified resale adds further variation, since listings can run above or below the original face value depending on how the market is moving close to showtime. As a result, the bands here describe the general shape of what seats tend to cost rather than a fixed tariff, and the cheapest get-in figure for any one show is best confirmed against current live listings.',
       'faqs' => 
       array (
         0 => 
@@ -8701,7 +8701,7 @@ return array (
           'desc' => 'Front-of-stage seats and official VIP packages that may bundle early entry or merchandise, generally $300 to $400 and occasionally beyond for marquee stadium dates.',
         ),
       ),
-      'why' => 'Most Chris Stapleton dates run through Ticketmaster and Live Nation, which apply dynamic pricing on a portion of inventory. That means face values can move up or down with demand rather than staying fixed, so a high-demand section may cost more than the same seat on a quieter night. Standard tickets hold their listed price, while seats flagged as Platinum or Official Platinum are the ones that fluctuate. Checking a specific date gives the accurate current figure.',
+      'why' => 'Most Chris Stapleton dates run through Live Nation and other major ticketing platforms, which apply dynamic pricing on a portion of inventory. That means face values can move up or down with demand rather than staying fixed, so a high-demand section may cost more than the same seat on a quieter night. Standard tickets hold their listed price, while seats flagged as Platinum or Official Platinum are the ones that fluctuate. Checking a specific date gives the accurate current figure.',
       'faqs' => 
       array (
         0 => 
@@ -8712,7 +8712,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do Chris Stapleton ticket prices change?',
-          'a' => 'Prices change because most of his shows use dynamic pricing through Ticketmaster, where demand adjusts the cost of certain Platinum-flagged seats. A popular weekend date can therefore be priced higher than a midweek show in the same venue. Standard tickets stay at their set face value, so the variation is limited to the demand-priced sections.',
+          'a' => 'Prices change because most of his shows use dynamic pricing, where demand adjusts the cost of certain Platinum-flagged seats. A popular weekend date can therefore be priced higher than a midweek show in the same venue. Standard tickets stay at their set face value, so the variation is limited to the demand-priced sections.',
         ),
         2 => 
         array (
@@ -8873,7 +8873,7 @@ return array (
           'desc' => 'Front-block seats, early entry or hospitality bundles where offered, usually from USD 200 up to around USD 300 or more. Contents vary by promoter and are not available for every date.',
         ),
       ),
-      'why' => 'AP Dhillon\'s larger dates are routed through Ticketmaster and Live Nation, which means most major shows use dynamic pricing. Under that model the face value of a seat shifts with live demand rather than staying fixed, so identical seats can cost different amounts at different moments and popular sections rise as they sell. This is why a single quoted price is misleading: the band reflects where seats have generally landed, not a guaranteed figure. Smaller theatre and ballroom dates are more often fixed-price, and resale listings sit outside the artist\'s control and can run above or below face value.',
+      'why' => 'AP Dhillon\'s larger dates are routed through Live Nation and other major ticketing platforms, which means most major shows use dynamic pricing. Under that model the face value of a seat shifts with live demand rather than staying fixed, so identical seats can cost different amounts at different moments and popular sections rise as they sell. This is why a single quoted price is misleading: the band reflects where seats have generally landed, not a guaranteed figure. Smaller theatre and ballroom dates are more often fixed-price, and resale listings sit outside the artist\'s control and can run above or below face value.',
       'faqs' => 
       array (
         0 => 
@@ -8889,7 +8889,7 @@ return array (
         2 => 
         array (
           'q' => 'Why do AP Dhillon ticket prices change?',
-          'a' => 'Most of his arena dates use dynamic pricing through Ticketmaster and Live Nation, so face value moves with live demand. Popular sections rise as they sell, which means the same seat can cost different amounts at different times.',
+          'a' => 'Most of his arena dates use dynamic pricing through Live Nation and other major ticketing platforms, so face value moves with live demand. Popular sections rise as they sell, which means the same seat can cost different amounts at different times.',
         ),
         3 => 
         array (
@@ -9016,7 +9016,7 @@ return array (
       'currency' => 'USD',
       'intro' => 
       array (
-        0 => 'Karan Aujla ticket prices generally sit in the mid-tier arena band, reflecting the venues he fills across North America and Europe. Entry-level upper-tier seats tend to open near the lower end of the range, while lower-bowl and floor positions cost more. Because his shows are routed through Live Nation and Ticketmaster, most face-value prices are set by tier and then adjusted by demand rather than fixed across a whole tour.',
+        0 => 'Karan Aujla ticket prices generally sit in the mid-tier arena band, reflecting the venues he fills across North America and Europe. Entry-level upper-tier seats tend to open near the lower end of the range, while lower-bowl and floor positions cost more. Because his shows are routed through Live Nation and other major ticketing platforms, most face-value prices are set by tier and then adjusted by demand rather than fixed across a whole tour.',
         1 => 'Beyond the standard tiers, Karan Aujla dates often carry VIP and early-entry packages that bundle premium positions with merchandise or other extras, which pushes the top of the range higher. Resale can sit above or below face value depending on how quickly a given city sells. The figures here describe how pricing usually works for his arena shows rather than any single announced date.',
       ),
       'tiers' => 
@@ -9042,7 +9042,7 @@ return array (
           'desc' => 'Premium bundles that pair prime floor or front-section access with early entry, merchandise or other extras. For Karan Aujla these commonly run from roughly 280 up to about 360 USD, with the exact contents varying by date.',
         ),
       ),
-      'why' => 'Most Karan Aujla dates run through Live Nation and Ticketmaster, which use demand-based dynamic pricing on many shows. That means a tier\'s price can rise as a section sells and ease back if demand softens, so two buyers in the same area may pay different amounts depending on timing. Face value is set per seating tier first; dynamic adjustments and any VIP package contents then move the final figure. Resale prices are set independently by sellers and are not capped to face value.',
+      'why' => 'Most Karan Aujla dates run through Live Nation and other major ticketing platforms, which use demand-based dynamic pricing on many shows. That means a tier\'s price can rise as a section sells and ease back if demand softens, so two buyers in the same area may pay different amounts depending on timing. Face value is set per seating tier first; dynamic adjustments and any VIP package contents then move the final figure. Resale prices are set independently by sellers and are not capped to face value.',
       'faqs' => 
       array (
         0 => 
@@ -9053,7 +9053,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do Karan Aujla ticket prices change?',
-          'a' => 'Many Karan Aujla dates use demand-based dynamic pricing through Ticketmaster, so a section\'s price can rise as it sells and ease if demand is lower. Each seating tier has a base face value that is then adjusted by demand, which is why the same area can cost different amounts at different times.',
+          'a' => 'Many Karan Aujla dates use demand-based dynamic pricing, so a section\'s price can rise as it sells and ease if demand is lower. Each seating tier has a base face value that is then adjusted by demand, which is why the same area can cost different amounts at different times.',
         ),
         2 => 
         array (
@@ -9093,7 +9093,7 @@ return array (
       'intro' => 
       array (
         0 => 'Karan Aujla\'s current touring centres on the P-Pop Culture Tour, the run built around his album of the same name, which extended his live reach across Canadian arenas, European dates and large-scale stadium shows in India. Earlier, his It Was All A Dream World Tour took in arenas across North America and Europe. Tour dates are confirmed city by city, so the routing and venues vary between legs rather than following a single fixed pattern.',
-        1 => 'When checking Karan Aujla tour dates, it helps to note that he plays a mix of arena and stadium venues depending on the market, with the largest crowds in India and strong demand in Punjabi-diaspora cities. Presales and general on-sales are typically handled through Ticketmaster and Live Nation, and individual legs are announced separately, so the full schedule builds out over time rather than appearing all at once.',
+        1 => 'When checking Karan Aujla tour dates, it helps to note that he plays a mix of arena and stadium venues depending on the market, with the largest crowds in India and strong demand in Punjabi-diaspora cities. Presales and general on-sales are typically handled through Live Nation and other major ticketing platforms, and individual legs are announced separately, so the full schedule builds out over time rather than appearing all at once.',
       ),
       'faqs' => 
       array (
@@ -9115,7 +9115,7 @@ return array (
         3 => 
         array (
           'q' => 'How are Karan Aujla tour tickets sold?',
-          'a' => 'Karan Aujla tour tickets are generally sold through Ticketmaster and Live Nation, typically starting with artist or venue presales followed by a general on-sale. Dates are released city by city across separate legs, so on-sale timing varies by show and region rather than following one fixed date.',
+          'a' => 'Karan Aujla tour tickets are generally sold through Live Nation and other major ticketing platforms, typically starting with artist or venue presales followed by a general on-sale. Dates are released city by city across separate legs, so on-sale timing varies by show and region rather than following one fixed date.',
         ),
       ),
     ),
@@ -9186,7 +9186,7 @@ return array (
       'intro' => 
       array (
         0 => 'John Mayer ticket prices tend to sit in the mid arena band rather than the stadium tier, reflecting the rooms he plays on his solo run, from TD Garden to the Kia Forum. Upper-level seats are the entry point, while floor rows and front sections carry the steepest face values. Because Mayer headlines without an opener on these shows, demand concentrates on a single act, which firms up pricing across the bowl.',
-        1 => 'What you pay for John Mayer also depends on the night and the market, since most of these dates run through Ticketmaster with dynamic pricing enabled. Prices shift with how a given show is selling, so two seats in the same section can list differently on different days. The bands below describe how seating generally maps to cost, with live figures injected separately rather than fixed here.',
+        1 => 'What you pay for John Mayer also depends on the night and the market, since most of these dates run with dynamic pricing enabled. Prices shift with how a given show is selling, so two seats in the same section can list differently on different days. The bands below describe how seating generally maps to cost, with live figures injected separately rather than fixed here.',
       ),
       'tiers' => 
       array (
@@ -9211,7 +9211,7 @@ return array (
           'desc' => 'Official VIP and hospitality packages, where offered, bundle a premium seat with extras such as early entry or merchandise. These sit at or above the top of the standard range and vary by venue and promoter.',
         ),
       ),
-      'why' => 'Most John Mayer dates are sold through Ticketmaster, which applies dynamic pricing on the majority of major Live Nation tours. That means face values are not fixed; they move with demand, so a fast-selling night can climb well above the opening price while a softer show may ease back. Resale listings sit separately again and often run higher than face, particularly for floor seats. The figures shown on a live page reflect current availability at the moment you view them, which is why we describe how the pricing works rather than quoting a single number.',
+      'why' => 'Most John Mayer dates apply dynamic pricing across the majority of major Live Nation tours. That means face values are not fixed; they move with demand, so a fast-selling night can climb well above the opening price while a softer show may ease back. Resale listings sit separately again and often run higher than face, particularly for floor seats. The figures shown on a live page reflect current availability at the moment you view them, which is why we describe how the pricing works rather than quoting a single number.',
       'faqs' => 
       array (
         0 => 
@@ -9222,7 +9222,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do John Mayer ticket prices change so much?',
-          'a' => 'Most John Mayer dates run on Ticketmaster\'s dynamic pricing, so face values rise and fall with demand in real time. A high-demand night can push prices above the opening level, while a quieter show may settle lower, which is why two similar seats can list at different amounts.',
+          'a' => 'Most John Mayer dates run on dynamic pricing, so face values rise and fall with demand in real time. A high-demand night can push prices above the opening level, while a quieter show may settle lower, which is why two similar seats can list at different amounts.',
         ),
         2 => 
         array (
@@ -9247,7 +9247,7 @@ return array (
         6 => 
         array (
           'q' => 'Do John Mayer ticket prices include fees?',
-          'a' => 'Listed face values usually exclude service and processing fees, which Ticketmaster and other sellers add at checkout. The final total is therefore higher than the seat price shown, so it is worth checking the full breakdown before completing a purchase.',
+          'a' => 'Listed face values usually exclude service and processing fees, which sellers add at checkout. The final total is therefore higher than the seat price shown, so it is worth checking the full breakdown before completing a purchase.',
         ),
         7 => 
         array (
@@ -9387,7 +9387,7 @@ return array (
           'desc' => 'Official VIP and enhanced experiences combining a premium seat or early entry with extras such as merchandise or a dedicated entrance, typically 220 to 320 USD depending on the inclusions offered.',
         ),
       ),
-      'why' => 'Most major Hozier dates run through Ticketmaster and Live Nation, which apply dynamic pricing. This means face values can move with demand rather than staying fixed, so a section listed at one figure when sales open may rise if the show is selling quickly, and certain seats are released as higher-priced Platinum positions. The base tiers above reflect standard primary levels; the exact figure shown at checkout depends on the specific date, venue and remaining availability, with booking and service fees added on top.',
+      'why' => 'Most major Hozier dates run through Live Nation and other major ticketing platforms, which apply dynamic pricing. This means face values can move with demand rather than staying fixed, so a section listed at one figure when sales open may rise if the show is selling quickly, and certain seats are released as higher-priced Platinum positions. The base tiers above reflect standard primary levels; the exact figure shown at checkout depends on the specific date, venue and remaining availability, with booking and service fees added on top.',
       'faqs' => 
       array (
         0 => 
@@ -9398,7 +9398,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do Hozier ticket prices change?',
-          'a' => 'Hozier\'s major dates use dynamic pricing through Ticketmaster and Live Nation, so face values shift with demand. A seat can cost more if a show is selling fast, and some premium positions are released as higher-priced Platinum tickets. This is why two people buying for the same concert can pay different amounts for similar seats.',
+          'a' => 'Hozier\'s major dates use dynamic pricing through Live Nation and other major ticketing platforms, so face values shift with demand. A seat can cost more if a show is selling fast, and some premium positions are released as higher-priced Platinum tickets. This is why two people buying for the same concert can pay different amounts for similar seats.',
         ),
         2 => 
         array (
@@ -9562,7 +9562,7 @@ return array (
           'desc' => 'Front-row blocks and official VIP packages, which can run from about 230 to 320 dollars or more. Packages may bundle early entry, a dedicated merchandise item or a separate check-in, though contents differ by tour and are confirmed at the point of sale.',
         ),
       ),
-      'why' => 'Most Benson Boone dates are sold through Ticketmaster and Live Nation, which apply dynamic pricing on many shows. That means the listed price for a seat can move up or down with demand rather than staying fixed, so two buyers in the same section may pay different amounts depending on when they purchase. Service and facility fees are added at checkout and vary by venue. Resale prices sit separately from face value and can run well above the original figure for sought-after markets, so the bands here describe primary face value rather than the secondary market.',
+      'why' => 'Most Benson Boone dates are sold through Live Nation and other major ticketing platforms, which apply dynamic pricing on many shows. That means the listed price for a seat can move up or down with demand rather than staying fixed, so two buyers in the same section may pay different amounts depending on when they purchase. Service and facility fees are added at checkout and vary by venue. Resale prices sit separately from face value and can run well above the original figure for sought-after markets, so the bands here describe primary face value rather than the secondary market.',
       'faqs' => 
       array (
         0 => 
@@ -9573,7 +9573,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do Benson Boone ticket prices change so much?',
-          'a' => 'Many Benson Boone shows use dynamic pricing through Ticketmaster, so the cost of a seat can rise or fall with live demand rather than staying fixed. Fees added at checkout and the gap between face value and resale listings widen the spread further, which is why two seats in the same area can carry different prices.',
+          'a' => 'Many Benson Boone shows use dynamic pricing, so the cost of a seat can rise or fall with live demand rather than staying fixed. Fees added at checkout and the gap between face value and resale listings widen the spread further, which is why two seats in the same area can carry different prices.',
         ),
         2 => 
         array (
@@ -9706,7 +9706,7 @@ return array (
       'intro' => 
       array (
         0 => 'Teddy Swims ticket prices reflect his move from clubs and theatres into full arenas, so the band is broader than it once was. Entry-level seats in the upper tiers remain among the more affordable in mainstream live soul, while floor and front-section seats carry a clear premium. Costs shift by city, day of week and how close the seat sits to the stage, and high-demand markets push the upper end well above the median.',
-        1 => 'Because most of his arena shows run through Ticketmaster and Live Nation, prices on the primary market are set in tiers rather than a single flat figure. Resale listings sit on top of that and can move in either direction as a date approaches. Treating the numbers below as a guide, rather than a fixed rate, is the sensible way to read a Teddy Swims ticket price.',
+        1 => 'Because most of his arena shows run through Live Nation and other major ticketing platforms, prices on the primary market are set in tiers rather than a single flat figure. Resale listings sit on top of that and can move in either direction as a date approaches. Treating the numbers below as a guide, rather than a fixed rate, is the sensible way to read a Teddy Swims ticket price.',
       ),
       'tiers' => 
       array (
@@ -9731,7 +9731,7 @@ return array (
           'desc' => 'Front-row blocks and official VIP packages, which can include early entry or merchandise, commonly run $280 to $350 and higher in the busiest cities.',
         ),
       ),
-      'why' => 'Most Teddy Swims arena dates are sold through Ticketmaster and Live Nation, which apply dynamic pricing. In practice this means the system adjusts face value up or down in response to real-time demand, so the best seats can climb above their starting tier when a show sells strongly and soften if it does not. There is no single fixed Teddy Swims ticket price; the figure you see depends on the section, the city and the moment you check, which is why two seats a row apart can carry different prices.',
+      'why' => 'Most Teddy Swims arena dates are sold through Live Nation and other major ticketing platforms, which apply dynamic pricing. In practice this means the system adjusts face value up or down in response to real-time demand, so the best seats can climb above their starting tier when a show sells strongly and soften if it does not. There is no single fixed Teddy Swims ticket price; the figure you see depends on the section, the city and the moment you check, which is why two seats a row apart can carry different prices.',
       'faqs' => 
       array (
         0 => 
@@ -9742,7 +9742,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do Teddy Swims ticket prices change?',
-          'a' => 'Prices change because his arena shows use dynamic pricing through Ticketmaster and Live Nation, which moves face value with live demand. A strong-selling night pushes the better seats higher, while quieter dates can ease back. Resale listings add a further layer on top of the primary price.',
+          'a' => 'Prices change because his arena shows use dynamic pricing through Live Nation and other major ticketing platforms, which moves face value with live demand. A strong-selling night pushes the better seats higher, while quieter dates can ease back. Resale listings add a further layer on top of the primary price.',
         ),
         2 => 
         array (
@@ -9901,7 +9901,7 @@ return array (
           'desc' => 'Premium options that often run from around $450 to $550 or higher. These bundle prime seating or early-entry pit access with extras such as merchandise, dedicated entry and on-site hosting, and sell in limited numbers.',
         ),
       ),
-      'why' => 'Most Noah Kahan dates are sold through Ticketmaster, which applies dynamic pricing on a large share of inventory. Under that model the listed price moves with real-time demand rather than staying fixed, so popular sections can rise above their opening figure and quieter ones may settle lower. Service and facility fees are added at checkout on top of the face value. Kahan has also used initiatives such as lower-priced \'Front Porch\' front-of-stage tickets and Ticketmaster\'s Face Value Exchange for resale, which can keep some genuine fan options closer to original prices.',
+      'why' => 'Most Noah Kahan dates apply dynamic pricing on a large share of inventory. Under that model the listed price moves with real-time demand rather than staying fixed, so popular sections can rise above their opening figure and quieter ones may settle lower. Service and facility fees are added at checkout on top of the face value. Kahan has also used initiatives such as lower-priced \'Front Porch\' front-of-stage tickets and the official Face Value Exchange for resale, which can keep some genuine fan options closer to original prices.',
       'faqs' => 
       array (
         0 => 
@@ -9912,7 +9912,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do Noah Kahan ticket prices change so much?',
-          'a' => 'Most of his dates use Ticketmaster\'s dynamic pricing, which adjusts the cost of a section in line with live demand. A high-interest show can push field and lower-bowl prices well above their opening level, while less busy sections may ease back. Prices also differ between his arena rooms and the larger ballpark and stadium dates that make up most of the tour.',
+          'a' => 'Most of his dates use dynamic pricing, which adjusts the cost of a section in line with live demand. A high-interest show can push field and lower-bowl prices well above their opening level, while less busy sections may ease back. Prices also differ between his arena rooms and the larger ballpark and stadium dates that make up most of the tour.',
         ),
         2 => 
         array (
@@ -9937,7 +9937,7 @@ return array (
         6 => 
         array (
           'q' => 'Is resale a good option for Noah Kahan tickets?',
-          'a' => 'Resale can help when a date is sold out, but prices on the open market move with demand and can sit above or below face value. Kahan has supported Ticketmaster\'s Face Value Exchange, which lets fans resell at the original price and is generally the more predictable route for genuine seats.',
+          'a' => 'Resale can help when a date is sold out, but prices on the open market move with demand and can sit above or below face value. Kahan has supported the official Face Value Exchange, which lets fans resell at the original price and is generally the more predictable route for genuine seats.',
         ),
         7 => 
         array (
@@ -10247,7 +10247,7 @@ return array (
           'desc' => 'Official VIP packages run roughly $250 to $350 and above, bundling premium seating with early entry, dedicated club or lounge access and collectible merchandise. Priced per the package contents rather than the seat alone, so value varies by what is included.',
         ),
       ),
-      'why' => 'Mumford & Sons tours are handled through Ticketmaster and Live Nation, which means most on-sales use dynamic pricing. Face values move up or down with real-time demand, so a popular night can climb well above the original list price while a softer date may ease below it. Platform and Verified Resale listings add their own service fees on top. Because of this, the same seat can carry different prices at different moments, and the ranges here describe the broad market rather than a fixed tariff. Checking a few sections and timing a purchase away from peak demand usually gives the clearest read on fair value.',
+      'why' => 'Mumford & Sons tours are handled through Live Nation and other major ticketing platforms, which means most on-sales use dynamic pricing. Face values move up or down with real-time demand, so a popular night can climb well above the original list price while a softer date may ease below it. Platform and Verified Resale listings add their own service fees on top. Because of this, the same seat can carry different prices at different moments, and the ranges here describe the broad market rather than a fixed tariff. Checking a few sections and timing a purchase away from peak demand usually gives the clearest read on fair value.',
       'faqs' => 
       array (
         0 => 
@@ -10258,7 +10258,7 @@ return array (
         1 => 
         array (
           'q' => 'Why do Mumford & Sons ticket prices change so much?',
-          'a' => 'Most Mumford & Sons dates use Ticketmaster dynamic pricing, so face values rise and fall with live demand. A high-demand night can climb above the initial list price while a quieter date may settle lower. Service fees and resale markups add further variation, which is why the same seat can show different prices at different times.',
+          'a' => 'Most Mumford & Sons dates use dynamic pricing, so face values rise and fall with live demand. A high-demand night can climb above the initial list price while a quieter date may settle lower. Service fees and resale markups add further variation, which is why the same seat can show different prices at different times.',
         ),
         2 => 
         array (
@@ -10283,7 +10283,7 @@ return array (
         6 => 
         array (
           'q' => 'Are resale Mumford & Sons tickets safe to buy?',
-          'a' => 'Resale tickets bought through Ticketmaster Verified Resale or other reputable platforms are generally safe, as transfers are validated. Expect added service fees on top of the listed price. Prices on the secondary market can run above or below face value depending on how a particular night is selling.',
+          'a' => 'Resale tickets bought through official verified resale or other reputable platforms are generally safe, as transfers are validated. Expect added service fees on top of the listed price. Prices on the secondary market can run above or below face value depending on how a particular night is selling.',
         ),
         7 => 
         array (

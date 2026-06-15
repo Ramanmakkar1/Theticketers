@@ -1097,7 +1097,21 @@ function seo_index_urls(string $bucket): array
  */
 function event_slug(array $performance): string
 {
-    $slug = slug_clip(slugify((string) ($performance['name'] ?? 'event')));
+    $name = (string) ($performance['name'] ?? 'event');
+    // For Ticketmaster events the unique "-tm-<id>" tail disambiguates the URL, so
+    // we can drop the subtitle to keep slugs short ("Ariana Grande - The Eternal
+    // Sunshine Tour" -> "ariana-grande"). Cut at the first subtitle delimiter: a
+    // colon, or a SPACED dash/en-dash/em-dash. The surrounding spaces matter — they
+    // keep hyphenated names intact (Jay-Z, Wilkes-Barre). HelloTickets events carry
+    // no id in the URL and rely on the slug map (last-writer-wins), so they keep the
+    // full name — trimming there could collide distinct events ("Cirque du Soleil -
+    // Alegria" vs "... - Kooza" in the same city).
+    if ((string) ($performance['tm_id'] ?? '') !== ''
+        && preg_match('/\s[-–—]\s|:/u', $name, $m, PREG_OFFSET_CAPTURE)
+        && trim(substr($name, 0, $m[0][1])) !== '') {
+        $name = trim(substr($name, 0, $m[0][1]));
+    }
+    $slug = slug_clip(slugify($name));
     $cityRaw = trim((string) ($performance['venue']['city'] ?? ''));
     if ($cityRaw !== '') {
         $city = slugify($cityRaw);

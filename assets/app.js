@@ -144,13 +144,39 @@ const MARKET_CITIES = [
 ];
 const COUNTRY_FALLBACK = { AE: 132, GB: 2, US: 1, CA: 28, IT: 124, ES: 122, FR: 125 };
 
+// Free, no-key, CORS-enabled IP geolocation providers, tried in order.
+// (ipapi.co was retired — it now blocks anonymous requests and returns a
+// plain-text upsell instead of JSON, which broke detection for everyone.)
+const GEO_PROVIDERS = ['https://ipwho.is/', 'https://get.geojs.io/v1/ip/geo.json'];
+
+async function lookupGeo() {
+    for (const url of GEO_PROVIDERS) {
+        try {
+            const response = await fetch(url, { signal: AbortSignal.timeout(4500) });
+            if (!response.ok) continue;
+            const geo = await response.json();
+            if (geo && geo.success === false) continue; // provider-level error
+            const city = String(geo.city || '').toLowerCase();
+            const country = String(geo.country_code || '').toUpperCase();
+            if (city || country) return { city, country, region: String(geo.region || '').toLowerCase() };
+        } catch { /* try next provider */ }
+    }
+    return null;
+}
+
 async function detectCity() {
-    const response = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(4500) });
-    const geo = await response.json();
-    const cityName = String(geo.city || '').toLowerCase();
-    let match = MARKET_CITIES.find(c => c.names.some(n => cityName.includes(n)));
-    if (!match && COUNTRY_FALLBACK[geo.country_code]) {
-        match = MARKET_CITIES.find(c => c.id === COUNTRY_FALLBACK[geo.country_code]);
+    const geo = await lookupGeo();
+    if (!geo) return null;
+    // Exact/substring city match first (covers the city and its listed suburbs)
+    let match = MARKET_CITIES.find(c => c.names.some(n => geo.city.includes(n)));
+    // Then any market city whose name appears in the detected region (catches
+    // smaller suburbs the names[] list doesn't enumerate, e.g. Sherwood Park → Edmonton)
+    if (!match && geo.region) {
+        match = MARKET_CITIES.find(c => c.country === geo.country && c.names.some(n => geo.region.includes(n)));
+    }
+    // Finally fall back to the country's flagship market city
+    if (!match && COUNTRY_FALLBACK[geo.country]) {
+        match = MARKET_CITIES.find(c => c.id === COUNTRY_FALLBACK[geo.country]);
     }
     return match || null;
 }
@@ -176,8 +202,8 @@ document.querySelectorAll('[data-city-detect]').forEach(btn => {
 });
 
 // First visit: show the city picker. Location detection runs ONLY when the
-// visitor presses "Detect my location" (consent — it sends their IP to ipapi.co;
-// see /privacy). No silent geolocation.
+// visitor presses "Detect my location" (consent — it sends their IP to a
+// third-party geolocation service; see /privacy). No silent geolocation.
 const cityModal = document.querySelector('[data-city-modal]');
 const openCityModal = () => {
     if (cityModal) {
