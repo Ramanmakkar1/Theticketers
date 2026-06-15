@@ -6,6 +6,90 @@ function e($value): string
     return htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
+function anonymize_ip(string $rawIp): string
+{
+    if ($rawIp === '') {
+        return '';
+    }
+
+    return str_contains($rawIp, ':')
+        ? implode(':', array_slice(explode(':', $rawIp), 0, 3)) . '::'
+        : (string) preg_replace('/\.\d+$/', '.0', $rawIp);
+}
+
+function ai_visit_source(string $userAgent, string $referrer): ?array
+{
+    $ua = strtolower($userAgent);
+    $bots = function_exists('ai_crawler_user_agents') ? ai_crawler_user_agents() : [
+        'OAI-SearchBot', 'ChatGPT-User', 'GPTBot', 'PerplexityBot', 'Perplexity-User',
+        'ClaudeBot', 'Claude-SearchBot', 'Claude-User', 'Google-Extended', 'Applebot',
+    ];
+
+    foreach ($bots as $bot) {
+        if ($bot !== '' && str_contains($ua, strtolower((string) $bot))) {
+            return ['kind' => 'crawler', 'source' => (string) $bot];
+        }
+    }
+
+    $host = strtolower((string) parse_url($referrer, PHP_URL_HOST));
+    $host = preg_replace('/^www\./', '', $host) ?: '';
+    if ($host === '') {
+        return null;
+    }
+
+    $referrers = [
+        'chatgpt.com' => 'ChatGPT',
+        'chat.openai.com' => 'ChatGPT',
+        'openai.com' => 'OpenAI',
+        'perplexity.ai' => 'Perplexity',
+        'claude.ai' => 'Claude',
+        'gemini.google.com' => 'Google Gemini',
+        'copilot.microsoft.com' => 'Microsoft Copilot',
+        'bing.com' => 'Microsoft Copilot/Bing',
+        'you.com' => 'You.com',
+        'phind.com' => 'Phind',
+        'poe.com' => 'Poe',
+    ];
+
+    foreach ($referrers as $domain => $label) {
+        if ($host === $domain || str_ends_with($host, '.' . $domain)) {
+            return ['kind' => 'referral', 'source' => $label, 'referrer_host' => $host];
+        }
+    }
+
+    return null;
+}
+
+function record_ai_visit(array $config): void
+{
+    $source = ai_visit_source(
+        substr((string) ($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 240),
+        substr((string) ($_SERVER['HTTP_REFERER'] ?? ''), 0, 300)
+    );
+    if ($source === null) {
+        return;
+    }
+
+    $logDir = dirname(__DIR__) . '/storage';
+    if (!is_dir($logDir)) {
+        @mkdir($logDir, 0775, true);
+    }
+
+    $path = (string) parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+    $line = json_encode([
+        'time' => gmdate('c'),
+        'kind' => $source['kind'],
+        'source' => $source['source'],
+        'path' => $path !== '' ? $path : '/',
+        'query' => substr((string) ($_SERVER['QUERY_STRING'] ?? ''), 0, 300),
+        'referrer_host' => $source['referrer_host'] ?? '',
+        'ip' => anonymize_ip((string) ($_SERVER['REMOTE_ADDR'] ?? '')),
+        'user_agent' => substr((string) ($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 240),
+    ], JSON_UNESCAPED_SLASHES) . PHP_EOL;
+
+    @file_put_contents($logDir . '/ai-traffic.log', $line, FILE_APPEND | LOCK_EX);
+}
+
 function slugify(string $value): string
 {
     // Transliterate accents ourselves first — macOS iconv turns "é" into "'e",
@@ -1036,8 +1120,22 @@ function event_slug(array $performance): string
 function event_path(array $performance): string
 {
     $slug = event_slug($performance);
+    $tmId = (string) ($performance['tm_id'] ?? '');
+    if ($tmId !== '') {
+        return '/event/' . $slug . '-tm-' . bin2hex($tmId);
+    }
+
     slug_remember('event', $slug, (int) ($performance['id'] ?? 0));
     return '/event/' . $slug;
+}
+
+function tm_event_id_from_slug(string $slug): ?string
+{
+    if (preg_match('/-tm-([a-f0-9]{8,})$/', strtolower($slug), $match) !== 1) {
+        return null;
+    }
+    $decoded = @hex2bin($match[1]);
+    return is_string($decoded) && $decoded !== '' ? $decoded : null;
 }
 
 /** ISO 3166-1 alpha-2 code for the country names our two APIs return; Google
@@ -1132,13 +1230,9 @@ function schema_start_date(array $event): string
     return $local;
 }
 
-/** Canonical "where this event lives" URL — TM-sourced events point straight at the partner page
- *  (we don't own a detail page for them); HT events point at our /event/{slug}. */
+/** Canonical on-site event URL. Partner checkout URLs stay behind /go on detail pages. */
 function event_canonical_url(array $config, array $event): string
 {
-    if (!empty($event['tm_id']) && !empty($event['url'])) {
-        return (string) $event['url'];
-    }
     return absolute_url($config, event_path($event));
 }
 
@@ -1645,6 +1739,10 @@ function merge_events_dedupe(array $primary, array $secondary): array
 /** ISO-3166 alpha-3 (our geo data) → alpha-2 (Ticketmaster's countryCode). */
 function tm_country_code(string $alpha3): string
 {
+    $trimmed = strtoupper(trim($alpha3));
+    if (preg_match('/^[A-Z]{2}$/', $trimmed) === 1) {
+        return $trimmed;
+    }
     $map = [
         'USA' => 'US',
         'CAN' => 'CA',

@@ -2284,34 +2284,58 @@ body.modal-open { overflow: hidden; }
 }
 .tier-list li strong { color: var(--ink); }
 
+/* Setlist: full-width, dense multi-column so ~18 songs sit in a few rows (not one
+   tall column that buries the ticket cards). column-width auto-fills as many ~190px
+   columns as the container allows — ~5 on desktop, 2-3 on tablet, 2 on phone. */
+.setlist-block { margin-top: 10px; }
+.setlist-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px 20px;
+    flex-wrap: wrap;
+    margin: 0 0 12px;
+}
+.setlist-head h2 { margin: 0; font-size: 1.5rem; }
+.setlist-cta {
+    font-weight: 600;
+    color: var(--accent);
+    white-space: nowrap;
+    text-decoration: none;
+}
+.setlist-cta:hover { text-decoration: underline; text-underline-offset: 3px; }
+.setlist-encore-h { margin: 18px 0 8px; font-size: 1.05rem; }
+
 .setlist {
-    margin: 8px 0 4px;
+    margin: 0 0 4px;
     padding-left: 0;
     list-style: none;
     counter-reset: setlist;
-    columns: 2;
-    column-gap: 36px;
+    columns: 190px;
+    column-gap: 30px;
 }
 .setlist li {
     counter-increment: setlist;
     position: relative;
-    padding: 7px 0 7px 34px;
+    padding: 5px 0 5px 30px;
     border-bottom: 1px solid var(--line-soft);
     break-inside: avoid;
     color: var(--ink);
     font-weight: 500;
+    font-size: .95rem;
 }
 .setlist li::before {
     content: counter(setlist);
     position: absolute;
     left: 0;
-    top: 7px;
-    min-width: 24px;
+    top: 5px;
+    min-width: 22px;
     font-variant-numeric: tabular-nums;
     font-weight: 700;
-    font-size: .85rem;
+    font-size: .82rem;
     color: var(--accent);
 }
+.setlist--encore { columns: 190px; }
 .setlist--encore li::before { color: var(--muted); }
 
 .muted-note {
@@ -2345,7 +2369,8 @@ body.modal-open { overflow: hidden; }
 .guide-card__links a:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
 
 @media (max-width: 640px) {
-    .setlist { columns: 1; }
+    .setlist, .setlist--encore { columns: 140px; column-gap: 20px; }
+    .setlist li { font-size: .9rem; }
     .article-body > p { font-size: 1rem; }
 }
 

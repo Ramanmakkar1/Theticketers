@@ -39,18 +39,36 @@ $client = new HelloTicketsClient(
     $config['cache_ttl']
 );
 
-// Output caching: serve cached HTML for 10 minutes, skipping all API calls.
+// Output caching: serve cached HTML, skipping all API calls. Crawlers and AI bots
+// hit the 28K-page long tail mostly cold, so a generous TTL is what keeps TTFB (and
+// Lighthouse / Core Web Vitals / crawl budget) healthy. The cache KEY includes the
+// resolved currency — prices vary by market and the key is otherwise path-only, so
+// without this a longer TTL would serve one visitor's currency to everyone.
 $ocPath = (string) parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
 $ocQuery = (string) ($_SERVER['QUERY_STRING'] ?? '');
-$ocSkip = isset($_GET['nocache']) || $_SERVER['REQUEST_METHOD'] !== 'GET';
+$ocIsDiscoveryFile = $ocPath === '/robots.txt'
+    || $ocPath === '/llms.txt'
+    || $ocPath === '/llms-full.txt'
+    || $ocPath === '/ai-index.json'
+    || $ocPath === '/sitemap.xml'
+    || $ocPath === '/sitemap-index.xml'
+    || preg_match('#^/sitemap-(static|events|artists|artist-cities|venues|cities|monthly|venue-categories|artist-tours)\.xml$#', $ocPath) === 1;
+$ocSkip = isset($_GET['nocache']) || ($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'GET' || $ocIsDiscoveryFile;
 $ocDir = $config['cache_dir'] . '/html';
-$ocFile = $ocDir . '/' . md5($ocPath . '?' . $ocQuery) . '.html';
-$ocTtl = 600;
+$ocFile = $ocDir . '/' . md5($config['currency'] . '|' . $ocPath . '?' . $ocQuery) . '.html';
+$ocTtl = (int) (getenv('HTML_CACHE_TTL') ?: 21600); // 6h default; tune via env
+
+record_ai_visit($config);
 
 if (!$ocSkip && is_file($ocFile) && (time() - filemtime($ocFile)) < $ocTtl) {
+    header('X-Cache: HIT');
+    header('Content-Type: text/html; charset=utf-8');
+    header('Link: <' . absolute_url($config, '/llms.txt') . '>; rel="alternate"; type="text/plain"', false);
+    header('Link: <' . absolute_url($config, '/ai-index.json') . '>; rel="alternate"; type="application/json"', false);
     readfile($ocFile);
     exit;
 }
+header('X-Cache: MISS');
 
 ob_start();
 try {
@@ -65,4 +83,3 @@ if (!$ocSkip && $ocHtml !== false && http_response_code() === 200 && strlen($ocH
     if (!is_dir($ocDir)) { @mkdir($ocDir, 0775, true); }
     @file_put_contents($ocFile, $ocHtml);
 }
-

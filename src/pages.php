@@ -220,6 +220,7 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
             <p>If you press <strong>"Detect my location"</strong> in the city chooser, your browser asks ipapi.co (a third-party geolocation service) which city your internet connection is in, so we can preselect it. This sends your IP address to ipapi.co (<a href="https://ipapi.co/privacy/" rel="noopener">their privacy policy</a>). It happens only when you press the button &mdash; never automatically.</p>
             <h2>Click logs</h2>
             <p>When you click out to a ticket partner, we record the ticket clicked, the time, your browser type and an <strong>anonymised</strong> IP address (last digits removed, so it no longer identifies you). We use this to count clicks and detect abuse. Logs are routinely deleted after 90 days.</p>
+            <p>We also keep minimal AI discovery logs when a known AI crawler or AI referral visits the site. These logs contain the page path, source label, browser type and anonymised IP address only, so we can understand whether services like ChatGPT, Perplexity and Claude can access our pages.</p>
             <h2>Buying tickets</h2>
             <p>Purchases happen on our partners' sites (HelloTickets, Ticketmaster) via Impact affiliate links, which set their own tracking for commission attribution. Their privacy policies govern checkout: we never see your name, payment details or order contents.</p>
             <h2>Your rights</h2>
@@ -317,6 +318,12 @@ function dispatch(HelloTicketsClient $client, array $config, array $dubaiContent
     }
 
     if (preg_match('#^/event/([^/]+)$#', $path, $match)) {
+        $tmEventId = tm_event_id_from_slug($match[1]);
+        if ($tmEventId !== null) {
+            render_ticketmaster_event_detail_page($config, $tmEventId);
+            return;
+        }
+
         $performanceId = resolve_event_id($client, $match[1]) ?? legacy_id_from_slug($match[1]);
         if ($performanceId === null) {
             render_error_page($config, 404, 'Event not found', 'This event is not available anymore.');
@@ -436,6 +443,8 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
     $schemaForOutput = schema_for_output($config, $schema, $robots);
 
     header('Content-Type: text/html; charset=utf-8');
+    header('Link: <' . absolute_url($config, '/llms.txt') . '>; rel="alternate"; type="text/plain"', false);
+    header('Link: <' . absolute_url($config, '/ai-index.json') . '>; rel="alternate"; type="application/json"', false);
     ?>
 <!doctype html>
 <html lang="en">
@@ -446,13 +455,14 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
     <meta name="google-site-verification" content="<?= e($config['google_site_verification']) ?>">
     <?php endif; ?>
     <meta name="impact-site-verification" value="b60bdc54-0e8a-4cb8-819d-b63e0f726953">
-    <script type="text/javascript">(function(i,m,p,a,c,t){c.ire_o=p;c[p]=c[p]||function(){(c[p].a=c[p].a||[]).push(arguments)};t=a.createElement(m);var z=a.getElementsByTagName(m)[0];t.async=1;t.src=i;z.parentNode.insertBefore(t,z)})('https://utt.impactcdn.com/P-A7402647-42c2-4124-a95c-6909f769ba4d1.js','script','impactStat',document,window);impactStat('transformLinks');impactStat('trackImpression');</script>
     <title><?= e($title) ?></title>
     <meta name="description" content="<?= e($description) ?>">
     <meta name="robots" content="<?= e($robots) ?>">
     <?php if ($canonical !== ''): ?>
     <link rel="canonical" href="<?= e($canonical) ?>">
     <?php endif; ?>
+    <link rel="alternate" type="text/plain" href="<?= e(absolute_url($config, '/llms.txt')) ?>" title="<?= e($config['site_name']) ?> AI guide">
+    <link rel="alternate" type="application/json" href="<?= e(absolute_url($config, '/ai-index.json')) ?>" title="<?= e($config['site_name']) ?> AI index">
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
     <link rel="apple-touch-icon" href="<?= is_file(dirname(__DIR__) . '/assets/apple-touch-icon.png') ? '/assets/apple-touch-icon.png' : '/assets/favicon.svg' ?>">
     <meta name="theme-color" content="#e50914">
@@ -466,6 +476,9 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
     <meta name="twitter:card" content="summary_large_image">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <?php // Fonts load non-render-blocking: fetch as print (ignored for first paint),
+          // then flip to all once downloaded. font-display:swap keeps text visible. ?>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap">
     <?php if (!empty($meta['preload_image'])): ?>
     <?php // Hero is a CSS background-image (invisible to the preload scanner) — without
           // this the LCP download can't start until styles.css arrives and parses. ?>
@@ -478,8 +491,19 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
     <link rel="dns-prefetch" href="https://aws-tiqets-cdn.imgix.net">
     <link rel="dns-prefetch" href="https://res.cloudinary.com">
     <link rel="dns-prefetch" href="https://s1.ticketm.net">
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?= e(asset_url('/assets/styles.css')) ?>">
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
+    <?php // Prefer the minified sheet, but only while it's at least as fresh as the
+          // source — so editing styles.css without re-running bin/minify-css.php still
+          // serves correct (just unminified) CSS instead of a stale minified copy. ?>
+    <?php
+        $cssSrc = dirname(__DIR__) . '/assets/styles.css';
+        $cssMin = dirname(__DIR__) . '/assets/styles.min.css';
+        $cssHref = (is_file($cssMin) && filemtime($cssMin) >= filemtime($cssSrc))
+            ? '/assets/styles.min.css'
+            : '/assets/styles.css';
+    ?>
+    <link rel="stylesheet" href="<?= e(asset_url($cssHref)) ?>">
     <?php if ($schemaForOutput !== null): ?>
     <script type="application/ld+json"><?= json_encode($schemaForOutput, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?></script>
     <?php endif; ?>
@@ -493,16 +517,9 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
       gtag('config', <?= json_encode($gaId, JSON_UNESCAPED_SLASHES) ?>);
     </script>
     <?php endif; ?>
-    <?php if (!empty($config['clarity_id'])): ?>
-    <!-- Microsoft Clarity -->
-    <script type="text/javascript">
-        (function(c,l,a,r,i,t,y){
-            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-        })(window, document, "clarity", "script", <?= json_encode($config['clarity_id'], JSON_UNESCAPED_SLASHES) ?>);
-    </script>
-    <?php endif; ?>
+    <?php // Microsoft Clarity + Impact affiliate are loaded after first interaction
+          // (see the delayed-third-party loader before </body>) so they don't compete
+          // with first paint / LCP on mobile. ?>
 </head>
 <body class="<?= e($bodyClass) ?>">
     <header class="site-header">
@@ -657,6 +674,28 @@ function render_layout(array $config, array $meta, callable $content, ?array $sc
         </div>
     </div>
     <script src="<?= e(asset_url('/assets/app.js')) ?>" defer></script>
+    <?php // Delayed third-party loader: Impact (affiliate link tracking) + Clarity
+          // (heatmaps) are heavy and not needed for first paint. Load them on the
+          // first user interaction, or after a short idle fallback, so mobile TBT/LCP
+          // stay clean. trackImpression still fires the moment they load. ?>
+    <script>
+    (function(){
+      var loaded = false;
+      function loadThirdParty(){
+        if (loaded) return; loaded = true;
+        (function(i,m,p,a,c,t){c.ire_o=p;c[p]=c[p]||function(){(c[p].a=c[p].a||[]).push(arguments)};t=a.createElement(m);var z=a.getElementsByTagName(m)[0];t.async=1;t.src=i;z.parentNode.insertBefore(t,z)})('https://utt.impactcdn.com/P-A7402647-42c2-4124-a95c-6909f769ba4d1.js','script','impactStat',document,window);
+        impactStat('transformLinks'); impactStat('trackImpression');
+        <?php if (!empty($config['clarity_id'])): ?>
+        (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script",<?= json_encode($config['clarity_id'], JSON_UNESCAPED_SLASHES) ?>);
+        <?php endif; ?>
+      }
+      var evts = ['pointerdown','touchstart','keydown','scroll','mousemove'];
+      evts.forEach(function(ev){ window.addEventListener(ev, loadThirdParty, {once:true, passive:true}); });
+      // Fallback so attribution still loads for bounces / no-interaction sessions.
+      if ('requestIdleCallback' in window) { requestIdleCallback(loadThirdParty, {timeout:5000}); }
+      else { setTimeout(loadThirdParty, 4000); }
+    })();
+    </script>
 </body>
 </html>
     <?php
@@ -853,7 +892,7 @@ function render_home_page(HelloTicketsClient $client, array $config, array $dest
                     'tag' => $heroEvent['category']['name'] ?? 'Live Event',
                     'title' => $heroEvent['name'] ?? ('Live in ' . $homeCity['name']),
                     'text' => trim(format_date_time($heroEvent['start_date'] ?? []) . ' · ' . $venue, ' ·'),
-                    'href' => !empty($heroEvent['url']) ? go_url($heroEvent, 'event') : event_path($heroEvent),
+                    'href' => event_path($heroEvent),
                     'cta' => 'Get Tickets',
                 ];
                 if (count($slides) >= 10) {
@@ -1766,6 +1805,171 @@ function render_event_detail_page(HelloTicketsClient $client, array $config, int
             </div>
         </section>
         <?php render_card_section('More Events in ' . ($performance['venue']['city'] ?? 'your city'), '/events', $related, 'event', $config); ?>
+        <?php
+    }, [
+        '@context' => 'https://schema.org',
+        '@graph' => array_values(array_filter([
+            event_schema($config, $performance),
+            dubai_breadcrumb_schema($config, $breadcrumbs),
+            $eventFaqs !== [] ? dubai_faq_schema($eventFaqs) : null,
+        ])),
+    ]);
+}
+
+function render_ticketmaster_event_detail_page(array $config, string $tmEventId): void
+{
+    $tm = tm_client($config);
+    if ($tm === null || $tmEventId === '') {
+        render_error_page($config, 404, 'Event not found', 'This event is not available anymore.');
+        return;
+    }
+
+    $raw = api_result(static fn() => $tm->event($tmEventId), []);
+    if ($raw === [] || empty($raw['id'])) {
+        render_error_page($config, 404, 'Event not found', 'This event is not available anymore.');
+        return;
+    }
+
+    $performance = tm_normalize_event($raw);
+    $canonicalPath = event_path($performance);
+    if (current_path() !== $canonicalPath) {
+        redirect_permanent($canonicalPath);
+        return;
+    }
+
+    $related = [];
+    $venueTmId = (string) ($performance['venue']['tm_id'] ?? '');
+    if ($venueTmId !== '') {
+        $relatedRaw = api_result(static fn() => $tm->events([
+            'venueId' => $venueTmId,
+            'size' => 8,
+        ]), []);
+        $related = array_map('tm_normalize_event', $relatedRaw['_embedded']['events'] ?? []);
+    }
+    if ($related === []) {
+        $cityNameForRelated = (string) ($performance['venue']['city'] ?? '');
+        $countryForRelated = (string) ($performance['venue']['country_code'] ?? '');
+        $related = $cityNameForRelated !== ''
+            ? tm_events_for_city($config, $cityNameForRelated, $countryForRelated, [], 8)
+            : [];
+    }
+    $related = array_values(array_filter($related, static fn(array $item): bool =>
+        (string) ($item['tm_id'] ?? '') !== (string) ($performance['tm_id'] ?? '')
+    ));
+
+    $cityName = (string) ($performance['venue']['city'] ?? $config['default_city_name']);
+    $localDate = (string) ($performance['start_date']['local_date'] ?? '');
+    $isPast = $localDate !== '' && $localDate < (new DateTimeImmutable('today'))->format('Y-m-d');
+    $breadcrumbs = [
+        ['name' => 'Home', 'url' => absolute_url($config, '/')],
+        ['name' => 'Events', 'url' => absolute_url($config, '/events')],
+        ['name' => (string) ($performance['name'] ?? 'Event'), 'url' => absolute_url($config, $canonicalPath)],
+    ];
+
+    $venueName = (string) ($performance['venue']['name'] ?? '');
+    $price = (float) ($performance['price_range']['min_price'] ?? 0);
+    $currency = (string) ($performance['price_range']['currency'] ?? $config['currency']);
+    $dateLabel = $localDate !== '' ? format_date_label($localDate) : '';
+    $whenLabel = format_date_time($performance['start_date'] ?? []);
+    $eventName = (string) ($performance['name'] ?? 'Event');
+    $summary = $eventName
+        . ($venueName !== '' ? ' comes to ' . $venueName : ' is on')
+        . ($cityName !== '' ? ' in ' . $cityName : '')
+        . ($whenLabel !== '' && $whenLabel !== 'Upcoming' ? ' on ' . $whenLabel : '')
+        . '. ' . ($price > 0 ? 'Tickets start from ' . money($price, $currency) . ' and availability' : 'Ticket availability')
+        . ' is live from Ticketmaster — checkout completes securely on the partner site.';
+
+    $eventFaqs = array_values(array_filter([
+        ['q' => 'When is ' . $eventName . ($cityName !== '' ? ' in ' . $cityName : '') . '?',
+         'a' => $whenLabel !== '' && $whenLabel !== 'Upcoming'
+            ? $eventName . ' takes place on ' . $whenLabel . ($venueName !== '' ? ' at ' . $venueName : '') . ($cityName !== '' ? ' in ' . $cityName : '') . '.'
+            : null],
+        $price > 0 ? ['q' => 'How much are ' . $eventName . ' tickets?',
+         'a' => 'Tickets currently start from ' . money($price, $currency) . '. Prices vary by seat and can change with demand — the latest prices are on Ticketmaster checkout.'] : null,
+        $venueName !== '' ? ['q' => 'Where is ' . $eventName . ' taking place?',
+         'a' => 'The venue is ' . $venueName . (!empty($performance['venue']['address']) ? ', ' . trim((string) $performance['venue']['address']) : '') . ($cityName !== '' ? ', ' . $cityName : '') . '.'] : null,
+    ], static fn($f) => $f !== null && $f['a'] !== null));
+    $eventFaqs[] = ['q' => 'Who handles checkout for ' . $eventName . '?',
+        'a' => 'Checkout is handled by Ticketmaster or the official ticketing partner. We show the event details first, then send you to the secure partner checkout when you choose Get Tickets.'];
+    $eventFaqs[] = ['q' => 'How are tickets delivered for ' . $eventName . '?',
+        'a' => 'Delivery options are confirmed by the ticketing partner during checkout. Most events support mobile tickets that can be scanned from your phone.'];
+
+    $eventFaqs = array_merge($eventFaqs, unique_faqs('event', slugify($eventName), [
+        '{name}' => $eventName,
+        '{city}' => $cityName,
+        '{next_venue}' => $venueName !== '' ? $venueName : 'the venue',
+        '{min_price}' => $price > 0 ? money($price, $currency) : '',
+        '{site_name}' => (string) $config['site_name'],
+    ], 4));
+
+    render_layout($config, [
+        'title' => $eventName . ' Tickets' . ($cityName !== '' ? ' — ' . $cityName : '') . ($dateLabel !== '' ? ', ' . $dateLabel : '') . ' | ' . $config['site_name'],
+        'description' => $eventName . ($venueName !== '' ? ' at ' . $venueName : '') . ($cityName !== '' ? ', ' . $cityName : '')
+            . ($dateLabel !== '' ? ' on ' . $dateLabel : '') . '.'
+            . ($price > 0 ? ' Tickets from ' . money($price, $currency) . ' with live availability' : ' Live ticket availability')
+            . ' — secure checkout via Ticketmaster.',
+        'canonical' => absolute_url($config, $canonicalPath),
+        'image' => image_from_item($performance, 'event', $config),
+        'preload_image' => image_from_item($performance, 'event', $config),
+        'robots' => $isPast ? 'noindex, follow' : null,
+    ], function () use ($performance, $related, $config, $breadcrumbs, $summary, $eventFaqs, $eventName, $venueName, $cityName, $whenLabel): void {
+        $image = image_from_item($performance, 'event', $config);
+        $price = $performance['price_range']['min_price'] ?? 0;
+        $currency = $performance['price_range']['currency'] ?? $config['currency'];
+        ?>
+        <section class="detail-hero" style="--detail-image: url('<?= e($image) ?>')">
+            <div class="container">
+                <?php dubai_render_breadcrumbs($breadcrumbs); ?>
+                <div class="detail-header">
+                    <p class="eyebrow"><?= e($performance['category']['name'] ?? 'Event') ?></p>
+                    <h1><?= e($performance['name']) ?></h1>
+                    <div class="detail-facts">
+                        <?php if ($cityName !== ''): ?><span><?= e($cityName) ?></span><?php endif; ?>
+                        <span><?= e($venueName !== '' ? $venueName : 'Venue TBA') ?></span>
+                    </div>
+                </div>
+
+                <div class="detail-gallery" style="background-image: url('<?= e($image) ?>')"></div>
+
+                <div class="detail-grid">
+                    <div class="detail-content">
+                        <p class="detail-summary"><?= e($summary) ?></p>
+                        <h2>Event details</h2>
+                        <dl class="detail-list">
+                            <div><dt>Date</dt><dd><?= e(format_date_time($performance['start_date'] ?? [])) ?></dd></div>
+                            <div><dt>Venue</dt><dd><?= e($venueName !== '' ? $venueName : 'Venue TBA') ?></dd></div>
+                            <div><dt>Address</dt><dd><?= e(trim(($performance['venue']['address'] ?? '') . ', ' . ($performance['venue']['city'] ?? ''), ', ')) ?></dd></div>
+                            <div><dt>Category</dt><dd><?= e($performance['category']['name'] ?? 'Event') ?></dd></div>
+                        </dl>
+
+                        <?php if (!empty($performance['performers'])): ?>
+                            <h2>Performers</h2>
+                            <div class="tag-grid compact-tags">
+                                <?php foreach ($performance['performers'] ?? [] as $performer): ?>
+                                    <span><?= e($performer['name'] ?? '') ?></span>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <aside class="checkout-panel">
+                        <span class="price-label">Tickets From</span>
+                        <strong><?= e(money($price, (string) $currency)) ?></strong>
+                        <a class="button-link wide" href="<?= e(go_url($performance, 'event')) ?>" rel="sponsored nofollow">Get Tickets</a>
+                        <p class="checkout-note">Secure checkout on Ticketmaster or the official ticketing partner. We may earn a commission &mdash; at no extra cost to you.</p>
+                    </aside>
+                </div>
+            </div>
+        </section>
+        <?php if ($eventFaqs !== []) { dubai_render_faq($eventFaqs, $eventName . ' — Ticket FAQs'); } ?>
+        <section class="section-band muted">
+            <div class="container artist-seo-content">
+                <h2>About <?= e($eventName) ?></h2>
+                <p><?= e($eventName) ?><?php if ($venueName !== ''): ?> takes place at <?= e($venueName) ?><?php endif; ?><?php if ($cityName !== ''): ?> in <?= e($cityName) ?><?php endif; ?>. <?php if ($whenLabel !== ''): ?>The event is scheduled for <?= e($whenLabel) ?>.<?php endif; ?> Tickets are available now from Ticketmaster or the official ticketing partner.</p>
+                <p>All prices shown are live from partner inventory and may change based on demand and seat availability. Open checkout from this page when you are ready to choose seats.</p>
+            </div>
+        </section>
+        <?php render_card_section('More Events' . ($cityName !== '' ? ' in ' . $cityName : ''), '/events', $related, 'event', $config); ?>
         <?php
     }, [
         '@context' => 'https://schema.org',
@@ -2755,8 +2959,8 @@ function render_artist_detail_page(HelloTicketsClient $client, array $config, in
                         <?php if ($tourCities !== []): ?>
                             <p class="listing-sub">On tour in <?= e(implode(', ', array_slice($tourCities, 0, 8))) ?><?= count($tourCities) > 8 ? ' and ' . e((string) (count($tourCities) - 8)) . ' more cities' : '' ?>.</p>
                         <?php endif; ?>
-                        <?php if (count($events) === 1 && !empty($events[0]['url'])): ?>
-                            <a class="button-link artist-hero__cta" href="<?= e(go_url($events[0], 'event')) ?>" rel="sponsored nofollow">Get Tickets</a>
+                        <?php if (count($events) === 1): ?>
+                            <a class="button-link artist-hero__cta" href="<?= e(event_path($events[0])) ?>">Get Tickets</a>
                         <?php elseif (count($events) > 1): ?>
                             <a class="button-link artist-hero__cta" href="#tour-dates">See Tour Dates</a>
                         <?php endif; ?>
@@ -3177,25 +3381,28 @@ function render_artist_intent_page(HelloTicketsClient $client, array $config, st
 
     $faqs = $section['faqs'] ?? [];
 
-    // Per-intent <title>, meta description and H1.
+    // Per-intent <title>, meta description and H1. $year auto-updates so the
+    // "{year}" freshness signal in titles/H1s never goes stale (it read a hardcoded
+    // 2026 before — fine in 2026, wrong every year after).
+    $year = date('Y');
     if ($intent === 'ticket-prices') {
         $low = (int) ($section['range_low'] ?? 0); $high = (int) ($section['range_high'] ?? 0);
         $cur = (string) ($section['currency'] ?? 'USD');
-        $title = $name . ' Ticket Prices 2026 — How Much Do Tickets Cost? | ' . $config['site_name'];
+        $title = $name . ' Ticket Prices ' . $year . ' — How Much Do Tickets Cost? | ' . $config['site_name'];
         $desc = 'How much are ' . $name . ' tickets? Prices typically run ' . money((float) $low, $cur) . '–' . money((float) $high, $cur) . ' by seat tier and city. See live "from" prices, tier breakdown and FAQs.';
-        $h1 = $name . ' Ticket Prices 2026';
-        $eyebrow = 'Price Guide · 2026';
+        $h1 = $name . ' Ticket Prices ' . $year;
+        $eyebrow = 'Price Guide · ' . $year;
     } elseif ($intent === 'tour-dates') {
         $tourName = trim((string) ($section['tour_name'] ?? ''));
-        $title = $name . ' Tour Dates 2026 — Tickets & Cities | ' . $config['site_name'];
-        $desc = $name . ' tour dates 2026' . ($tourName !== '' ? ' (' . $tourName . ')' : '') . ': every confirmed show with live ticket prices, venues and cities. New dates appear here the moment they go on sale.';
-        $h1 = $name . ' Tour Dates 2026';
-        $eyebrow = $tourName !== '' ? $tourName : 'Tour · 2026';
+        $title = $name . ' Tour Dates ' . $year . ' — Tickets & Cities | ' . $config['site_name'];
+        $desc = $name . ' tour dates ' . $year . ($tourName !== '' ? ' (' . $tourName . ')' : '') . ': every confirmed show with live ticket prices, venues and cities. New dates appear here the moment they go on sale.';
+        $h1 = $name . ' Tour Dates ' . $year;
+        $eyebrow = $tourName !== '' ? $tourName : 'Tour · ' . $year;
     } else {
-        $title = $name . ' Setlist 2026 — Songs & What to Expect Live | ' . $config['site_name'];
-        $desc = $name . ' setlist 2026: the songs played on recent dates, how the show is structured and what to expect live, plus tickets for upcoming shows.';
-        $h1 = $name . ' Setlist 2026';
-        $eyebrow = 'Setlist · 2026';
+        $title = $name . ' Setlist ' . $year . ' — Songs & What to Expect Live | ' . $config['site_name'];
+        $desc = $name . ' setlist ' . $year . ': the songs played on recent dates, how the show is structured and what to expect live, plus tickets for upcoming shows.';
+        $h1 = $name . ' Setlist ' . $year;
+        $eyebrow = 'Setlist · ' . $year;
     }
 
     // Schema: PerformingGroup + FAQPage + Breadcrumb (+ live Events on the tour page).
@@ -3289,17 +3496,26 @@ function render_artist_intent_page(HelloTicketsClient $client, array $config, st
                     <?php endif; ?>
                 <?php endif; ?>
 
-                <?php if ($intent === 'setlist'): ?>
-                    <?php if (!empty($section['songs'])): ?>
-                        <h2><?= e($name) ?> Setlist — Recent Shows</h2>
-                        <ol class="setlist">
-                            <?php foreach ($section['songs'] as $song): ?>
-                                <li><?= e($song) ?></li>
-                            <?php endforeach; ?>
-                        </ol>
-                    <?php endif; ?>
+            </div>
+
+            <?php if ($intent === 'setlist' && !empty($section['songs'])): ?>
+                <?php // Full-width, dense multi-column setlist so the ~18 songs sit in a
+                      // few rows (not one tall column) and the ticket cards stay within
+                      // easy reach. The jump button takes buyers straight to inventory. ?>
+                <div class="container setlist-block">
+                    <div class="setlist-head">
+                        <h2><?= e($name) ?> Setlist — <?= e(date('Y')) ?> Edition</h2>
+                        <?php if ($events !== []): ?>
+                        <a class="setlist-cta" href="#tickets"><?= e($name) ?> Tickets &darr;</a>
+                        <?php endif; ?>
+                    </div>
+                    <ol class="setlist">
+                        <?php foreach ($section['songs'] as $song): ?>
+                            <li><?= e($song) ?></li>
+                        <?php endforeach; ?>
+                    </ol>
                     <?php if (!empty($section['encore'])): ?>
-                        <h3>Encore</h3>
+                        <h3 class="setlist-encore-h">Encore</h3>
                         <ol class="setlist setlist--encore">
                             <?php foreach ($section['encore'] as $song): ?>
                                 <li><?= e($song) ?></li>
@@ -3309,8 +3525,8 @@ function render_artist_intent_page(HelloTicketsClient $client, array $config, st
                     <?php if (!empty($section['note'])): ?>
                         <p class="muted-note"><?= e($section['note']) ?></p>
                     <?php endif; ?>
-                <?php endif; ?>
-            </div>
+                </div>
+            <?php endif; ?>
         </section>
 
         <?php if ($events !== []): ?>
@@ -3584,17 +3800,14 @@ function event_card(array $performance, array $config): string
         }
     }
 
-    // Cards link straight to the partner checkout (via /go), falling back to the
-    // on-site detail page only when the item has no bookable URL. Only outbound
-    // links carry sponsored/nofollow — internal detail links must pass PageRank.
-    $isOutbound = !empty($performance['url']);
-    $cardHref = $isOutbound ? go_url($performance, 'event') : event_path($performance);
-    $rel = $isOutbound ? ' rel="sponsored nofollow"' : '';
+    // Cards open our event detail page first. The detail page owns the outbound
+    // partner checkout button, matching the Live Nation-style browsing flow.
+    $cardHref = event_path($performance);
 
     ob_start();
     ?>
     <article class="ticket-card">
-        <a class="card-image" href="<?= e($cardHref) ?>"<?= $rel ?>>
+        <a class="card-image" href="<?= e($cardHref) ?>">
             <img src="<?= e($image) ?>" alt="<?= e($performance['name'] ?? 'Event') ?>" <?= card_img_attrs() ?>>
             <div class="card-date-badge">
                 <span class="month"><?= e($monthAbbr) ?></span>
@@ -3605,10 +3818,10 @@ function event_card(array $performance, array $config): string
             </div>
         </a>
         <div class="card-body">
-            <a class="card-title" href="<?= e($cardHref) ?>"<?= $rel ?>><?= e($performance['name'] ?? 'Event') ?></a>
+            <a class="card-title" href="<?= e($cardHref) ?>"><?= e($performance['name'] ?? 'Event') ?></a>
             <p><?= e(format_date_time($performance['start_date'] ?? [])) ?></p>
             <p><?= e(trim(($performance['venue']['name'] ?? '') . ', ' . ($performance['venue']['city'] ?? 'Dubai'), ', ')) ?></p>
-            <a class="card-cta" href="<?= e($cardHref) ?>"<?= $rel ?>>
+            <a class="card-cta" href="<?= e($cardHref) ?>">
                 <span>Get Tickets</span>
                 <?php if (((float) $price) > 0): ?><span class="card-cta__price"><?= e(money($price, $currency)) ?></span><?php endif; ?>
             </a>
@@ -3626,17 +3839,13 @@ function activity_card(array $activity, array $config): string
     $rating = !empty($activity['reviews']['avg_rating']) ? number_format((float) $activity['reviews']['avg_rating'], 1) : null;
     $reviewsCount = !empty($activity['reviews']['number_of_reviews']) ? (int) $activity['reviews']['number_of_reviews'] : null;
 
-    // Cards link straight to the partner checkout (via /go), falling back to the
-    // on-site detail page only when the item has no bookable URL. Only outbound
-    // links carry sponsored/nofollow — internal detail links must pass PageRank.
-    $isOutbound = !empty($activity['url']);
-    $cardHref = $isOutbound ? go_url($activity, 'activity') : activity_path($activity);
-    $rel = $isOutbound ? ' rel="sponsored nofollow"' : '';
+    // Cards open our activity detail page first; checkout stays on that page.
+    $cardHref = activity_path($activity);
 
     ob_start();
     ?>
     <article class="ticket-card">
-        <a class="card-image" href="<?= e($cardHref) ?>"<?= $rel ?>>
+        <a class="card-image" href="<?= e($cardHref) ?>">
             <img src="<?= e($image) ?>" alt="<?= e($activity['title'] ?? 'Experience') ?>" <?= card_img_attrs() ?>>
             <span class="category"><?= e($activity['city']['name'] ?? 'Attraction') ?></span>
             <?php if ($rating !== null): ?>
@@ -3650,9 +3859,9 @@ function activity_card(array $activity, array $config): string
             <?php endif; ?>
         </a>
         <div class="card-body">
-            <a class="card-title" href="<?= e($cardHref) ?>"<?= $rel ?>><?= e($activity['title'] ?? 'Experience') ?></a>
+            <a class="card-title" href="<?= e($cardHref) ?>"><?= e($activity['title'] ?? 'Experience') ?></a>
             <p><?= e($activity['supplier_name'] ?? 'Ticket partner') ?></p>
-            <a class="card-cta" href="<?= e($cardHref) ?>"<?= $rel ?>>
+            <a class="card-cta" href="<?= e($cardHref) ?>">
                 <span>Get Tickets</span>
                 <?php if (((float) $price) > 0): ?><span class="card-cta__price"><?= e(money($price, $currency)) ?></span><?php endif; ?>
             </a>
@@ -3722,9 +3931,7 @@ function handle_outbound_redirect(array $config): void
     // IP is anonymised before logging (GDPR data-minimisation; /privacy documents
     // this). IPv4 drops the last octet, IPv6 keeps only the first 3 groups.
     $rawIp = (string) ($_SERVER['REMOTE_ADDR'] ?? '');
-    $anonIp = str_contains($rawIp, ':')
-        ? implode(':', array_slice(explode(':', $rawIp), 0, 3)) . '::'
-        : preg_replace('/\.\d+$/', '.0', $rawIp);
+    $anonIp = anonymize_ip($rawIp);
 
     $logLine = json_encode([
         'time' => gmdate('c'),
@@ -4649,12 +4856,8 @@ function item_list_schema(array $config, array $items, string $type): array
 {
     $elements = [];
     foreach ($items as $item) {
-        // Ticketmaster events have no on-site detail page (id=0) — their canonical
-        // is the partner page. Google's carousel guidelines require ListItem URLs
-        // on the SAME domain as the list page, and external URLs would also teach
-        // search/AI engines that the canonical home of our inventory is the
-        // partner's site — so external items are left out of the markup entirely
-        // (the rendered cards still show them).
+        // ListItem URLs stay on our domain; partner checkout lives behind /go on
+        // the detail pages, so search/AI engines learn the on-site page first.
         $url = $type === 'event'
             ? event_canonical_url($config, $item)
             : absolute_url($config, activity_path($item));
