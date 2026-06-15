@@ -1127,19 +1127,12 @@ function event_path(array $performance): string
     $slug = event_slug($performance);
     $tmId = (string) ($performance['tm_id'] ?? '');
     if ($tmId !== '') {
-        // Clean, keyword-only URL — no raw id in the path. The slug→id mapping is
-        // persisted (slug map / seo index) and resolved on the way in, exactly like
-        // venue and TM-artist pages. A date token disambiguates the same event/tour
-        // playing multiple nights at one venue (they otherwise share name+city), so
-        // the slug stays deterministic and unique per performance. Must stay in
-        // lockstep with the resolver in dispatch() (string_slug_lookup('tm_event')).
-        $localDate = (string) ($performance['start_date']['local_date'] ?? '');
-        if (preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $localDate, $dm) === 1) {
-            // Drop the year from the token when the slug already carries it
-            // (e.g. "...-convocation-2026-edmonton") to avoid a duplicated year.
-            $dateToken = slug_contains_word($slug, $dm[1]) ? $dm[2] . '-' . $dm[3] : $localDate;
-            $slug .= '-' . $dateToken;
-        }
+        // Clean, keyword-only, EVERGREEN URL — no raw id and no date in the path
+        // (Raman's 2026-06-14 rule: dates/years make a URL non-evergreen). The
+        // slug→id mapping is persisted and resolved on the way in, exactly like
+        // venue and TM-artist pages. Same-name tour nights at one venue collapse
+        // onto a single evergreen page — the established HelloTickets behaviour.
+        // Must stay in lockstep with dispatch()'s string_slug_lookup('tm_event').
         string_slug_remember('tm_event', $slug, $tmId);
         return '/event/' . $slug;
     }
