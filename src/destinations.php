@@ -116,7 +116,10 @@ function render_country_hub(HelloTicketsClient $client, array $config, array $pa
             if ($gName === '' || isset($flagshipSlugs[$gSlug])) {
                 continue;
             }
-            $moreCities[$gSlug] = $gName;
+            // Keep the city record, not just its display name, so the link below is
+            // built by city_path() — the canonical /city/{slug} form the page itself
+            // self-canonicals to, rather than a raw pack slug that 301s.
+            $moreCities[$gSlug] = ['id' => $gidInt, 'name' => $gName];
         }
         ksort($moreCities);
     }
@@ -194,8 +197,8 @@ function render_country_hub(HelloTicketsClient $client, array $config, array $pa
                     </div>
                     <p class="more-cities-intro">Live events, concerts and sports with tickets on sale across <?= e($name) ?>.</p>
                     <ul class="more-cities-list">
-                        <?php foreach ($moreCities as $mcSlug => $mcName): ?>
-                            <li><a href="/city/<?= e($mcSlug) ?>"><?= e($mcName) ?> events</a></li>
+                        <?php foreach ($moreCities as $mc): ?>
+                            <li><a href="<?= e(city_path($mc)) ?>"><?= e($mc['name']) ?> events</a></li>
                         <?php endforeach; ?>
                     </ul>
                 </div>

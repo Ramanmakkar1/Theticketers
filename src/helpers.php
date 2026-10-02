@@ -457,6 +457,51 @@ function natural_join(array $items): string
     return implode(', ', $items) . ' and ' . $last;
 }
 
+/**
+ * Cap a <title> at the SERP budget, on a word boundary, and never drop the brand.
+ *
+ * Google renders roughly the first 60 characters of the title tag before
+ * truncating with "…", so anything longer loses its tail in the SERP. Our longest
+ * titles were running to 70 chars because pages assemble name + city + date +
+ * " | TheTicketers" with no cap. Every title in the app funnels through
+ * render_layout(), which calls this once — so the clamp is applied uniformly
+ * instead of at each of the ~40 places a title is assembled (which would let a
+ * new page forget it).
+ *
+ * The " | TheTicketers" suffix is split off first and re-appended untouched: it
+ * is brand equity, and it is the part that must never be the thing we cut. The
+ * budget therefore applies to head + suffix combined, and the head is trimmed to
+ * the last whole word inside it so the SERP never shows "Concert Tick…".
+ */
+function clamp_title(string $title, int $max = 60): string
+{
+    $suffix = '';
+    $split = strrpos($title, ' | ');
+    if ($split !== false) {
+        $suffix = substr($title, $split);
+        $title = substr($title, 0, $split);
+    }
+    $budget = max(20, $max - mb_strlen($suffix));
+    if (mb_strlen($title) <= $budget) {
+        return $title . $suffix;
+    }
+    // Slice one char past the budget so a word that ends exactly on the boundary
+    // still registers as a break opportunity.
+    $cut = mb_substr($title, 0, $budget + 1);
+    $lastSpace = mb_strrpos($cut, ' ');
+    if ($lastSpace !== false && $lastSpace > 0) {
+        $cut = mb_substr($cut, 0, $lastSpace);
+    }
+    // No word boundary inside the budget (one long token) — cut hard instead, or the
+    // title would land a character over budget.
+    if (mb_strlen($cut) > $budget) {
+        $cut = mb_substr($cut, 0, $budget);
+    }
+    // Never leave a dangling separator ("Lion King — | TheTicketers").
+    $cut = rtrim($cut, " \t\n\r\0\x0B,;:.!?&|/\\-–—");
+    return $cut . $suffix;
+}
+
 /** "Aug 2, 2026" from a Y-m-d string — for prose and schema descriptions. */
 function format_date_label(string $localDate): string
 {
@@ -654,15 +699,15 @@ function city_index(): ?array
 }
 
 /** Is a geo city worth indexing/linking? Reads the pre-built index so the SITEMAP
- *  and internal links never call the APIs per city. When no index exists yet, assume
- *  yes — the render-time inventory gate on /city/ and weekend pages still 404s thin
- *  cities, so the worst case is a few sitemap entries that resolve to 404 until the
- *  cron runs. */
+ *  and internal links never call the APIs per city. Fails CLOSED: with no index we
+ *  cannot prove a city has inventory, so it counts as "no" — a missing/blank
+ *  storage/city-index.json must never be the reason a link or a sitemap URL points at
+ *  a page that 404s. Rebuild it with `php bin/build-city-index.php`. */
 function city_has_inventory(int $cityId): bool
 {
     $index = city_index();
     if ($index === null) {
-        return true;
+        return false;
     }
     return isset($index['cities'][(string) $cityId]);
 }
@@ -672,6 +717,142 @@ function city_event_count(int $cityId): int
 {
     $index = city_index();
     return (int) ($index['cities'][(string) $cityId]['events'] ?? 0);
+}
+
+/**
+ * Minimum sellable events a date-intent page needs before render_city_date_page()
+ * will publish it (below this it 404s). ONE definition, read by the renderer's own gate
+ * and by the hub link gate below, so the two cannot drift into "hub links a page that
+ * then 404s" — the bug this whole inventory apparatus exists to prevent.
+ */
+function city_date_min_events(string $dateKey): int
+{
+    return $dateKey === 'today' ? 1 : 3;
+}
+
+/**
+ * Sellable events a city has inside a date-intent window, from the pre-built index.
+ *
+ * bin/build-city-index.php measures the SAME windows the renderer renders — date_params()
+ * ('today' → today..today, 'week' → today..today+7) and tm_local_start_range() — and stores
+ * the higher of the two partner totals. Both helpers are shared with the build script,
+ * so the measured window cannot silently drift from the rendered one.
+ *
+ * null means UNKNOWN (no index / no city entry / the build's probe failed) and callers
+ * must fail closed, the same rule city_has_inventory() follows. A measured 0 is a real
+ * answer and is returned as 0, never as null.
+ */
+function city_date_event_count(int $cityId, string $dateKey): ?int
+{
+    $index = city_index();
+    if ($index === null) {
+        return null;
+    }
+    $count = $index['cities'][(string) $cityId][$dateKey] ?? null;
+    return is_numeric($count) ? (int) $count : null;
+}
+
+/**
+ * Will /events/today-in-{city} (or this-week) actually render? Used by the city hub's
+ * filter row and by the sibling link on the date page itself, both of which used to link
+ * it unconditionally — every sparse city shipped a dead "what's on tonight" link.
+ * Fail CLOSED: an unproven window counts as "no", never as "yes".
+ */
+function city_has_date_inventory(int $cityId, string $dateKey): bool
+{
+    $count = city_date_event_count($cityId, $dateKey);
+    return $count !== null && $count >= city_date_min_events($dateKey);
+}
+
+/**
+ * Month numbers (1-12) recorded for a city by bin/build-city-index.php, ascending.
+ *
+ * The index counterpart of city_months_with_events(): same target-year rule, but read
+ * from the pre-built file instead of an event pool, so a surface that has no pool in
+ * hand (the /events/{month}-in-{city} prev/next arrows) can still tell an empty month
+ * from a stocked one without paying for another partner request. [] when the index
+ * cannot prove anything — callers must then show no link.
+ */
+function city_index_months(int $cityId): array
+{
+    $index = city_index();
+    $months = $index === null ? null : ($index['cities'][(string) $cityId]['months'] ?? null);
+    if (!is_array($months)) {
+        return [];
+    }
+    $numbers = [];
+    foreach ($months as $month) {
+        $number = (int) $month;
+        if ($number >= 1 && $number <= 12) {
+            $numbers[$number] = true;
+        }
+    }
+    $numbers = array_keys($numbers);
+    sort($numbers);
+    return $numbers;
+}
+
+/** Month-slug flavour of the above — the shape render_monthly_events_page links in. */
+function city_has_month_inventory(int $cityId, string $monthSlug): bool
+{
+    $numbers = month_numbers();
+    if (!isset($numbers[$monthSlug])) {
+        return false;
+    }
+    return in_array($numbers[$monthSlug], city_index_months($cityId), true);
+}
+
+/** Month slug → month number. One source of truth for the /events/{month}-in-{city}
+ *  route (render_monthly_events_page) and for the on-page month grid. */
+function month_numbers(): array
+{
+    return [
+        'january' => 1, 'february' => 2, 'march' => 3, 'april' => 4, 'may' => 5, 'june' => 6,
+        'july' => 7, 'august' => 8, 'september' => 9, 'october' => 10, 'november' => 11, 'december' => 12,
+    ];
+}
+
+/**
+ * The month slugs a city's event pool actually covers, in calendar order.
+ *
+ * /events/{month}-in-{city} 404s when the month is empty (render_monthly_events_page),
+ * so a month listed without inventory is a dead internal link — same reason
+ * bin/build-seo-index.php gates urls.monthly_events on the months found in the pool.
+ * A month slug always resolves to the NEXT occurrence of that month, so only pool
+ * events that fall inside that month count: past dates (they resolve to a year that
+ * has no shows) are dropped rather than linked.
+ */
+function city_months_with_events(array $eventPool): array
+{
+    $months = [];
+    $now = new DateTimeImmutable('today', new DateTimeZone('UTC'));
+    $nowYear = (int) $now->format('Y');
+    $nowMonth = (int) $now->format('n');
+    foreach ($eventPool as $event) {
+        $localDate = (string) ($event['start_date']['local_date'] ?? '');
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $localDate) !== 1) {
+            continue;
+        }
+        $date = new DateTimeImmutable($localDate, new DateTimeZone('UTC'));
+        if ($date < $now) {
+            continue;
+        }
+        $monthNum = (int) $date->format('n');
+        // The month page targets the current year for months still ahead and the next
+        // year for months already past — an event outside that target month is not on it.
+        if ((int) $date->format('Y') !== ($monthNum >= $nowMonth ? $nowYear : $nowYear + 1)) {
+            continue;
+        }
+        $months[$monthNum] = true;
+    }
+
+    $out = [];
+    foreach (month_numbers() as $slug => $num) {
+        if (isset($months[$num])) {
+            $out[] = $slug;
+        }
+    }
+    return $out;
 }
 
 function currency_for_country_code(array $config, string $countryCode): ?string

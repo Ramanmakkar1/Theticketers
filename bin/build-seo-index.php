@@ -310,12 +310,10 @@ foreach ($cityTargets as $cityId => $city) {
     ], date_params(null))), ['performances' => []])['performances'] ?? [];
     $tm = tm_events_for_city_deep($config, $cityName, (string) ($city['country_code'] ?? ''), [], 3, 100);
     $cityPool = city_event_pool($ht, $tm, $config);
-    foreach ($cityPool as $event) {
-        $eventDate = (string) ($event['start_date']['local_date'] ?? '');
-        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $eventDate) !== 1) {
-            continue;
-        }
-        $eventMonth = strtolower((new DateTimeImmutable($eventDate))->format('F'));
+    // Months with real inventory only — an empty /events/{month}-in-{city} 404s, so
+    // listing it would be a dead sitemap URL. Shared with the on-page month grid
+    // (city_months_with_events) so the two can never disagree.
+    foreach (city_months_with_events($cityPool) as $eventMonth) {
         $cityMonthlyMonths[(int) $cityId][$eventMonth] = true;
     }
     foreach (array_slice($cityPool, 0, 300) as $event) {
