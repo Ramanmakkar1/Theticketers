@@ -9,7 +9,12 @@
  * Placeholder syntax: {name}, {city}, {country}, {category}, {month},
  *                     {count}, {city_count}, {venue_count}, {min_price},
  *                     {next_date}, {next_venue}, {site_name},
- *                     {top_venues}, {top_cities}, {top_artists}, {league_name}.
+ *                     {top_venues}, {top_cities}, {top_artists}, {league_name},
+ *                     {date_filter_note}.
+ *
+ * {date_filter_note} is a whole clause rather than a noun because the pool is shared
+ * across cities and the city hub's date filters are gated per city — see
+ * helpers.php::city_date_filter_note() for why the pool cannot name one literally.
  *
  * Answers stay 1-3 sentences, evergreen (no specific year), hedged where
  * appropriate, and use placeholders for any data that varies per page.
@@ -131,7 +136,7 @@ return [
          'a' => 'This page covers concerts, sports, theatre, comedy, festivals, family shows and classical performances in {city}. Use the category filters at the top to narrow the {count} events on sale.'],
 
         ['q' => 'Can I find last-minute tickets in {city}?',
-         'a' => 'Yes — the Today and This Weekend filters at the top of this page surface {city} events with tickets still available. Partner inventory updates in real time as seats sell and as last-minute returns come back.'],
+         'a' => 'Yes — {date_filter_note} Partner inventory updates in real time as seats sell and as last-minute returns come back.'],
 
         ['q' => 'How much do tickets cost in {city}?',
          'a' => 'Ticket prices in {city} start from {min_price}, varying widely by event type, venue and seat tier. Concerts and major sports tend to sit at the higher end; theatre and family events typically run lower.'],

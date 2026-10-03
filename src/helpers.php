@@ -502,6 +502,69 @@ function clamp_title(string $title, int $max = 60): string
     return $cut . $suffix;
 }
 
+/**
+ * <title> for an EVENT DETAIL page — the one family whose title tail can be the only
+ * thing that tells two pages apart.
+ *
+ * clamp_title() is right everywhere else: it keeps the head and cuts the tail, because
+ * in a city / month / category / weekend title the tail is redundant — the page itself
+ * already says "in Dubai", "in March", and re-stating it costs nothing. In an event
+ * title the tail IS the identity: a three-night festival's "- Friday / - Saturday /
+ * - Sunday" pages, or one show playing two cities on one date, differ ONLY in
+ * "{city}, {Mon D, YYYY}". Cut it and those pages ship one identical <title>.
+ * Measured 2026-10-02 over a 228-page live sample: the Saudi GP weekend merged 3 pages,
+ * Dubai Duty Free merged 3, and Stranger Things' London/New York dates merged 2 — while
+ * the hub, month, category and date families collided 0 times.
+ *
+ * So this family spends the budget the other way round: the tail is kept whole and the
+ * EVENT NAME is trimmed to whatever room is left, on a word boundary. clamp_title()
+ * still runs last and is still the 60-char rule for the whole site — nothing here
+ * loosens it, it just stops the tail being the first thing sacrificed.
+ *
+ * @param string $name      Event name, already carrying the " Tickets" keyword.
+ * @param string $city      Venue city, '' when unknown.
+ * @param string $dateLabel format_date_label() output, '' when the date is unknown.
+ * @param string $siteName  Branded suffix owner, e.g. $config['site_name'].
+ * @return string
+ */
+function event_title(string $name, string $city, string $dateLabel, string $siteName, int $max = 60): string
+{
+    $suffix = ' | ' . $siteName;
+    $name = trim($name);
+    $tail = $city !== '' && $dateLabel !== '' ? $city . ', ' . $dateLabel : ($city !== '' ? $city : $dateLabel);
+    if ($tail === '') {
+        return clamp_title($name . $suffix, $max);
+    }
+
+    $head = $name . ' — ' . $tail;
+    $budget = max(20, $max - mb_strlen($suffix)); // same arithmetic clamp_title() uses
+    if (mb_strlen($head) <= $budget) {
+        return clamp_title($head . $suffix, $max);
+    }
+
+    // Over budget: trim the NAME, never the tail — the tail is what makes this page
+    // different from its siblings. Slice one char past the room left so a word ending
+    // exactly on the boundary still registers as a break opportunity (as in clamp_title).
+    $room = max(8, $budget - mb_strlen(' — ' . $tail));
+    $cut = mb_substr($name, 0, $room + 1);
+    $lastSpace = mb_strrpos($cut, ' ');
+    if ($lastSpace !== false && $lastSpace > 0) {
+        $cut = mb_substr($cut, 0, $lastSpace);
+    }
+    // No word boundary inside the room left (one long unbroken token) — cut hard. Leaving
+    // it a char over hands an over-budget title to clamp_title(), which cuts from the
+    // right and eats the TAIL: the exact collision this function exists to prevent.
+    if (mb_strlen($cut) > $room) {
+        $cut = mb_substr($cut, 0, $room);
+    }
+    $cut = rtrim($cut, " \t\n\r\0\x0B,-–—");
+    if ($cut === '') {
+        // Nothing usable left of the name (blank event name) — fall back to the raw head.
+        return clamp_title($head . $suffix, $max);
+    }
+    return clamp_title($cut . ' — ' . $tail . $suffix, $max);
+}
+
 /** "Aug 2, 2026" from a Y-m-d string — for prose and schema descriptions. */
 function format_date_label(string $localDate): string
 {
@@ -762,6 +825,40 @@ function city_has_date_inventory(int $cityId, string $dateKey): bool
 {
     $count = city_date_event_count($cityId, $dateKey);
     return $count !== null && $count >= city_date_min_events($dateKey);
+}
+
+/**
+ * The date-filter clause a city hub's last-minute FAQ should use, built from the
+ * filters that hub actually renders.
+ *
+ * The FAQ pool in faq-pool.php is shared by every city, so it cannot name a control
+ * literally: round 3 hid "Today" / "This Week" behind city_has_date_inventory() and a
+ * pool entry reading "the Today and This Weekend filters at the top of this page" then
+ * pointed at a control the page did not show. Returns the clause with the real labels
+ * instead, so the pool stays one shared entry and each city gets copy that matches its
+ * own filter row — no per-city editing of the pool.
+ *
+ * "This Weekend" is always named: weekend_path() is rendered ungated, so unlike
+ * "Today" / "This Week" it is a control the hub is guaranteed to show.
+ */
+function city_date_filter_note(int $cityId, string $cityName): string
+{
+    $shown = [];
+    if (city_has_date_inventory($cityId, 'today')) {
+        $shown[] = 'Today';
+    }
+    if (city_has_date_inventory($cityId, 'week')) {
+        $shown[] = 'This Week';
+    }
+    $shown[] = 'This Weekend';
+
+    $last = array_pop($shown);
+    $filters = $shown === []
+        ? 'the ' . $last . ' filter at the top of this page'
+        : 'the ' . implode(', ', $shown) . ' and ' . $last . ' filters at the top of this page';
+    $verb = $shown === [] ? 'surfaces' : 'surface';
+
+    return $filters . ' ' . $verb . ' ' . $cityName . ' events with tickets still available.';
 }
 
 /**

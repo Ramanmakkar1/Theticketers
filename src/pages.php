@@ -1523,7 +1523,7 @@ function render_city_page(HelloTicketsClient $client, array $config, int $cityId
         // A city with no live inventory is a thin "Browse 0 events" page — noindex it
         // (still follow) so it stays out of the index until inventory returns.
         'robots' => ($totalEvents === 0 && $activities === []) ? 'noindex, follow' : null,
-    ], function () use ($city, $events, $activities, $config, $guidePath, $eventsPageData, $totalEvents, $cityMonths, $hasTodayEvents, $hasWeekEvents): void {
+    ], function () use ($city, $cityId, $events, $activities, $config, $guidePath, $eventsPageData, $totalEvents, $cityMonths, $hasTodayEvents, $hasWeekEvents): void {
         ?>
         <section class="listing-hero city-hero">
             <div class="container">
@@ -1602,7 +1602,10 @@ function render_city_page(HelloTicketsClient $client, array $config, int $cityId
             ['q' => 'What types of events can I find in ' . $cityName . '?',
              'a' => 'This page covers concerts, sports, theatre, comedy, festivals, family events, classical performances and more. Use the category filters above to narrow your search.'],
             ['q' => 'Can I find last-minute tickets in ' . $cityName . '?',
-             'a' => 'Yes. Check the "Today" and "This Weekend" filters at the top of this page for events with tickets still available. Our partner inventory updates in real time.'],
+             // Names the filters this hub actually rendered — "Today"/"This Week" are
+             // gated on inventory (city_date_filter_note()), so a fixed sentence here
+             // would point at a control the page may not show.
+             'a' => 'Yes. ' . ucfirst(city_date_filter_note($cityId, $cityName)) . ' Our partner inventory updates in real time.'],
         ];
         // Augment with a deterministic-unique slice from the shared pool — see
         // helpers.php::unique_faqs() — so every city page renders a different FAQ mix.
@@ -1627,6 +1630,7 @@ function render_city_page(HelloTicketsClient $client, array $config, int $cityId
             '{min_price}' => $cityMinPrice !== null ? money($cityMinPrice, $cityCurrencyForFaq) : '',
             '{top_venues}' => implode(', ', array_slice($cityVenues, 0, 3)),
             '{site_name}' => (string) $config['site_name'],
+            '{date_filter_note}' => city_date_filter_note($cityId, $cityName),
         ];
         $cityFaqs = array_merge($cityFaqs, unique_faqs('city', slugify($cityName), $cityFaqData, 6));
         dubai_render_faq($cityFaqs, $cityName . ' — Event FAQs');
@@ -1809,9 +1813,13 @@ function render_event_detail_page(HelloTicketsClient $client, array $config, int
     // 21 pages). City + date are the two things that make a show unique here, and
     // they're natural English after the name — no extra keywords needed.
     $headline = $performance['name'] . ' Tickets — ' . $cityName . ($dateLabel !== '' ? ', ' . $dateLabel : '');
+    // Same headline, but the <title> spends its SERP budget on the tail (city + date)
+    // instead of the name: for a multi-night or multi-city run of one show that tail is
+    // the ONLY difference between the pages. The h1 keeps the full headline.
+    $title = event_title($performance['name'] . ' Tickets', $cityName, $dateLabel, (string) $config['site_name']);
 
     render_layout($config, [
-        'title' => $headline . ' | ' . $config['site_name'],
+        'title' => $title,
         'description' => $performance['name'] . ($venueName !== '' ? ' at ' . $venueName : '') . ', ' . $cityName
             . ($dateLabel !== '' ? ' on ' . $dateLabel : '') . '.'
             . ((float) $price > 0 ? ' Tickets from ' . money($price, $currency) . ' with live availability' : ' Live ticket availability')
@@ -1980,9 +1988,13 @@ function render_ticketmaster_event_detail_page(array $config, string $tmEventId)
     // used to be the bare event name, which made every city/date of the same show
     // ship the same H1 (261 pages in 69 duplicate groups).
     $headline = $eventName . ' Tickets' . ($cityName !== '' ? ' — ' . $cityName : '') . ($dateLabel !== '' ? ', ' . $dateLabel : '');
+    // Same headline, but the <title> spends its SERP budget on the tail (city + date)
+    // instead of the name: for a multi-night or multi-city run of one show that tail is
+    // the ONLY difference between the pages. The h1 keeps the full headline.
+    $title = event_title($eventName . ' Tickets', $cityName, $dateLabel, (string) $config['site_name']);
 
     render_layout($config, [
-        'title' => $headline . ' | ' . $config['site_name'],
+        'title' => $title,
         'description' => $eventName . ($venueName !== '' ? ' at ' . $venueName : '') . ($cityName !== '' ? ', ' . $cityName : '')
             . ($dateLabel !== '' ? ' on ' . $dateLabel : '') . '.'
             . ($price > 0 ? ' Tickets from ' . money($price, $currency) . ' with live availability' : ' Live ticket availability')
