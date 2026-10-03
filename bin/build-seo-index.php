@@ -184,6 +184,7 @@ $addEventEntities = static function (array $event) use (&$add, &$teamSlugs, &$kn
 $say('Collecting HelloTickets event pages starting ' . $minEventDate . ' or later...');
 $eventCandidates = [];
 $eventCandidateDates = [];
+$eventEligibility = [];
 for ($page = 1; count($eventCandidates) < $eventLimit && $page <= 200; $page++) {
     $data = api_result(static fn() => $client->performances(array_merge([
         'limit' => 48,
@@ -210,12 +211,36 @@ for ($page = 1; count($eventCandidates) < $eventLimit && $page <= 200; $page++) 
             continue;
         }
 
+        // ONE shared rule with the page's robots meta (event_is_seo_eligible in
+        // src/helpers.php): only an event with a real ticket on sale, inside the booking
+        // window or attached to a curated entity, may be submitted. Everything else is
+        // recorded as ineligible and left out of urls.events — the page still renders and
+        // still serves the affiliate, it just stops asking Google for a slot.
+        //
+        // The filter runs BEFORE the evergreen collapse so maps.event[$slug] can only ever
+        // point at an eligible record. If an ineligible show collapsed onto the slug first,
+        // the page would render that show, call itself noindex, and the sitemap would be
+        // submitting a URL marked noindex — the exact state this rule exists to prevent.
+        $eligible = event_is_seo_eligible($event);
+        if (!isset($eventEligibility[$eventSlug])) {
+            $eventEligibility[$eventSlug] = [
+                'on_sale' => event_is_on_sale($event),
+                'priority' => event_seo_has_priority($event),
+                'date' => $eventDate,
+                'eligible' => $eligible,
+            ];
+        }
+        if (!$eligible) {
+            continue;
+        }
+
         // Evergreen event URLs collapse repeat nights in the same city. Keep the
         // earliest qualifying future date behind that URL so the page renders the
         // next sellable show instead of a later duplicate.
         if (!isset($eventCandidates[$eventSlug]) || $eventDate < $eventCandidateDates[$eventSlug]) {
             $eventCandidates[$eventSlug] = $event;
             $eventCandidateDates[$eventSlug] = $eventDate;
+            $eventEligibility[$eventSlug]['date'] = $eventDate;
         }
 
         if (count($eventCandidates) >= $eventLimit) {
@@ -227,7 +252,14 @@ foreach ($eventCandidates as $eventSlug => $event) {
     $maps['event'][$eventSlug] = (int) $event['id'];
     $add('events', event_path($event), $eventLimit);
 }
-$say('Events: ' . count($urls['events']));
+$eligibleEvents = count($urls['events']);
+$say(sprintf(
+    'Events: %d submitted of %d measured (%d ineligible: no live ticket, outside the %d-day window, no curated entity)',
+    $eligibleEvents,
+    count($eventEligibility),
+    count($eventEligibility) - $eligibleEvents,
+    event_seo_horizon_days()
+));
 
 // Artist index from HelloTickets performer pages.
 $say('Collecting artist pages...');
@@ -389,6 +421,7 @@ foreach ($maps as $type => $entries) {
     ksort($entries);
     $maps[$type] = $entries;
 }
+ksort($eventEligibility);
 
 slug_map_flush();
 
@@ -403,8 +436,18 @@ $payload = [
         'city_categories' => $cityCategoryLimit,
         'event_min_days' => $eventMinDays,
         'event_min_date' => $minEventDate,
+        'event_seo_horizon_days' => event_seo_horizon_days(),
     ],
     'counts' => array_map('count', $urls),
+    // Per-slug verdict of the shared eligibility predicate, so the sitemap renderer can
+    // re-check it without one partner request per URL (phase_one_event_sitemap_path_is_fresh
+    // in src/pages.php). Written for EVERY measured slug, eligible or not: recording only
+    // the eligible ones would make "no record" ambiguous between "not measured" and
+    // "measured and rejected", and the render gate has to be able to tell them apart.
+    'eligibility' => [
+        'rule' => 'on_sale && (within event_seo_horizon_days || curated priority entity)',
+        'events' => $eventEligibility,
+    ],
     'maps' => $maps,
     'urls' => $urls,
 ];
@@ -424,3 +467,10 @@ $say('Wrote ' . $outFile);
 foreach ($payload['counts'] as $bucket => $count) {
     $say(sprintf('%-16s %5d', $bucket . ':', $count));
 }
+$say(sprintf(
+    '%-16s %5d  (%d eligible, %d noindex-follow and unsubmitted — pages still live, still serving the affiliate)',
+    'measured events:',
+    count($eventEligibility),
+    count(array_filter($eventEligibility, static fn(array $r): bool => $r['eligible'])),
+    count(array_filter($eventEligibility, static fn(array $r): bool => !$r['eligible']))
+));

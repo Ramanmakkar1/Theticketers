@@ -1515,6 +1515,10 @@ function render_city_page(HelloTicketsClient $client, array $config, int $cityId
     // measured on the renderer's own window), and fail closed — no index, no link.
     $hasTodayEvents = city_has_date_inventory($cityId, 'today');
     $hasWeekEvents = city_has_date_inventory($cityId, 'week');
+    // Same fail-closed rule for the ten intent categories the hero filter row and the
+    // "browse by category" list link. Naming all ten unconditionally shipped a 404 for
+    // every category this city's inventory cannot fill.
+    $cityCategories = city_available_intent_categories($cityId);
 
     render_layout($config, [
         'title' => $city['name'] . ' Tickets, Events & Attractions | ' . $config['site_name'],
@@ -1523,7 +1527,7 @@ function render_city_page(HelloTicketsClient $client, array $config, int $cityId
         // A city with no live inventory is a thin "Browse 0 events" page — noindex it
         // (still follow) so it stays out of the index until inventory returns.
         'robots' => ($totalEvents === 0 && $activities === []) ? 'noindex, follow' : null,
-    ], function () use ($city, $cityId, $events, $activities, $config, $guidePath, $eventsPageData, $totalEvents, $cityMonths, $hasTodayEvents, $hasWeekEvents): void {
+    ], function () use ($city, $cityId, $events, $activities, $config, $guidePath, $eventsPageData, $totalEvents, $cityMonths, $hasTodayEvents, $hasWeekEvents, $cityCategories): void {
         ?>
         <section class="listing-hero city-hero">
             <div class="container">
@@ -1537,9 +1541,12 @@ function render_city_page(HelloTicketsClient $client, array $config, int $cityId
                         <a href="<?= e(city_date_path($city, 'week')) ?>">This Week</a>
                     <?php endif; ?>
                     <a href="<?= e(weekend_path($city)) ?>">This Weekend</a>
-                    <a href="<?= e(city_category_path($city, 'concerts')) ?>">Concerts</a>
-                    <a href="<?= e(city_category_path($city, 'sports')) ?>">Sports</a>
-                    <a href="<?= e(city_category_path($city, 'theatre')) ?>">Theatre</a>
+                    <?php // Only categories the index can prove this city can fill — naming
+                          // all ten shipped a dead link for each one it cannot (see
+                          // city_has_category_inventory). ?>
+                    <?php foreach ($cityCategories as $catSlug => $catMeta): ?>
+                        <a href="<?= e(city_category_path($city, $catSlug)) ?>"><?= e($catMeta['label']) ?></a>
+                    <?php endforeach; ?>
                     <a href="/attractions">Attractions</a>
                 </div>
                 <?php if ($guidePath !== null): ?>
@@ -1567,17 +1574,19 @@ function render_city_page(HelloTicketsClient $client, array $config, int $cityId
                 <?php endif; ?>
             </div>
         </section>
+        <?php if ($cityCategories !== []): ?>
         <section class="section-band">
             <div class="container">
                 <h2>Browse <?= e($cityName) ?> by Category</h2>
                 <p>Find exactly the type of event you are looking for in <?= e($cityName) ?>:</p>
                 <ul class="more-cities-list">
-                    <?php foreach ($categories as $catSlug => $catMeta): ?>
+                    <?php foreach ($cityCategories as $catSlug => $catMeta): ?>
                         <li><a href="<?= e(city_category_path($city, $catSlug)) ?>"><?= e($catMeta['label']) ?> in <?= e($cityName) ?></a></li>
                     <?php endforeach; ?>
                 </ul>
             </div>
         </section>
+        <?php endif; ?>
         <?php if ($months !== []): ?>
         <section class="section-band muted">
             <div class="container">
@@ -1827,7 +1836,11 @@ function render_event_detail_page(HelloTicketsClient $client, array $config, int
         'canonical' => absolute_url($config, event_path($performance)),
         'image' => image_from_item($performance, 'event', $config),
         'preload_image' => image_from_item($performance, 'event', $config),
-        'robots' => $isPast ? 'noindex, follow' : null,
+        // ONE rule, shared with the sitemap builder: an event page is indexable only if
+        // the ticket is real and the show is inside the booking window or belongs to a
+        // curated entity. Everything else is noindex, follow — still crawled, still
+        // serving the affiliate link, just not asking for a slot in the index.
+        'robots' => ($isPast || !event_is_seo_eligible($performance)) ? 'noindex, follow' : null,
     ], function () use ($performance, $related, $config, $breadcrumbs, $summary, $eventFaqs, $eventName, $venueName, $cityName, $whenLabel, $headline): void {
         $image = image_from_item($performance, 'event', $config);
         $price = $performance['price_range']['min_price'] ?? 0;
@@ -2002,7 +2015,9 @@ function render_ticketmaster_event_detail_page(array $config, string $tmEventId)
         'canonical' => absolute_url($config, $canonicalPath),
         'image' => image_from_item($performance, 'event', $config),
         'preload_image' => image_from_item($performance, 'event', $config),
-        'robots' => $isPast ? 'noindex, follow' : null,
+        // Same predicate as the HelloTickets page above — a Ticketmaster event carries no
+        // ticket_groups_count, so the price is what proves the ticket is real.
+        'robots' => ($isPast || !event_is_seo_eligible($performance)) ? 'noindex, follow' : null,
     ], function () use ($performance, $related, $config, $breadcrumbs, $summary, $eventFaqs, $eventName, $venueName, $cityName, $whenLabel, $headline): void {
         $image = image_from_item($performance, 'event', $config);
         $price = $performance['price_range']['min_price'] ?? 0;
@@ -2777,12 +2792,16 @@ function render_city_category_page(HelloTicketsClient $client, array $config, in
     unset($node);
 
     $pageData = ['current_page' => $page, 'per_page' => $perPage, 'total_count' => $total];
+    $siblingCategories = city_available_intent_categories($cityId);
     render_layout($config, [
         'title' => $headline . ' Tickets | ' . $config['site_name'],
         'description' => $headline . ': ' . number_format($total) . ' upcoming events with dates, venues and live ticket prices' . ($minPrice !== null ? ' from ' . money($minPrice, $currency) : '') . '.',
         'canonical' => absolute_url($config, $canonicalPath, array_filter(['page' => $page > 1 ? $page : null])),
-    ], function () use ($config, $city, $headline, $label, $total, $venues, $summary, $events, $pageData, $faqs): void {
-        $cityCategories = city_intent_categories();
+    ], function () use ($config, $city, $headline, $label, $total, $venues, $summary, $events, $pageData, $faqs, $siblingCategories): void {
+        // Sibling links, minus this page's own category, minus every category the index
+        // cannot prove this city can fill — the page itself exists, so it is proven, but
+        // its nine siblings are not.
+        $cityCategories = array_diff_key($siblingCategories, [$categorySlug => true]);
         ?>
         <section class="listing-hero">
             <div class="container">
@@ -2808,6 +2827,7 @@ function render_city_category_page(HelloTicketsClient $client, array $config, in
                 <?php endif; ?>
             </div>
         </section>
+        <?php if ($cityCategories !== []): ?>
         <section class="section-band">
             <div class="container">
                 <h2>More Event Types in <?= e($city['name']) ?></h2>
@@ -2820,6 +2840,7 @@ function render_city_category_page(HelloTicketsClient $client, array $config, in
                 </ul>
             </div>
         </section>
+        <?php endif; ?>
         <section class="section-band muted">
             <div class="container artist-seo-content">
                 <h2>Buy <?= e($headline) ?> Tickets</h2>
@@ -4544,13 +4565,54 @@ function render_phase_one_sitemap(HelloTicketsClient $client, array $config, arr
     echo sitemap_xml_from_entries($entries);
 }
 
+/**
+ * Second half of the shared-eligibility guarantee, at SITEMAP RENDER time.
+ *
+ * bin/build-seo-index.php already refuses to put an ineligible event in urls.events at
+ * all, so this is the backstop for the window between builds: a show that sold out, or
+ * whose date has now moved outside the booking window, must leave the sitemap on the very
+ * next render rather than wait for the next cron — otherwise the sitemap would submit a
+ * URL that render_event_detail_page() is already answering `noindex, follow`, which is
+ * exactly the "Submitted URL marked noindex" state the pre-launch audit set at zero.
+ *
+ * The verdict is read from the index (eligibility.events[slug]) rather than re-derived
+ * from a partner API call: rendering a 445K-URL sitemap cannot afford 445K requests. The
+ * date half is re-evaluated live against event_seo_horizon_days() so the horizon moves
+ * with the calendar, not with the last build. An index written before the key existed
+ * returns null and falls back to the old date-only behaviour until the next build.
+ */
 function phase_one_event_sitemap_path_is_fresh(string $path): bool
 {
-    if (preg_match('/-(\d{4}-\d{2}-\d{2})$/', $path, $match) !== 1) {
+    $slug = (string) preg_replace('#^/event/#', '', $path);
+
+    $recorded = event_seo_recorded_eligibility($slug);
+    if ($recorded === false) {
+        return false; // the builder measured this one and called it ineligible
+    }
+
+    if (preg_match('/-(\d{4}-\d{2}-\d{2})$/', $path, $match) === 1) {
+        $minEventDate = (new DateTimeImmutable('today'))->modify('+3 days')->format('Y-m-d');
+        if ($match[1] < $minEventDate) {
+            return false;
+        }
+    }
+
+    if ($recorded === true) {
+        return true; // measured eligible at build time; the page agrees with that verdict
+    }
+
+    // No recorded verdict (pre-eligibility index). Fall back to the horizon half of the
+    // rule, which needs no stored state beyond the date: the soonest date the builder
+    // mapped for this slug is the one the page will render.
+    $eventDate = event_seo_recorded_date($slug);
+    if ($eventDate === null) {
         return true;
     }
-    $minEventDate = (new DateTimeImmutable('today'))->modify('+3 days')->format('Y-m-d');
-    return $match[1] >= $minEventDate;
+    $today = new DateTimeImmutable('today');
+    if ($eventDate < $today->format('Y-m-d')) {
+        return false;
+    }
+    return $eventDate <= $today->modify('+' . event_seo_horizon_days() . ' days')->format('Y-m-d');
 }
 
 function phase_one_city_sitemap_path_is_stable(string $path): bool
@@ -5946,6 +6008,10 @@ function render_monthly_events_page(HelloTicketsClient $client, array $config, i
     $prevLink = city_has_month_inventory($cityId, $prevMonth) ? monthly_events_path($city, $prevMonth) : null;
     $nextLink = city_has_month_inventory($cityId, $nextMonth) ? monthly_events_path($city, $nextMonth) : null;
 
+    // Same fail-closed gate for the "try concerts / sports / theatre" line: naming a
+    // category this city cannot fill put a 404 in the SEO paragraph of every month page.
+    $monthCategories = city_available_intent_categories($cityId);
+
     $breadcrumbs = [
         ['name' => 'Home', 'url' => absolute_url($config, '/')],
         ['name' => 'Events', 'url' => absolute_url($config, '/events')],
@@ -5998,7 +6064,7 @@ function render_monthly_events_page(HelloTicketsClient $client, array $config, i
         'description' => 'Find ' . $totalEvents . '+ events in ' . $cityName . ' for ' . $monthLabel . '. Concerts, sports, theatre and more with live prices.',
         'canonical' => absolute_url($config, $canonical, array_filter(['page' => $page > 1 ? $page : null])),
         'body_class' => 'monthly-events-page',
-    ], function () use ($config, $pageTitle, $cityName, $monthLabel, $events, $eventsPageData, $breadcrumbs, $prevLink, $nextLink, $city, $faqs, $totalEvents): void {
+    ], function () use ($config, $pageTitle, $cityName, $monthLabel, $events, $eventsPageData, $breadcrumbs, $prevLink, $nextLink, $city, $faqs, $totalEvents, $monthCategories): void {
         ?>
         <section class="monthly-events__hero"><div class="container">
             <?php dubai_render_breadcrumbs($breadcrumbs); ?>
@@ -6015,7 +6081,9 @@ function render_monthly_events_page(HelloTicketsClient $client, array $config, i
         <section class="monthly-events__seo section-band muted"><div class="container">
             <h2>About Events in <?= e($cityName) ?> in <?= e($monthLabel) ?></h2>
             <p>This page lists <?= e((string) $totalEvents) ?> confirmed event<?= $totalEvents === 1 ? '' : 's' ?> in <?= e($cityName) ?> for <?= e($monthLabel) ?> — concerts, sports fixtures, theatre and live shows. Each listing shows the date, venue and live starting price, and new events appear here automatically the moment they go on sale.</p>
-            <p>Try <a href="<?= e(city_category_path($city, 'concerts')) ?>">concerts</a>, <a href="<?= e(city_category_path($city, 'sports')) ?>">sports</a>, or <a href="<?= e(city_category_path($city, 'theatre')) ?>">theatre</a> in <?= e($cityName) ?>.</p>
+            <?php if ($monthCategories !== []): ?>
+            <p>Try <?= e(natural_join(array_map(static fn(string $label, string $slug): string => '<a href="' . e(city_category_path($city, $slug)) . '">' . e(strtolower($label)) . '</a>', array_keys($monthCategories), array_keys($monthCategories)))) ?> in <?= e($cityName) ?>.</p>
+            <?php endif; ?>
         </div></section>
         <?php dubai_render_faq($faqs, 'Events in ' . $cityName . ' in ' . $monthLabel . ' — FAQs'); ?>
         <section class="section-band">
@@ -6248,6 +6316,15 @@ function render_country_category_hub(HelloTicketsClient $client, array $config, 
     $categories = city_intent_categories();
     $catLabel = $categories[$categorySlug]['label'] ?? ucfirst($categorySlug);
     $cities = $country['cities'] ?? [];
+    // Separate list for the "… by City" links below: drop every city whose
+    // /city/{slug}/{category} page cannot render. This list used to name every city in
+    // the country, so a country-category hub shipped one dead /city/…/comedy (or
+    // hip-hop, family, …) link per city it cannot fill. $cities itself stays untouched —
+    // it also picks the primary city that feeds this page's own event grid.
+    $linkCities = array_values(array_filter(
+        $cities,
+        static fn(array $c): bool => city_has_category_inventory((int) ($c['city_id'] ?? 0), $categorySlug)
+    ));
     $canonical = '/' . $countrySlug . '/' . $categorySlug;
     $pageTitle = $catLabel . ' in ' . $displayName;
 
@@ -6297,18 +6374,18 @@ function render_country_category_hub(HelloTicketsClient $client, array $config, 
     render_layout($config, ['title'=>$pageTitle.' | '.$config['site_name'],
         'description'=>$catLabel.' events across '.$countryName.'. Browse dates, venues and live ticket prices.',
         'canonical'=>absolute_url($config,$canonical), 'body_class'=>'country-category-page',
-    ], function () use ($config,$pageTitle,$countryName,$countrySlug,$displayName,$catLabel,$categorySlug,$cities,$topEvents,$evData,$bc,$categories,$faqs,$countryMinPrice,$countryCurrency): void { ?>
+    ], function () use ($config,$pageTitle,$countryName,$countrySlug,$displayName,$catLabel,$categorySlug,$linkCities,$topEvents,$evData,$bc,$categories,$faqs,$countryMinPrice,$countryCurrency): void { ?>
         <section class="country-cat__hero"><div class="container">
             <?php dubai_render_breadcrumbs($bc); ?>
             <h1><?= e($pageTitle) ?></h1>
             <p class="country-cat__sub">Live <?= e(strtolower($catLabel)) ?> events across <?= e($displayName) ?> with instant e-tickets</p>
         </div></section>
         <?php render_events_grid_section('Upcoming ' . $catLabel, '', array_slice($topEvents, 0, 24), $evData, $config); ?>
-        <?php if ($cities !== []): ?>
+        <?php if ($linkCities !== []): ?>
         <section class="country-cat__cities section-band muted"><div class="container">
             <h2><?= e($catLabel) ?> by City</h2>
             <ul class="more-cities-list">
-                <?php foreach ($cities as $c): ?>
+                <?php foreach ($linkCities as $c): ?>
                     <li><a href="<?= e(city_category_path($c, $categorySlug)) ?>"><?= e($catLabel) ?> in <?= e($c['name']) ?></a></li>
                 <?php endforeach; ?>
             </ul>
@@ -6316,7 +6393,7 @@ function render_country_category_hub(HelloTicketsClient $client, array $config, 
         <?php endif; ?>
         <section class="country-cat__seo section-band muted"><div class="container artist-about">
             <h2>About <?= e($catLabel) ?> in <?= e($displayName) ?></h2>
-            <p>This page is a live feed of <?= e(strtolower($catLabel)) ?> events across <?= e($displayName) ?>, covering <?= e((string) count($cities)) ?> <?= count($cities) === 1 ? 'city' : 'cities' ?>. Every listing shows the date, venue and live starting price direct from our official ticketing partners — new events appear here automatically as soon as tickets go on sale.</p>
+            <p>This page is a live feed of <?= e(strtolower($catLabel)) ?> events across <?= e($displayName) ?>, covering <?= e((string) count($linkCities)) ?> <?= count($linkCities) === 1 ? 'city' : 'cities' ?> we have inventory for. Every listing shows the date, venue and live starting price direct from our official ticketing partners — new events appear here automatically as soon as tickets go on sale.</p>
             <p>Pick any event to see seat availability and tier pricing in real time. Checkout completes on the partner site and e-tickets are delivered by email instantly.</p>
         </div></section>
         <?php dubai_render_faq($faqs, $catLabel . ' in ' . $displayName . ' — FAQs'); ?>

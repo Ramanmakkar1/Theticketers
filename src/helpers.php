@@ -997,6 +997,83 @@ function city_has_month_inventory(int $cityId, string $monthSlug): bool
     return in_array($numbers[$monthSlug], city_index_months($cityId), true);
 }
 
+/**
+ * Minimum sellable events a city×category page needs before render_city_category_page()
+ * will publish it (below this it 404s). ONE definition, read by the renderer's own gate
+ * and by every hub link gate below, for the same reason city_date_min_events() exists:
+ * so a hub can never link a page that then 404s.
+ */
+function city_category_min_events(): int
+{
+    return 3;
+}
+
+/**
+ * Sellable events a city has in one intent category, from the pre-built index.
+ *
+ * bin/build-city-index.php measures this with the SAME windows
+ * city_category_events() renders (the category's ht_category_ids and
+ * tm_classification_names, over date_params(null)) and stores the higher of the two
+ * partner totals. Because the renderer's pool is the UNION of the two partners, that
+ * maximum can only ever under-report the rendered pool — so a link shown here is a link
+ * that will render, and a link hidden here may have been hiding a page that would have
+ * rendered. Never the reverse, which is the direction that matters.
+ *
+ * null means UNKNOWN (no index / no city entry / the build's probe failed) and callers
+ * must fail closed, exactly as city_date_event_count() does.
+ */
+function city_category_event_count(int $cityId, string $categorySlug): ?int
+{
+    $index = city_index();
+    if ($index === null) {
+        return null;
+    }
+    $count = $index['cities'][(string) $cityId]['categories'][$categorySlug] ?? null;
+    return is_numeric($count) ? (int) $count : null;
+}
+
+/**
+ * Will /city/{slug}/{category} actually render? Read by the city hub's filter row and
+ * category list, by the category page's own cross-links, by the month page's "try
+ * concerts / sports / theatre" line and by the country-category hub's city list — all of
+ * which used to name every one of the ten intent categories unconditionally.
+ *
+ * That shipped a dead link for every category the inventory cannot fill. Measured on the
+ * live feed: Dubai reports 23 sellable Sports events and ZERO Concerts and ZERO Theatre,
+ * so all three of its hero category links 404'd, and the seven intent categories that
+ * have no HelloTickets category id at all (comedy, festivals, family, classical,
+ * hip-hop, rock, country-music — they resolve through Ticketmaster classifications only)
+ * 404'd in every city that was not itself a proven TM market.
+ *
+ * Fail CLOSED: an unproven category counts as "no", never as "yes".
+ */
+function city_has_category_inventory(int $cityId, string $categorySlug): bool
+{
+    $count = city_category_event_count($cityId, $categorySlug);
+    return $count !== null && $count >= city_category_min_events();
+}
+
+/**
+ * The city×category links a hub may render, as [slug => label], already filtered down to
+ * the categories city_has_category_inventory() can prove. Every emitter goes through this
+ * so the filter row, the "browse by category" list and the category page's own
+ * cross-links can never disagree about which categories exist for a city.
+ *
+ * An empty result means the hub shows no category links at all — which is the correct
+ * rendering of an unproven index, not a missing feature.
+ */
+function city_available_intent_categories(int $cityId, ?array $categories = null): array
+{
+    $categories ??= city_intent_categories();
+    $available = [];
+    foreach ($categories as $slug => $meta) {
+        if (city_has_category_inventory($cityId, (string) $slug)) {
+            $available[(string) $slug] = $meta;
+        }
+    }
+    return $available;
+}
+
 /** Month slug → month number. One source of truth for the /events/{month}-in-{city}
  *  route (render_monthly_events_page) and for the on-page month grid. */
 function month_numbers(): array
@@ -1522,6 +1599,194 @@ function event_path(array $performance): string
     }
     slug_remember('event', $slug, $id);
     return '/event/' . $slug;
+}
+
+/* ---------- Event index eligibility: ONE rule, two callers ---------- */
+
+/**
+ * How far out an event has to be before we stop asking Google to index its page.
+ *
+ * 90 days is the live-event booking window: a show six months away cannot be ranked for
+ * a useful "X tickets" query yet, and the page it renders today is byte-for-byte the page
+ * it will render at T-60 — the date is one <dd> row, not unique content, so nothing is
+ * lost by not submitting it yet. Because event_slug() carries NO date, the URL is
+ * evergreen: as the show approaches, the same URL crosses back inside the horizon on the
+ * next bin/build-seo-index.php run and is submitted then. That is a lifecycle, not a
+ * deletion — the page never stops serving the affiliate.
+ *
+ * Env-tunable (EVENT_SEO_HORIZON_DAYS) so the horizon can be moved without a deploy if
+ * the measured impression curve ever says a different number is right.
+ */
+function event_seo_horizon_days(): int
+{
+    $days = (int) (getenv('EVENT_SEO_HORIZON_DAYS') ?: 90);
+    return $days > 0 ? min(365, $days) : 90;
+}
+
+/**
+ * Can a visitor actually buy a ticket on this event right now?
+ *
+ * `is_sellable=true` is a QUERY FILTER, not a guarantee. Measured across the whole
+ * sellable pool it admits ~20% of records that carry no ticket groups and/or a zero
+ * minimum price — "Madsen, Rostock, 19:30" is sellable=true, ticket_groups_count=0,
+ * min_price=0. Those pages render a "Find Tickets" button whose checkout is empty, and
+ * 58.8% of the event URLs that 404 outright fall in this group.
+ *
+ * Ticketmaster records (tm_normalize_event) carry no ticket_groups_count at all, so the
+ * group test is applied only when the partner actually reported the field and the price
+ * carries the decision otherwise.
+ */
+function event_is_on_sale(array $event): bool
+{
+    if ((float) ($event['price_range']['min_price'] ?? 0) <= 0) {
+        return false;
+    }
+    if (array_key_exists('ticket_groups_count', $event)) {
+        return (int) ($event['ticket_groups_count'] ?? 0) > 0;
+    }
+    return true;
+}
+
+/**
+ * Has the site itself already declared this event a priority entity?
+ *
+ * Every signal here is something the repo already curates by hand — nothing is inferred:
+ *   - artist_intent_store()  the 60 artists with a hand-written prices/tour/setlist guide
+ *   - team_seed_list()       the 133 seeded pro teams that get a /team/{slug} page
+ *   - venue_seed_list()      the 20 marquee venues that get a /venue/{slug} page
+ *   - image_map()            an event we hold a real poster for (storage/images.json)
+ *
+ * This is an ESCAPE HATCH, not a filter. Measured over the sellable pool it covers 7.67%
+ * of event URLs, far too few to decide indexing on — but that is exactly what it is for:
+ * a Taylor Swift arena date or a Knicks game must stay indexable however far out it is.
+ *
+ * The seeded lists live in src/pages.php. Every entry point that can reach this
+ * predicate (index.php, bin/build-seo-index.php) has already loaded that file, so the
+ * function_exists() guards below only matter to a one-off script; when they fire we
+ * report NO priority, which is the direction that never suppresses a money page on a
+ * technicality (see the horizon rule — an in-horizon event passes regardless).
+ */
+function event_seo_has_priority(array $event): bool
+{
+    if ((int) ($event['id'] ?? 0) > 0 && !empty(image_map()['event-' . (int) $event['id']])) {
+        return true;
+    }
+    if (!empty($event['venue']['name']) && function_exists('venue_seed_list')) {
+        $venueSlug = slugify((string) $event['venue']['name']);
+        foreach (venue_seed_list() as [$seedName]) {
+            if (slugify((string) $seedName) === $venueSlug) {
+                return true;
+            }
+        }
+    }
+    $performers = $event['performers'] ?? [];
+    if ($performers === []) {
+        return false;
+    }
+    $slugs = [];
+    foreach ($performers as $performer) {
+        $name = trim((string) ($performer['name'] ?? ''));
+        if ($name !== '') {
+            $slugs[slugify($name)] = true;
+        }
+    }
+    if (function_exists('team_seed_list')) {
+        foreach (team_seed_list() as [$teamName]) {
+            if (isset($slugs[slugify((string) $teamName)])) {
+                return true;
+            }
+        }
+    }
+    if (function_exists('artist_intent_store')) {
+        foreach (array_keys(artist_intent_store()) as $artistSlug) {
+            if (isset($slugs[(string) $artistSlug])) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+/**
+ * THE shared eligibility predicate, read by BOTH the sitemap builder
+ * (bin/build-seo-index.php, and render_phase_one_sitemap() re-checking the recorded
+ * verdict) and the page's own robots meta (render_event_detail_page /
+ * render_ticketmaster_event_detail_page). One rule, so a URL can never be submitted
+ * while the page calls itself noindex, or the reverse.
+ *
+ * IN PLAIN WORDS — an event page may be submitted for indexing, and may serve
+ * index,follow, only when BOTH of these hold:
+ *
+ *   1. THE TICKET IS REAL. The partner record must show a non-zero minimum price and at
+ *      least one live ticket group. `is_sellable=true` is not enough.
+ *   AND
+ *   2. IT IS IN THE BOOKING WINDOW, *OR* THE SITE CURATES IT. Either the show is between
+ *      today and today + event_seo_horizon_days() (90 by default), or the event belongs
+ *      to an entity the site has already hand-picked — a written artist guide, a seeded
+ *      pro team, a seeded marquee venue, or an event we hold a real poster for.
+ *
+ * A past event satisfies neither and stays noindex, exactly as before: its date is
+ * before today, so it is outside the window.
+ *
+ * Signals deliberately NOT used, because they are not available offline and inventing
+ * them would be worse than not having them:
+ *   - Search Console impressions/clicks per URL. No GSC credentials, no per-URL export
+ *     and no click log ship in this repo, so "the page has earned impressions" could not
+ *     be evaluated. It is the one signal that would most justify the horizon cut; the
+ *     priority escape hatch is the stand-in.
+ *   - Category as a priority signal. 99.9% of the pool is "Concerts", so it does not
+ *     discriminate and is not used.
+ *
+ * Everything that fails returns FALSE, which the callers turn into `noindex, follow`
+ * plus removal from the sitemap. Nothing 404s, nothing redirects, nothing is deleted:
+ * the page keeps rendering and keeps serving the affiliate link.
+ */
+function event_is_seo_eligible(array $event): bool
+{
+    if ($event === [] || !event_is_on_sale($event)) {
+        return false;
+    }
+    $localDate = (string) ($event['start_date']['local_date'] ?? '');
+    if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $localDate) !== 1) {
+        // No usable date: we cannot place it in the booking window, and a dateless
+        // page has nothing to rank for either. Treated as out of window.
+        return event_seo_has_priority($event);
+    }
+    $today = new DateTimeImmutable('today');
+    if ($localDate < $today->format('Y-m-d')) {
+        return false; // past — the one case that was already noindex
+    }
+    $horizonEnd = $today->modify('+' . event_seo_horizon_days() . ' days')->format('Y-m-d');
+    return $localDate <= $horizonEnd || event_seo_has_priority($event);
+}
+
+/**
+ * What bin/build-seo-index.php recorded for one event slug when it last walked the
+ * partner feed — ['on_sale' => bool, 'priority' => bool, 'date' => 'Y-m-d',
+ * 'eligible' => bool] — or null when the index predates the key. One reader, so no
+ * caller can invent its own default or read a different shape.
+ */
+function event_seo_record(string $slug): ?array
+{
+    $record = seo_index()['eligibility']['events'][$slug] ?? null;
+    return is_array($record) ? $record : null;
+}
+
+/** The recorded verdict alone: true/false once measured, null before the first build
+ *  that carries the key. */
+function event_seo_recorded_eligibility(string $slug): ?bool
+{
+    $record = event_seo_record($slug);
+    return isset($record['eligible']) && is_bool($record['eligible']) ? $record['eligible'] : null;
+}
+
+/** The soonest qualifying date the builder saw for a slug — the date the page itself
+ *  will render, so it is what the sitemap's horizon fallback has to compare against. */
+function event_seo_recorded_date(string $slug): ?string
+{
+    $record = event_seo_record($slug);
+    $date = $record['date'] ?? null;
+    return is_string($date) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $date) === 1 ? $date : null;
 }
 
 function tm_event_id_from_slug(string $slug): ?string

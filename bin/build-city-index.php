@@ -12,13 +12,15 @@ declare(strict_types=1);
  * so this script pre-computes the gate. Output shape:
  *   { "generated_at": "2026-06-11",
  *     "cities": { "101": {"events": 220, "months": [10,11,12],
- *                         "today": 4, "week": 17}, … } }
+ *                         "today": 4, "week": 17,
+ *                         "categories": {"sports": 61, "concerts": 40}}, … } }
  * city_has_inventory() / city_event_count() / city_has_date_inventory() /
- * city_has_month_inventory() in helpers.php read it; if the file is absent — or a city
- * is missing one of the optional keys, which is what a failed probe records — they
- * report NO inventory (fail closed), so the file must exist for geo-city links,
- * date-intent links, month arrows and sitemap URLs. Run this before/with the deploy,
- * and whenever a surface needs a fresher date answer than the file carries.
+ * city_has_month_inventory() / city_has_category_inventory() in helpers.php read it; if
+ * the file is absent — or a city is missing one of the optional keys, which is what a
+ * failed probe records — they report NO inventory (fail closed), so the file must exist for
+ * geo-city links, date-intent links, month arrows, city×category links and sitemap
+ * URLs. Run this before/with the deploy, and whenever a surface needs a fresher answer
+ * than the file carries.
  *
  * The `months` / `today` / `week` keys are measured on the SAME windows the renderers
  * use, by calling the same helpers: month_numbers() + city_months_with_events() for the
@@ -73,6 +75,7 @@ $cities = [];
 $kept = 0;
 $withDateInventory = 0;
 $withMonthInventory = 0;
+$withCategoryInventory = 0;
 
 /**
  * Count-only HelloTickets probe: limit=1 returns the partner's own total for the window,
@@ -119,6 +122,58 @@ $countTmEventsInWindow = static function (string $name, string $countryCode3, st
     return is_numeric($raw['page']['totalElements'] ?? null) ? (int) $raw['page']['totalElements'] : null;
 };
 
+/**
+ * Count-only probe for ONE intent category, on the same window city_category_events()
+ * renders (date_params(null), i.e. today..+1y) and over the same category ids /
+ * Ticketmaster classification names that helper uses. The two partners are counted
+ * separately and the HIGHER total is stored, which — exactly as for today/week — can only
+ * under-report the renderer's merged pool, never over-report it. So a category link shown
+ * from this number is a link that will render.
+ *
+ * Every category with no probeable source (the seven intent categories that resolve only
+ * through Ticketmaster classifications, on a host with no TM key) returns null, and null
+ * leaves the key out so city_has_category_inventory() fails closed.
+ */
+$countCategoryEvents = static function (int $cityId, string $cityName, string $countryCode3, string $categorySlug) use ($config, $client): ?int {
+    $categories = city_intent_categories();
+    if (!isset($categories[$categorySlug])) {
+        return null;
+    }
+    $counts = [];
+    foreach ($categories[$categorySlug]['ht_category_ids'] as $categoryId) {
+        try {
+            $data = $client->performances(array_merge([
+                'limit' => 1,
+                'page' => 1,
+                'is_sellable' => 'true',
+                'city_id' => $cityId,
+                'category_id' => (int) $categoryId,
+            ], date_params(null)));
+        } catch (Throwable $exception) {
+            fwrite(STDERR, sprintf("  ! %s probe failed: %s\n", $categorySlug, $exception->getMessage()));
+            continue;
+        }
+        if (is_numeric($data['total_count'] ?? null)) {
+            $counts[] = (int) $data['total_count'];
+        }
+    }
+    $tm = tm_client($config);
+    if ($tm !== null) {
+        $alpha2 = tm_country_code($countryCode3);
+        foreach ($categories[$categorySlug]['tm_classification_names'] as $classificationName) {
+            $params = ['city' => $cityName, 'size' => 1, 'page' => 0, 'classificationName' => $classificationName];
+            if ($alpha2 !== '') {
+                $params['countryCode'] = $alpha2;
+            }
+            $raw = api_result(static fn() => $tm->events($params), []);
+            if (is_numeric($raw['page']['totalElements'] ?? null)) {
+                $counts[] = (int) $raw['page']['totalElements'];
+            }
+        }
+    }
+    return $counts === [] ? null : max($counts);
+};
+
 foreach ($targets as $id => $meta) {
     $name = $meta['name'];
     if ($name === '') {
@@ -145,6 +200,7 @@ foreach ($targets as $id => $meta) {
     $reportMonths = '-';
     $reportToday = '-';
     $reportWeek = '-';
+    $reportCats = '-';
     if ($total >= $minInventory) {
         $entry = ['events' => $total];
 
@@ -181,11 +237,31 @@ foreach ($targets as $id => $meta) {
         $reportToday = isset($entry['today']) ? (string) $entry['today'] : '-';
         $reportWeek = isset($entry['week']) ? (string) $entry['week'] : '-';
 
+        // City×category inventory. render_city_category_page() 404s below
+        // city_category_min_events(), and every hub used to link all ten intent categories
+        // unconditionally — so each city shipped a dead link per category it cannot fill.
+        $categoryCounts = [];
+        foreach (array_keys(city_intent_categories()) as $categorySlug) {
+            $count = $countCategoryEvents($id, $name, $meta['country_code'], (string) $categorySlug);
+            if ($count !== null) {
+                $categoryCounts[(string) $categorySlug] = $count;
+            }
+        }
+        $entry['categories'] = $categoryCounts;
+        $withCategoryInventory++;
+        $reportCats = $categoryCounts === []
+            ? '-'
+            : implode(' ', array_map(
+                static fn(string $slug, int $count): string => $slug . '=' . $count,
+                array_keys($categoryCounts),
+                array_values($categoryCounts)
+            ));
+
         $cities[(string) $id] = $entry;
         $kept++;
     }
     fwrite(STDERR, sprintf(
-        "%-22s id=%-5d HT=%-4d TM=%-4d => %-4s months=%-20s today=%-4s week=%-4s\n",
+        "%-22s id=%-5d HT=%-4d TM=%-4d => %-4s months=%-20s today=%-4s week=%-4s cats=%s\n",
         $name,
         $id,
         $htCount,
@@ -193,7 +269,8 @@ foreach ($targets as $id => $meta) {
         $total >= $minInventory ? 'KEEP' : 'skip',
         $reportMonths,
         $reportToday,
-        $reportWeek
+        $reportWeek,
+        $reportCats
     ));
 }
 
@@ -231,9 +308,14 @@ fwrite(STDERR, sprintf("\nWrote %s — %d cities with >=%d inventory.\n", $outFi
 // months/date keys, so the runtime hides those links until the next clean run — say so
 // loudly, because a throttled build silently unpublishes every date and month link.
 fwrite(STDERR, sprintf(
-    "  %d/%d cities carry month inventory, %d/%d carry date inventory (a '-' above is a failed probe, not an empty city).\n",
+    "  %d/%d cities carry month inventory, %d/%d carry date inventory, %d/%d carry category inventory (a '-' above is a failed probe, not an empty city).\n",
     $withMonthInventory,
     $kept,
     $withDateInventory,
+    $kept,
+    $withCategoryInventory,
     $kept
+));
+fwrite(STDERR, sprintf(
+    "  Until this runs, no city\u00d7category link is emitted at all (city_has_category_inventory fails closed on a missing key) \u2014 that is the safe direction, not a regression.\n"
 ));
