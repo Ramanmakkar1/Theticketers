@@ -749,14 +749,101 @@ function geo_cities(): array
     return $cities;
 }
 
+/**
+ * How old storage/city-index.json may get before the readers treat it as STALE, in days.
+ *
+ * The file's `today` / `week` keys are measured against the calendar day the build ran
+ * (bin/build-city-index.php probes date_params('today') / date_params('week')), so they
+ * stop answering the question within days — they are a snapshot, not a live count. Two
+ * build cycles is the stated budget, which is what that script's own "daily/weekly" cron
+ * recommendation produces. Override on the host with CITY_INDEX_STALE_DAYS.
+ */
+function city_index_stale_days(): int
+{
+    $configured = getenv('CITY_INDEX_STALE_DAYS');
+    $days = is_string($configured) && $configured !== '' ? (int) $configured : 0;
+    return $days > 0 ? $days : 14;
+}
+
+/**
+ * Why the pre-built city index cannot be trusted right now — null when it looks healthy.
+ * Covers the two ways it goes bad WITHOUT looking broken:
+ *
+ *   1. STALE — generated_at is missing/unparsable, or older than city_index_stale_days().
+ *      The file still has the modern SHAPE, so every reader answers confidently from
+ *      numbers measured weeks ago and the page looks normally sparse.
+ *   2. OLD SHAPE — no city carries months/today/week. That is the index a host is left
+ *      with when bin/build-city-index.php has not been run since those keys were added:
+ *      city_index_months() returns [] and city_date_event_count() returns null, so the
+ *      month arrows and the Today/This-Week links fail CLOSED and silently vanish. The
+ *      same shape appears on a throttled build where every date/month probe was rate
+ *      limited, which that script already warns about on stderr.
+ *
+ * REPORT ONLY. Every caller keeps its fail-closed return value; this exists so the problem
+ * reaches the error log instead of dying quietly in the markup.
+ */
+function city_index_health_problem(array $index): ?string
+{
+    $cities = is_array($index['cities'] ?? null) ? $index['cities'] : [];
+    $generatedAt = trim((string) ($index['generated_at'] ?? ''));
+    $problems = [];
+
+    // generated_at is gmdate('Y-m-d') — a date, not a timestamp: read it as UTC midnight.
+    // Check the SHAPE before strtotime(), which happily invents a date from any relative
+    // string ("last tuesday") and would report a garbage value as merely fresh.
+    $builtAt = preg_match('/^\d{4}-\d{2}-\d{2}$/', $generatedAt) === 1
+        ? strtotime($generatedAt . ' 00:00:00 UTC')
+        : false;
+    if ($builtAt === false) {
+        $problems[] = $generatedAt === ''
+            ? 'no generated_at timestamp'
+            : 'generated_at "' . $generatedAt . '" is not a Y-m-d date';
+    } else {
+        $ageDays = (int) floor((time() - $builtAt) / 86400);
+        $staleDays = city_index_stale_days();
+        if ($ageDays > $staleDays) {
+            $problems[] = 'generated_at ' . $generatedAt . ' is ' . $ageDays . ' days old (stale after ' . $staleDays . ')';
+        }
+    }
+
+    $withDateOrMonth = 0;
+    foreach ($cities as $entry) {
+        if (is_array($entry) && (isset($entry['months']) || isset($entry['today']) || isset($entry['week']))) {
+            $withDateOrMonth++;
+        }
+    }
+    if ($cities === []) {
+        $problems[] = 'it lists no cities at all';
+    } elseif ($withDateOrMonth === 0) {
+        $problems[] = 'none of its ' . count($cities)
+            . ' cities carry months/today/week (pre-date-key build, or every probe was rate limited)';
+    }
+
+    return $problems === [] ? null : implode('; ', $problems);
+}
+
 /** Pre-computed inventory gate (storage/city-index.json, built by bin/build-city-index.php).
- *  Returns ['cities' => ['101' => ['events'=>220], …]] or null when no index exists yet. */
+ *  Returns ['generated_at' => '2026-06-11', 'cities' => ['101' => ['events'=>220,
+ *  'months'=>[…], 'today'=>4, 'week'=>17], …]] or null when no index exists yet.
+ *
+ *  Loads once per request and, on the way through, logs ONE line if the index is stale or
+ *  too old a SHAPE to answer the date/month questions (city_index_health_problem()).
+ *  Every reader below funnels through here, so that single line is the whole signal that
+ *  production needs `php bin/build-city-index.php` — without it a missing rebuild just
+ *  makes every Today/This-Week link and month arrow disappear, which reads as "quiet
+ *  season" rather than "stale artifact". Absent file stays non-fatal: null, fail closed. */
 function city_index(): ?array
 {
     static $index = false;
     if ($index === false) {
         $file = __DIR__ . '/../storage/city-index.json';
         $index = is_file($file) ? (json_decode((string) file_get_contents($file), true) ?: null) : null;
+        if (is_array($index)) {
+            $problem = city_index_health_problem($index);
+            if ($problem !== null) {
+                error_log('[city-index] ' . $problem . ' — run `php bin/build-city-index.php` on the host; every Today/This-Week link and month arrow stays hidden until it does');
+            }
+        }
     }
     return $index ?: null;
 }
@@ -765,7 +852,8 @@ function city_index(): ?array
  *  and internal links never call the APIs per city. Fails CLOSED: with no index we
  *  cannot prove a city has inventory, so it counts as "no" — a missing/blank
  *  storage/city-index.json must never be the reason a link or a sitemap URL points at
- *  a page that 404s. Rebuild it with `php bin/build-city-index.php`. */
+ *  a page that 404s. Rebuild it with `php bin/build-city-index.php`. A stale index, or
+ *  one predating the today/week/months keys, reports "no" for every city and logs why. */
 function city_has_inventory(int $cityId): bool
 {
     $index = city_index();
@@ -803,7 +891,9 @@ function city_date_min_events(string $dateKey): int
  *
  * null means UNKNOWN (no index / no city entry / the build's probe failed) and callers
  * must fail closed, the same rule city_has_inventory() follows. A measured 0 is a real
- * answer and is returned as 0, never as null.
+ * answer and is returned as 0, never as null. A stale index, or one predating the
+ * today/week/months keys, reports UNKNOWN for every city — and city_index() has already
+ * logged why, with the rebuild command.
  */
 function city_date_event_count(int $cityId, string $dateKey): ?int
 {
@@ -868,7 +958,8 @@ function city_date_filter_note(int $cityId, string $cityName): string
  * from the pre-built file instead of an event pool, so a surface that has no pool in
  * hand (the /events/{month}-in-{city} prev/next arrows) can still tell an empty month
  * from a stocked one without paying for another partner request. [] when the index
- * cannot prove anything — callers must then show no link.
+ * cannot prove anything — callers must then show no link, and city_index() has already
+ * logged a stale/old-shape index with the rebuild command.
  */
 function city_index_months(int $cityId): array
 {

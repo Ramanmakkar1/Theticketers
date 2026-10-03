@@ -16,6 +16,13 @@
  * across cities and the city hub's date filters are gated per city — see
  * helpers.php::city_date_filter_note() for why the pool cannot name one literally.
  *
+ * Rule: never name a control the page type does not render. Checking every entry against
+ * its renderer's markup turned up three buckets that promised a *filter* the markup does
+ * not have — the city-category page renders only "All Events" plus category links (no
+ * date filter at all), /events/{month}-in-{city} renders no category filter (its only
+ * links are the prev/next month arrows), and the city hub's own "Today"/"This Week" links
+ * are gated (above). Read the renderer's filter row before naming one.
+ *
  * Answers stay 1-3 sentences, evergreen (no specific year), hedged where
  * appropriate, and use placeholders for any data that varies per page.
  */
@@ -368,7 +375,7 @@ return [
          'a' => 'Arrive 45 to 60 minutes before a {category} show in {city} to clear security and find your seat. Larger arenas can take longer to fill — earlier arrival also gives time at concessions before the start.'],
 
         ['q' => 'Where can I find {category} events in {city} this weekend?',
-         'a' => 'The This Weekend filter at the top of this page surfaces every {category} show with on-sale tickets in {city} for the upcoming weekend. The list refreshes as new dates come on sale.'],
+         'a' => 'Every {category} show on sale in {city} is listed above with its date, venue and live starting price, so weekend dates are easy to pick out at a glance. The list refreshes as new dates come on sale.'],
 
         ['q' => 'Are there {category} events in {city} for all budgets?',
          'a' => 'Yes — {category} pricing in {city} ranges from value upper-tier seats from {min_price} up to premium hospitality and front-row seats. The seat map on the partner checkout shows every available tier and price.'],
@@ -657,10 +664,10 @@ return [
          'a' => 'Ticket prices for {city} events in {month} currently start from {min_price}, varying by event type and seat tier. Concerts and major sports tend to sit higher; theatre and family events typically run lower.'],
 
         ['q' => 'Are there concerts in {city} in {month}?',
-         'a' => 'Yes — {city}\'s {month} schedule includes concerts among the {count} events on sale. Use the category filter or browse the full list above to surface every concert with on-sale tickets.'],
+         'a' => 'Yes — {city}\'s {month} schedule includes concerts among the {count} events on sale. Browse the full list above — each entry shows its date, venue and live starting price.'],
 
         ['q' => 'Are there sports events in {city} in {month}?',
-         'a' => 'Live sports in {city} for {month} cover league fixtures and one-off events across the major sports. The Sports category filter surfaces every fixture with on-sale tickets.'],
+         'a' => 'Live sports in {city} for {month} cover league fixtures and one-off events across the major sports. Every fixture currently on sale is in the list above, with its date, arena and live starting price.'],
 
         ['q' => 'When should I book {month} tickets in {city}?',
          'a' => 'For popular {month} dates in {city}, booking on the on-sale day typically gives the widest seat selection. Less-hyped events often have improving availability and prices in the weeks before the show.'],
@@ -672,10 +679,10 @@ return [
          'a' => 'For major {city} event weekends in {month}, hotels close to the venue can sell out a few weeks ahead. Book ticket and hotel together for best availability.'],
 
         ['q' => 'What\'s the biggest event in {city} in {month}?',
-         'a' => 'The headline events in {city} for {month} are listed at the top of the schedule above, sorted by date. Filter by category to surface the most-anticipated concerts, sports and shows.'],
+         'a' => 'Headline concerts, sports fixtures and stage shows in {city} for {month} are all in the schedule above, each with its date, venue and live starting price.'],
 
         ['q' => 'Can I find theatre shows in {city} in {month}?',
-         'a' => 'Yes — {city} typically programmes a mix of touring productions and resident shows in {month}. Use the Theatre category filter to surface every stage show with on-sale tickets.'],
+         'a' => 'Yes — {city} typically programmes a mix of touring productions and resident shows in {month}. Every stage show on sale that month is in the list above, with its date, venue and live starting price.'],
 
         ['q' => 'How do I get around {city} for {month} events?',
          'a' => '{city}\'s public transport, ride-share and taxi network covers the main venue districts. On event nights, transport typically runs later — check post-show options before booking.'],

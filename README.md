@@ -55,9 +55,23 @@ php bin/build-seo-index.php
 
 `/sitemap.xml` is a sitemap index that points to `/sitemap-static.xml`, `/sitemap-events.xml`, `/sitemap-artists.xml`, `/sitemap-venues.xml` and `/sitemap-cities.xml`.
 
+## Cache housekeeping
+
+`storage/cache/` is never evicted by the app: `index.php` only republishes an HTML entry when that exact URL is requested again, and `HelloTicketsClient` only overwrites an API entry when its exact key is re-requested. Nothing removes a file by age, so a crawl of the ~28K-page long tail grows the directory without bound. `bin/sweep-cache.php` is the other half — it deletes entries older than a TTL, recurses into `storage/cache/html/`, never touches `.gitkeep` or anything outside `storage/cache/`, and reports what it removed:
+
+```bash
+php bin/sweep-cache.php --dry-run         # report only, delete nothing
+php bin/sweep-cache.php                   # 7 days (default)
+php bin/sweep-cache.php --ttl=86400       # 24 hours
+CACHE_SWEEP_TTL=86400 php bin/sweep-cache.php
+```
+
+Run it by hand or from cron (hourly is plenty; it is a no-op when nothing has aged out). It is deliberately not part of any deploy step.
+
 ## Deploy
 
 1. Upload the project (or `git pull`) to a PHP 8.1+ host with Apache rewrite support — `.htaccess` already routes everything to `index.php`. On Nginx, send all non-file routes to `index.php`.
 2. Make sure `storage/` and `storage/cache/` are writable by PHP.
 3. Set `SITE_URL` to your real domain so canonical URLs and the sitemap are correct.
-4. Do **not** upload `preview-server.mjs` (or just leave it — it is harmless without Node).
+4. Run `php bin/build-city-index.php` on the host. `storage/city-index.json` is a generated artifact that is tracked in git, so a deploy ships the copy in the repo, not the host's inventory. The readers fail closed, so a stale or pre-date-key index silently hides every Today / This-Week link and month arrow; the log names the problem and the command (`[city-index] … run php bin/build-city-index.php`). Staleness is judged at 14 days — override with `CITY_INDEX_STALE_DAYS`.
+5. Do **not** upload `preview-server.mjs` (or just leave it — it is harmless without Node).
