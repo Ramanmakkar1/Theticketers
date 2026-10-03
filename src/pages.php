@@ -1632,7 +1632,7 @@ function render_city_page(HelloTicketsClient $client, array $config, int $cityId
             '{site_name}' => (string) $config['site_name'],
             '{date_filter_note}' => city_date_filter_note($cityId, $cityName),
         ];
-        $cityFaqs = array_merge($cityFaqs, unique_faqs('city', slugify($cityName), $cityFaqData, 6));
+        $cityFaqs = dedupe_faqs(array_merge($cityFaqs, unique_faqs('city', slugify($cityName), $cityFaqData, 6)));
         dubai_render_faq($cityFaqs, $cityName . ' — Event FAQs');
         ?>
         <section class="section-band">
@@ -1805,7 +1805,7 @@ function render_event_detail_page(HelloTicketsClient $client, array $config, int
         '{min_price}' => (float) $price > 0 ? money($price, $currency) : '',
         '{site_name}' => (string) $config['site_name'],
     ];
-    $eventFaqs = array_merge($eventFaqs, unique_faqs('event', slugify($eventName), $eventFaqData, 5));
+    $eventFaqs = dedupe_faqs(array_merge($eventFaqs, unique_faqs('event', slugify($eventName), $eventFaqData, 5)));
 
     // One headline for the <title> AND the <h1>. The H1 used to be the bare event
     // name while the title right above it already carried city + date, so every date
@@ -1976,13 +1976,13 @@ function render_ticketmaster_event_detail_page(array $config, string $tmEventId)
     $eventFaqs[] = ['q' => 'How are tickets delivered for ' . $eventName . '?',
         'a' => 'Delivery options are confirmed by the ticketing partner during checkout. Most events support mobile tickets that can be scanned from your phone.'];
 
-    $eventFaqs = array_merge($eventFaqs, unique_faqs('event', slugify($eventName), [
+    $eventFaqs = dedupe_faqs(array_merge($eventFaqs, unique_faqs('event', slugify($eventName), [
         '{name}' => $eventName,
         '{city}' => $cityName,
         '{next_venue}' => $venueName !== '' ? $venueName : 'the venue',
         '{min_price}' => $price > 0 ? money($price, $currency) : '',
         '{site_name}' => (string) $config['site_name'],
-    ], 4));
+    ], 4)));
 
     // Same headline for <title> and <h1> as the HelloTickets renderer above: the H1
     // used to be the bare event name, which made every city/date of the same show
@@ -2756,7 +2756,7 @@ function render_city_category_page(HelloTicketsClient $client, array $config, in
         '{top_venues}' => implode(', ', array_slice($venues, 0, 3)),
         '{site_name}' => (string) $config['site_name'],
     ];
-    $faqs = array_merge($faqs, unique_faqs('city_category', slugify((string) $city['name']) . '-' . $categorySlug, $catFaqData, 6));
+    $faqs = dedupe_faqs(array_merge($faqs, unique_faqs('city_category', slugify((string) $city['name']) . '-' . $categorySlug, $catFaqData, 6)));
 
     $listSchema = item_list_schema($config, $events, 'event');
     $schemaGraph = [
@@ -3018,7 +3018,7 @@ function render_artist_detail_page(HelloTicketsClient $client, array $config, in
         '{site_name}' => (string) $config['site_name'],
     ];
     $uniqueFaqs = unique_faqs('artist', slugify($name), $artistData, 6);
-    $faqs = array_merge($faqs, $uniqueFaqs);
+    $faqs = dedupe_faqs(array_merge($faqs, $uniqueFaqs));
 
     $description = $tourCities !== []
         ? 'See ' . count($events) . ' upcoming ' . $name . ' shows in ' . implode(', ', array_slice($tourCities, 0, 4)) . (count($tourCities) > 4 ? ' and more cities' : '') . ' with dates, venues and live ticket prices.'
@@ -3345,7 +3345,7 @@ function render_artist_in_city_page(HelloTicketsClient $client, array $config, s
         '{next_venue}' => $venueName !== '' ? $venueName : 'the venue',
         '{site_name}' => (string) $config['site_name'],
     ];
-    $faqs = array_merge($faqs, unique_faqs('artist_in_city', slugify($name) . '-' . slugify($cityName), $aicData, 5));
+    $faqs = dedupe_faqs(array_merge($faqs, unique_faqs('artist_in_city', slugify($name) . '-' . slugify($cityName), $aicData, 5)));
 
     $listSchema = item_list_schema($config, $events, 'event');
     $schemaGraph = [
@@ -5139,7 +5139,7 @@ function render_venue_page(array $config, string $tmVenueId): void
         '{top_artists}' => implode(', ', array_slice($venueArtists, 0, 3)),
         '{site_name}' => (string) $config['site_name'],
     ];
-    $faqs = array_merge($faqs, unique_faqs('venue', slugify((string) $venue['name']), $venueData, 6));
+    $faqs = dedupe_faqs(array_merge($faqs, unique_faqs('venue', slugify((string) $venue['name']), $venueData, 6)));
 
     $schemaGraph = [
         '@context' => 'https://schema.org',
@@ -5424,7 +5424,7 @@ function render_league_page(array $config, string $slug): void
         '{count}' => (string) $shown,
         '{site_name}' => (string) $config['site_name'],
     ];
-    $faqs = array_merge($faqs, unique_faqs('league', $slug, $leagueData, 5));
+    $faqs = dedupe_faqs(array_merge($faqs, unique_faqs('league', $slug, $leagueData, 5)));
 
     $schemaGraph = [
         '@context' => 'https://schema.org',
@@ -5710,7 +5710,7 @@ function render_team_page(array $config, array $team): void
         '{league_name}' => $leagueSlug !== null ? strtoupper($leagueSlug) : ($sport !== '' ? $sport : 'the league'),
         '{site_name}' => (string) $config['site_name'],
     ];
-    $faqs = array_merge($faqs, unique_faqs('team', slugify($name), $teamData, 5));
+    $faqs = dedupe_faqs(array_merge($faqs, unique_faqs('team', slugify($name), $teamData, 5)));
 
     // SportsTeam.sport wants the sport, not the league ("Basketball", not "NBA").
     $league = $leagueSlug !== null ? league_from_slug($leagueSlug) : null;
@@ -5983,7 +5983,7 @@ function render_monthly_events_page(HelloTicketsClient $client, array $config, i
         '{min_price}' => $monthMinPrice !== null ? money($monthMinPrice, $monthCurrencyForFaq) : '',
         '{site_name}' => (string) $config['site_name'],
     ];
-    $faqs = array_merge($faqs, unique_faqs('monthly_events', $monthName . '-' . $citySlug, $monthlyData, 5));
+    $faqs = dedupe_faqs(array_merge($faqs, unique_faqs('monthly_events', $monthName . '-' . $citySlug, $monthlyData, 5)));
 
     $schema = ['@context' => 'https://schema.org', '@graph' => [
         ['@type' => 'CollectionPage', 'name' => $pageTitle, 'url' => absolute_url($config, $canonical),
@@ -6089,7 +6089,7 @@ function render_venue_category_page(array $config, string $tmVenueId, string $ve
         '{count}' => (string) $total,
         '{site_name}' => (string) $config['site_name'],
     ];
-    $faqs = array_merge($faqs, unique_faqs('venue_category', $venueSlug . '-' . $categorySlug, $vcData, 5));
+    $faqs = dedupe_faqs(array_merge($faqs, unique_faqs('venue_category', $venueSlug . '-' . $categorySlug, $vcData, 5)));
     $schema = ['@context'=>'https://schema.org','@graph'=>[
         ['@type'=>'CollectionPage','name'=>$title,'url'=>absolute_url($config,$canonical),'isPartOf'=>['@id'=>$config['site_url'].'/#website']],
         dubai_faq_schema($faqs),

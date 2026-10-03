@@ -826,8 +826,8 @@ function city_index_health_problem(array $index): ?string
  *  Returns ['generated_at' => '2026-06-11', 'cities' => ['101' => ['events'=>220,
  *  'months'=>[…], 'today'=>4, 'week'=>17], …]] or null when no index exists yet.
  *
- *  Loads once per request and, on the way through, logs ONE line if the index is stale or
- *  too old a SHAPE to answer the date/month questions (city_index_health_problem()).
+ *  Loads once per request and, on the way through, logs ONE line if the index is missing,
+ *  stale, or too old a SHAPE to answer the date/month questions (city_index_health_problem()).
  *  Every reader below funnels through here, so that single line is the whole signal that
  *  production needs `php bin/build-city-index.php` — without it a missing rebuild just
  *  makes every Today/This-Week link and month arrow disappear, which reads as "quiet
@@ -838,7 +838,14 @@ function city_index(): ?array
     if ($index === false) {
         $file = __DIR__ . '/../storage/city-index.json';
         $index = is_file($file) ? (json_decode((string) file_get_contents($file), true) ?: null) : null;
-        if (is_array($index)) {
+        if (!is_array($index)) {
+            // No index at all is the SAME production state a stale one produces — every
+            // reader below fails closed and every Today/This-Week link and month arrow
+            // stays hidden — so it gets the same single line, same wording, same command.
+            // Reported here rather than in city_index_health_problem() because that
+            // function is handed a decoded array and a missing file never becomes one.
+            error_log('[city-index] storage/city-index.json is missing or unreadable — run `php bin/build-city-index.php` on the host; every Today/This-Week link and month arrow stays hidden until it does');
+        } else {
             $problem = city_index_health_problem($index);
             if ($problem !== null) {
                 error_log('[city-index] ' . $problem . ' — run `php bin/build-city-index.php` on the host; every Today/This-Week link and month arrow stays hidden until it does');
@@ -2457,6 +2464,39 @@ function unique_faqs(string $type, string $slug, array $data, int $count = 8): a
             continue;
         }
         $result[] = ['q' => $q, 'a' => $a];
+    }
+    return $result;
+}
+
+/**
+ * Drop FAQs whose question is already answered higher up the same list.
+ *
+ * Every caller merges a page's own hardcoded FAQs with a unique_faqs() slice, and several
+ * pool buckets deliberately restate those same questions — monthly_events' first five
+ * entries are the month page's own five word for word, venue's first four are the venue
+ * hub's, and so on. The shuffle decides whether a collision actually renders, so the bug
+ * was intermittent per slug: /events/october-in-dubai shipped "How do I find October
+ * tickets in Dubai?" and "How often is this October schedule updated?" twice each, in the
+ * markup AND in the FAQPage JSON-LD built from the same array.
+ *
+ * Comparison is on the RENDERED question with whitespace collapsed and case folded, so
+ * "Are  tickets  REFUNDABLE?" and "are tickets refundable?" count as one; the first
+ * occurrence wins and order is otherwise untouched, so the page's own hand-written answer
+ * is the one that survives. A list with no repeats comes back identical, which is why this
+ * is safe to apply at every merge.
+ */
+function dedupe_faqs(array $faqs): array
+{
+    $seen = [];
+    $result = [];
+    foreach ($faqs as $faq) {
+        $question = isset($faq['q']) ? (string) $faq['q'] : '';
+        $key = mb_strtolower(preg_replace('/\s+/u', ' ', trim($question)));
+        if (isset($seen[$key])) {
+            continue;
+        }
+        $seen[$key] = true;
+        $result[] = $faq;
     }
     return $result;
 }
